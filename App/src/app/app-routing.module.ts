@@ -46,6 +46,12 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
+          import('./views/evse/evse.module').then(m => m.EvseModule)
+      },
+      
+      {
+        path: '',
+        loadChildren: () =>
           import('./views/pig-farm/pig-farm.module').then(m => m.PigFarmModule)
       },{
         path: 'change-password',

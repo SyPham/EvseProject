@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.loginRememberMe(+this.key);
       }
     }
-    let backUrl = '/dashboard';
+    let backUrl = '/evse/home';
     this.uri = this.route.snapshot.queryParams.uri || backUrl;
   }
   role: number;
@@ -51,12 +51,12 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     const accessToken = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refresh_token');
     if (accessToken && refreshToken && this.route.routeConfig.path === 'login') {
-      let backUrl = '/dashboard';
+      let backUrl = '/evse/home';
       const uri = decodeURI(this.uri) || backUrl;
       this.router.navigate([uri]);
     }
     if (this.authService.loggedIn()) {
-      let backUrl = '/dashboard';
+      let backUrl = '/evse/home';
       const uri = decodeURI(this.uri) || backUrl;
       this.router.navigate([uri]);
     }
@@ -103,7 +103,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         const uri = decodeURI(this.uri);
         this.router.navigate([uri]);
       } else {
-        let backUrl = '/dashboard';
+        let backUrl = '/evse/home';
         this.router.navigate([backUrl]);
       }
 
@@ -162,7 +162,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         const uri = decodeURI(this.uri);
         this.router.navigate([uri]);
       } else {
-        let backUrl = '/dashboard';
+        let backUrl = '/evse/home';
         this.router.navigate([backUrl]);
       }
       this.loading = 0;
