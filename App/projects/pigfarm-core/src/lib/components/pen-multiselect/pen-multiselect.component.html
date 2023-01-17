@@ -1,0 +1,16 @@
+<ejs-multiselect
+  #penmulti
+  [id]="id"
+  (filtering)="onFiltering($event)"
+  [allowFiltering]="true"
+  [dataSource]="data"
+  [fields]="remoteFields"
+  mode="CheckBox"
+  [popupHeight]="popupHeight"
+  [showDropDownIcon]="true"
+  [(ngModel)]="selectedData"
+  [disabled]="disabled"
+  (ngModelChange)="onNgModelChange($event)"
+  (change)="onChange($event)"
+  showSelectAll="true"
+></ejs-multiselect>

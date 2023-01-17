@@ -1,0 +1,61 @@
+
+<div class="control-section">
+<div id="wrapper">
+  <div
+  class="col-lg-12 col-sm-12 col-md-12"
+  id="sidebar-section"
+>
+  <!--header-section  declaration -->
+  <div class="main-header" id="header-section">
+    <ul class="header-list">
+      <li
+        class="float-right header-style icon-menu"
+        id="hamburger"
+        (click)="toggleSidebar()"
+      ></li>
+
+      <li class="float-left header-style nav-pane d-flex justify-content-start">
+        <b (click)="goBack()" class="mr-sm-2 mr-lg-2  mr-md-2"><span class="e-icons e-arrow-left-2"></span></b>
+        <b (click)="goToHome()">{{'EVSE 後台管理系統' | translate}}</b></li>
+    </ul>
+  </div>
+  <!--end of header-section  declaration -->
+  <!-- sidebar element declaration -->
+  <ejs-sidebar
+    id="sidebar-treeview"
+    class="dock-menu"
+    #sidebarTreeviewInstance
+    [width]="width"
+    [mediaQuery]="mediaQuery"
+    (created)="onCreated($event)"
+    [target]="target"
+    [type]="'Over'"
+    [enableDock]="false"
+
+  >
+    <div class="main-menu">
+      <div class="table-content">
+        <ejs-dropdownlist style="width: 90%; margin-bottom: 8px;" [allowFiltering]="true" [value]='farmGuid' (change)="farmValueChange($event)" [fields]="fields" placeholder='Select Farm' [dataSource]='farmData'></ejs-dropdownlist>
+
+        <ejs-dropdownlist style="width: 90%;" [(ngModel)]="lang" (change)="langValueChange($event)" [fields]="fieldsLang" [dataSource]="languageData">
+        </ejs-dropdownlist>
+      </div>
+      <div>
+        <ejs-treeview
+          id="main-treeview"
+          [fields]="field"
+          expandOn="Click"
+          (nodeClicked)="onNodeClicked($event)"
+        ></ejs-treeview>
+      </div>
+    </div>
+  </ejs-sidebar>
+  <!-- end of sidebar element -->
+
+  <!-- main-content declaration -->
+  <router-outlet></router-outlet>
+
+  <!-- end of main-content -->
+</div>
+</div>
+</div>

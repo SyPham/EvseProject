@@ -1,0 +1,19 @@
+<div class="control-section">
+  <div class="col-12">
+      <div class="control_wrapper">
+          <div class='imagepreview'>
+              <div id='dropArea' style='height: auto'>
+                  <span id='dropimage'> {{ 'Drop image (.doc, .xls, .xlsx, .pdf, .odt, .odf, .jpg, .gif, .png) files here or' | translate}} <a href="" id='browse'><u>{{'Browse' | translate}}</u></a> </span>
+                  <ejs-uploader #previewupload id='previewfileupload' [asyncSettings]='path'
+                  [multiple]="multiple"
+                  [asyncSettings]="path"
+                  [autoUpload]="autoUpload"
+                  [enabled]="enabled"
+                  [dropArea]='dropElement' [allowedExtensions]='allowExtensions' (selected)='onSelect($event)'
+                      (success)='onUploadSuccess($event)' (progress)='onFileUpload($event)' (failure)='onUploadFailed($event)' (removing)='onFileRemove($event)'>
+                  </ejs-uploader>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

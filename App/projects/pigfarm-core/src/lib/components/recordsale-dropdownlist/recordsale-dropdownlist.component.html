@@ -1,0 +1,15 @@
+<ejs-dropdownlist
+  [id]="id"
+  [(value)]="selectedValue"
+  (change)="onChange($event)"
+  [allowFiltering]="true"
+  [enabled]="!disabled"
+  [placeholder]="placeholder"
+  (filtering)="onFiltering($event)"
+  #remote
+  [dataSource]="data"
+  [fields]="remoteFields"
+
+>
+
+</ejs-dropdownlist>

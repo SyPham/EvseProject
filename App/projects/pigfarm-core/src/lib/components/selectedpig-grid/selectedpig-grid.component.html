@@ -1,0 +1,256 @@
+<ejs-grid
+          #grid
+          id="grid-detail"
+          [dataSource]="selectedPigDataSource"
+          [enableInfiniteScrolling]="true"
+          [allowPaging]="false"
+          [pageSettings]="pageSettings"
+          [editSettings]="editSettingsPig"
+          [searchSettings]="searchOptions"
+          (actionBegin)="actionBeginPig($event)"
+          (created)="created()"
+          [toolbar]="['Search']"
+          [height]="300 + 'px'"
+          gridLines="Both"
+        >
+          <e-columns>
+            <e-column
+              field="name"
+              [allowSorting]="false"
+              [visible]="visiblePig"
+
+              [allowSearching]="false"
+              [allowGrouping]="false"
+              [allowFiltering]="false"
+              [allowEditing]="false"
+              textAlign="Left"
+              headerTextAlign="Center"
+              headerTextAlign="Center"
+              headerText="{{ pigName | translate }}"
+            >
+            </e-column>
+            
+
+            <e-column
+            field="pigSexName"
+            [visible]="visiblePigSex"
+            [allowEditing]="false"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'PigSex' | translate }}"
+          >
+          </e-column>
+
+          <e-column
+          field="rfid"
+          [visible]="visibleRfid"
+          textAlign="Left"
+          [validationRules]=" {maxLength: 40 }"
+          headerTextAlign="Center"
+          headerText="{{ 'RFID' | translate }}"
+        >
+        </e-column>
+            <e-column
+              field="recordValue"
+              [visible]="visibleValue"
+              textAlign="Left"
+              headerTextAlign="Center"
+            >
+            <ng-template #headerTemplate let-data>
+              <span class="e-headertext" >{{valueLabel}}</span>
+          </ng-template>
+            </e-column>
+            <e-column
+              field="recordAmount"
+              [visible]="visibleAmount"
+              textAlign="Left"
+              headerTextAlign="Center"
+              editType="numericEdit"
+              headerText="{{ 'Amount' | translate }}"
+            >
+            </e-column>
+            <e-column
+              field="recordWeight"
+              textAlign="Left"
+              headerTextAlign="Center"
+              [visible]="visibleWeight"
+              editType="numericEdit"
+              headerText="{{ 'Weight' | translate }}"
+            >
+            </e-column>
+            <e-column
+              field="recordDiseaseName"
+              [visible]="visibleDisease"
+              textAlign="Left"
+              headerTextAlign="Center"
+              headerText="{{ 'Disease' | translate }}"
+            >
+            <ng-template #editTemplate let-data>
+              <app-disease-dropdownlist [(selectedValue)]="data.recordDisease" (change)="onChangeDisease($event,data)">
+              </app-disease-dropdownlist>
+            </ng-template>
+            <ng-template #template let-data>
+              {{ data.recordDiseaseName }}
+            </ng-template>
+            </e-column>
+            <e-column
+              field="recordNext"
+              [visible]="visibleNext"
+              textAlign="Left"
+              headerTextAlign="Center"
+              headerText="{{ next1Label | translate }}"
+            >
+            <ng-template #editTemplate let-data>
+              <app-code-type-dropdownlist
+              id="recordNext"
+              [codeType]="codeType"
+              (change)="onChangeRecordNext($event, data)"
+              [(selectedValue)]="data.recordNext"
+            >
+            </app-code-type-dropdownlist>
+            </ng-template>
+            <ng-template #template let-data>
+              {{ data.recordNextName | translate }}
+            </ng-template>
+            </e-column>
+
+            <e-column
+              field="recordNext2"
+              [visible]="visibleNext2"
+              textAlign="Left"
+              headerTextAlign="Center"
+              headerText="{{ next2Label | translate }}"
+            >
+            <ng-template #editTemplate let-data>
+              <app-code-type-dropdownlist
+              id="recordNext2"
+              [codeType]="codeType2"
+              (change)="onChangeRecordNext2($event, data)"
+              [(selectedValue)]="data.recordNext2"
+            >
+            </app-code-type-dropdownlist>
+            </ng-template>
+            <ng-template #template let-data>
+              {{ data.recordNext2Name | translate }}
+            </ng-template>
+            </e-column>
+
+            <e-column
+            field="nextRoom"
+            [visible]="visibleNextRoom"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerText="{{ 'NextRoom' | translate }}"
+          >
+          <ng-template #editTemplate let-data>
+            <app-room-dropdownlist
+            id="nextRoom"
+            (change)="onChangeNextRoom($event, data)"
+            [(selectedValue)]="data.nextRoom"
+          >
+          </app-room-dropdownlist>
+          </ng-template>
+          <ng-template #template let-data>
+            {{ data.nextRoomName | translate }}
+          </ng-template>
+          </e-column>
+
+          
+          <e-column
+          field="nextPen"
+          [visible]="visibleNextPen"
+          textAlign="Left"
+          headerTextAlign="Center"
+          headerText="{{ 'NextPen' | translate }}"
+        >
+        <ng-template #editTemplate let-data>
+          <app-pen-dropdownlist
+          id="nextPen"
+          (change)="onChangeNextPen($event, data)"
+          [(selectedValue)]="data.nextPen"
+        >
+        </app-pen-dropdownlist>
+        </ng-template>
+        <ng-template #template let-data>
+          {{ data.nextPenName | translate }}
+        </ng-template>
+        </e-column>
+
+
+        <e-column
+        field="sourceGuid"
+        textAlign="Left"
+        headerTextAlign="Center"
+        [validationRules]=' { maxLength: 40 }'
+        [visible]="visibleSourceGuid"
+        headerText="{{ 'SourceGuid' | translate }}"
+      >
+      </e-column>
+      <e-column
+      field="source1Guid"
+      [validationRules]=' { maxLength: 40 }'
+      textAlign="Left"
+      headerTextAlign="Center"
+      [visible]="visibleSource1Guid"
+      headerText="{{ 'Source1Guid' | translate }}"
+    >
+    </e-column>
+
+
+      <e-column
+      field="source2Guid"
+      [validationRules]=' { maxLength: 40 }'
+      textAlign="Left"
+      headerTextAlign="Center"
+      [visible]="visibleSource2Guid"
+      headerText="{{ 'Source2Guid' | translate }}"
+    >
+    </e-column>
+
+
+      <e-column
+      field="source3Guid"
+      [validationRules]=' { maxLength: 40 }'
+      textAlign="Left"
+      headerTextAlign="Center"
+      [visible]="visibleSource3Guid"
+      headerText="{{ 'Source3Guid' | translate }}"
+    >
+    </e-column>
+
+    <e-column
+    field="semenConcentration "
+    textAlign="Left"
+    headerTextAlign="Center"
+    [visible]="visibleSemenConcentration"
+    editType="numericEdit"
+    headerText="{{ 'SemenConcentration ' | translate }}"
+  >
+  </e-column>
+
+
+    <e-column
+    field="semenVolume"
+    textAlign="Left"
+    headerTextAlign="Center"
+    [visible]="visibleSemenVolume"
+    editType="numericEdit"
+    headerText="{{ 'Source2Guid' | translate }}"
+  >
+  </e-column>
+
+
+    <e-column
+    field="malformationRate"
+    textAlign="Left"
+    headerTextAlign="Center"
+    [visible]="visibleMalformationRate"
+    editType="numericEdit"
+    [edit]="{ params: { decimals: 2, min: 0, max: 0.9 } }"
+    headerText="{{ 'MalformationRate' | translate }}"
+  >
+  </e-column>
+
+
+          </e-columns>
+        </ejs-grid>

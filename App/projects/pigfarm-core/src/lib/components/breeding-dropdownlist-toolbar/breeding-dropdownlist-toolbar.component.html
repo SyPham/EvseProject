@@ -1,0 +1,16 @@
+<ejs-combobox
+  [id]="id"
+  [(value)]="selectedValue"
+  (change)="onChange($event)"
+  [allowFiltering]="true"
+  [enabled]="!disabled"
+  [placeholder]="'No Item' | translate"
+  #remote
+  [popupWidth]='popupWidth'
+  [dataSource]="data"
+  [showClearButton]="true"
+  [fields]="remoteFields"
+
+>
+
+</ejs-combobox>

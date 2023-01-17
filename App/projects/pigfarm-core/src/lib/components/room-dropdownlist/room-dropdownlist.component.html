@@ -1,0 +1,15 @@
+<ejs-dropdownlist
+  [id]="id"
+  [(value)]="selectedValue"
+  (change)="onChange($event)"
+  (ngModelChange)="onNgModelChange($event)"
+  [allowFiltering]="true"
+  [enabled]="!disabled"
+  [placeholder]="placeholder"
+  #roomRemote
+  [dataSource]="data"
+  [fields]="remoteFields"
+
+>
+
+</ejs-dropdownlist>

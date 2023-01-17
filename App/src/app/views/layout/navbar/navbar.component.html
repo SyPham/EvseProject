@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
+    <div class="container-fluid">
+        <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff; border-radius: 30px;">
+          <img src="../../../assets/images/logo.png" alt="EVSE 後台管理系統" class="mr-2" />
+        </a>
+        <h2 class="text-white" style="font-size: 20 !important;">
+            {{'後台管理系統' | translate}}
+        </h2>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarNavDropdown" class="navbar-collapse collapse">
+            <ul class="navbar-nav mr-auto mb-0 mt-0 py-0"></ul>
+            <ul class="navbar-nav">
+               
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink" >基本設定</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="#">修改密碼 Password</a>
+                      <a class="dropdown-item" href="#">登出 Logout</a>
+                     
+                    </div>
+              </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink2">資料管理</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                      <a class="dropdown-item" href="#">站點設定 Station</a>
+                      <a class="dropdown-item" href="#">充電樁設定 Device</a>
+                      <a class="dropdown-item" href="#">管理-投資人、地主</a>
+                      <a class="dropdown-item" href="#">管理-工程師、電工</a>
+                      <a class="dropdown-item" href="#">管理-車主</a>
+                      <a class="dropdown-item" href="#">管理-後台管理員</a>
+                     
+                    </div>
+              </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown">硬體設施</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="#">遠端控管-充電樁</a>
+                      <a class="dropdown-item" href="#">電價與排程操作</a>
+                      <a class="dropdown-item" href="#">端控管-地擋</a>
+                      <a class="dropdown-item" href="#">控管-升降功能</a>
+                     
+                    </div>
+              </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown">報表</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="#">報表1 - 監視攝影機</a>
+                      <a class="dropdown-item" href="#">報表2 - 基本數據(充電度數)</a>
+                      <a class="dropdown-item" href="#">報表3 - 基本數據(金流)</a>
+                      <a class="dropdown-item" href="#">報表4 - 可用空間回報</a>
+                      <a class="dropdown-item" href="#">報表5 - 使用率</a>
+                     
+                    </div>
+              </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown">系統設定</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="#">設定-選單設定 Menu</a>
+                      <a class="dropdown-item" href="#">設定-系統代碼 CodeType</a>
+                      <a class="dropdown-item" href="#">設定-系統參數 SystemConfig</a>
+                      <a class="dropdown-item" href="#">設定-語言設定 Language</a>
+                     
+                    </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">
+                  <span class="font-weight-bold text-white">{{currentTime}}</span>
+                </a>
+              </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="logout()">ID: {{user?.accountName}}<i class="fa fa-user" aria-hidden="true"></i></a>
+                </li>
+            </ul>
+         
+  
+        </div>
+    </div>
+  </nav>

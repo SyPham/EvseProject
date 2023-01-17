@@ -1,0 +1,20 @@
+<ejs-dropdownlist
+  [id]="id"
+  [(ngModel)]="selectedValue"
+  (filtering)="onFiltering($event)"
+  (change)="onChange($event)"
+  (ngModelChange)="onNgModelChange($event)"
+  [allowFiltering]="true"
+  [disabled]="disabled"
+  [placeholder]="'No Item' | translate"
+  #pigRemote
+  [dataSource]="data"
+  [fields]="remoteFields"
+  [query]="query"
+  (open)="onOpen($event)"
+  [showClearButton]="true"
+  (actionComplete)="actionComplete($event)"
+
+>
+
+</ejs-dropdownlist>

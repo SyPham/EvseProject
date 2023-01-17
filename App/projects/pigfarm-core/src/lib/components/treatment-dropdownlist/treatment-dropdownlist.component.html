@@ -1,0 +1,14 @@
+<ejs-dropdownlist
+[(ngModel)]="selectedValue"
+(change)="onChange($event)"
+[allowFiltering]="true"
+#treatmentTemplate
+[dataSource]="data"
+[fields]="remoteFields"
+[query]="query"
+[popupWidth]='popupWidth'
+(actionComplete)="actionComplete($event)"
+
+>
+
+</ejs-dropdownlist>

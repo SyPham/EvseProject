@@ -1,0 +1,18 @@
+<ejs-dropdownlist
+  [id]="id"
+  [(ngModel)]="selectedValue"
+  (filtering)="onFiltering($event)"
+  (change)="onChange($event)"
+  (ngModelChange)="onNgModelChange($event)"
+  [allowFiltering]="true"
+  [disabled]="disabled"
+  [placeholder]="placeholder"
+  #cullingTankRemote
+  [dataSource]="data"
+  [fields]="remoteFields"
+  [query]="query"
+  (actionComplete)="actionComplete($event)"
+
+>
+
+</ejs-dropdownlist>
