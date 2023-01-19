@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "build:lib": "ng build --project ngx-org-chart && yarn run scss:bundle",
+    "build:lib2": "ng build --project @pigfarm-core && yarn run scss:bundle",
     "scss:bundle": "scss-bundle -e ./projects/ngx-org-chart/src/_theming.scss -o ./dist/ngx-org-chart/_theming.scss",
     "lint": "node --max_old_space_size=8192 --harmony node_modules/@angular/cli/bin/ng lint",
     "start": "ng serve --open --host localhost --port 1000 --disable-host-check",
@@ -70,6 +71,7 @@
     "ngx-spinner": "^10.0.1",
     "rxjs": "~6.5.4",
     "safe-pipe": "^1.0.2",
+    "scss-bundle": "^3.1.2",
     "sweetalert2": "^9.17.2",
     "tslib": "^2.0.0",
     "underscore": "^1.13.1",
