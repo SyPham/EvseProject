@@ -221,16 +221,16 @@ namespace Evse.Services
 #if DEBUG
 
 #else
-                var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-                var message = $"{account.Uid} logged out the system on {dateTime}";
-                foreach (var a in _tokens)
-                {
-                    _lineService.SendMessage(new MessageParams
-                    {
-                        Token = a,
-                        Message = message
-                    }).ConfigureAwait(false).GetAwaiter();
-                }
+                //var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+                //var message = $"{account.Uid} logged out the system on {dateTime}";
+                //foreach (var a in _tokens)
+                //{
+                //    _lineService.SendMessage(new MessageParams
+                //    {
+                //        Token = a,
+                //        Message = message
+                //    }).ConfigureAwait(false).GetAwaiter();
+                //}
 #endif
 
 
@@ -436,16 +436,16 @@ namespace Evse.Services
 #if DEBUG
 
 #else
-            var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-            var message = $"{employee.EmployeeNickname} logged in the system on {dateTime}";
-            foreach (var a in _tokens)
-            {
-                _lineService.SendMessage(new MessageParams
-                {
-                    Token = a,
-                    Message = message
-                }).ConfigureAwait(false).GetAwaiter();
-            }
+            // var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            // var message = $"{employee.EmployeeNickname} logged in the system on {dateTime}";
+            // foreach (var a in _tokens)
+            // {
+            //     _lineService.SendMessage(new MessageParams
+            //     {
+            //         Token = a,
+            //         Message = message
+            //     }).ConfigureAwait(false).GetAwaiter();
+            // }
 #endif
 
             return new OperationResult
