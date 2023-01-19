@@ -19,12 +19,12 @@ namespace Evse.Installer
         {
             var connetionString = configuration.GetConnectionString("DefaultConnection");
             // Configure DbContext with Scoped lifetime   
-            services.AddDbContext<EvseContext>(options =>
+            services.AddDbContext<EvseDataContext>(options =>
             {
                 options.UseSqlServer(connetionString);
             });
 
-            services.AddScoped<Func<EvseContext>>((provider) => () => provider.GetService<EvseContext>());
+            services.AddScoped<Func<EvseDataContext>>((provider) => () => provider.GetService<EvseDataContext>());
             services.AddResponseCaching();
             services.AddScoped<DbFactory>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

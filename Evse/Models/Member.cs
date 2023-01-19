@@ -5,13 +5,18 @@ using System.Collections.Generic;
 
 namespace Evse.Models
 {
-    public partial class Hall
+    public partial class Member
     {
         public decimal Id { get; set; }
         public string SiteGuid { get; set; }
-        public string Type { get; set; }
-        public string HallNo { get; set; }
-        public string HallName { get; set; }
+        public string Uid { get; set; }
+        public string Upwd { get; set; }
+        public string MemberNo { get; set; }
+        public string MemberName { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public DateTime? Lastlogin { get; set; }
+        public DateTime? Lastuse { get; set; }
         public string Comment { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }
@@ -21,6 +26,5 @@ namespace Evse.Models
         public decimal? DeleteBy { get; set; }
         public decimal? Status { get; set; }
         public string Guid { get; set; }
-        public decimal? Vip { get; set; }
     }
 }

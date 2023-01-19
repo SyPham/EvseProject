@@ -5,11 +5,10 @@ using System.Collections.Generic;
 
 namespace Evse.Models
 {
-    public partial class Booking2Time
+    public partial class Contract
     {
         public decimal Id { get; set; }
-        public string BookingGuid { get; set; }
-        public string BookingTime { get; set; }
-        public string CodeNo { get; set; }
+        public string Guid { get; set; }
+        public string Content { get; set; }
     }
 }

@@ -325,7 +325,7 @@ namespace Evse.Services
                 };
             var employee = await _repoEmployee.FindAll(x => x.Status == 1).AsNoTracking().Select(x => new
             {
-                x.Email,
+                Email = x.EmployeeEmail,
                 x.Guid
             }).FirstOrDefaultAsync(x => x.Email == email);
             if (employee == null)
@@ -420,7 +420,7 @@ namespace Evse.Services
             if (employee != null)
             {
 
-                userResponse.NickName = employee.NickName;
+                userResponse.NickName = employee.EmployeeNickname;
             }
             var xaccountGroup = await _repoXAccountGroup.FindAll().AsNoTracking().FirstOrDefaultAsync(x => x.Guid == user.AccountGroup && x.Status == 1);
 
@@ -533,7 +533,7 @@ namespace Evse.Services
 
         public async Task<OperationResult> ForgotPassword(string email)
         {
-            var employee = await _repoEmployee.FindAll(x => x.Status == 1).AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
+            var employee = await _repoEmployee.FindAll(x => x.Status == 1).AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeEmail == email);
 
             if (employee == null)
                 return new OperationResult
@@ -557,7 +557,7 @@ namespace Evse.Services
 
         public async Task<OperationResult> ForgotUsername(string email)
         {
-            var employee = await _repoEmployee.FindAll(x => x.Status == 1).AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
+            var employee = await _repoEmployee.FindAll(x => x.Status == 1).AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeEmail == email);
 
             if (employee == null)
                 return new OperationResult

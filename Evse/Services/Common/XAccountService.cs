@@ -216,7 +216,7 @@ IEvseLoggerService logger,
                                   TypeId = x.TypeId,
                                   FarmGuid = x.FarmGuid,
                                   EmployeeGuid = x.EmployeeGuid,
-                                  EmployeeNickName = d.NickName ?? "N/A",
+                                  EmployeeNickName = d.EmployeeNickname ?? "N/A",
                                   AccountGroupName = a.GroupName ?? "N/A",
                                   AccountRole = x.AccountRole,
                                   AccountType = x.AccountType,
@@ -299,7 +299,7 @@ IEvseLoggerService logger,
                             TypeId = x.TypeId,
                             FarmGuid = x.FarmGuid,
                             EmployeeGuid = x.EmployeeGuid,
-                            EmployeeNickName = d.NickName ?? "N/A",
+                            EmployeeNickName = d.EmployeeNickname ?? "N/A",
                             AccountGroupName = a.GroupName ?? "N/A",
                             AccountRole = x.AccountRole,
                             AccountType = x.AccountType,
@@ -823,13 +823,13 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
                             x.AccountId,
                             AccountGuid = x.Guid,
                             x.PhotoPath,
-                            emp.NickName,
-                            emp.Mobile,
-                            emp.Email,
+                            NickName=  emp.EmployeeNickname,
+                            Mobile= emp.EmployeeMobile,
+                            Email = emp.EmployeeEmail,
                             emp.ContactName,
                             emp.ContactTel,
-                            emp.Address,
-                            emp.AddressDomicile,
+                            Address = emp.EmployeeAddress,
+                            AddressDomicile =  emp.EmployeeAddressDomicile,
                             PageSizeSetting = x.PageSizeSetting,
                             PageSizeSettingValue = d != null ? d.CodeName : ""
                         };
@@ -960,13 +960,13 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
                                        x
                                    }).FirstOrDefaultAsync();
                 var employee = query.emp;
-                employee.NickName = request.NickName;
-                employee.Mobile = request.Mobile;
-                employee.Email = request.Email;
+                employee.EmployeeNickname = request.NickName;
+                employee.EmployeeMobile = request.Mobile;
+                employee.EmployeeEmail = request.Email;
                 employee.ContactName = request.ContactName;
                 employee.ContactTel = request.ContactTel;
-                employee.Address = request.Address;
-                employee.AddressDomicile = request.AddressDomicile;
+                employee.EmployeeAddress = request.Address;
+                employee.EmployeeAddressDomicile = request.AddressDomicile;
                 _repoEmployee.Update(employee);
 
                 var account = query.x;

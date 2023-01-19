@@ -11,6 +11,9 @@ namespace Evse.Models
         public string Type { get; set; }
         public string SiteNo { get; set; }
         public string SiteName { get; set; }
+        public string SitePrincipal { get; set; }
+        public string SiteTel { get; set; }
+        public string SiteAddress { get; set; }
         public string SiteLocation { get; set; }
         public string SitePhoto { get; set; }
         public string Comment { get; set; }
@@ -22,6 +25,5 @@ namespace Evse.Models
         public decimal? DeleteBy { get; set; }
         public decimal? Status { get; set; }
         public string Guid { get; set; }
-        public string SiteName2 { get; set; }
     }
 }

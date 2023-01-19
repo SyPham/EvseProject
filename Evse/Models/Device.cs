@@ -5,13 +5,19 @@ using System.Collections.Generic;
 
 namespace Evse.Models
 {
-    public partial class AccountGroup
+    public partial class Device
     {
         public decimal Id { get; set; }
-        public decimal? ZoneId { get; set; }
-        public decimal? BuildingId { get; set; }
-        public string GroupNo { get; set; }
-        public string GroupName { get; set; }
+        public string SiteGuid { get; set; }
+        public string ParkingLotGuid { get; set; }
+        public string DeviceType { get; set; }
+        public string DeviceNo { get; set; }
+        public string DeviceName { get; set; }
+        public string DeviceLeftNo { get; set; }
+        public string DeviceLeftGuid { get; set; }
+        public string DeviceRightNo { get; set; }
+        public string DeviceRightGuid { get; set; }
+        public string Comment { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }
         public DateTime? UpdateDate { get; set; }

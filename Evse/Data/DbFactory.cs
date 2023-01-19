@@ -9,11 +9,11 @@ namespace Evse.Data
     public class DbFactory : IDisposable
     {
         private bool _disposed;
-        private Func<EvseContext> _instanceFunc;
+        private Func<EvseDataContext> _instanceFunc;
         private DbContext _dbContext;
         public DbContext DbContext => _dbContext ?? (_dbContext = _instanceFunc.Invoke());
 
-        public DbFactory(Func<EvseContext> dbContextFactory)
+        public DbFactory(Func<EvseDataContext> dbContextFactory)
         {
             _instanceFunc = dbContextFactory;
         }

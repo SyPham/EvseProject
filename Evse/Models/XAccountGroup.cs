@@ -18,7 +18,6 @@ namespace Evse.Models
         public decimal? UpdateBy { get; set; }
         public decimal? Status { get; set; }
         public string Guid { get; set; }
-        public decimal? MobileMode { get; set; }
-        public decimal? SeeAllSite { get; set; }
+        public bool? CanSeeAllFarm { get; set; }
     }
 }

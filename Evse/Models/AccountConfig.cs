@@ -5,13 +5,12 @@ using System.Collections.Generic;
 
 namespace Evse.Models
 {
-    public partial class SysLogDuty
+    public partial class AccountConfig
     {
         public decimal Id { get; set; }
-        public string Type { get; set; }
-        public string Ip { get; set; }
-        public string Wip { get; set; }
-        public DateTime? Date { get; set; }
-        public string Time { get; set; }
+        public string AccountGuid { get; set; }
+        public string Page { get; set; }
+        public string ControllerName { get; set; }
+        public string ControllerValue { get; set; }
     }
 }

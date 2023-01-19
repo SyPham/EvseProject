@@ -35,7 +35,6 @@ namespace Evse.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepositoryBase<SysMenu> _repo;
-        private readonly IRepositoryBase<StoredProcedure> _repoStoredProcedure;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _configMapper;
         private readonly IConfiguration _configuration;
@@ -44,7 +43,6 @@ namespace Evse.Services
         public ReportService(
             IUnitOfWork unitOfWork,
             IRepositoryBase<SysMenu> repo,
-            IRepositoryBase<StoredProcedure> repoStoredProcedure,
             IMapper mapper,
             MapperConfiguration configMapper,
             IConfiguration configuration,
@@ -54,7 +52,6 @@ namespace Evse.Services
             _unitOfWork = unitOfWork;
             _repo = repo;
             _logger = logger;
-            _repoStoredProcedure = repoStoredProcedure;
             _mapper = mapper;
             _configMapper = configMapper;
             _configuration = configuration;
@@ -113,10 +110,7 @@ namespace Evse.Services
 
         public async Task<List<StoredProcedureDto>> GetStoredProcedures(string systemMenuGuid)
         {
-            var item = await _repoStoredProcedure.FindAll(x => x.Status == 1 && x.SystemMenuGuid == systemMenuGuid)
-                .ProjectTo<StoredProcedureDto>(_configMapper)
-                .ToListAsync();
-            return item;
+            return null;
         }
         private async Task<object> GetDataDropdownlist(DataManager data )
         {

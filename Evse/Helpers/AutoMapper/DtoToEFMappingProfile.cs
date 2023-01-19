@@ -14,13 +14,7 @@ namespace Evse.Helpers.AutoMapper
         public DtoToEFMappingProfile()
         {
          
-         
-            CreateMap<UserForDetailDto, Account>();
-
-          
-            CreateMap<AccountRoleDto, AccountRole>();
-            CreateMap<AccountPermissionDto, AccountPermission>();
-            CreateMap<AccountGroupDto, AccountGroup>();
+        
             CreateMap<EmployeeDto, Employee>();
 
         
@@ -37,10 +31,8 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<CodePermissionDto, CodePermission>();
 
         
-            CreateMap<StoredProcedureDto, StoredProcedure>();
             CreateMap<ChartSettingDto, SysMenu>();
             CreateMap<CodeTypeDto, CodeType>();
-            CreateMap<DashboardDto, Dashboard>();
           
             CreateMap<SystemConfigDto, SystemConfig>();
 

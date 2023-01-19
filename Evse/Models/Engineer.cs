@@ -5,18 +5,15 @@ using System.Collections.Generic;
 
 namespace Evse.Models
 {
-    public partial class Account
+    public partial class Engineer
     {
         public decimal Id { get; set; }
-        public string HallGuid { get; set; }
+        public string SiteGuid { get; set; }
         public string Uid { get; set; }
         public string Upwd { get; set; }
-        public string AccountNo { get; set; }
-        public string AccountName { get; set; }
-        public string AccountRfid { get; set; }
-        public string AccountRole { get; set; }
-        public string AccountLevel { get; set; }
-        public string AccountGroup { get; set; }
+        public string EngineerNo { get; set; }
+        public string EngineerName { get; set; }
+        public string LandLordIdcard { get; set; }
         public string LicensePath { get; set; }
         public string PhotoPath { get; set; }
         public DateTime? StartDate { get; set; }
@@ -32,6 +29,5 @@ namespace Evse.Models
         public decimal? DeleteBy { get; set; }
         public decimal? Status { get; set; }
         public string Guid { get; set; }
-        public string PageSizeSetting { get; set; }
     }
 }

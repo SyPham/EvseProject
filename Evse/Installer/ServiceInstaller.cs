@@ -10,14 +10,10 @@ namespace Evse.Installer
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IAccountTypeService, AccountTypeService>();
             services.AddScoped<IMailingService, MailingService>();
          
             services.AddScoped<ISequenceService, SequenceService>();
-            services.AddScoped<IAccountGroupService, AccountGroupService>();
-            services.AddScoped<IAccountPermissionService, AccountPermissionService>();
-            services.AddScoped<IAccountRoleService, AccountRoleService>();
+
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<ISystemLanguageService, SystemLanguageService>();
 
@@ -30,7 +26,6 @@ namespace Evse.Installer
             services.AddScoped<IReportService, ReportService> ();
             services.AddScoped<ICodePermissionService, CodePermissionService>();
          
-            services.AddScoped<IStoredProcedureService, StoredProcedureService>();
             services.AddScoped<ICodeTypeService, CodeTypeService>();
             services.AddScoped<ISystemConfigService, SystemConfigService>();
           

@@ -12,7 +12,7 @@ namespace Evse.Models
         public string No { get; set; }
         public string Value { get; set; }
         public decimal Sort { get; set; }
-        public decimal WebBuildingId { get; set; }
+        public decimal? WebBuildingId { get; set; }
         public string Comment { get; set; }
         public decimal? AccountId { get; set; }
         public decimal? Status { get; set; }

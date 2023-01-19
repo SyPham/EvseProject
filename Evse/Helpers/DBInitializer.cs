@@ -15,7 +15,7 @@ namespace Evse.Helpers
         //{
         //    _context = context;
         //}
-        public static void Seed(EvseContext _context)
+        public static void Seed(EvseDataContext _context)
         {
          
 

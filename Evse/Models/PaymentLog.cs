@@ -5,15 +5,19 @@ using System.Collections.Generic;
 
 namespace Evse.Models
 {
-    public partial class DbPublicNurse
+    public partial class PaymentLog
     {
         public decimal Id { get; set; }
-        public string UpperGuid { get; set; }
-        public string NurseGuid { get; set; }
+        public string MemberGuid { get; set; }
+        public string PaymentGuid { get; set; }
+        public string Comment { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }
         public DateTime? UpdateDate { get; set; }
         public decimal? UpdateBy { get; set; }
-        public string CancelFlag { get; set; }
+        public DateTime? DeleteDate { get; set; }
+        public decimal? DeleteBy { get; set; }
+        public decimal? Status { get; set; }
+        public string Guid { get; set; }
     }
 }

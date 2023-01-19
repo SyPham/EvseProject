@@ -1,6 +1,6 @@
 ﻿{
    "CodeGenerationMode": 1,
-   "ContextClassName": "EvseContext",
+   "ContextClassName": "EvseDataContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
@@ -15,83 +15,7 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Account]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Account_Group]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Account_Permission]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Account2Permission]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AccountRole]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Accounts]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AccountSite]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AccountTypes]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AspNetRoleClaims]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AspNetRoles]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AspNetUserClaims]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AspNetUserLogins]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AspNetUserRoles]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AspNetUsers]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AspNetUserTokens]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Booking]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Booking2Time]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[BookingDetail]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[BookingFruit]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[BookingTypeC]",
+         "Name": "[dbo].[Account_Config]",
          "ObjectType": 0
       },
       {
@@ -111,131 +35,39 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[CodePermission]",
+         "Name": "[dbo].[Contract]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[CodeType]",
+         "Name": "[dbo].[Device]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[COUNTY]",
+         "Name": "[dbo].[Employee]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Customer]",
+         "Name": "[dbo].[Engineer]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Dashboard]",
+         "Name": "[dbo].[LandLord]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[dbPublic_Code_Type]",
+         "Name": "[dbo].[Member]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[dbPublic_Contact]",
+         "Name": "[dbo].[ParkingLot]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[dbPublic_CountyTownShip]",
+         "Name": "[dbo].[Payment]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[dbPublic_Favorite]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[dbPublic_Memo]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[dbPublic_Nurse]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[dbPublic_Patient]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[dbPublic_PaymentCode]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[dbPublic_Photo]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[dbPublic_Readed]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[dbPublic_WebPrint]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Email_Pool]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Employees]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Hall]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Hall_Time]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Methods]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[MultiChoice_CountyTownShip]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[MultiChoice_PaymentCode]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[MultiChoiceCountyTownShip]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[OC]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Organization]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Pricing]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[PublicCodeType]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[PublicCountyTownShip]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[PublicMemo]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[PublicPaymentCode]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[PublicReaded]",
+         "Name": "[dbo].[Payment_Log]",
          "ObjectType": 0
       },
       {
@@ -243,39 +75,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Report_Config]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Room]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Site]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[StoredProcedures]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SYS_CONFIG]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SYS_LOG_Duty]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SYS_LOG_GPS]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SYS_LOG_SP]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SYS_LOG_USER]",
          "ObjectType": 0
       },
       {
@@ -287,39 +87,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[SystemConfig2]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[SystemLanguage]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[SystemLogUser]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[TOWNSHIP]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[USER_CONFIG]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[UserView]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[WebMenu]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[WorkOrder]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[WorkOrder_20220929]",
          "ObjectType": 0
       },
       {
@@ -348,7 +120,6 @@
       }
    ],
    "UiHint": "WIN-R03G03NSERJ.EVSE",
-   "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
@@ -358,7 +129,9 @@
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
    "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,

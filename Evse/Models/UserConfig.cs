@@ -18,6 +18,7 @@ namespace Evse.Models
         public decimal? UpdateBy { get; set; }
         public DateTime? UpdateDate { get; set; }
         public int? Sort { get; set; }
-        public string FarmGuid { get; set; }
+        public decimal? OrganizationId { get; set; }
+        public decimal? SiteId { get; set; }
     }
 }

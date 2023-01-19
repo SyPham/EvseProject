@@ -14,16 +14,13 @@ namespace Evse.Helpers.AutoMapper
         public EFToDtoMappingProfile()
         {
             var list = new List<int> { };
-            CreateMap<Account, AccountDto>();
-            CreateMap<AccountType, AccountTypeDto>();
+        
             CreateMap<XAccount, UserForDetailDto>()
                 .ForMember(d => d.Username, o => o.MapFrom(x => x.Uid))
                 .ForMember(d => d.ID, o => o.MapFrom(x => x.AccountId));
 
         
-            CreateMap<AccountRole, AccountRoleDto>();
-            CreateMap<AccountPermission, AccountPermissionDto>();
-            CreateMap<AccountGroup, AccountGroupDto>();
+    
             CreateMap<Employee, EmployeeDto>();
 
         
@@ -40,10 +37,8 @@ namespace Evse.Helpers.AutoMapper
 
 
      
-            CreateMap<StoredProcedure, StoredProcedureDto>();
             CreateMap<SysMenu, ChartSettingDto>();
             CreateMap<CodeType, CodeTypeDto>();
-            CreateMap<Dashboard, DashboardDto>();
         
 
             CreateMap<SystemConfig, SystemConfigDto>();

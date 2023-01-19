@@ -5,12 +5,21 @@ using System.Collections.Generic;
 
 namespace Evse.Models
 {
-    public partial class WorkOrder20220929
+    public partial class LandLord
     {
         public decimal Id { get; set; }
-        public string HallGuid { get; set; }
-        public string WorkOrderNo { get; set; }
-        public string WorkOrderName { get; set; }
+        public string SiteGuid { get; set; }
+        public string Uid { get; set; }
+        public string Upwd { get; set; }
+        public string LandLordNo { get; set; }
+        public string LandLordName { get; set; }
+        public string LandLordIdcard { get; set; }
+        public string LicensePath { get; set; }
+        public string PhotoPath { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public DateTime? Lastlogin { get; set; }
+        public DateTime? Lastuse { get; set; }
         public string Comment { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }

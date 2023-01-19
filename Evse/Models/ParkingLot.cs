@@ -5,12 +5,15 @@ using System.Collections.Generic;
 
 namespace Evse.Models
 {
-    public partial class WorkOrder
+    public partial class ParkingLot
     {
         public decimal Id { get; set; }
-        public string HallGuid { get; set; }
-        public string WorkOrderNo { get; set; }
-        public string WorkOrderName { get; set; }
+        public string SiteGuid { get; set; }
+        public string ParkingLotType { get; set; }
+        public string ParkingLotNo { get; set; }
+        public string ParkingLotName { get; set; }
+        public string DeviceGuid { get; set; }
+        public string DeviceLr { get; set; }
         public string Comment { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }
