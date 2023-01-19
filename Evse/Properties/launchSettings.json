@@ -26,9 +26,6 @@
       "dotnetRunMessages": "true",
       "applicationUrl": "http://localhost:58"
     },
-    "API": {
-      "commandName": "Executable"
-    },
     "Docker": {
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",

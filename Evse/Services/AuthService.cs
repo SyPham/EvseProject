@@ -437,7 +437,7 @@ namespace Evse.Services
 
 #else
             var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-            var message = $"{employee.NickName} logged in the system on {dateTime}";
+            var message = $"{employee.EmployeeNickname} logged in the system on {dateTime}";
             foreach (var a in _tokens)
             {
                 _lineService.SendMessage(new MessageParams
