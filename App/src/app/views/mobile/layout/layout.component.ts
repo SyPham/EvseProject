@@ -1,31 +1,27 @@
-import {
-  Component,
-  ViewEncapsulation,
-  Inject,
-  ViewChild,
-  OnInit,
-} from "@angular/core";
-import { Router } from "@angular/router";
-import { SidebarComponent } from "@syncfusion/ej2-angular-navigations";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { SidebarComponent } from '@syncfusion/ej2-angular-navigations';
+import { CookieService } from 'ngx-cookie-service';
+import { AlertifyService } from 'src/app/_core/_service/alertify.service';
+import { AuthService } from 'src/app/_core/_service/auth.service';
+import { DashboardService } from 'src/app/_core/_service/dashboard.service';
 import { Location } from "@angular/common";
-import { TranslateService } from "@ngx-translate/core";
-import { CookieService } from "ngx-cookie-service";
-import { AlertifyService } from "src/app/_core/_service/alertify.service";
-import { AuthService } from "src/app/_core/_service/auth.service";
-import { DashboardService } from "src/app/_core/_service/dashboard.service";
-import { FarmService } from "src/app/_core/_service/farms";
-
+import { Subscription } from 'rxjs';
+import { filter, distinctUntilChanged, map } from 'rxjs/operators';
+import { SystemGroupNo } from 'src/app/_core/enum/SystemGroupNo';
 @Component({
-  selector: "app-layout",
-  templateUrl: "./layout.component.html",
-  styleUrls: ["./layout.component.css"],
-  encapsulation: ViewEncapsulation.None,
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LayoutComponent implements OnInit {
+
   fieldsLang: object = { text: "name", value: "id" };
   farmData: any[];
   farmGuid: any;
-  fields: object = { text: "farmName", value: "guid" };
+  fields: object = { text: "siteName", value: "guid" };
   lang: string;
   languageData = [
     { id: "Tw", name: "Tw" },
@@ -38,6 +34,10 @@ export class LayoutComponent implements OnInit {
   public width: string = "290px";
   mediaQuery: string = "(min-width: 600px)";
   target: string = ".main-content";
+  isMobileMode: boolean = JSON.parse(localStorage.getItem('user')).groupCode === SystemGroupNo.LandRoyal || JSON.parse(localStorage.getItem('user')).groupCode === SystemGroupNo.Member || JSON.parse(localStorage.getItem('user')).groupCode === SystemGroupNo.Engineer
+  currentRouter_default: string = '/mobile/home'
+  currentRouter: string = ''
+  subscription: Subscription = new Subscription();
   constructor(
     private router: Router,
     private location: Location,
@@ -46,9 +46,12 @@ export class LayoutComponent implements OnInit {
     private cookieService: CookieService,
     private alertify: AlertifyService,
     private serviceDash: DashboardService,
-    private service: FarmService,
 
-  ) {}
+  ) {
+    this.router.events.pipe( filter((event: any) => event instanceof NavigationEnd) ).subscribe(event => { 
+      this.currentRouter = event.url
+    });
+  }
 
   public data: Object[] = [
     {
@@ -56,34 +59,7 @@ export class LayoutComponent implements OnInit {
       nodeText: this.trans.instant("Desktop mode"),
       iconCss: "icon-microchip icon",
     },
-    // {
-    //     nodeId: '02', nodeText: 'Deployment', iconCss: 'icon-thumbs-up-alt icon',
-    // },
-    // {
-    //     nodeId: '03', nodeText: 'Quick Start', iconCss: 'icon-docs icon',
-    // },
-    // {
-    //     nodeId: '04', nodeText: 'Components', iconCss: 'icon-th icon',
-    //     nodeChild: [
-    //         { nodeId: '04-01', nodeText: 'Calendar', iconCss: 'icon-circle-thin icon' },
-    //         { nodeId: '04-02', nodeText: 'DatePicker', iconCss: 'icon-circle-thin icon' },
-    //         { nodeId: '04-03', nodeText: 'DateTimePicker', iconCss: 'icon-circle-thin icon' },
-    //         { nodeId: '04-04', nodeText: 'DateRangePicker', iconCss: 'icon-circle-thin icon' },
-    //         { nodeId: '04-05', nodeText: 'TimePicker', iconCss: 'icon-circle-thin icon' },
-    //         { nodeId: '04-06', nodeText: 'SideBar', iconCss: 'icon-circle-thin icon' }
-    //     ]
-    // },
-    // {
-    //     nodeId: '05', nodeText: 'API Reference', iconCss: 'icon-code icon',
-    //     nodeChild: [
-    //         { nodeId: '05-01', nodeText: 'Calendar', iconCss: 'icon-circle-thin icon' },
-    //         { nodeId: '05-02', nodeText: 'DatePicker', iconCss: 'icon-circle-thin icon' },
-    //         { nodeId: '05-03', nodeText: 'DateTimePicker', iconCss: 'icon-circle-thin icon' },
-    //         { nodeId: '05-04', nodeText: 'DateRangePicker', iconCss: 'icon-circle-thin icon' },
-    //         { nodeId: '05-05', nodeText: 'TimePicker', iconCss: 'icon-circle-thin icon' },
-    //         { nodeId: '05-06', nodeText: 'SideBar', iconCss: 'icon-circle-thin icon' }
-    //     ]
-    // },
+    
     {
       nodeId: "10",
       nodeText: "Sign out",
@@ -109,25 +85,28 @@ export class LayoutComponent implements OnInit {
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.sidebarTreeviewInstance?.hide();
   }
-  getFarmsByAccount() {
-    this.service.getFarmsByAccount().subscribe((data: any) => {
-      this.farmData = data;
-      const farmGuid = localStorage.getItem("farmGuid");
-      if (farmGuid) {
-        this.farmGuid = farmGuid;
-      } else {
-        this.farmGuid = data[0]?.guid || "";
-      }
-      localStorage.setItem("farmGuid", this.farmGuid);
-    });
-  }
+
   toggleSidebar() {
-    this.sidebarTreeviewInstance.toggle();
+    if(this.isMobileMode) {
+      this.router.navigate(["/mobile/home"]);
+    }else {
+      this.router.navigate(['/dashboard'])
+    }
+    // .then(() => {
+    //   window.location.reload();
+    // });
+    // this.router.navigate(["/mobile/home"]);
+    // this.sidebarTreeviewInstance.toggle();
   }
   goBack() {
     const homeUrl = this.router.url.includes("home");
     if (!homeUrl) {
       this.location.back();
+    }else {
+      this.router.navigate(['/login'])
+      .then(() => {
+        window.location.reload();
+      });
     }
   }
   onCreated(e: any): void {
@@ -147,7 +126,6 @@ export class LayoutComponent implements OnInit {
     });
   }
   onNodeClicked(e) {
-    console.log(e);
     if (e.node.dataset.uid === "10") {
       this.logout();
       return;
@@ -175,5 +153,5 @@ export class LayoutComponent implements OnInit {
       location.reload();
     }
   }
+
 }
-// open new tab

@@ -141,7 +141,7 @@ namespace Evse.Services
 
             if (account.Upwd.VerifyHashedPassword(loginDto.Password.ToSha512()))
             {
-                    
+
                 return await GenerateOperationResultForUserAsync(account, loginDto.Password);
             }
 
@@ -221,16 +221,16 @@ namespace Evse.Services
 #if DEBUG
 
 #else
-                //var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-                //var message = $"{account.Uid} logged out the system on {dateTime}";
-                //foreach (var a in _tokens)
-                //{
-                //    _lineService.SendMessage(new MessageParams
-                //    {
-                //        Token = a,
-                //        Message = message
-                //    }).ConfigureAwait(false).GetAwaiter();
-                //}
+                var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+                var message = $"{account.Uid} logged out the system on {dateTime}";
+                foreach (var a in _tokens)
+                {
+                    _lineService.SendMessage(new MessageParams
+                    {
+                        Token = a,
+                        Message = message
+                    }).ConfigureAwait(false).GetAwaiter();
+                }
 #endif
 
 
@@ -325,7 +325,7 @@ namespace Evse.Services
                 };
             var employee = await _repoEmployee.FindAll(x => x.Status == 1).AsNoTracking().Select(x => new
             {
-                Email = x.EmployeeEmail,
+                x.Email,
                 x.Guid
             }).FirstOrDefaultAsync(x => x.Email == email);
             if (employee == null)
@@ -420,7 +420,7 @@ namespace Evse.Services
             if (employee != null)
             {
 
-                userResponse.NickName = employee.EmployeeNickname;
+                userResponse.NickName = employee.NickName;
             }
             var xaccountGroup = await _repoXAccountGroup.FindAll().AsNoTracking().FirstOrDefaultAsync(x => x.Guid == user.AccountGroup && x.Status == 1);
 
@@ -431,21 +431,21 @@ namespace Evse.Services
                 userResponse.GroupCode = groupNO;
                 userResponse.GroupID = groupID;
             }
-                    LogStoreProcedure(user.AccountId, "LogIn").ConfigureAwait(false).GetAwaiter();
+            LogStoreProcedure(user.AccountId, "LogIn").ConfigureAwait(false).GetAwaiter();
 
 #if DEBUG
 
 #else
-            // var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-            // var message = $"{employee.EmployeeNickname} logged in the system on {dateTime}";
-            // foreach (var a in _tokens)
-            // {
-            //     _lineService.SendMessage(new MessageParams
-            //     {
-            //         Token = a,
-            //         Message = message
-            //     }).ConfigureAwait(false).GetAwaiter();
-            // }
+            var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            var message = $"{employee.NickName} logged in the system on {dateTime}";
+            foreach (var a in _tokens)
+            {
+                _lineService.SendMessage(new MessageParams
+                {
+                    Token = a,
+                    Message = message
+                }).ConfigureAwait(false).GetAwaiter();
+            }
 #endif
 
             return new OperationResult
@@ -533,7 +533,7 @@ namespace Evse.Services
 
         public async Task<OperationResult> ForgotPassword(string email)
         {
-            var employee = await _repoEmployee.FindAll(x => x.Status == 1).AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeEmail == email);
+            var employee = await _repoEmployee.FindAll(x => x.Status == 1).AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
 
             if (employee == null)
                 return new OperationResult
@@ -557,7 +557,7 @@ namespace Evse.Services
 
         public async Task<OperationResult> ForgotUsername(string email)
         {
-            var employee = await _repoEmployee.FindAll(x => x.Status == 1).AsNoTracking().FirstOrDefaultAsync(x => x.EmployeeEmail == email);
+            var employee = await _repoEmployee.FindAll(x => x.Status == 1).AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
 
             if (employee == null)
                 return new OperationResult

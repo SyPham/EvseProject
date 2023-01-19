@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using NetUtility;
 using Evse.Constants;
 using Evse.Data;
 using Evse.DTO;
 using Evse.Helpers;
 using Evse.Models;
 using Evse.Services.Base;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using NetUtility;
+
 using Syncfusion.JavaScript;
 using Syncfusion.JavaScript.DataSources;
 using System;
@@ -16,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using static Evse.Constants.SP;
 
 namespace Evse.Services
 {
@@ -23,7 +25,7 @@ namespace Evse.Services
     {
         Task<object> LoadData(DataManager dm, string lang);
         Task<object> LoadData(DataManager dm, string farmGuid, string lang);
-        //Task<object> GetEmployees();
+        Task<object> GetEmployees();
         Task<object> GetEmployeesByAccountID(decimal accountID);
         Task<object> GetAudit(object id);
         Task<OperationResult> CheckExist(string no);
@@ -37,7 +39,7 @@ namespace Evse.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _configMapper;
-private readonly IEvseLoggerService _logger;
+        private readonly IEvseLoggerService _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public EmployeeService(
             IRepositoryBase<Employee> repo,
@@ -53,7 +55,7 @@ IEvseLoggerService logger,
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
-_logger = logger;
+            _logger = logger;
             _repoCodeType = repoCodeType;
             _repoXAccount = repoXAccount;
             _repoXAccountGroup = repoXAccountGroup;
@@ -99,7 +101,7 @@ _logger = logger;
                 // var accessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
                 //decimal accountID = JWTExtensions.GetDecodeTokenByID(accessToken);
                 decimal accountID = 0;
-                var employee = await _repo.FindAll(x => x.EmployeeNo == model.No && x.Status == 1).AnyAsync();
+                var employee = await _repo.FindAll(x => x.No == model.No && x.Status == 1).AnyAsync();
                 if (employee)
                     return new OperationResult
                     {
@@ -109,7 +111,7 @@ _logger = logger;
                         Data = null
                     };
 
-                var nickName = await _repo.FindAll(x => x.EmployeeNickname == model.NickName && x.Status == 1).AnyAsync();
+                var nickName = await _repo.FindAll(x => x.NickName == model.NickName && x.Status == 1).AnyAsync();
                 if (nickName)
                     return new OperationResult
                     {
@@ -118,7 +120,7 @@ _logger = logger;
                         Success = true,
                         Data = null
                     };
-               
+
 
                 var item = _mapper.Map<Employee>(model);
                 // item.Status = 1;
@@ -151,8 +153,8 @@ _logger = logger;
                 // var accountID = 0;
                 var item = await _repo.FindByIDAsync(model.Id);
 
-                var employee = await _repo.FindAll(x => x.EmployeeNo == model.No && x.Status == 1).FirstOrDefaultAsync();
-                if (employee != null && item.EmployeeNo != model.No)
+                var employee = await _repo.FindAll(x => x.No == model.No && x.Status == 1).FirstOrDefaultAsync();
+                if (employee != null && item.No != model.No)
                     return new OperationResult
                     {
                         StatusCode = HttpStatusCode.BadRequest,
@@ -160,8 +162,8 @@ _logger = logger;
                         Success = true,
                         Data = null
                     };
-                var nickName = await _repo.FindAll(x => x.EmployeeNickname == model.NickName && x.Status == 1).FirstOrDefaultAsync();
-                if (nickName != null && item.EmployeeNickname != model.NickName)
+                var nickName = await _repo.FindAll(x => x.NickName == model.NickName && x.Status == 1).FirstOrDefaultAsync();
+                if (nickName != null && item.NickName != model.NickName)
                     return new OperationResult
                     {
                         StatusCode = HttpStatusCode.BadRequest,
@@ -169,19 +171,22 @@ _logger = logger;
                         Success = true,
                         Data = null
                     };
-                item.EmployeeNo = model.No;
-                item.EmployeeName = model.Name;
-                item.EmployeeNickname = model.NickName;
-                item.EmployeeIdcard = model.Idcard;
-                item.EmployeeEmail = model.Email;
-                item.EmployeeTel = model.Tel;
-                item.EmployeeMobile = model.Mobile;
-                item.EmployeeAddress = model.Address;
-                item.EmployeeAddressDomicile = model.AddressDomicile;
-                item.EmployeeUnit = model.Unit;
-                item.EmployeeDept = model.Dept;
-                item.EmployeeLevel = model.Level;
-                item.EmployeeSex = model.Sex;
+                item.No = model.No;
+                item.Name = model.Name;
+                item.NickName = model.NickName;
+                item.Idcard = model.Idcard;
+                item.Email = model.Email;
+                item.Tel = model.Tel;
+                item.Mobile = model.Mobile;
+                item.Address = model.Address;
+                item.AddressDomicile = model.AddressDomicile;
+                item.Unit = model.Unit;
+                item.Dept = model.Dept;
+                item.Level = model.Level;
+                item.ContactName = model.ContactName;
+                item.ContactTel = model.ContactTel;
+                item.BirthDay = model.BirthDay;
+                item.Sex = model.Sex;
                 item.Status = model.Status;
                 _repo.Update(item);
 
@@ -207,33 +212,33 @@ _logger = logger;
             // IQueryable<EmployeeDto> datasource = _repo.FindAll(x => x.Status == 1).ProjectTo<EmployeeDto>(_configMapper);
 
             var datasource = (from a in _repo.FindAll(x => x.Status == 1 || x.Status == 0)
-                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.EMPLOYEE_SEX && x.Status == "Y") on a.EmployeeSex equals Convert.ToDecimal(b.CodeNo) into ab
+                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.EMPLOYEE_SEX && x.Status == "Y") on a.Sex equals Convert.ToDecimal(b.CodeNo) into ab
                               from t in ab.DefaultIfEmpty()
-                              join d1 in _repoXAccountGroup.FindAll(x => x.Status == 1) on a.EmployeeDept equals d1.Guid into xd
+                              join d1 in _repoXAccountGroup.FindAll(x => x.Status == 1) on a.Dept equals d1.Guid into xd
                               from d in xd.DefaultIfEmpty()
-                              join u1 in _repoCodeType.FindAll(x => x.Status == "Y" && x.CodeType1 == CodeTypeConst.Account_Unit) on a.EmployeeUnit equals u1.CodeNo into xu
+                              join u1 in _repoCodeType.FindAll(x => x.Status == "Y" && x.CodeType1 == CodeTypeConst.Account_Unit) on a.Unit equals u1.CodeNo into xu
                               from u in xu.DefaultIfEmpty()
-                               join st in _repoCodeType.FindAll(x => x.Status == "Y" && x.CodeType1 == CodeTypeConst.Employee_Status) on a.Status equals Convert.ToDecimal(st.CodeNo) into ass
+                              join st in _repoCodeType.FindAll(x => x.Status == "Y" && x.CodeType1 == CodeTypeConst.Employee_Status) on a.Status equals Convert.ToDecimal(st.CodeNo) into ass
                               from status in ass.DefaultIfEmpty()
                               select new EmployeeDto
                               {
                                   Id = a.Id,
-                                  Name = a.EmployeeName,
-                                  No = a.EmployeeNo,
-                                  NickName = a.EmployeeNickname,
-                                  Tel = a.EmployeeTel,
-                                  Mobile = a.EmployeeMobile,
-                                  Address = a.EmployeeAddress,
-                                  AddressDomicile = a.EmployeeAddressDomicile,
-                                  Idcard = a.EmployeeIdcard,
-                                  Email = a.EmployeeEmail,
+                                  Name = a.Name,
+                                  No = a.No,
+                                  NickName = a.NickName,
+                                  Tel = a.Tel,
+                                  Mobile = a.Mobile,
+                                  Address = a.Address,
+                                  AddressDomicile = a.AddressDomicile,
+                                  Idcard = a.Idcard,
+                                  Email = a.Email,
                                   Comment = a.Comment,
-                                  Unit = a.EmployeeUnit,
-                                  Dept = a.EmployeeDept,
-                                  Level = a.EmployeeLevel,
+                                  Unit = a.Unit,
+                                  Dept = a.Dept,
+                                  Level = a.Level,
                                   ContactName = a.ContactName,
                                   ContactTel = a.ContactTel,
-                                  BirthDay = a.EmployeeBirthday,
+                                  BirthDay = a.BirthDay,
                                   StartDate = a.StartDate,
                                   EndDate = a.EndDate,
                                   CreateDate = a.CreateDate,
@@ -243,13 +248,13 @@ _logger = logger;
                                   DeleteBy = a.DeleteBy,
                                   DeleteDate = a.DeleteDate,
                                   Status = a.Status,
-                                  Sex = a.EmployeeSex,
+                                  Sex = a.Sex,
                                   Guid = a.Guid,
                                   SexName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
                                   UnitName = u == null ? "" : lang == Languages.EN ? u.CodeNameEn ?? u.CodeName : lang == Languages.VI ? u.CodeNameVn ?? u.CodeName : lang == Languages.CN ? u.CodeNameCn ?? u.CodeName : u.CodeName,
                                   DeptName = d == null ? "" : d.GroupNo + " " + d.GroupName,
                                   StatusName = status == null ? "" : lang == Languages.EN ? status.CodeNameEn ?? status.CodeName : lang == Languages.VI ? status.CodeNameVn ?? status.CodeName : lang == Languages.CN ? status.CodeNameCn ?? status.CodeName : status.CodeName,
-                             
+
                               }).OrderByDescending(x => x.Id).AsQueryable();
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering
@@ -273,34 +278,34 @@ _logger = logger;
         {
             // IQueryable<EmployeeDto> datasource = _repo.FindAll(x => x.Status == 1).ProjectTo<EmployeeDto>(_configMapper);
 
-            var datasource = (from a in _repo.FindAll(x => (x.Status == 1 || x.Status == 0))
-                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.EMPLOYEE_SEX && x.Status == "Y") on a.EmployeeSex equals Convert.ToDecimal(b.CodeNo) into ab
+            var datasource = (from a in _repo.FindAll(x => (x.Status == 1 || x.Status == 0) && x.FarmGuid == farmGuid)
+                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.EMPLOYEE_SEX && x.Status == "Y") on a.Sex equals Convert.ToDecimal(b.CodeNo) into ab
                               from t in ab.DefaultIfEmpty()
-                              join d1 in _repoXAccountGroup.FindAll(x => x.Status == 1) on a.EmployeeDept equals d1.Guid into xd
+                              join d1 in _repoXAccountGroup.FindAll(x => x.Status == 1) on a.Dept equals d1.Guid into xd
                               from d in xd.DefaultIfEmpty()
-                              join u1 in _repoCodeType.FindAll(x => x.Status == "Y" && x.CodeType1 == CodeTypeConst.Account_Unit) on a.EmployeeUnit equals u1.CodeNo into xu
+                              join u1 in _repoCodeType.FindAll(x => x.Status == "Y" && x.CodeType1 == CodeTypeConst.Account_Unit) on a.Unit equals u1.CodeNo into xu
                               from u in xu.DefaultIfEmpty()
                               join st in _repoCodeType.FindAll(x => x.Status == "Y" && x.CodeType1 == CodeTypeConst.Employee_Status) on a.Status equals Convert.ToDecimal(st.CodeNo) into ass
                               from status in ass.DefaultIfEmpty()
                               select new EmployeeDto
                               {
                                   Id = a.Id,
-                                  Name = a.EmployeeName,
-                                  No = a.EmployeeNo,
-                                  NickName = a.EmployeeNickname,
-                                  Tel = a.EmployeeTel,
-                                  Mobile = a.EmployeeMobile,
-                                  Address = a.EmployeeAddress,
-                                  AddressDomicile = a.EmployeeAddressDomicile,
-                                  Idcard = a.EmployeeIdcard,
-                                  Email = a.EmployeeEmail,
+                                  Name = a.Name,
+                                  No = a.No,
+                                  NickName = a.NickName,
+                                  Tel = a.Tel,
+                                  Mobile = a.Mobile,
+                                  Address = a.Address,
+                                  AddressDomicile = a.AddressDomicile,
+                                  Idcard = a.Idcard,
+                                  Email = a.Email,
                                   Comment = a.Comment,
-                                  Unit = a.EmployeeUnit,
-                                  Dept = a.EmployeeDept,
-                                  Level = a.EmployeeLevel,
+                                  Unit = a.Unit,
+                                  Dept = a.Dept,
+                                  Level = a.Level,
                                   ContactName = a.ContactName,
                                   ContactTel = a.ContactTel,
-                                  BirthDay = a.EmployeeBirthday,
+                                  BirthDay = a.BirthDay,
                                   StartDate = a.StartDate,
                                   EndDate = a.EndDate,
                                   CreateDate = a.CreateDate,
@@ -310,8 +315,9 @@ _logger = logger;
                                   DeleteBy = a.DeleteBy,
                                   DeleteDate = a.DeleteDate,
                                   Status = a.Status,
-                                  Sex = a.EmployeeSex,
+                                  Sex = a.Sex,
                                   Guid = a.Guid,
+                                  FarmGuid = a.FarmGuid,
                                   SexName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
                                   UnitName = u == null ? "" : lang == Languages.EN ? u.CodeNameEn ?? u.CodeName : lang == Languages.VI ? u.CodeNameVn ?? u.CodeName : lang == Languages.CN ? u.CodeNameCn ?? u.CodeName : u.CodeName,
                                   DeptName = d == null ? "" : d.GroupNo + " " + d.GroupName,
@@ -339,22 +345,22 @@ _logger = logger;
         /// Not use
         /// </summary>
         /// <returns></returns>
-        //public async Task<object> GetEmployees()
-        //{
-        //    var query = from a in _repo.FindAll(x => x.Status == 1).AsNoTracking()
-        //                join b in _repoAccount.FindAll().AsNoTracking() on a.Guid equals b.Employee.Guid into gj
-        //                from x in gj.DefaultIfEmpty()
-        //                select new
-        //                {
-        //                    a.Id,
-        //                    a.Name,
-        //                    a.NickName,
-        //                    x.EmployeeId
-        //                };
+        public async Task<object> GetEmployees()
+        {
+            var query = from a in _repo.FindAll(x => x.Status == 1).AsNoTracking()
+                        join b in _repoXAccount.FindAll().AsNoTracking() on a.Guid equals b.EmployeeGuid into gj
+                        from x in gj.DefaultIfEmpty()
+                        select new
+                        {
+                            a.Id,
+                            a.Name,
+                            a.NickName,
+                            x.EmployeeGuid
+                        };
 
-        //    return await query.Where(x => x.EmployeeId == null).ToListAsync();
+            return await query.Where(x => x.EmployeeGuid == null).ToListAsync();
 
-        //}
+        }
         public async Task<object> GetEmployeesByAccountID(decimal accountID)
         {
             var farm = await _repoXAccount.FindByIDAsync(accountID);
@@ -366,21 +372,21 @@ _logger = logger;
                         select new
                         {
                             a.Id,
-                            Name =  a.EmployeeName,
+                            a.Name,
                             a.Guid,
-                            NickName= a.EmployeeNickname
+                            a.NickName
                         };
             if (accountID > 0)
             {
-                var query2 = from a in _repo.FindAll(x => x.Status == 1).AsNoTracking()
+                var query2 = from a in _repo.FindAll(x => x.Status == 1 && x.FarmGuid == farmGuid).AsNoTracking()
                              join b in _repoXAccount.FindAll(x => x.Status == "1").AsNoTracking() on a.Guid equals b.EmployeeGuid
                              where b.AccountId == accountID
                              select new
                              {
-                                a.Id,
-                                 Name = a.EmployeeName,
+                                 a.Id,
+                                 a.Name,
                                  a.Guid,
-                                 NickName = a.EmployeeNickname
+                                 a.NickName
                              };
                 var data = await query.ToListAsync();
                 var data2 = await query2.ToListAsync();
@@ -413,7 +419,7 @@ _logger = logger;
                 updateBy = updateBy != null ? updateAudit.Uid : "N/A";
                 updateDate = data.UpdateDate.HasValue ? data.UpdateDate.Value.ToString("yyyy/MM/dd HH:mm:ss") : "N/A";
             }
-            if (data.CreateBy > 0)
+            if (data.CreateBy.HasValue)
             {
                 var createAudit = await _repoXAccount.FindAll(x => x.AccountId == data.CreateBy).AsNoTracking().Select(x => new { x.Uid }).FirstOrDefaultAsync();
                 createBy = createAudit != null ? createAudit.Uid : "N/A";
@@ -430,7 +436,7 @@ _logger = logger;
 
         public async Task<OperationResult> CheckExist(string no)
         {
-            var value = await _repo.FindAll(x => x.EmployeeNo.Equals(no)).AsNoTracking().FirstOrDefaultAsync();
+            var value = await _repo.FindAll(x => x.No.Equals(no)).AsNoTracking().FirstOrDefaultAsync();
             if (value != null)
                 return new OperationResult
                 {

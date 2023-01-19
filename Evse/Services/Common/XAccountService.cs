@@ -83,7 +83,7 @@ namespace Evse.Services
         private readonly ISequenceService _sequenceService;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _configMapper;
-private readonly IEvseLoggerService _logger;
+        private readonly IEvseLoggerService _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebHostEnvironment _currentEnvironment;
         private readonly IConfiguration _configuration;
@@ -129,7 +129,7 @@ IEvseLoggerService logger,
 
         public override async Task<object> GetDataDropdownlist(DataManager data)
         {
-            var datasource = _repo.FindAll(x=> x.Status == "1").Select(x => new
+            var datasource = _repo.FindAll(x => x.Status == "1").Select(x => new
             {
                 Id = x.AccountId,
                 Guid = x.Guid,
@@ -165,10 +165,10 @@ IEvseLoggerService logger,
 
         public async Task<object> LoadData(DataManager data, string farmGuid, string lang)
         {
-            var datasource = (from x in _repo.FindAll(x => (x.Status == "1" || x.Status == "0") && x.FarmGuid == farmGuid)
+            var datasource = (from x in _repo.FindAll(x => x.Status == "1" || x.Status == "0")
                               join b in _repoXAccountGroup.FindAll() on x.AccountGroup equals b.Guid into gj
                               from a in gj.DefaultIfEmpty()
-                            
+                           
                               join e in _repoEmployee.FindAll() on x.EmployeeGuid equals e.Guid into ef
                               from d in ef.DefaultIfEmpty()
                               join st in _repoCodeType.FindAll(x => x.Status == "Y" && x.CodeType1 == CodeTypeConst.Account_Status) on x.Status equals st.CodeNo into ass
@@ -216,7 +216,7 @@ IEvseLoggerService logger,
                                   TypeId = x.TypeId,
                                   FarmGuid = x.FarmGuid,
                                   EmployeeGuid = x.EmployeeGuid,
-                                  EmployeeNickName = d.EmployeeNickname ?? "N/A",
+                                  EmployeeNickName = d.NickName ?? "N/A",
                                   AccountGroupName = a.GroupName ?? "N/A",
                                   AccountRole = x.AccountRole,
                                   AccountType = x.AccountType,
@@ -226,6 +226,7 @@ IEvseLoggerService logger,
                                   ErrorLogin = x.ErrorLogin,
                                   PhotoPath = x.PhotoPath,
                                   AccountDomicileAddress = x.AccountDomicileAddress,
+                                  AccessTokenLineNotify = x.AccessTokenLineNotify,
                                   StatusName = status == null ? "" : lang == Languages.EN ? status.CodeNameEn ?? status.CodeName : lang == Languages.VI ? status.CodeNameVn ?? status.CodeName : lang == Languages.CN ? status.CodeNameCn ?? status.CodeName : status.CodeName,
                               }).OrderByDescending(x => x.AccountId).AsNoTracking()
                 .AsQueryable();
@@ -252,10 +253,10 @@ IEvseLoggerService logger,
             var query = from x in _repo.FindAll(x => (x.Status == "1" || x.Status == "0"))
                         join b in _repoXAccountGroup.FindAll() on x.AccountGroup equals b.Guid into gj
                         from a in gj.DefaultIfEmpty()
-                     
+                      
                         join e in _repoEmployee.FindAll() on x.EmployeeGuid equals e.Guid into ef
                         from d in ef.DefaultIfEmpty()
-                       
+
                         select new XAccountDto
                         {
                             AccountId = x.AccountId,
@@ -299,7 +300,7 @@ IEvseLoggerService logger,
                             TypeId = x.TypeId,
                             FarmGuid = x.FarmGuid,
                             EmployeeGuid = x.EmployeeGuid,
-                            EmployeeNickName = d.EmployeeNickname ?? "N/A",
+                            EmployeeNickName = d.NickName ?? "N/A",
                             AccountGroupName = a.GroupName ?? "N/A",
                             AccountRole = x.AccountRole,
                             AccountType = x.AccountType,
@@ -309,6 +310,7 @@ IEvseLoggerService logger,
                             ErrorLogin = x.ErrorLogin,
                             PhotoPath = x.PhotoPath,
                             AccountDomicileAddress = x.AccountDomicileAddress,
+                            AccessTokenLineNotify = x.AccessTokenLineNotify,
                         };
 
             var data = await query.OrderByDescending(x => x.AccountId).ToListAsync();
@@ -352,11 +354,11 @@ IEvseLoggerService logger,
             {
                 return new OperationResult { StatusCode = HttpStatusCode.NotFound, Message = "Not found this account!", Success = false };
             }
-             if (item.Status == "0")
+            if (item.Status == "0")
             {
                 return new OperationResult { StatusCode = HttpStatusCode.NotFound, Message = "This account is locked!", Success = false };
             }
-             if (item.Status == "9")
+            if (item.Status == "9")
             {
                 return new OperationResult { StatusCode = HttpStatusCode.NotFound, Message = "This account doesn't exist!", Success = false };
             }
@@ -472,13 +474,14 @@ IEvseLoggerService logger,
                     append = true
                 };
             }
-           catch(Exception ex)
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
                 {
-                       await _logger.LogStoreProcedure(new LoggerParams {
-                    Type= EvseLogConst.Update,
-                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
-                
+
                 // Nếu tạo ra file rồi mã lưu db bị lỗi thì xóa file vừa tạo đi
                 if (!avatarUniqueFileName.IsNullOrEmpty())
                     fileExtension.Remove($"{uploadAvatarFolder}\\{avatarUniqueFileName}");
@@ -494,7 +497,7 @@ IEvseLoggerService logger,
             }
         }
 
-public async Task<object> UploadAvatarForMobile(IFormFile file ,decimal key)
+        public async Task<object> UploadAvatarForMobile(IFormFile file, decimal key)
         {
             IFormFile filesAvatar = file;
             var Current = _httpContextAccessor.HttpContext;
@@ -539,13 +542,14 @@ public async Task<object> UploadAvatarForMobile(IFormFile file ,decimal key)
                     append = true
                 };
             }
-           catch(Exception ex)
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
                 {
-                       await _logger.LogStoreProcedure(new LoggerParams {
-                    Type= EvseLogConst.Update,
-                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
-                
+
                 // Nếu tạo ra file rồi mã lưu db bị lỗi thì xóa file vừa tạo đi
                 if (!avatarUniqueFileName.IsNullOrEmpty())
                     fileExtension.Remove($"{uploadAvatarFolder}\\{avatarUniqueFileName}");
@@ -599,9 +603,10 @@ public async Task<object> UploadAvatarForMobile(IFormFile file ,decimal key)
             }
             catch (Exception ex)
             {
-                    await _logger.LogStoreProcedure(new LoggerParams {
-                    Type= EvseLogConst.Create,
-                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Create,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
                 if (!avatarUniqueFileName.IsNullOrEmpty())
                     fileExtension.Remove($"{uploadAvatarFolder}\\{avatarUniqueFileName}");
@@ -633,7 +638,7 @@ public async Task<object> UploadAvatarForMobile(IFormFile file ,decimal key)
             {
                 item.Upwd = model.Upwd.ToSha512();
             }
-           
+
             // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
             var avatarUniqueFileName = string.Empty;
             var avatarFolderPath = "FileUploads\\images\\account\\avatar";
@@ -676,12 +681,13 @@ public async Task<object> UploadAvatarForMobile(IFormFile file ,decimal key)
                 };
             }
             catch (Exception ex)
-            { 
-                    await _logger.LogStoreProcedure(new LoggerParams {
-                    Type= EvseLogConst.Update,
-                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
-                  // Nếu tạo ra file rồi mã lưu db bị lỗi thì xóa file vừa tạo đi
+                // Nếu tạo ra file rồi mã lưu db bị lỗi thì xóa file vừa tạo đi
                 if (!avatarUniqueFileName.IsNullOrEmpty())
                     fileExtension.Remove($"{uploadAvatarFolder}\\{avatarUniqueFileName}");
 
@@ -717,9 +723,10 @@ public async Task<object> UploadAvatarForMobile(IFormFile file ,decimal key)
             }
             catch (Exception ex)
             {
-    await _logger.LogStoreProcedure(new LoggerParams {
-                    Type= EvseLogConst.Delete,
-                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Delete,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
                 return new { status = true };
             }
@@ -742,7 +749,7 @@ public async Task<object> UploadAvatarForMobile(IFormFile file ,decimal key)
                 UpwdEncrypt = "",
             };
         }
-private async Task LogStoreProcedure(decimal accountId, string logText)
+        private async Task LogStoreProcedure(decimal accountId, string logText)
         {
             using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
             {
@@ -789,7 +796,7 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
                 item.Upwd = model.Upwd.ToSha512();
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
-               LogStoreProcedure(item.AccountId, "ChangePassword").ConfigureAwait(false).GetAwaiter();
+                LogStoreProcedure(item.AccountId, "ChangePassword").ConfigureAwait(false).GetAwaiter();
 
                 operationResult = new OperationResult
                 {
@@ -801,9 +808,10 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
             }
             catch (Exception ex)
             {
-                    await _logger.LogStoreProcedure(new LoggerParams {
-                    Type= EvseLogConst.Update,
-                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
                 operationResult = ex.GetMessageError();
             }
@@ -823,13 +831,14 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
                             x.AccountId,
                             AccountGuid = x.Guid,
                             x.PhotoPath,
-                            NickName=  emp.EmployeeNickname,
-                            Mobile= emp.EmployeeMobile,
-                            Email = emp.EmployeeEmail,
+                            emp.NickName,
+                            emp.Mobile,
+                            emp.Email,
                             emp.ContactName,
                             emp.ContactTel,
-                            Address = emp.EmployeeAddress,
-                            AddressDomicile =  emp.EmployeeAddressDomicile,
+                            emp.Address,
+                            emp.AddressDomicile,
+                            EnableLineNotify = string.IsNullOrEmpty(x.AccessTokenLineNotify),
                             PageSizeSetting = x.PageSizeSetting,
                             PageSizeSettingValue = d != null ? d.CodeName : ""
                         };
@@ -874,7 +883,7 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
                         };
             if (!string.IsNullOrEmpty(accountGuid))
             {
-                var query2 = from a in _repoCodePermission.FindAll(x => x.Status == "1" ).AsNoTracking()
+                var query2 = from a in _repoCodePermission.FindAll(x => x.Status == "1").AsNoTracking()
                              join b in _repoXAccountPermission.FindAll().AsNoTracking() on a.CodeNo equals b.CodeNo
                              where b.UpperGuid == accountGuid
                              select new
@@ -939,9 +948,10 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
             }
             catch (Exception ex)
             {
-                    await _logger.LogStoreProcedure(new LoggerParams {
-                    Type= EvseLogConst.Create,
-                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Create,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
                 operationResult = ex.GetMessageError();
             }
@@ -960,13 +970,13 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
                                        x
                                    }).FirstOrDefaultAsync();
                 var employee = query.emp;
-                employee.EmployeeNickname = request.NickName;
-                employee.EmployeeMobile = request.Mobile;
-                employee.EmployeeEmail = request.Email;
+                employee.NickName = request.NickName;
+                employee.Mobile = request.Mobile;
+                employee.Email = request.Email;
                 employee.ContactName = request.ContactName;
                 employee.ContactTel = request.ContactTel;
-                employee.EmployeeAddress = request.Address;
-                employee.EmployeeAddressDomicile = request.AddressDomicile;
+                employee.Address = request.Address;
+                employee.AddressDomicile = request.AddressDomicile;
                 _repoEmployee.Update(employee);
 
                 var account = query.x;
@@ -991,9 +1001,10 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
             }
             catch (Exception ex)
             {
-                    await _logger.LogStoreProcedure(new LoggerParams {
-                    Type= EvseLogConst.Update,
-                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
                 operationResult = ex.GetMessageError();
             }
@@ -1125,18 +1136,20 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
             try
             {
                 var item = await _repo.FindByIDAsync(id);
+                item.AccessTokenLineNotify = token;
                 await _unitOfWork.SaveChangeAsync();
                 return true;
             }
             catch (Exception)
             {
-                
+
                 return false;
             }
         }
         public async Task<bool> RemoveTokenLine(object id)
         {
             var item = await _repo.FindByIDAsync(id);
+            item.AccessTokenLineNotify = null;
             try
             {
                 await _unitOfWork.SaveChangeAsync();
@@ -1155,10 +1168,10 @@ private async Task LogStoreProcedure(decimal accountId, string logText)
         }
 
 
-       public async  Task<object> SP_Record_AccountCheck_Born(string recordGuid)=> await _repoSp.SP_Record_AccountCheck_Born(recordGuid);
-       public async Task<object> SP_Record_AccountCheck_Remove(string accountGuid)=> await _repoSp.SP_Record_AccountCheck_Remove(accountGuid);
-       public async Task<object> SP_Record_AccountCheck_Confirm(string accountGuid)=> await _repoSp.SP_Record_AccountCheck_Confirm(accountGuid);
-       public async Task<object> SP_Record_AccountCheck_NeedCheck(string accountGuid)=> await _repoSp.SP_Record_AccountCheck_NeedCheck(accountGuid);
-      
+        public async Task<object> SP_Record_AccountCheck_Born(string recordGuid) => await _repoSp.SP_Record_AccountCheck_Born(recordGuid);
+        public async Task<object> SP_Record_AccountCheck_Remove(string accountGuid) => await _repoSp.SP_Record_AccountCheck_Remove(accountGuid);
+        public async Task<object> SP_Record_AccountCheck_Confirm(string accountGuid) => await _repoSp.SP_Record_AccountCheck_Confirm(accountGuid);
+        public async Task<object> SP_Record_AccountCheck_NeedCheck(string accountGuid) => await _repoSp.SP_Record_AccountCheck_NeedCheck(accountGuid);
+
     }
 }

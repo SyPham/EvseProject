@@ -61,6 +61,9 @@ import { DisinfectionScreenComponent } from './disinfection-screen/disinfection-
 import { CleaningScreenComponent } from './cleaning-screen/cleaning-screen.component';
 import { PigfarmCoreModule } from '@pigfarm-core';
 import { environment } from 'src/environments/environment';
+import { RepairScreenComponent } from './repair-screen/repair-screen.component';
+import { ReportScreenComponent } from './report-screen/report-screen.component';
+import { AccountScreenComponent } from './account-screen/account-screen.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -84,7 +87,10 @@ if (!lang) {
     SigninScreenComponent,
     VectorControlScreenComponent,
     DisinfectionScreenComponent,
-    CleaningScreenComponent
+    CleaningScreenComponent,
+    RepairScreenComponent,
+    ReportScreenComponent,
+    AccountScreenComponent
   ],
   imports: [
     CommonModule,

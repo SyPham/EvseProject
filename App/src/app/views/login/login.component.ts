@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/_core/_service/auth.service';
 import { PermissionService } from 'src/app/_core/_service/permission.service';
 import { TranslateService } from '@ngx-translate/core';
+import { SystemGroupNo } from 'src/app/_core/enum/SystemGroupNo';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -99,14 +100,19 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       localStorage.setItem('languages', JSON.stringify(languages));
       const uri = decodeURI(this.uri);
       const check = this.checkLocalRole();
-      if (check ) {
-        const uri = decodeURI(this.uri);
-        this.router.navigate([uri]);
-      } else {
-        let backUrl = '/evse/home';
-        this.router.navigate([backUrl]);
+      if(data.user.groupCode === SystemGroupNo.LandRoyal || data.user.groupCode === SystemGroupNo.Member || data.user.groupCode === SystemGroupNo.Engineer) {
+        let mobileUrl = '/mobile/home';
+          this.router.navigate([mobileUrl]);
+      }else {
+        if (check ) {
+          const uri = decodeURI(this.uri);
+          this.router.navigate([uri]);
+        } else {
+          let backUrl = '/evse/home';
+          this.router.navigate([backUrl]);
+        }
       }
-
+    
       this.alertifyService.success(this.trans.instant('Login Success!'));
       this.loading = 0;
 

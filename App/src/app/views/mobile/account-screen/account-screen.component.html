@@ -1,0 +1,18 @@
+<div class="card card-primary card-outline">
+  <div class="card-body box-profile">
+    <div class="text-center">
+      <img
+        class="profile-user-img img-fluid img-circle"
+        width="120"
+        src="https://t3.ftcdn.net/jpg/04/34/72/82/240_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg"
+        alt="User profile picture"
+      />
+    </div>
+    <h4 class="profile-username text-center">{{user?.accountName}}</h4>
+    <p class="text-muted text-center">{{user?.email}}</p>
+  
+    <a  routerLink="/mobile/account" class="btn btn-primary btn-block"><b> <i class="fa fa-user"></i> {{ "My Account" | translate}}</b></a>
+    <a  routerLink="/mobile/report" class="btn btn-primary btn-block"><b> <i class="fa fa-file"></i>{{ "My Report" | translate}}</b></a>
+    <a  routerLink="/mobile/repair" class="btn btn-primary btn-block"><b> <i class="fa fa-cog"></i>{{ "My Repair" | translate}}</b></a>
+  </div>
+</div>

@@ -18,7 +18,9 @@ import { SigninScreenComponent } from './signin-screen/signin-screen.component';
 import { VectorControlScreenComponent } from './vector-control-screen/vector-control-screen.component';
 import { WeighingComponent } from './weighing/weighing.component';
 
-
+import { RepairScreenComponent } from './repair-screen/repair-screen.component';
+import { ReportScreenComponent } from './report-screen/report-screen.component';
+import { AccountScreenComponent } from './account-screen/account-screen.component';
 const routes: Routes = [
   {
     path: '',
@@ -42,145 +44,34 @@ const routes: Routes = [
         //canActivate: [AuthGuard]
       },
       {
-        path: 'detail',
-        component: PigDataComponent,
+        path: 'repair',
+        component: RepairScreenComponent,
         data: {
-          title: 'detail',
-          breadcrumb: 'Detail',
-          functionCode: 'Detail'
+          title: 'Repair',
+          breadcrumb: 'Repair',
+          functionCode: 'Repair'
 
         },
         //canActivate: [AuthGuard]
       },
       {
-        path: 'operate',
-        component: OperateComponent,
+        path: 'report',
+        component: ReportScreenComponent,
         data: {
-          title: 'Operate',
-          breadcrumb: 'Operate',
-          functionCode: 'Operate'
+          title: 'Report',
+          breadcrumb: 'Report',
+          functionCode: 'Report'
 
         },
         //canActivate: [AuthGuard]
       },
       {
-        path: 'operate-detail',
-        component: OperateDetailComponent,
+        path: 'account',
+        component: AccountScreenComponent,
         data: {
-          title: 'Operate Detail',
-          breadcrumb: 'Operate Detail',
-          functionCode: 'Operate Detail'
-
-        },
-        //canActivate: [AuthGuard]
-      },
-      {
-        path: 'feeding',
-        component: FeedingComponent,
-        data: {
-          title: 'Feeding',
-          breadcrumb: 'Feeding',
-          functionCode: 'Feeding'
-
-        },
-        //canActivate: [AuthGuard]
-
-      },
-      {
-        path: 'weighing',
-        component: WeighingComponent,
-        data: {
-          title: 'Weighing',
-          breadcrumb: 'Weighing',
-          functionCode: 'Weighing'
-
-        },
-        //canActivate: [AuthGuard]
-      },
-      {
-        path: 'moving',
-        component: MoveComponent,
-        data: {
-          title: 'Moving',
-          breadcrumb: 'Moving',
-          functionCode: 'Moving'
-
-        },
-        //canActivate: [AuthGuard]
-      },
-      {
-        path: 'immunization',
-        component: ImmunizationScreenComponent,
-        data: {
-          title: 'Immunization',
-          breadcrumb: 'Immunization',
-          functionCode: 'Immunization'
-
-        },
-        //canActivate: [AuthGuard]
-      },
-      {
-        path: 'culling',
-        component: CullingScreenComponent,
-        data: {
-          title: 'Culling',
-          breadcrumb: 'Culling',
-          functionCode: 'Culling'
-
-        },
-        //canActivate: [AuthGuard]
-      },
-      {
-        path: 'death',
-        component: DeathScreenComponent,
-        data: {
-          title: 'Death',
-          breadcrumb: 'Death',
-          functionCode: 'Death'
-
-        },
-        //canActivate: [AuthGuard]
-      },
-      {
-        path: 'pigear',
-        component: PigearScreenComponent,
-        data: {
-          title: 'Pig Ear',
-          breadcrumb: 'Pig Ear',
-          functionCode: 'Pig Ear'
-
-        },
-        //canActivate: [AuthGuard]
-      },
-      {
-        path: 'disinfection',
-        component: DisinfectionScreenComponent,
-        data: {
-          title: 'Disinfection',
-          breadcrumb: 'Disinfection',
-          functionCode: 'Disinfection'
-
-        },
-        //canActivate: [AuthGuard]
-      },
-      {
-        path: 'vector-control',
-        component: VectorControlScreenComponent,
-        data: {
-          title: 'Vector Control',
-          breadcrumb: 'Vector Control',
-          functionCode: 'Vector Control'
-
-        },
-        //canActivate: [AuthGuard]
-      },
-      {
-        path: 'cleaning',
-        component: CleaningScreenComponent,
-        data: {
-          title: 'Cleaning',
-          breadcrumb: 'Cleaning',
-          functionCode: 'Cleaning'
+          title: 'Account',
+          breadcrumb: 'Account',
+          functionCode: 'Account'
 
         },
         //canActivate: [AuthGuard]

@@ -1,53 +1,27 @@
 <div class="main-content" id="main-text">
+
   <div class="sidebar-content">
-
-    <h2 class="sidebar-heading"> {{ 'Pig Data' | translate }}</h2>
-    <div class="flex-container">
-      <div (click)="goToMakeOrder('sow')">{{ 'Sow' | translate }}</div>
-      <div (click)="goToMakeOrder('gilt')">{{ 'Gilt' | translate }}</div>
-      <div (click)="goToMakeOrder('boar')">{{ 'Boar' | translate }}</div>
-      <div (click)="goToMakeOrder('newboar')">{{ 'New Boar' | translate }}</div>
-      <div (click)="goToMakeOrder('suckling')">{{ 'Suckling' | translate }}</div>
-      <div (click)="goToMakeOrder('nursery')">{{ 'Nursery' | translate }}</div>
-      <div (click)="goToMakeOrder('grower')">{{ 'Grower' | translate }}</div>
-      <div (click)="goToMakeOrder('finisher')">{{ 'Finisher' | translate }}</div>
+    <div class="flex-container-bio mt-3 mr-mobile">
+      <div routerLink="/mobile/repair">{{ 'Repair' | translate }}</div>
     </div>
 
     <div class="line"></div>
-    <h2 class="sidebar-heading">{{ 'Operate' | translate }}</h2>
-    <div class="flex-container">
-      <div routerLink="/mobile/feeding">{{ 'Feeding' | translate }}</div>
-      <div routerLink="/mobile/immunization">{{ 'Immunization' | translate }}</div>
-      <div routerLink="/mobile/weighing">{{ 'Weighing' | translate }}</div>
-      <div routerLink="/mobile/moving">{{ 'Move' | translate }}</div>
-      <div routerLink="/mobile/culling">{{ 'Culling' | translate }}</div>
-      <div routerLink="/mobile/pigear">{{ 'Pig Ear' | translate }}</div>
-      <div routerLink="/mobile/death">{{ 'Death' | translate }}</div>
-      <div (click)="noFunction()">{{ '待售管理' | translate }}</div>
-      <div (click)="noFunction()">{{ '進出場管理' | translate }}</div>
-    </div>
-
-    <div class="line"></div>
-    <h2 class="sidebar-heading">{{ 'BIO Security' | translate }}</h2>
     <div class="flex-container-bio">
-      <div routerLink="/mobile/disinfection">{{ 'Disinfection' | translate }}</div>
-      <div routerLink="/mobile/cleaning">{{ 'Cleaning' | translate }}</div>
-      <div routerLink="/mobile/vector-control">{{ 'Vector Control' | translate }}</div>
+      <div routerLink="/mobile/report">{{ 'Report' | translate }}</div>
     </div>
 
     <div class="line"></div>
-    <h2 class="sidebar-heading">Phase 2, 育種作業</h2>
-    <div class="flex-container">
-      <div (click)="noFunction()">{{ 'Sow' | translate }}</div>
+    <div class="flex-container-bio">
+      <div routerLink="/mobile/account">{{ 'Account' | translate }}</div>
+    </div>
 
-      <div (click)="noFunction()">{{ 'Suckling' | translate }}</div>
+    <div class="line"></div>
+    <div *ngIf="!isMobileMode" class="flex-container-bio-desktop">
+      <div (click)="backDesktop()">{{ 'Desktop' | translate }}</div>
+    </div>
 
-      <div (click)="noFunction()">{{ 'Gilt' | translate }}</div>
-
-      <div (click)="noFunction()">{{ 'Boar' | translate }}</div>
-
-      <div (click)="noFunction()">{{ 'New Boar' | translate }}</div>
-
+    <div *ngIf="isMobileMode" class="flex-container-bio-desktop">
+      <div (click)="logout()">{{ 'SIGN_OUT' | translate }}</div>
     </div>
   </div>
 </div>

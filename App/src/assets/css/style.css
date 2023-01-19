@@ -13940,7 +13940,7 @@ i.fas, i.far, i.fal, i.fab {
     }
 
     .btn:not(.dropdown-item) ~ .btn {
-        margin-left: 5px;
+        /* margin-left: 5px; */
     }
 
 .btn-group > .btn:not(:first-child),
