@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AlertifyService, BaseComponent } from '@pigfarm-core';
 import { GridComponent } from '@syncfusion/ej2-angular-grids';
 import { L10n,setCulture } from '@syncfusion/ej2-base';
@@ -7,6 +7,7 @@ import { SiteActionComponent } from './site-action/site-action.component';
 import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
+import { Site } from 'src/app/_core/_model/evse/model';
 
 @Component({
   selector: 'app-site',
@@ -21,6 +22,8 @@ export class SiteComponent extends BaseComponent implements OnInit {
   editSettings = { showDeleteConfirmDialog: false, allowEditing: false, allowAdding: true, allowDeleting: false, mode: 'Normal' };
   dataSource: any;
   baseUrl = environment.apiUrl;
+  @Input() site: Site;
+  @Output() siteChange = new EventEmitter<Site>();
 
   constructor(
     private alertify: AlertifyService,
@@ -77,6 +80,10 @@ delete(id) {
     }
   );
 
+}
+recordClick(args: any) {
+ this.site = args.rowData as Site;
+ this.siteChange.emit(args.rowData);
 }
   toolbarClick(args) {
     switch (args.item.id) {

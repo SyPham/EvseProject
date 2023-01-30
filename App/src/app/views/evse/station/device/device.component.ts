@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ParkingLot, Site } from 'src/app/_core/_model/evse/model';
 
 @Component({
   selector: 'app-device',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./device.component.scss']
 })
 export class DeviceComponent implements OnInit {
+  @Input() packingLot: ParkingLot
+  @Input() site: Site
 
   constructor() { }
 

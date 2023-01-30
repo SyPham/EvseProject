@@ -4,6 +4,7 @@
     {
         public const string PageSize_Setting = "PageSize_Setting";
         
+        public const string Lot_Type = "Lot_Type";
         public const string Site_Type = "Site_Type";
         public const string Site_Location = "Site_Location";
 

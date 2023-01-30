@@ -1,16 +1,22 @@
 <div class="card">
   <div class="card-body p-0">
+    {{site?.siteNo}}
+
     <span class="title">{{'ParkingLot' | translate}}</span>
       <ejs-grid
     #grid
     id="grid"
-    [dataSource]="[]"
+    [dataSource]="dataSource"
     [allowPaging]="true"
     [allowResizing]="true"
     [allowSorting]="true"
     [allowMultiSorting]='true'
     [enableInfiniteScrolling]="true"
     gridLines="Both"
+    [editSettings]="editSettings"
+    [toolbar]="toolbarOptions"
+    (toolbarClick)="toolbarClick($event)"
+  (recordClick)="recordClick($event)"
     
   >
     <e-columns>

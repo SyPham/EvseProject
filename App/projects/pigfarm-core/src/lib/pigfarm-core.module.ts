@@ -49,6 +49,7 @@ import { RecordSaleDropdownlistComponent, BoarTestingDropdownlistComponent, BomB
 import { CommonModule } from '@angular/common';
 import { GiltInDropdownlistComponent } from './components/gilt-in-dropdownlist/gilt-in-dropdownlist.component';
 import { SiteDropdownlistComponent } from './components/site-component.ts/site-dropdownlist.component';
+import { DeviceDropdownlistComponent } from './components/device-component.ts/device-dropdownlist.component';
 const commponents = [
   PigDropdownlistComponent,
   PenDropdownlistComponent,
@@ -95,7 +96,8 @@ const commponents = [
   BomBoarDropdownlistComponent,
   BomGiltDropdownlistComponent,
   RecordSaleDropdownlistComponent,
-  SiteDropdownlistComponent
+  SiteDropdownlistComponent,
+  DeviceDropdownlistComponent
 ]
 
 @NgModule({

@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { CURDService, UtilitiesService } from '@pigfarm-core';
 import { environment } from 'src/environments/environment';
 import { Device } from '../../_model/evse/model';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,9 +15,7 @@ export class DeviceService extends CURDService<Device> {
   {
     super(environment.apiUrl,http,"Device", utilitiesService);
   }
-  // toggleIsDefault(id): Observable<OperationResult> {
-  //   return this.http.put<OperationResult>(`${this.base}Device/ToggleIsDefault?id=${id}`, {}).pipe(
-  //     catchError(this.handleError)
-  //   );
-  // }
+  getByGuid(guid): Observable<any> {
+    return this.http.get<any>(`${this.base}Device/GetByGuid?guid=${guid}`, {});
+  }
 }

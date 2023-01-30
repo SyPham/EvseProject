@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ParkingLot, Site } from 'src/app/_core/_model/evse/model';
 
 @Component({
   selector: 'app-station',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./station.component.scss']
 })
 export class StationComponent implements OnInit {
+  site: Site
+  packingLot: ParkingLot
 
   constructor() { }
 
