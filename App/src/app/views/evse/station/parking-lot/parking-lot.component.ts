@@ -1,24 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { AlertifyService, BaseComponent } from '@pigfarm-core';
 import { GridComponent } from '@syncfusion/ej2-angular-grids';
 import { L10n,setCulture } from '@syncfusion/ej2-base';
-import { ParkingLotService } from 'src/app/_core/_service/parking-lot/parking-lot.service';
-import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { ParkingLot, Site } from 'src/app/_core/_model/evse/model';
 import { ParkingLotActionComponent } from './parking-lot-action/parking-lot-action.component';
 import { DataManager, Query, UrlAdaptor } from '@syncfusion/ej2-data';
+import { ParkingLotService } from 'src/app/_core/_service/evse/parking-lot.service';
 
 @Component({
   selector: 'app-parking-lot',
   templateUrl: './parking-lot.component.html',
   styleUrls: ['./parking-lot.component.scss']
 })
-export class ParkingLotComponent implements OnInit {
+export class ParkingLotComponent  extends BaseComponent implements OnInit, OnChanges {
  @Input() site: Site
- @Input() packingLot: ParkingLot
- @Output() packingLotChange = new EventEmitter<ParkingLot>();
+ @Input() parkingLot: ParkingLot
+ @Output() parkingLotChange = new EventEmitter<ParkingLot>();
  locale = localStorage.getItem('lang');
  @ViewChild('grid') public grid: GridComponent;
  @ViewChild(ParkingLotActionComponent) public action: ParkingLotActionComponent;
@@ -26,11 +25,22 @@ export class ParkingLotComponent implements OnInit {
   editSettings = { showDeleteConfirmDialog: false, allowEditing: false, allowAdding: true, allowDeleting: false, mode: 'Normal' };
   dataSource: any;
   baseUrl = environment.apiUrl;
+  public query: Query ;
+  
   constructor(
     private alertify: AlertifyService,
     private service: ParkingLotService,
     public translate: TranslateService,
-  ) { }
+  ) { 
+    super(translate,environment.apiUrl); 
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.hasOwnProperty("site")) {
+      if (changes?.site.currentValue != changes?.site.previousValue ) {
+       this.loadData();
+      }
+     }
+  }
 
   ngOnInit() {
   }
@@ -40,14 +50,14 @@ export class ParkingLotComponent implements OnInit {
     this.query = new Query()
     .where('siteGuid', 'equal', this.site?.guid);
     this.dataSource = new DataManager({
-      url: `${this.baseUrl}Site/LoadData?lang=${lang}`,
+      url: `${this.baseUrl}ParkingLot/LoadData?lang=${lang}`,
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
     },this.query);
 }
 recordClick(args: any) {
- this.packingLot = args.rowData as ParkingLot;
- this.packingLotChange.emit(args.rowData);
+ this.parkingLot = args.rowData as ParkingLot;
+ this.parkingLotChange.emit(args.rowData);
 }
   toolbarClick(args) {
     switch (args.item.id) {
@@ -62,5 +72,38 @@ recordClick(args: any) {
       default:
         break;
     }
+  }
+  delete(id) {
+    this.alertify.confirm4(
+      this.alert.yes_message,
+      this.alert.no_message,
+      this.alert.deleteTitle,
+      this.alert.deleteMessage,
+      () => {
+        this.service.delete(id).subscribe(
+          (res) => {
+            if (res.success === true) {
+              this.alertify.success(this.alert.deleted_ok_msg);
+              this.loadData();
+            } else {
+              this.alertify.warning(this.alert.system_error_msg);
+            }
+          },
+          (err) => this.alertify.warning(this.alert.system_error_msg)
+        );
+      }, () => {
+        this.alertify.error(this.alert.cancelMessage);
+  
+      }
+    );
+  
+  }
+  edit(data) {
+    this.action.initModel();
+    this.action.guid = data.guid;
+    this.action.open();
+  }
+  saveChange() {
+    this.loadData();
   }
 }

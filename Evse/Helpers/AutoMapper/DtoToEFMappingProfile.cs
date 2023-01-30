@@ -28,6 +28,8 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<MemberDto, Member>();
             CreateMap<LandLordDto, LandLord>();
             CreateMap<EngineerDto, Engineer>();
+            CreateMap<DeviceDto, Device>();
+            CreateMap<ParkingLotDto, ParkingLot>();
 
         }
     }

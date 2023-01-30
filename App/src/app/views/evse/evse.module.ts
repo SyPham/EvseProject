@@ -27,6 +27,7 @@ import { EngineerComponent } from './engineer/engineer.component';
 import { LandlordComponent } from './landlord/landlord.component';
 import { MemberComponent } from './member/member.component';
 import { ParkingLotActionComponent } from './station/parking-lot/parking-lot-action/parking-lot-action.component';
+import { DeviceActionComponent } from './station/device/device-action/device-action.component';
 interface Environment {
   production: boolean;
   apiUrl: string;
@@ -62,7 +63,8 @@ interface Environment {
     EngineerComponent,
     LandlordComponent,
     MemberComponent,
-    ParkingLotActionComponent
+    ParkingLotActionComponent,
+    DeviceActionComponent
   ]
 })
 export class EvseModule {

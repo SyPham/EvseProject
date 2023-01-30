@@ -4,27 +4,28 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService, BaseComponent, UtilitiesService } from '@pigfarm-core';
 import { ImagePathConstants } from 'src/app/_core/_constants';
-import { ParkingLot, Site } from 'src/app/_core/_model/evse/model';
-import { ParkingLotService } from 'src/app/_core/_service/evse/parking-lot.service';
+import { Device, ParkingLot, Site } from 'src/app/_core/_model/evse/model';
+import { DeviceService } from 'src/app/_core/_service/evse/device.service';
 import { environment } from 'src/environments/environment';
 declare let $: any;
 @Component({
-  selector: 'app-parking-lot-action',
-  templateUrl: './parking-lot-action.component.html',
-  styleUrls: ['./parking-lot-action.component.scss']
+  selector: 'app-device-action',
+  templateUrl: './device-action.component.html',
+  styleUrls: ['./device-action.component.scss']
 })
-export class ParkingLotActionComponent  extends BaseComponent implements OnInit {
-  @Input() title: string = "ParkingLot_Detail";
+export class DeviceActionComponent  extends BaseComponent implements OnInit {
+  @Input() title: string = "Device_Detail";
   @Input() guid: string | null;
   @Input() site: Site;
+  @Input() parkingLot: ParkingLot;
   @Output() saveChange = new EventEmitter()
-  model: ParkingLot
+  model: Device
   file: any;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   constructor(
     private modalService: NgbModal,
-    private service: ParkingLotService,
+    private service: DeviceService,
     public translate: TranslateService,
     private alertify: AlertifyService,
     private datePipe: DatePipe,
@@ -40,8 +41,9 @@ export class ParkingLotActionComponent  extends BaseComponent implements OnInit 
   ngOnInit() {
   }
   initModel() {
-    this.model = {} as ParkingLot;
+    this.model = {} as Device;
     this.model.siteGuid = this.site.guid;
+    this.model.parkingLotGuid = this.parkingLot.guid;
     this.guid = null;
   }
   open() {

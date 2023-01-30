@@ -1,15 +1,14 @@
   <div class="row no-gutters">
     <div class="col-4">
-      {{site?.siteNo}}
       <app-site [(site)]="site"></app-site>
     </div>
     <div class="col-4">
 
-      <app-parking-lot [site]="site"  [(packingLot)]="packingLot"></app-parking-lot>
+      <app-parking-lot [site]="site"  [(parkingLot)]="parkingLot"></app-parking-lot>
     </div>
   
     <div class="col-4">
-      <app-device [(packingLot)]="packingLot"  [(site)]="site"></app-device>
+      <app-device [(parkingLot)]="parkingLot"  [(site)]="site"></app-device>
     </div>
   
   </div>

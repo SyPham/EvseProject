@@ -8,7 +8,7 @@ import { ParkingLot, Site } from 'src/app/_core/_model/evse/model';
 })
 export class StationComponent implements OnInit {
   site: Site
-  packingLot: ParkingLot
+  parkingLot: ParkingLot
 
   constructor() { }
 

@@ -1,22 +1,46 @@
 <div class="card">
   <div class="card-body p-0">
-    {{site?.siteNo}}
-    {{packingLot?.parkingLotNo}}
 
     <span class="title">{{'Device' | translate}}</span>
       <ejs-grid
     #grid
     id="grid"
-    [dataSource]="[]"
+    [dataSource]="dataSource"
+    [query]="query"
     [allowPaging]="true"
     [allowResizing]="true"
     [allowSorting]="true"
     [allowMultiSorting]='true'
     [enableInfiniteScrolling]="true"
     gridLines="Both"
+    [editSettings]="editSettings"
+    [toolbar]="toolbarOptions"
+    (toolbarClick)="toolbarClick($event)"
     
   >
     <e-columns>
+      <e-column
+      field="option"
+      [allowSorting]="false"
+      [allowSearching]="false"
+      [allowGrouping]="false"
+      [allowFiltering]="false"
+      [allowEditing]="false"
+      textAlign="Left"
+          headerTextAlign="Center"
+      width="80"
+      headerTextAlign="Center"
+      headerText="{{ 'OPTION' | translate}}"
+    >
+      <ng-template #template let-data>
+        <span (click)="delete(data.id)"class="delete-grid">
+          <i class="fa fa-trash"></i>
+        </span>
+        <span (click)="edit(data)" class="edit-grid">
+          <i class="fa fa-edit"></i>
+        </span>
+      </ng-template>
+    </e-column>
       <e-column
         field="deviceNo"
         [width]="120"
@@ -91,3 +115,4 @@
 
   </div>
 </div>
+<app-device-action [site]="site" [parkingLot]="parkingLot" (saveChange)="saveChange()"></app-device-action>
