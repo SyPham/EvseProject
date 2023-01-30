@@ -513,8 +513,8 @@ namespace Evse.Data
                     .HasMaxLength(40)
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.LandLordIdcard)
-                    .HasColumnName("LandLord_IDCARD")
+                entity.Property(e => e.EngineerIdcard)
+                    .HasColumnName("Engineer_IDCARD")
                     .HasMaxLength(200);
 
                 entity.Property(e => e.Lastlogin)
@@ -559,7 +559,25 @@ namespace Evse.Data
 
                 entity.Property(e => e.Upwd)
                     .HasColumnName("UPWD")
+                    .HasMaxLength(200);
+
+
+                  entity.Property(e => e.EngineerBirthday)
+                    .HasColumnName("Engineer_Birthday")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.EngineerSex)
+                    .HasColumnName("Engineer_Sex")
+                    .HasMaxLength(1);
+                 entity.Property(e => e.EngineerEmail)
+                    .HasColumnName("Engineer_Email")
                     .HasMaxLength(50);
+                entity.Property(e => e.EngineerAddress)
+                    .HasColumnName("Engineer_Address")
+                    .HasMaxLength(50);
+                  entity.Property(e => e.EngineerMobile)
+                    .HasColumnName("Engineer_Mobile")
+                    .HasMaxLength(10);
             });
 
             modelBuilder.Entity<LandLord>(entity =>
@@ -654,7 +672,38 @@ namespace Evse.Data
 
                 entity.Property(e => e.Upwd)
                     .HasColumnName("UPWD")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.LandLordBirthday)
+                    .HasColumnName("LandLord_Birthday")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.LandLordSex)
+                    .HasColumnName("LandLordSex")
+                    .HasMaxLength(1);
+
+               entity.Property(e => e.LandLordEmail)
+                    .HasColumnName("LandLord_Email")
                     .HasMaxLength(50);
+
+               entity.Property(e => e.LandLordMobile)
+                    .HasColumnName("LandLord_Mobile")
+                    .HasMaxLength(10);
+
+               entity.Property(e => e.LandLordAddress)
+                    .HasColumnName("LandLord_Address")
+                    .HasMaxLength(50);
+
+               entity.Property(e => e.ContractGuid)
+                    .HasColumnName("Contract_GUID")
+                    .HasMaxLength(40);
+
+               entity.Property(e => e.BankGuid)
+                    .HasColumnName("Bank_GUID")
+                    .HasMaxLength(40);
+                     entity.Property(e => e.LandLordSex)
+                    .HasColumnName("LandLord_Sex")
+                    .HasMaxLength(1);
             });
 
             modelBuilder.Entity<Member>(entity =>
@@ -737,7 +786,43 @@ namespace Evse.Data
 
                 entity.Property(e => e.Upwd)
                     .HasColumnName("UPWD")
+                    .HasMaxLength(200);
+
+
+                  entity.Property(e => e.MemberBirthday)
+                    .HasColumnName("Member_Birthday")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.MemberSex)
+                    .HasColumnName("Member_Sex")
+                    .HasMaxLength(1);
+                 entity.Property(e => e.MemberEmail)
+                    .HasColumnName("Member_Email")
                     .HasMaxLength(50);
+                entity.Property(e => e.MemberMobile)
+                    .HasColumnName("Member_Mobile")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.MemberAddress)
+                    .HasColumnName("Member_Address")
+                    .HasMaxLength(100);
+
+                  entity.Property(e => e.MemberLine)
+                    .HasColumnName("Member_Line")
+                    .HasMaxLength(50);
+                          entity.Property(e => e.CarGuid)
+                    .HasColumnName("Car_GUID")
+                    .HasMaxLength(40);
+                 entity.Property(e => e.PaymentGuid)
+                    .HasColumnName("Payment_GUID")
+                    .HasMaxLength(40);
+            entity.Property(e => e.PhotoPath)
+                    .HasColumnName("Photo_Path")
+                    .HasMaxLength(100);  
+            entity.Property(e => e.MemberIdcard)
+                    .HasColumnName("Member_IDCARD")
+                    .HasMaxLength(50);  
+                 
             });
 
             modelBuilder.Entity<ParkingLot>(entity =>
@@ -976,7 +1061,7 @@ namespace Evse.Data
 
                 entity.Property(e => e.SitePhoto)
                     .HasColumnName("Site_Photo")
-                    .HasMaxLength(20);
+                    .HasMaxLength(200);
 
                 entity.Property(e => e.SitePrincipal)
                     .HasColumnName("Site_Principal")

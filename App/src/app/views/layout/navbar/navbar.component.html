@@ -16,20 +16,20 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink" >基本設定</a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" routerLink="/profile">個人資料 Profile</a>
-                      <a class="dropdown-item"  routerLink="/change-password">修改密碼 Password</a>
-                      <a class="dropdown-item" (click)="logout()">登出 Logout</a>
+                      <a class="dropdown-item" routerLink="/profile">{{ "Profile_Menu" | translate}}</a>
+                      <a class="dropdown-item"  routerLink="/change-password">{{ "ChangePassword_Menu" | translate}}</a>
+                      <a class="dropdown-item" (click)="logout()">{{ "LogOut" | translate}}</a>
                      
                     </div>
               </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink2">資料管理</a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
-                      <a class="dropdown-item" href="#">站點設定 Station</a>
-                      <a class="dropdown-item" href="#">充電樁設定 Device</a>
-                      <a class="dropdown-item" href="#">管理-投資人、地主</a>
-                      <a class="dropdown-item" href="#">管理-工程師、電工</a>
-                      <a class="dropdown-item" href="#">管理-車主</a>
+                      <a class="dropdown-item" routerLink="/evse/site"> {{ "Site_Menu" | translate}}</a>
+                      <a class="dropdown-item" routerLink="/evse/landlord">{{ "LandLord_Menu" | translate}}</a>
+                      <a class="dropdown-item" routerLink="/evse/engineer">{{ "Engineer_Menu" | translate}}</a>
+                      <a class="dropdown-item" routerLink="/evse/member">{{ "Member_Menu" | translate}}</a>
+                      <a class="dropdown-item" routerLink="/system/account">{{ "Account_Menu" | translate}}</a>
                       <a class="dropdown-item" href="#">管理-後台管理員</a>
                      
                     </div>
@@ -58,10 +58,10 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" data-toggle="dropdown">系統設定</a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" routerLink="/system/menu">設定-選單設定 Menu</a>
-                      <a class="dropdown-item" routerLink="/system/code-type">設定-系統代碼 CodeType</a>
-                      <a class="dropdown-item" routerLink="/system-config">設定-系統參數 SystemConfig</a>
-                      <a class="dropdown-item" routerLink="/system/system-language">設定-語言設定 Language</a>
+                      <a class="dropdown-item" routerLink="/system/menu">{{ "Menu" | translate}}</a>
+                      <a class="dropdown-item" routerLink="/system/code-type">{{ "CodeType_Menu" | translate}}</a>
+                      <a class="dropdown-item" routerLink="/system-config">{{ "SystemConfig_Menu" | translate}}</a>
+                      <a class="dropdown-item" routerLink="/system/system-language">{{ "Language_Menu" | translate}}</a>
                      
                     </div>
               </li>

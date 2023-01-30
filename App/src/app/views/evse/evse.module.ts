@@ -18,6 +18,14 @@ import { ChartModule } from '@syncfusion/ej2-angular-charts';
 import { environment } from '../../../environments/environment'
 import { PigfarmCoreModule } from '@pigfarm-core';
 import { HomeComponent } from './home/home.component';
+import { StationComponent } from './station/station.component';
+import { SiteComponent } from './station/site/site.component';
+import { ParkingLotComponent } from './station/parking-lot/parking-lot.component';
+import { DeviceComponent } from './station/device/device.component';
+import { SiteActionComponent } from './station/site/site-action/site-action.component';
+import { EngineerComponent } from './engineer/engineer.component';
+import { LandlordComponent } from './landlord/landlord.component';
+import { MemberComponent } from './member/member.component';
 interface Environment {
   production: boolean;
   apiUrl: string;
@@ -44,7 +52,15 @@ interface Environment {
     PigfarmCoreModule.forRoot(environment.apiUrl),
   ],
   declarations: [
-    HomeComponent
+    HomeComponent,
+    StationComponent,
+    DeviceComponent,
+    SiteComponent,
+    SiteActionComponent,
+    ParkingLotComponent,
+    EngineerComponent,
+    LandlordComponent,
+    MemberComponent
   ]
 })
 export class EvseModule {

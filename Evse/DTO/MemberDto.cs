@@ -2,20 +2,18 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
-namespace Evse.Models
+namespace Evse.DTO
 {
-    public partial class Engineer
+    public partial class MemberDto
     {
         public decimal Id { get; set; }
         public string SiteGuid { get; set; }
         public string Uid { get; set; }
         public string Upwd { get; set; }
-        public string EngineerNo { get; set; }
-        public string EngineerName { get; set; }
-        public string EngineerIdcard { get; set; }
-        public string LicensePath { get; set; }
-        public string PhotoPath { get; set; }
+        public string MemberNo { get; set; }
+        public string MemberName { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime? Lastlogin { get; set; }
@@ -30,11 +28,19 @@ namespace Evse.Models
         public decimal? Status { get; set; }
         public string Guid { get; set; }
 
-        public string EngineerSex { get; set; }
-        public DateTime? EngineerBirthday { get; set; }
-        public string EngineerEmail { get; set; }
-        public string EngineerMobile { get; set; }
-        public string EngineerAddress { get; set; }
+        public string MemberSex { get; set; }
+        public DateTime? MemberBirthday { get; set; }
+        public string MemberIdcard { get; set; }
+        public string MemberEmail { get; set; }
+        public string MemberMobile { get; set; }
+        public string MemberAddress { get; set; }
+        public string MemberLine { get; set; }
+        public string CarGuid { get; set; }
+        public string PaymentGuid { get; set; }
+        public string PhotoPath { get; set; }
+        public List<IFormFile> File { get; set; }
+        public string MemberSexName { get; set; }
+
 
     }
 }

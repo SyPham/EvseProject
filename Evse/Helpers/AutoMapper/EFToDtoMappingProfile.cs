@@ -19,31 +19,20 @@ namespace Evse.Helpers.AutoMapper
                 .ForMember(d => d.Username, o => o.MapFrom(x => x.Uid))
                 .ForMember(d => d.ID, o => o.MapFrom(x => x.AccountId));
 
-        
-    
             CreateMap<Employee, EmployeeDto>();
-
-        
             CreateMap<Employee, EmployeeDto>();
-        
             CreateMap<SystemLanguage, SystemLanguageDto>();
             CreateMap<XAccount, XAccountDto>();
             CreateMap<XAccountGroup, XAccountGroupDto>();
             CreateMap<SysMenu, SysMenuDto>();
-
-
-
             CreateMap<CodePermission, CodePermissionDto>();
-
-
-     
             CreateMap<SysMenu, ChartSettingDto>();
             CreateMap<CodeType, CodeTypeDto>();
-        
-
             CreateMap<SystemConfig, SystemConfigDto>();
-          
-       
+            CreateMap<Site, SiteDto>();
+               CreateMap<Member, MemberDto>();
+            CreateMap<LandLord, LandLordDto>();
+            CreateMap<Engineer, EngineerDto>();
         }
 
     }

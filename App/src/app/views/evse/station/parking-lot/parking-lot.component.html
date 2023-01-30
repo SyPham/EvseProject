@@ -1,0 +1,90 @@
+<div class="card">
+  <div class="card-body p-0">
+    <span class="title">{{'ParkingLot' | translate}}</span>
+      <ejs-grid
+    #grid
+    id="grid"
+    [dataSource]="[]"
+    [allowPaging]="true"
+    [allowResizing]="true"
+    [allowSorting]="true"
+    [allowMultiSorting]='true'
+    [enableInfiniteScrolling]="true"
+    gridLines="Both"
+    
+  >
+    <e-columns>
+      <e-column
+        field="parkingLotNo"
+        [width]="120"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'ParkingLot_NO' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="parkingLotName"
+        [width]="120"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'ParkingLot_Name' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="parkingLotPrincipal"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'ParkingLot_Principal' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="parkingLotTel"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'ParkingLot_Tel' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="parkingLotAddress"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'ParkingLot_Address' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="parkingLotLocation"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'ParkingLot_Location' | translate }}"
+      >
+      </e-column>
+  
+      
+      <e-column
+        field="parkingLotPhoto"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerText="{{ 'ParkingLot_Photo' | translate }}"
+      >
+      </e-column>
+  
+      <e-column
+        field="id"
+        [allowSearching]="false"
+        textAlign="Left"
+        headerTextAlign="Center"
+        [isPrimaryKey]="true"
+        [visible]="false"
+        headerText="ID"
+      >
+      </e-column>
+    </e-columns>
+  </ejs-grid>
+
+  </div>
+</div>

@@ -26,5 +26,15 @@ namespace Evse.Models
         public decimal? DeleteBy { get; set; }
         public decimal? Status { get; set; }
         public string Guid { get; set; }
+           public string MemberSex { get; set; }
+        public DateTime? MemberBirthday { get; set; }
+        public string MemberIdcard { get; set; }
+        public string MemberEmail { get; set; }
+        public string MemberMobile { get; set; }
+        public string MemberAddress { get; set; }
+        public string MemberLine { get; set; }
+        public string CarGuid { get; set; }
+        public string PaymentGuid { get; set; }
+        public string PhotoPath { get; set; }
     }
 }

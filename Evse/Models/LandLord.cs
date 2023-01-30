@@ -29,5 +29,14 @@ namespace Evse.Models
         public decimal? DeleteBy { get; set; }
         public decimal? Status { get; set; }
         public string Guid { get; set; }
+
+        public string LandLordSex { get; set; }
+        public DateTime? LandLordBirthday { get; set; }
+        public string LandLordEmail { get; set; }
+        public string LandLordMobile { get; set; }
+        public string LandLordAddress { get; set; }
+        public string ContractGuid { get; set; }
+        public string BankGuid { get; set; }
+
     }
 }

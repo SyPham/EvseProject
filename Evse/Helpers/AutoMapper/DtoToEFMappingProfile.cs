@@ -14,31 +14,20 @@ namespace Evse.Helpers.AutoMapper
         public DtoToEFMappingProfile()
         {
          
-        
             CreateMap<EmployeeDto, Employee>();
-
-        
             CreateMap<EmployeeDto, Employee>();
-          
             CreateMap<SystemLanguageDto, SystemLanguage>();
-           
-
             CreateMap<XAccountDto, XAccount>();
             CreateMap<XAccountGroupDto, XAccountGroup>();
             CreateMap<SysMenuDto, SysMenu>();
-
-         
             CreateMap<CodePermissionDto, CodePermission>();
-
-        
             CreateMap<ChartSettingDto, SysMenu>();
             CreateMap<CodeTypeDto, CodeType>();
-          
             CreateMap<SystemConfigDto, SystemConfig>();
-
-
-            
-
+            CreateMap<SiteDto, Site>();
+            CreateMap<MemberDto, Member>();
+            CreateMap<LandLordDto, LandLord>();
+            CreateMap<EngineerDto, Engineer>();
 
         }
     }
