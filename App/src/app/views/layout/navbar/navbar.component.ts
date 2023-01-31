@@ -17,8 +17,18 @@ import { AlertifyService } from "@pigfarm-core";
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  fieldsLang: object = { text: "name", value: "id" };
+  lang: string;
+  languageData = [
+    { id: "Tw", name: "Tw" },
+    { id: "Cn", name: "Cn" },
+    { id: "En", name: "En" },
+    { id: "Vi", name: "Vi" },
+  ];
   currentTime
   user = JSON.parse(localStorage.getItem('user'))
+  nickName: any;
+  username: any;
   constructor(
     private authService: AuthService,
     private cookieService: CookieService,
@@ -35,9 +45,23 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentTime = moment().format('HH:mm:ss, D/MMM');
-
+    this.lang = this.capitalize(localStorage.getItem("lang"));
+    this.nickName =
+    JSON.parse(localStorage.getItem("user"))?.nickName || "No Name";
+  this.username =
+    JSON.parse(localStorage.getItem("user"))?.username || "Guest";
     setInterval(() => this.updateCurrentTime(), 1 * 1000);
 
+  }
+  langValueChange(args) {
+    const lang = args.itemData.id.toLowerCase();
+    localStorage.removeItem("lang");
+    localStorage.setItem("lang", lang);
+    this.lang = this.capitalize(localStorage.getItem("lang"));
+    location.reload();
+  }
+  capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
   updateCurrentTime() {
     this.currentTime = moment().format('HH:mm:ss, D/MMM');
