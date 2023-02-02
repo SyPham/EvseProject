@@ -25,9 +25,9 @@ export class LandlordComponent extends BaseComponent implements OnInit {
   isAdmin = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN_CANCEL';
   data: DataManager;
   modalReference: NgbModalRef;
-
+  active = "Detail"
   @ViewChild('grid') public grid: GridComponent;
-  model: Landlord;
+  model: Landlord = {} as Landlord;
   locale = localStorage.getItem('lang');
   editSettings = { showDeleteConfirmDialog: false, allowEditing: false, allowAdding: true, allowDeleting: false, mode: 'Normal' };
   title: any;
@@ -59,7 +59,7 @@ export class LandlordComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
   this.toolbarOptions = ['ExcelExport',{template: this.odsTemplate}, 'Add', 'Search'];
-
+  this.configImage();
     // this.Permission(this.route);
     let lang = localStorage.getItem('lang');
     let languages = JSON.parse(localStorage.getItem('languages'));
@@ -277,6 +277,9 @@ export class LandlordComponent extends BaseComponent implements OnInit {
       this.title = 'Landlord_Add_Model';
     }
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
+   this.configImage();
+  }
+  configImage() {
     const option = {
       overwriteInitial: true,
       maxFileSize: 1500,
@@ -389,5 +392,13 @@ export class LandlordComponent extends BaseComponent implements OnInit {
       });
     }
 
+  }
+  cancel() {
+    this.audit = {}
+    this.model = {} as Landlord;
+  }
+  rowSelected(args) {
+    this.model = {...args.data};
+    this.getAudit(this.model.id)
   }
 }
