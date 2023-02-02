@@ -532,11 +532,13 @@ font-size: 11px;
   background-color: #a8bbbf;
 }
 .nav-link.active {
-  background-color: #fb8827 !important;
+  background-color: #344e40 !important;
+  color: white !important;
+
 }
 .btn-main {
 color: white;
-  background-color: #fb8827 !important;
+  background-color: #344e40 !important;
 }
 
 
