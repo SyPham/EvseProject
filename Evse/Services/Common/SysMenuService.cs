@@ -25,6 +25,7 @@ namespace Evse.Services
         Task<object> LoadReportMenuData(DataManager dm, string reportType);
         Task<object> LoadReportChartConfigMenuData(DataManager dm, string reportType);
         Task<object> GetMenus(string lang);
+        Task<object> GetMenusByMenuType(string lang, string menuType);
         Task<object> GetMenusByFarm(string farmGuid, string lang);
         Task<object> GetParents(string lang);
         Task<object> GetToolbarParents(string lang);
@@ -42,7 +43,7 @@ namespace Evse.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _configMapper;
-private readonly IEvseLoggerService _logger;
+        private readonly IEvseLoggerService _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public SysMenuService(
@@ -59,7 +60,7 @@ IEvseLoggerService logger
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
-_logger = logger;
+            _logger = logger;
             _repoXAccountGroup = repoXAccountGroup;
             _repoXAccount = repoXAccount;
             _unitOfWork = unitOfWork;
@@ -75,7 +76,7 @@ _logger = logger;
                 item.Status = 1;
                 item.FarmGgp = 1;
                 item.FarmGp = 1;
-                item.FarmPmpf= 1;
+                item.FarmPmpf = 1;
                 item.FarmGrower = 1;
                 item.FarmNursery = 1;
                 item.FarmSemen = 1;
@@ -122,8 +123,8 @@ _logger = logger;
                 item.ChartNameVn = model.ChartNameVn;
                 item.ChartNameCn = model.ChartNameCn;
                 item.ChartUnit = model.ChartUnit;
+                item.MenuType = model.MenuType;
 
-             
 
                 item.FarmGgp = model.FarmGgp;
                 item.FarmGp = model.FarmGp;
@@ -151,6 +152,82 @@ _logger = logger;
         }
 
 
+        public async Task<object> GetMenusByMenuType(string lang = "tw", string menuType = "BE")
+        {
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+            var account = await _repoXAccount.FindAll(x => x.Status == "1" && x.AccountId == accountId).FirstOrDefaultAsync();
+            if (account == null) return new List<dynamic> { };
+
+            var query = await (from x in _repo.FindAll(x => x.Status == 1)
+                               select new
+                               {
+                                   UpperId = x.UpperId == 0 ? null : x.UpperId,
+                                   FunctionCode = x.Type,
+                                   MenuType = x.MenuType,
+                                   x.Id,
+                                   Url = x.MenuLink,
+                                   SortId = x.SortId ?? 0,
+                                   Icon = x.MenuIcon,
+                                   x.FarmGgp,
+                                   x.FarmGp,
+                                   x.FarmPmpf,
+                                   x.FarmGrower,
+                                   x.FarmNursery,
+                                   x.FarmSemen,
+                                   Name = lang == Languages.EN ? (x.MenuNameEn == "" || x.MenuNameEn == null ? x.MenuName : x.MenuNameEn) : lang == Languages.VI ? (x.MenuNameVn == "" || x.MenuNameVn == null ? x.MenuName : x.MenuNameVn) : lang == Languages.TW ? x.MenuName : lang == Languages.CN ? (x.MenuNameCn == "" || x.MenuNameCn == null ? x.MenuName : x.MenuNameCn) : x.MenuName
+
+                               }).ToListAsync();
+            var queryTemp = query.Select(x => new
+            {
+
+                UpperId = x.UpperId,
+                FunctionCode = x.FunctionCode,
+                Id = x.Id,
+                Url = x.Url,
+                SortId = x.SortId,
+                Icon = x.Icon,
+                Name = x.Name,
+                Ggp = x.FarmGgp,
+                Gp = x.FarmGp,
+                Pmpf = x.FarmPmpf,
+                Semen = x.FarmSemen,
+                Nursery = x.FarmNursery,
+                Grower = x.FarmGrower,
+            });
+
+            return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
+            {
+                x.Entity.Url,
+                x.Entity.Icon,
+                x.Entity.Name,
+                x.Entity.FunctionCode,
+                x.Entity.SortId,
+                x.HasChildren,
+                Level = x.Depth,
+                Children = x.ChildNodes.Select(a => new
+                {
+                    a.Entity.Url,
+                    a.Entity.Icon,
+                    a.Entity.Name,
+                    a.Entity.FunctionCode,
+                    a.HasChildren,
+                    a.Entity.SortId,
+                    Level = a.Depth,
+                    Children = a.ChildNodes.Select(b => new
+                    {
+                        b.Entity.Url,
+                        b.Entity.Icon,
+                        b.Entity.Name,
+                        b.Entity.FunctionCode,
+                        HasChildren = false,
+                        b.Entity.SortId,
+                        Level = b.Depth,
+                        Children = new List<dynamic>()
+                    }).OrderBy(b => b.SortId)
+                }).OrderBy(a => a.SortId)
+            }).OrderBy(x => x.SortId);
+        }
         public async Task<object> GetMenus(string lang = "tw")
         {
             string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
@@ -193,7 +270,7 @@ _logger = logger;
                 Nursery = x.FarmNursery,
                 Grower = x.FarmGrower,
             });
-            
+
             return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
             {
                 x.Entity.Url,
@@ -226,17 +303,17 @@ _logger = logger;
                 }).OrderBy(a => a.SortId)
             }).OrderBy(x => x.SortId);
         }
-        public async Task<object> GetMenusByFarm(string farmGuid,string lang = "tw")
+        public async Task<object> GetMenusByFarm(string farmGuid, string lang = "tw")
         {
             string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
             var account = await _repoXAccount.FindAll(x => x.Status == "1" && x.AccountId == accountId).FirstOrDefaultAsync();
 
-            
+
             if (account == null) return new List<dynamic> { };
-             var group = await _repoXAccountGroup.FindAll(x => x.Guid == account.AccountGroup).Select(x => new { x.GroupNo }).FirstOrDefaultAsync();
-          
-         
+            var group = await _repoXAccountGroup.FindAll(x => x.Guid == account.AccountGroup).Select(x => new { x.GroupNo }).FirstOrDefaultAsync();
+
+
             var query = await (from x in _repo.FindAll(x => x.Status == 1)
                                select new
                                {
@@ -272,7 +349,7 @@ _logger = logger;
                 Nursery = x.FarmNursery,
                 Grower = x.FarmGrower,
             });
-            
+
             return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
             {
                 x.Entity.Id,
@@ -334,7 +411,7 @@ _logger = logger;
                     x.FarmSemen,
                     x.StoredProceduresName,
                     x.ReportType,
-
+                    x.MenuType
                 });
                 var count = await datasource.CountAsync();
                 if (data.Where != null) // for filtering
@@ -378,6 +455,7 @@ _logger = logger;
                     x.FarmSemen,
                     x.ReportType,
                     x.StoredProceduresName,
+                    x.MenuType
 
                 });
                 var count = await datasource.CountAsync();
@@ -404,7 +482,7 @@ _logger = logger;
         {
             var datasource = _repo.FindAll().OrderByDescending(x => x.Id).Select(x => new
             {
-               x.Id,
+                x.Id,
                 x.Type,
                 x.Guid,
                 x.MenuName,
@@ -417,7 +495,7 @@ _logger = logger;
                 x.ChartNameEn,
                 x.ChartNameVn,
                 x.ChartNameCn,
-            
+                x.MenuType,
                 x.MenuIcon,
                 x.Comment,
                 x.UpperId,
@@ -485,7 +563,7 @@ _logger = logger;
             return data3;
 
         }
-         public async Task<object> GetToolbarParentsLevel2(string lang, int upperId)
+        public async Task<object> GetToolbarParentsLevel2(string lang, int upperId)
         {
             var query = from x in _repo.FindAll(x => x.Status == 1 && x.UpperId == upperId)
                         .OrderBy(x => x.SortId)
@@ -545,7 +623,7 @@ _logger = logger;
                 x.ChartNameEn,
                 x.ChartNameVn,
                 x.ChartNameCn,
-              
+
                 x.MenuIcon,
                 x.Comment,
                 x.UpperId,
@@ -596,7 +674,7 @@ _logger = logger;
                 x.ChartNameEn,
                 x.ChartNameVn,
                 x.ChartNameCn,
-            
+
                 x.MenuIcon,
                 x.Comment,
                 x.UpperId,

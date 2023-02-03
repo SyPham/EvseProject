@@ -36,4 +36,5 @@ export interface SysMenu {
   farmSemen: number | null;
   farmNursery: number | null;
   farmGrower: number | null;
+  menuType:string;
 }

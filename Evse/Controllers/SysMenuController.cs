@@ -56,6 +56,11 @@ namespace Evse.Controllers
         {
             return Ok(await _service.GetMenus(lang));
         }
+          [HttpGet]
+        public async Task<ActionResult> GetMenusByMenuType(string lang, string menuType)
+        {
+            return Ok(await _service.GetMenusByMenuType(lang, menuType));
+        }
          [HttpGet]
         public async Task<ActionResult> GetMenusByFarm(string lang, string farmGuid)
         {

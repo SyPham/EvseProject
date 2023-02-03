@@ -32,6 +32,8 @@ export class SysMenuService extends CURDService<SysMenu> {
   getItemByKind(lang,kind) {
     return this.http.get<any>(`${this.base}SysMenu/GetItemByKind?lang=${lang}&kind=${kind}`, {});
   }
-
+  getMenusByMenuType(lang,menuType) {
+    return this.http.get<any>(`${this.base}SysMenu/getMenusByMenuType?lang=${lang}&menuType=${menuType}`, {});
+  }
 
 }

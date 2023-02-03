@@ -11,6 +11,11 @@ import moment from "moment";
 import { AutoLogoutService } from "src/app/_core/_service/apply-orders/auto-log-off.service";
 import { XAccountService } from "src/app/_core/_service/xaccount.service";
 import { AlertifyService } from "@pigfarm-core";
+import { Subscription } from "rxjs";
+import { NgxSpinnerService } from "ngx-spinner";
+import { SysMenuService } from "src/app/_core/_service/sys-menu.service";
+declare let $: any;
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -29,6 +34,14 @@ export class NavbarComponent implements OnInit {
   user = JSON.parse(localStorage.getItem('user'))
   nickName: any;
   username: any;
+  menus: any;
+  userid: number;
+  title: any;
+  btnText: any;
+  parentActive = false;
+  childActive = false;
+  subActive = false;
+  subscription: Subscription = new Subscription();
   constructor(
     private authService: AuthService,
     private cookieService: CookieService,
@@ -40,9 +53,34 @@ export class NavbarComponent implements OnInit {
     private serviceHeader: HeaderService,
     private autoLogoutService: AutoLogoutService,
     private translate:TranslateService,
-    private accountService: XAccountService
+    private accountService: XAccountService,
+    private spinner: NgxSpinnerService,
+    private sysMenuService: SysMenuService,
   ) { }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+  ngAfterViewInit(): void {
+    $(function () {
+      $('.nav > .sidebar-toggle').on('click', function (e) {
+          e.preventDefault();
+          $('.sidebar-toggle').toggleClass('active');
+          $('.menu-collapse').toggleClass('active');
+          $('.sidebar.slimScroll').toggleClass('active');
+      });
 
+      $('.nav > .dropdown .sidebar-toggle').on('click', function (e) {
+          e.preventDefault();
+          $('.dropdown-menu.dropdown-menu-right.navbar-dropdown').toggleClass('show');
+      });
+      $('.dropdown-menu-right').on('mouseleave', function (e) {
+        e.preventDefault();
+        $('.dropdown-menu.dropdown-menu-right.navbar-dropdown').removeClass('show');
+    });
+
+
+  });
+  }
   ngOnInit(): void {
     this.currentTime = moment().format('HH:mm:ss, D/MMM');
     this.lang = this.capitalize(localStorage.getItem("lang"));
@@ -51,6 +89,7 @@ export class NavbarComponent implements OnInit {
   this.username =
     JSON.parse(localStorage.getItem("user"))?.username || "Guest";
     setInterval(() => this.updateCurrentTime(), 1 * 1000);
+    this.getMenu();
 
   }
   langValueChange(args) {
@@ -78,4 +117,56 @@ export class NavbarComponent implements OnInit {
       this.alertify.message(this.trans.instant("Logged out"));
     });
   }
+  navigate(data) {
+    const functionCode = data.functionCode;
+    if (functionCode === 'Report'&& data.level === 2) {
+      return;
+    }
+    if (functionCode === 'Report'&& data.level === 3) {
+      return this.router.navigate([data.url])
+    }
+    const functions = JSON.parse(localStorage.getItem('functions')) || [];
+    const permissions = functions.includes(functionCode);
+    if(permissions) {
+      if (data.url) {
+        return  this.router.navigate([data.url])
+      }
+    } else {
+      this.alertify.errorBackToLogin(this.translate.instant(this.title), this.translate.instant(this.btnText), () => {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        localStorage.removeItem('refresh-token');
+        localStorage.removeItem('login-event');
+        localStorage.removeItem('functions');
+        localStorage.removeItem('menuItem');
+        localStorage.removeItem('farmGuid');
+        localStorage.removeItem('menus');
+        this.router.navigate(['/login']);
+      }, true, () => {
+        return;
+      });
+      return;
+    }
+  }
+  getMenu() {
+    this.spinner.show();
+    this.sysMenuService.getMenusByMenuType(this.lang.toLowerCase(), "FE").subscribe((menus: []) => {
+      this.menus = menus;
+      localStorage.setItem('menus', JSON.stringify(menus));
+      $(function () {
+        $('a.toggle').on('click', function (e) {
+          e.preventDefault();
+          $(this).closest('ul').find('a.toggle.active').not(this).removeClass('active');
+          $(this).toggleClass('active');
+
+        });
+      });
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 500)
+    }, (err) => {
+      this.spinner.hide();
+    });
+  }
+ 
 }

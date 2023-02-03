@@ -12,51 +12,18 @@
         <div id="navbarNavDropdown" class="navbar-collapse collapse">
             <ul class="navbar-nav mr-auto mb-0 mt-0 py-0"></ul>
             <ul class="navbar-nav">
+              <ng-container *ngFor="let item of menus">
+                <li class="nav-item dropdown" *ngIf="item.hasChildren">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" >{{ item.name }}</a>
+                  <div *ngIf="item.hasChildren" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <ng-container *ngFor="let subItem of item.children">
+                      <a class="dropdown-item"(click)="navigate(subItem)" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">{{ subItem.name}}</a>
+                    </ng-container>
+                     
+                    </div>
+              </li>
+              </ng-container>
                
-             
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink2">資料管理</a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
-                      <a class="dropdown-item" routerLink="/evse/site"> {{ "Site_Menu" | translate}}</a>
-                      <a class="dropdown-item" routerLink="/evse/landlord">{{ "LandLord_Menu" | translate}}</a>
-                      <a class="dropdown-item" routerLink="/evse/engineer">{{ "Engineer_Menu" | translate}}</a>
-                      <a class="dropdown-item" routerLink="/evse/member">{{ "Member_Menu" | translate}}</a>
-                      <a class="dropdown-item" routerLink="/system/account">{{ "Account_Menu" | translate}}</a>
-                      <a class="dropdown-item" href="#">管理-後台管理員</a>
-                     
-                    </div>
-              </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown">硬體設施</a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="#">遠端控管-充電樁</a>
-                      <a class="dropdown-item" href="#">電價與排程操作</a>
-                      <a class="dropdown-item" href="#">端控管-地擋</a>
-                      <a class="dropdown-item" href="#">控管-升降功能</a>
-                     
-                    </div>
-              </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown">報表</a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="#">報表1 - 監視攝影機</a>
-                      <a class="dropdown-item" href="#">報表2 - 基本數據(充電度數)</a>
-                      <a class="dropdown-item" href="#">報表3 - 基本數據(金流)</a>
-                      <a class="dropdown-item" href="#">報表4 - 可用空間回報</a>
-                      <a class="dropdown-item" href="#">報表5 - 使用率</a>
-                     
-                    </div>
-              </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown">系統設定</a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" routerLink="/system/menu">{{ "Menu" | translate}}</a>
-                      <a class="dropdown-item" routerLink="/system/code-type">{{ "CodeType_Menu" | translate}}</a>
-                      <a class="dropdown-item" routerLink="/system-config">{{ "SystemConfig_Menu" | translate}}</a>
-                      <a class="dropdown-item" routerLink="/system/system-language">{{ "Language_Menu" | translate}}</a>
-                     
-                    </div>
-              </li>
               <li class="nav-item">
                 <a class="nav-link">
                   <span class="font-weight-bold text-white">{{currentTime}}</span>
