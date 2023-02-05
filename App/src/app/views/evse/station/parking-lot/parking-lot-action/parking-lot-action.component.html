@@ -12,7 +12,22 @@
   </button>
   </div>
   <div class="modal-body">
+
+
+
     <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label for="type">{{ "Site" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-site-dropdownlist
+            id="site"
+            [(selectedValue)]="model.siteGuid"
+          >
+          </app-site-dropdownlist>
+        </div>
+      </div>
+
           <div class="col-6">
             <div class="form-group">
               <label for="type">{{ "ParkingLot_Type" | translate }}</label>
@@ -57,6 +72,33 @@
               />
             </div>
           </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label for="device">{{ "Device" | translate }}</label>
+              <app-device-dropdownlist
+                id="device"
+                [(selectedValue)]="model.deviceGuid"
+              >
+              </app-device-dropdownlist>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <label>{{ "Device_LR" | translate }} </label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 20 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="20"
+                type="text"
+                [(ngModel)]="model.deviceLr"
+                class="form-control"
+              />
+            </div>
+          </div>
+
 
         <div class="col-12">
           <label>{{ "AREA_COMMENT" | translate }} </label>

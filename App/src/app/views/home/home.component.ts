@@ -91,7 +91,7 @@ export class HomeComponent implements OnInit {
         localStorage.removeItem('functions');
         localStorage.removeItem('menuItem');
         localStorage.removeItem('farmGuid');
-        localStorage.removeItem('menus');
+        localStorage.removeItem('menus2');
         this.router.navigate(['/login']);
       }, true, () => {
         return;
@@ -103,7 +103,7 @@ export class HomeComponent implements OnInit {
     this.spinner.show();
     this.sysMenuService.getMenusByMenuType(this.lang.toLowerCase(), "FE").subscribe((menus: []) => {
       this.menus = menus;
-      localStorage.setItem('menus', JSON.stringify(menus));
+      localStorage.setItem('menus2', JSON.stringify(menus));
       $(function () {
         $('a.toggle').on('click', function (e) {
           e.preventDefault();

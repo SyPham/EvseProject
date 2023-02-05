@@ -132,7 +132,7 @@ export class NavbarComponent implements OnInit {
         return  this.router.navigate([data.url])
       }
     } else {
-      this.alertify.errorBackToLogin(this.translate.instant(this.title), this.translate.instant(this.btnText), () => {
+      this.alertify.errorBackToLogin(this.translate.instant("Access-denied"), this.translate.instant("Back to login"), () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
         localStorage.removeItem('refresh-token');
@@ -150,7 +150,7 @@ export class NavbarComponent implements OnInit {
   }
   getMenu() {
     this.spinner.show();
-    this.sysMenuService.getMenusByMenuType(this.lang.toLowerCase(), "FE").subscribe((menus: []) => {
+    this.sysMenuService.getMenusByMenuType(this.lang.toLowerCase(), "BE").subscribe((menus: []) => {
       this.menus = menus;
       localStorage.setItem('menus', JSON.stringify(menus));
       $(function () {

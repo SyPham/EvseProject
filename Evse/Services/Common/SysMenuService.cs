@@ -156,10 +156,13 @@ IEvseLoggerService logger
         {
             string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
-            var account = await _repoXAccount.FindAll(x => x.Status == "1" && x.AccountId == accountId).FirstOrDefaultAsync();
+            if (menuType == "BE") {
+             var account = await _repoXAccount.FindAll(x => x.Status == "1" && x.AccountId == accountId).FirstOrDefaultAsync();
             if (account == null) return new List<dynamic> { };
+            }
+          
 
-            var query = await (from x in _repo.FindAll(x => x.Status == 1)
+            var query = await (from x in _repo.FindAll(x => x.Status == 1 && menuType == x.MenuType)
                                select new
                                {
                                    UpperId = x.UpperId == 0 ? null : x.UpperId,

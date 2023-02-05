@@ -332,13 +332,13 @@ _logger = logger;
             if (data.UpdateBy.HasValue)
             {
                 var updateAudit = await _repoXAccount.FindAll(x => x.AccountId == data.UpdateBy).AsNoTracking().Select(x=> new { x.Uid }).FirstOrDefaultAsync();
-                updateBy = updateBy != null ? updateAudit.Uid : "N/A";
+                updateBy = updateAudit != null && updateBy != null ? updateAudit.Uid : "N/A";
                 updateDate = data.UpdateDate.HasValue ? data.UpdateDate.Value.ToString("yyyy/MM/dd HH:mm:ss") : "N/A";
             }
             if (data.CreateBy.HasValue)
             {
                 var createAudit = await _repoXAccount.FindAll(x => x.AccountId == data.CreateBy).AsNoTracking().Select(x => new { x.Uid }).FirstOrDefaultAsync();
-                createBy = createAudit != null ? createAudit.Uid : "N/A";
+                createBy = createAudit != null && createAudit != null ? createAudit.Uid : "N/A";
                 createDate = data.CreateDate.HasValue ? data.CreateDate.Value.ToString("yyyy/MM/dd HH:mm:ss") : "N/A";
             }
             return new

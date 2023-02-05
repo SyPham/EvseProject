@@ -48,8 +48,8 @@ import { AlertifyService, PigfarmCoreService } from '../services';
 import { RecordSaleDropdownlistComponent, BoarTestingDropdownlistComponent, BomBoarDropdownlistComponent, BomGiltDropdownlistComponent, GiltinMakeorderDropdownlistComponent, UploadDocumentComponent } from './components';
 import { CommonModule } from '@angular/common';
 import { GiltInDropdownlistComponent } from './components/gilt-in-dropdownlist/gilt-in-dropdownlist.component';
-import { SiteDropdownlistComponent } from './components/site-component.ts/site-dropdownlist.component';
 import { DeviceDropdownlistComponent } from './components/device-component.ts/device-dropdownlist.component';
+import { SiteDropdownlistComponent } from './components/site-component.ts/site-dropdownlist.component';
 const commponents = [
   PigDropdownlistComponent,
   PenDropdownlistComponent,

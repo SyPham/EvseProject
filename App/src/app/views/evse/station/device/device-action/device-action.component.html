@@ -13,6 +13,8 @@
   </div>
   <div class="modal-body">
     <div class="row">
+
+      
           <div class="col-6">
             <div class="form-group">
               <label for="type">{{ "Device_Type" | translate }}</label>
@@ -58,6 +60,59 @@
             </div>
           </div>
 
+          <div class="w-100"></div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label for="device">{{ "Device_Left_GUID" | translate }}</label>
+              <app-device-dropdownlist
+                id="device"
+                [(selectedValue)]="model.deviceLeftGuid"
+              >
+              </app-device-dropdownlist>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <label>{{ "Device_Left_No" | translate }} </label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 200 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="200"
+                type="text"
+                [(ngModel)]="model.deviceLeftNo"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group">
+              <label for="device">{{ "Device_Right_GUID" | translate }}</label>
+              <app-device-dropdownlist
+                id="device"
+                [(selectedValue)]="model.deviceRightGuid"
+              >
+              </app-device-dropdownlist>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <label>{{ "Device_Right_No" | translate }} </label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 200 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="200"
+                type="text"
+                [(ngModel)]="model.deviceRightNo"
+                class="form-control"
+              />
+            </div>
+          </div>
         <div class="col-12">
           <label>{{ "AREA_COMMENT" | translate }} </label>
           <div class="form-group">
