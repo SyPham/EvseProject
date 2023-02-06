@@ -32,6 +32,11 @@ namespace Evse.Controllers
         {
             return StatusCodeResult(await _authService.RefreshTokenAsync(model.token, model.refreshToken));
         }
+         [HttpPost]
+        public async Task<IActionResult> RefreshTokenLandlordAsync([FromBody] RefreshTokenViewModel model)
+        {
+            return StatusCodeResult(await _authService.RefreshTokenLandlordAsync(model.token, model.refreshToken));
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -39,11 +44,26 @@ namespace Evse.Controllers
         {
             return StatusCodeResult(await _authService.LoginAsync(model));
         }
-
+         [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginLandlordAsync([FromBody] UserForLoginDto model)
+        {
+            return StatusCodeResult(await _authService.LoginLandlordAsync(model));
+        }
         [HttpPost]
         public async Task<IActionResult> LoginRememberAsync([FromBody] UserForLoginRememberDto request)
         {
             return StatusCodeResult(await _authService.LoginAsync(request.ID));
+        }
+          [HttpPost]
+        public async Task<IActionResult> LoginRememberLandlordAsync([FromBody] UserForLoginRememberDto request)
+        {
+            return StatusCodeResult(await _authService.LoginRememberLandlordAsync(request.ID));
+        }
+          [HttpPost]
+        public async Task<IActionResult> RegisterLandlord([FromBody] RegisterLandlordDto request)
+        {
+            return StatusCodeResult(await _authService.RegisterLandlord(request));
         }
 
         [HttpGet]

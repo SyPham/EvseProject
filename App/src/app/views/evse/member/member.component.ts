@@ -298,7 +298,7 @@ export class MemberComponent extends BaseComponent implements OnInit {
       allowedFileExtensions: ["jpg", "png", "gif"],
       initialPreview: [],
       initialPreviewConfig: [],
-      deleteUrl: `${environment.apiUrl}XAccount/DeleteUploadFile`
+      deleteUrl: `${environment.apiUrl}Member/DeleteUploadFile`
     };
     if (this.model.photoPath) {
       this.model.photoPath = this.imagePath(this.model.photoPath);
@@ -308,7 +308,7 @@ export class MemberComponent extends BaseComponent implements OnInit {
       const a = {
         caption: '',
         width: '',
-        url: `${environment.apiUrl}XAccount/DeleteUploadFile`, // server delete action
+        url: `${environment.apiUrl}Member/DeleteUploadFile`, // server delete action
         key: this.model.id,
         extra: { id: this.model.id }
       }

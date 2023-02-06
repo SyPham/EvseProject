@@ -163,6 +163,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       localStorage.setItem('languages', JSON.stringify(languages));
 
       const uri = decodeURI(this.uri);
+      debugger
       const check = this.checkLocalRole();
       if (check ) {
         const uri = decodeURI(this.uri);
@@ -189,18 +190,18 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   checkLocalRole(): boolean {
-    let navs = [];
-    const accountType = JSON.parse(localStorage.getItem('user'))?.accountType || '';
+    // let navs = [];
+    // const accountType = JSON.parse(localStorage.getItem('user'))?.accountType || '';
     const uri = decodeURI(this.uri);
     if (uri == '/login') {
       return false;
     }
-    const permissions = navs.map(x => x.url);
-    for (const url of permissions) {
-      if (uri.includes(url)) {
-        return true;
-      }
-    }
-    return false;
+    // const permissions = navs.map(x => x.url);
+    // for (const url of permissions) {
+    //   if (uri.includes(url)) {
+    //     return true;
+    //   }
+    // }
+    return true;
   }
 }

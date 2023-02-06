@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SidebarComponent } from '@syncfusion/ej2-angular-navigations';
@@ -13,16 +13,13 @@ import { SystemGroupNo } from 'src/app/_core/enum/SystemGroupNo';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit, AfterViewInit {
 
   fieldsLang: object = { text: "name", value: "id" };
-  farmData: any[];
-  farmGuid: any;
   fields: object = { text: "siteName", value: "guid" };
-  lang: string;
+  lang= this.capitalize(localStorage.getItem("lang"));
   languageData = [
     { id: "Tw", name: "Tw" },
     { id: "Cn", name: "Cn" },
@@ -51,6 +48,8 @@ export class LayoutComponent implements OnInit {
     this.router.events.pipe( filter((event: any) => event instanceof NavigationEnd) ).subscribe(event => { 
       this.currentRouter = event.url
     });
+  }
+  ngAfterViewInit(): void {
   }
 
   public data: Object[] = [
@@ -81,16 +80,14 @@ export class LayoutComponent implements OnInit {
     this.router.navigate(["/mobile/home"]);
   }
   ngOnInit() {
-    this.farmGuid = localStorage.getItem("farmGuid");
-    this.lang = this.capitalize(localStorage.getItem("lang"));
-    this.sidebarTreeviewInstance?.hide();
+
   }
 
   toggleSidebar() {
     if(this.isMobileMode) {
       this.router.navigate(["/mobile/home"]);
     }else {
-      this.router.navigate(['/dashboard'])
+      this.router.navigate(['/mobile/home'])
     }
     // .then(() => {
     //   window.location.reload();
@@ -103,7 +100,7 @@ export class LayoutComponent implements OnInit {
     if (!homeUrl) {
       this.location.back();
     }else {
-      this.router.navigate(['/login'])
+      this.router.navigate(['/landlord-login'])
       .then(() => {
         window.location.reload();
       });
@@ -118,7 +115,7 @@ export class LayoutComponent implements OnInit {
       const uri = this.router.url;
       this.cookieService.deleteAll("/");
 
-      this.router.navigate(["/mobile/login"], {
+      this.router.navigate(["/mobile/landlord-login"], {
         queryParams: { uri },
         replaceUrl: true,
       });
@@ -130,7 +127,7 @@ export class LayoutComponent implements OnInit {
       this.logout();
       return;
     } else if (e.node.dataset.uid === "01") {
-      this.router.navigate(["/login"]);
+      this.router.navigate(["/mobile/landlord-login"]);
       return;
     }
   }
@@ -144,14 +141,6 @@ export class LayoutComponent implements OnInit {
   capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-  farmValueChange(args) {
-    this.farmGuid = args.itemData.guid || "";
-    localStorage.setItem("farmGuid", args.itemData.guid);
-    this.serviceDash.changeFarmGuid(this.farmGuid);
-
-    if (args.isInteracted === true) {
-      location.reload();
-    }
-  }
+ 
 
 }

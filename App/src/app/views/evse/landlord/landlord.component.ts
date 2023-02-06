@@ -279,7 +279,7 @@ export class LandlordComponent extends BaseComponent implements OnInit {
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
    this.configImage();
   }
-  configImage() {
+  configImage(id="avatar-1") {
     const option = {
       overwriteInitial: true,
       maxFileSize: 1500,
@@ -297,7 +297,7 @@ export class LandlordComponent extends BaseComponent implements OnInit {
       allowedFileExtensions: ["jpg", "png", "gif"],
       initialPreview: [],
       initialPreviewConfig: [],
-      deleteUrl: `${environment.apiUrl}XAccount/DeleteUploadFile`
+      deleteUrl: `${environment.apiUrl}Landlord/DeleteUploadFile`
     };
     if (this.model.photoPath) {
       this.model.photoPath = this.imagePath(this.model.photoPath);
@@ -307,7 +307,7 @@ export class LandlordComponent extends BaseComponent implements OnInit {
       const a = {
         caption: '',
         width: '',
-        url: `${environment.apiUrl}XAccount/DeleteUploadFile`, // server delete action
+        url: `${environment.apiUrl}Landlord/DeleteUploadFile`, // server delete action
         key: this.model.id,
         extra: { id: this.model.id }
       }

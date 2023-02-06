@@ -26,13 +26,13 @@ export class HomeComponent implements OnInit {
   Group_No: string = JSON.parse(localStorage.getItem('user')).groupCode
   SystemGroupNo : SystemGroupNo = {} as SystemGroupNo
   ngOnInit() {
-    let user = JSON.parse(localStorage.getItem('user'));
-    if (!user) {
-      this.router.navigate(['/mobile/login']);
-    }
+    // let user = JSON.parse(localStorage.getItem('user'));
+    // if (!user) {
+    //   this.router.navigate(['/mobile/login']);
+    // }
   }
   backDesktop() {
-    this.router.navigate(['/login'])
+    this.router.navigate(['/mobile/landlord-login'])
     .then(() => {
       window.location.reload();
     });
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
       const uri = this.router.url;
       this.cookieService.deleteAll('/');
       localStorage.setItem('lang','tw')
-      this.router.navigate(['login'], { queryParams: { uri }, replaceUrl: true  });
+      this.router.navigate(['/mobile/landlord-login'], { queryParams: { uri }, replaceUrl: true  });
       this.alertify.message(this.trans.instant('Logged out'));
     });
   }

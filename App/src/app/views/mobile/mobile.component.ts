@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
 })
 export class MobileComponent implements OnInit {
 
-  constructor(private router: Router
+  constructor(
+    private router: Router
     ) { }
 
 

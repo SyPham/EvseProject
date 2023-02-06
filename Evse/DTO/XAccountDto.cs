@@ -86,6 +86,11 @@ namespace Evse.DTO
         public string token { get; set; }
         public string NewPassword { get; set; }
     }
+       public partial class RegisterLandlordDto
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
     public partial class StoreProfileDto
     {
         public string NickName { get; set; }

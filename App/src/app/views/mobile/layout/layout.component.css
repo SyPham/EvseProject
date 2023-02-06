@@ -388,3 +388,44 @@
     margin-top: 8px !important;
   }
   
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Style the navigation bar */
+.navbar-mobile {
+    width: 100%;
+    background-color: rgba(242, 242, 242, 1);
+    overflow: auto;
+  }
+  
+  /* Navbar links */
+  .navbar-mobile a {
+    float: left;
+    text-align: center;
+    padding: 8px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  /* Navbar links on mouse-over */
+  .navbar-mobile a:hover {
+    background-color: rgba(242, 242, 242, 1);
+  }
+  
+  /* Current/active navbar link */
+  .active {
+    background-color: #145574;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  /* Add responsiveness - will automatically display the navbar vertically instead of horizontally on screens less than 500 pixels */
+  @media screen and (max-width: 500px) {
+    .navbar-mobile a {
+      float: none;
+      display: block;
+    }
+  }

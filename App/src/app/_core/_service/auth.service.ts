@@ -69,6 +69,23 @@ export class AuthService implements OnDestroy {
         })
       );
   }
+  loginlanlord(username: string, password: string) {
+    return this.http
+      .post<OperationResult>(`${this.apiUrl}/loginlandlord`, { username, password })
+      .pipe(
+        map(res => {
+          const applicationUser = res.data as ApplicationUser;
+          this.cookieService.set("refreshToken", applicationUser.refreshToken,  {
+            expires: 1000 * 60 * 365,
+            domain: environment.domain,
+            secure: true,
+            sameSite:'Strict'
+        })
+          this.setLocalStorage(applicationUser);
+          return applicationUser;
+        })
+      );
+  }
   loginRememberMe(id) {
     return this.http
       .post<OperationResult>(`${this.apiUrl}/LoginRemember`, { id })
@@ -81,7 +98,23 @@ export class AuthService implements OnDestroy {
         })
       );
   }
-
+  registerLandlord(username, password) {
+    return this.http
+      .post<OperationResult>(`${this.apiUrl}/RegisterLandlord`, { username, password })
+     ;
+  }
+  loginRememberMeLandlord(id) {
+    return this.http
+      .post<OperationResult>(`${this.apiUrl}/LoginRememberLandlord`, { id })
+      .pipe(
+        map(res => {
+          const applicationUser = res.data as ApplicationUser;
+          const user = res.data.user;
+          this.setLocalStorage(applicationUser);
+          return applicationUser;
+        })
+      );
+  }
 
   refreshToken() {
     const refreshToken = localStorage.getItem('refresh-token');
@@ -96,6 +129,32 @@ export class AuthService implements OnDestroy {
     }
     return this.http
       .post<OperationResult>(`${this.apiUrl}/RefreshToken`, {token, refreshToken })
+      .pipe(
+        map( res => {
+          const applicationUser = res.data as ApplicationUser;
+          this.setLocalStorage(applicationUser);
+          this.startTokenTimer();
+          return applicationUser;
+        }),
+        catchError((err) => {
+          this.clearLocalStorage();
+          return throwError(err);
+        }),
+      );
+  }
+  refreshTokenLandlord() {
+    const refreshToken = localStorage.getItem('refresh-token');
+    const token = localStorage.getItem('token');
+    if (!refreshToken || refreshToken === undefined + '') {
+      this.clearLocalStorage();
+      return of(null);
+    }
+    const timeout = this.jwtHelper.isTokenExpired();
+    if (timeout === false) {
+      return of(null);
+    }
+    return this.http
+      .post<OperationResult>(`${this.apiUrl}/RefreshTokenLandlord`, {token, refreshToken })
       .pipe(
         map( res => {
           const applicationUser = res.data as ApplicationUser;

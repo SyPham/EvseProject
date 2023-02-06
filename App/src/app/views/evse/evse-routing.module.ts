@@ -19,7 +19,7 @@ const routes: Routes = [
       breadcrumb: 'Home',
       functionCode: 'Home'
     },
-   // canActivate: [AuthGuard]
+  //  canActivate: [AuthGuard]
   },
   {
     path: 'evse/site',
@@ -29,7 +29,7 @@ const routes: Routes = [
       breadcrumb: 'Site',
       functionCode: 'Site'
     },
-   // canActivate: [AuthGuard]
+   canActivate: [AuthGuard]
   },
   {
     path: 'evse/landlord',
@@ -39,7 +39,7 @@ const routes: Routes = [
       breadcrumb: 'Landlord',
       functionCode: 'Landlord'
     },
-   // canActivate: [AuthGuard]
+   canActivate: [AuthGuard]
   },
   {
     path: 'evse/member',
@@ -49,7 +49,7 @@ const routes: Routes = [
       breadcrumb: 'Member',
       functionCode: 'Member'
     },
-   // canActivate: [AuthGuard]
+   canActivate: [AuthGuard]
   },
   {
     path: 'evse/engineer',
@@ -59,7 +59,7 @@ const routes: Routes = [
       breadcrumb: 'Engineer',
       functionCode: 'Engineer'
     },
-   // canActivate: [AuthGuard]
+   canActivate: [AuthGuard]
   },
 ];
 @NgModule({
