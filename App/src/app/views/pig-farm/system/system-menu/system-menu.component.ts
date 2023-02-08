@@ -35,6 +35,8 @@ import {
 export class SystemMenuComponent extends BaseComponent implements OnInit {
   isAdmin =
     JSON.parse(localStorage.getItem("user"))?.groupCode === "ADMIN_CANCEL";
+  public query: Query;
+
   data: DataManager;
   data2: DataManager;
   baseUrl = environment.apiUrl;
@@ -77,6 +79,8 @@ export class SystemMenuComponent extends BaseComponent implements OnInit {
   upperId2: number = 0;
 
   queryString2: string;
+  @ViewChild("menuTypeTemplate", { static: true })
+  public menuTypeTemplate: any;
   @ViewChild("parentTemplate", { static: true })
   public parentTemplate: any;
   @ViewChild("parent2Template", { static: true })
@@ -100,6 +104,7 @@ export class SystemMenuComponent extends BaseComponent implements OnInit {
   };
   upperId: number = 0;
   checked: boolean = false;
+  menuType: any;
 
   constructor(
     private service: SysMenuService,
@@ -152,6 +157,13 @@ export class SystemMenuComponent extends BaseComponent implements OnInit {
       }
     );
   }
+  menuTypeChange(e) {
+    if (e.isInteracted) {
+      this.menuType = e.itemData.guid;
+      this.loadDataByMenuType()
+
+    }
+  }
   rowDataBound(args) {
     if (args.data.status !== 1) {
       args.row.classList.add("bgcolor");
@@ -165,6 +177,7 @@ export class SystemMenuComponent extends BaseComponent implements OnInit {
       "ExcelExport",
       { template: this.odsTemplate },
       "Add",
+      { template: this.menuTypeTemplate },
       { template: this.parentTemplate },
       { template: this.parent2Template },
       "Search",
@@ -342,21 +355,43 @@ export class SystemMenuComponent extends BaseComponent implements OnInit {
       });
   }
   loadData() {
+    this.query = new Query();
+    if (this.menuType) {
+      this.query.where("menuType", "equal", this.menuType);
+    }
     const accessToken = localStorage.getItem("token");
     this.data = new DataManager({
       url: `${this.baseUrl}SysMenu/LoadData2?upperId=${this.upperId}`,
       adaptor: new UrlAdaptor(),
       headers: [{ authorization: `Bearer ${accessToken}` }],
-    });
+    }, this.query);
+  }
+  loadDataByMenuType() {
+    this.query = new Query();
+    if (this.menuType) {
+      this.query.where("menuType", "equal", this.menuType);
+    }
+ 
+    const accessToken = localStorage.getItem("token");
+    this.data = new DataManager({
+      url: `${this.baseUrl}SysMenu/LoadData2?upperId=${this.upperId}`,
+      adaptor: new UrlAdaptor(),
+      headers: [{ authorization: `Bearer ${accessToken}` }],
+    }, this.query);
   }
 
   loadData2() {
+    this.query = new Query();
+    if (this.menuType) {
+      this.query.where("menuType", "equal", this.menuType);
+    }
+ 
     const accessToken = localStorage.getItem("token");
     this.data = new DataManager({
       url: `${this.baseUrl}SysMenu/LoadData2?upperId=${this.upperId2}`,
       adaptor: new UrlAdaptor(),
       headers: [{ authorization: `Bearer ${accessToken}` }],
-    });
+    }, this.query);
   }
 
   delete(id) {

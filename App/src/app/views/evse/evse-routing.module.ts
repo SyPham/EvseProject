@@ -7,7 +7,9 @@ import { HomeComponent } from './home/home.component';
 import { LandlordComponent } from './landlord/landlord.component';
 import { MemberComponent } from './member/member.component';
 import { StationComponent } from './station/station.component';
-
+import { BankComponent } from './bank/bank.component';
+import { ContractComponent } from './contract/contract.component';
+import { WebBannerComponent } from './web-banner/web-banner.component';
 
 const routes: Routes = [
   
@@ -58,6 +60,36 @@ const routes: Routes = [
       title: 'Engineer',
       breadcrumb: 'Engineer',
       functionCode: 'Engineer'
+    },
+   canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/web-banner',
+    component: WebBannerComponent,
+    data: {
+      title: 'Web Banner',
+      breadcrumb: 'Web Banner',
+      functionCode: 'WebBanner'
+    },
+   canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/bank',
+    component: BankComponent,
+    data: {
+      title: 'Bank',
+      breadcrumb: 'Bank',
+      functionCode: 'Bank'
+    },
+   canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/contract',
+    component: ContractComponent,
+    data: {
+      title: 'Contract',
+      breadcrumb: 'Contract',
+      functionCode: 'Contract'
     },
    canActivate: [AuthGuard]
   },

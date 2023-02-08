@@ -28,6 +28,11 @@ import { LandlordComponent } from './landlord/landlord.component';
 import { MemberComponent } from './member/member.component';
 import { ParkingLotActionComponent } from './station/parking-lot/parking-lot-action/parking-lot-action.component';
 import { DeviceActionComponent } from './station/device/device-action/device-action.component';
+import { BankComponent } from './bank/bank.component';
+import { ContractComponent } from './contract/contract.component';
+import { WebBannerComponent } from './web-banner/web-banner.component';
+import { BankActionComponent } from './bank/bank-action/bank-action.component';
+import { ContractActionComponent } from './contract/contract-action/contract-action.component';
 interface Environment {
   production: boolean;
   apiUrl: string;
@@ -64,7 +69,12 @@ interface Environment {
     LandlordComponent,
     MemberComponent,
     ParkingLotActionComponent,
-    DeviceActionComponent
+    DeviceActionComponent,
+    BankComponent,
+    ContractComponent,
+    WebBannerComponent,
+    BankActionComponent,
+    ContractActionComponent
   ]
 })
 export class EvseModule {

@@ -31,6 +31,12 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<DeviceDto, Device>();
             CreateMap<ParkingLotDto, ParkingLot>();
 
+            CreateMap<BankDto, Bank>();
+            CreateMap<WebBannerDto, WebBanner>();
+            CreateMap<ContractDto, Contract>();
+            CreateMap<WebNewsDto, WebNews>();
+            
+
         }
     }
 }

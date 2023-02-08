@@ -5,16 +5,23 @@ using System.Collections.Generic;
 
 namespace Evse.Models
 {
-    public partial class Contract
+    public partial class WebBanner
     {
         public decimal Id { get; set; }
+        public string Type { get; set; }
+        public decimal? SortId { get; set; }
         public string Subject { get; set; }
-        public string Content { get; set; }
+        public string PhotoPath { get; set; }
+        public string Link { get; set; }
+        public string Comment { get; set; }
+        public string CancelFlag { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }
         public DateTime? UpdateDate { get; set; }
         public decimal? UpdateBy { get; set; }
         public decimal? Status { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public string Guid { get; set; }
     }
 }

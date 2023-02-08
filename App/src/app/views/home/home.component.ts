@@ -6,7 +6,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { DashboardService } from 'src/app/_core/_service/dashboard.service';
 import { SysMenuService } from 'src/app/_core/_service/sys-menu.service';
+import { environment } from 'src/environments/environment';
 declare let $: any;
+import { DataManager, Query, UrlAdaptor, Predicate } from '@syncfusion/ej2-data';
 
 @Component({
   selector: 'app-home',
@@ -30,6 +32,8 @@ export class HomeComponent implements OnInit {
     { id: "En", name: "En" },
     { id: "Vi", name: "Vi" },
   ];
+  baseUrl = environment.apiUrl;
+  banners= [];
   constructor(
     private spinner: NgxSpinnerService,
     private sysMenuService: SysMenuService,
@@ -45,7 +49,19 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
+    this.loadBannerData();
    
+  }
+  loadBannerData() {
+   
+     new DataManager({
+      url: `${this.baseUrl}WebBanner/LoadData?lang=${localStorage.getItem('lang')}`,
+      adaptor: new UrlAdaptor()
+    }).executeQuery(new Query()).then((res: any) => {
+      this.banners = res.result.result;
+    }).catch((err) => {
+      
+    });;
   }
   ngAfterViewInit(): void {
     $(function () {

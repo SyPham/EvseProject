@@ -543,3 +543,8 @@ color: white;
 
 
 
+#menu-type2 > .e-input-group {
+  box-shadow: none !important;
+  padding: 0 !important;
+
+}

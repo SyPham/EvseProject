@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Evse.Models
 {
-    public partial class Contract
+    public partial class Bank
     {
         public decimal Id { get; set; }
-        public string Subject { get; set; }
-        public string Content { get; set; }
+        public string BankNo { get; set; }
+        public string BankName { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }
         public DateTime? UpdateDate { get; set; }

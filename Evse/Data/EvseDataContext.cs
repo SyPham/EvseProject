@@ -4,6 +4,14 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Evse.Models;
+using System.Reflection;
+using Microsoft.AspNetCore.Http;
+using Evse.Helpers;
+using NetUtility;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Evse.Data
 {
@@ -12,18 +20,23 @@ namespace Evse.Data
         public EvseDataContext()
         {
         }
+    private readonly IHttpContextAccessor _contextAccessor;
 
-        public EvseDataContext(DbContextOptions<EvseDataContext> options)
-            : base(options)
+        public EvseDataContext(DbContextOptions<EvseDataContext> options, IHttpContextAccessor contextAccessor) : base(options)
         {
+            _contextAccessor = contextAccessor;
         }
+
+        public virtual DbSet<WebNews> WebNews { get; set; }
 
         public virtual DbSet<AccountConfig> AccountConfigs { get; set; }
         public virtual DbSet<CodeHelp> CodeHelps { get; set; }
         public virtual DbSet<CodePermission> CodePermissions { get; set; }
         public virtual DbSet<CodeServiceType> CodeServiceTypes { get; set; }
         public virtual DbSet<CodeType> CodeTypes { get; set; }
+        public virtual DbSet<Bank> Banks { get; set; }
         public virtual DbSet<Contract> Contracts { get; set; }
+        public virtual DbSet<WebBanner> WebBanners { get; set; }
         public virtual DbSet<Device> Devices { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Engineer> Engineers { get; set; }
@@ -47,6 +60,227 @@ namespace Evse.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Bank>(entity =>
+            {
+                entity.ToTable("Bank");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.BankName)
+                    .HasColumnName("Bank_Name")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.BankNo)
+                    .HasColumnName("Bank_No")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Contract>(entity =>
+            {
+                entity.ToTable("Contract");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Content).HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Subject).HasMaxLength(50);
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<WebBanner>(entity =>
+            {
+                entity.ToTable("WebBanner");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1);
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("text");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnName("END_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Link).HasMaxLength(200);
+
+                entity.Property(e => e.PhotoPath)
+                    .HasColumnName("Photo_Path")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.SortId)
+                    .HasColumnName("SORT_ID")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("START_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Subject).HasMaxLength(200);
+
+                entity.Property(e => e.Type)
+                    .HasColumnName("TYPE")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<WebNews>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Body).HasColumnType("ntext");
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1);
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnName("END_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Link).HasMaxLength(200);
+
+                entity.Property(e => e.NewsDate)
+                    .HasColumnName("News_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.PhotoPath)
+                    .HasColumnName("Photo_Path")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.SortId)
+                    .HasColumnName("SORT_ID")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("START_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Subject).HasMaxLength(200);
+
+                entity.Property(e => e.Type)
+                    .HasColumnName("TYPE")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
+
+
             modelBuilder.Entity<AccountConfig>(entity =>
             {
                 entity.ToTable("Account_Config");
@@ -1834,5 +2068,104 @@ namespace Evse.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+           public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            //Tự động cập nhật ngày giờ thêm mới và chỉnh sửa
+            AutoAddDateTracking();
+            return (await base.SaveChangesAsync(true, cancellationToken));
+        }
+#if DEBUG
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+=> optionsBuilder.LogTo(Console.WriteLine).EnableSensitiveDataLogging().EnableDetailedErrors();
+#endif
+        public void AutoAddDateTracking()
+        {
+            var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified || e.State == EntityState.Added);
+            foreach (EntityEntry item in modified)
+            {
+                var changedOrAddedItem = item.Entity;
+                if (changedOrAddedItem != null)
+                {
+                    if (item.State == EntityState.Added)
+                    {
+                        SetValueProperty(ref changedOrAddedItem, "CreateDate", "CreateBy");
+                    }
+                    if (item.State == EntityState.Modified)
+                    {
+                        SetValueProperty(ref changedOrAddedItem, "UpdateDate", "UpdateBy");
+                        SetDeleteValueProperty(ref changedOrAddedItem);
+
+
+                    }
+                }
+            }
+        }
+        public decimal? GetPropValue(object src, string propName)
+        {
+            return (decimal?)src.GetType().GetProperty(propName).GetValue(src, null);
+        }
+        public void SetDeleteValueProperty(ref object changedOrAddedItem)
+        {
+            string deleteDate = "DeleteDate";
+            string status = "Status";
+            string deleteBy = "DeleteBy";
+            Type type = changedOrAddedItem.GetType();
+            PropertyInfo propAdd = type.GetProperty(deleteDate);
+            PropertyInfo propStatus = type.GetProperty(status);
+
+
+            if (propStatus != null && propStatus.PropertyType.Name == "Decimal")
+            {
+                var statusValue = (decimal?)propStatus.GetValue(changedOrAddedItem, null);
+                if (statusValue == 0)
+                {
+                    if (propAdd != null)
+                    {
+                        propAdd.SetValue(changedOrAddedItem, DateTime.Now, null);
+                    }
+                    var httpContext = _contextAccessor.HttpContext;
+                    if (httpContext != null)
+                    {
+                        var accessToken = httpContext.Request.Headers["Authorization"];
+                        var accountID = JWTExtensions.GetDecodeTokenByID(accessToken).ToDecimal();
+                        PropertyInfo propCreateBy = type.GetProperty(deleteBy);
+                        if (propCreateBy != null)
+                        {
+                            if (accountID > 0)
+                            {
+                                propCreateBy.SetValue(changedOrAddedItem, accountID, null);
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        }
+        public void SetValueProperty(ref object changedOrAddedItem, string propDate, string propUser)
+        {
+            Type type = changedOrAddedItem.GetType();
+            PropertyInfo propAdd = type.GetProperty(propDate);
+            if (propAdd != null)
+            {
+                propAdd.SetValue(changedOrAddedItem, DateTime.Now, null);
+            }
+            var httpContext = _contextAccessor.HttpContext;
+            if (httpContext != null)
+            {
+                var accessToken = httpContext.Request.Headers["Authorization"];
+                var accountID = JWTExtensions.GetDecodeTokenByID(accessToken).ToDecimal();
+                PropertyInfo propCreateBy = type.GetProperty(propUser);
+                if (propCreateBy != null)
+                {
+                    if (accountID > 0)
+                    {
+                        propCreateBy.SetValue(changedOrAddedItem, accountID, null);
+                    }
+                }
+            }
+        }
+        
     }
 }

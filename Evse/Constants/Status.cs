@@ -9,5 +9,6 @@
         public const int Reject = 5;
         public const int Delete = 99;
         public const int Delete2 = -1;
+        public const int Delete3 = 0;
     }
 }

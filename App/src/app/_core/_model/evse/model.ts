@@ -152,3 +152,67 @@ export interface Engineer {
     engineerAddress: string;
     file: any;
 }
+export interface Bank {
+    id: number;
+    bankNo: string;
+    bankName: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    status: number | null;
+    guid: string;
+}
+export interface WebBanner {
+    id: number;
+    type: string;
+    sortId: number | null;
+    subject: string;
+    photoPath: string;
+    link: string;
+    comment: string;
+    cancelFlag: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    status: number | null;
+    startDate: string | null;
+    endDate: string | null;
+    guid: string;
+    typeName: string;
+    file: any;
+}
+export interface Contract {
+    id: number;
+    subject: string;
+    content: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    status: number | null;
+    guid: string;
+}
+export interface WebNews {
+    id: number;
+    type: string;
+    sortId: number | null;
+    newsDate: string | null;
+    subject: string;
+    body: string;
+    photoPath: string;
+    link: string;
+    comment: string;
+    cancelFlag: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    status: number | null;
+    startDate: string | null;
+    endDate: string | null;
+    guid: string;
+    typeName: string;
+    file: any;
+}

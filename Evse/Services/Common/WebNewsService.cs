@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using NetUtility;
 using Evse.Constants;
 using Evse.Data;
 using Evse.DTO;
@@ -12,36 +13,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 using Syncfusion.JavaScript;
 using Syncfusion.JavaScript.DataSources;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
-using NetUtility;
-using System.IO;
 
 namespace Evse.Services
 {
-    public interface ILandLordService : IServiceBase<LandLord, LandLordDto>
+    public interface IWebNewsService : IServiceBase<WebNews, WebNewsDto>
     {
         Task<object> LoadData(DataManager data, string lang);
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
-        Task<OperationResult> AddFormAsync(LandLordDto model);
-        Task<OperationResult> UpdateFormAsync(LandLordDto model);
+        Task<OperationResult> AddFormAsync(WebNewsDto model);
+        Task<OperationResult> UpdateFormAsync(WebNewsDto model);
     }
-    public class LandLordService : ServiceBase<LandLord, LandLordDto>, ILandLordService, IScopeService
+    public class WebNewsService : ServiceBase<WebNews, WebNewsDto>, IWebNewsService, IScopeService
     {
-        private readonly IRepositoryBase<LandLord> _repo;
+        private readonly IRepositoryBase<WebNews> _repo;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _configMapper;
-        private readonly IEvseLoggerService _logger;
+private readonly IEvseLoggerService _logger;
         private readonly IWebHostEnvironment _currentEnvironment;
-        public LandLordService(
-            IRepositoryBase<LandLord> repo,
+
+        public WebNewsService(
+            IRepositoryBase<WebNews> repo,
             IRepositoryBase<CodeType> repoCodeType,
             IRepositoryBase<XAccount> repoXAccount,
             IUnitOfWork unitOfWork,
@@ -49,17 +50,18 @@ namespace Evse.Services
             MapperConfiguration configMapper,
 IEvseLoggerService logger
 ,
-IWebHostEnvironment currentEnvironment)
+IWebHostEnvironment currentEnvironment
+            )
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
-            _logger = logger;
             _repoCodeType = repoCodeType;
+            _logger = logger;
+            _currentEnvironment = currentEnvironment;
             _repoXAccount = repoXAccount;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _configMapper = configMapper;
-            _currentEnvironment = currentEnvironment;
         }
         public async Task<object> GetByGuid(string guid)
         {
@@ -69,56 +71,40 @@ IWebHostEnvironment currentEnvironment)
         public async Task<object> LoadData(DataManager data, string lang)
         {
             var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
-                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.LandLord_SEX && x.Status == "Y") on a.LandLordSex equals b.CodeNo into ab
+                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.WebNews_Type && x.Status == "Y") on a.Type equals b.CodeNo into ab
                               from t in ab.DefaultIfEmpty()
-                            
-                              select new LandLordDto
+
+                              select new WebNewsDto
                               {
                                   Id = a.Id,
-                                  SiteGuid = a.SiteGuid,
-                                  Uid = a.Uid,
-                                  Upwd = a.Upwd,
-                                  LandLordNo = a.LandLordNo,
-                                  LandLordName = a.LandLordName,
-                                  LandLordSex = a.LandLordSex,
-                                  LandLordBirthday = a.LandLordBirthday,
-                                  LandLordIdcard = a.LandLordIdcard,
-                                  LandLordEmail = a.LandLordEmail,
-                                  LandLordMobile = a.LandLordMobile,
-                                
-                                  LandLordAddress = a.LandLordAddress,
-
-                                  ContractGuid = a.ContractGuid,
-                                  BankGuid = a.BankGuid,
-
-
+                                  Type = a.Type,
+                                  SortId = a.SortId,
+                                  Subject = a.Subject,
                                   PhotoPath = a.PhotoPath,
                                   StartDate = a.StartDate,
                                   EndDate = a.EndDate,
-                                  Lastlogin = a.Lastlogin,
-                                  Lastuse = a.Lastuse,
-
-
+                                  Link = a.Link,
+                                  Body = a.Body,
                                   Comment = a.Comment,
+                                  NewsDate = a.NewsDate,
                                   CreateDate = a.CreateDate,
                                   CreateBy = a.CreateBy,
                                   UpdateDate = a.UpdateDate,
                                   UpdateBy = a.UpdateBy,
-                                  DeleteDate = a.DeleteDate,
-                                  DeleteBy = a.DeleteBy,
+                                  CancelFlag = a.CancelFlag,
                                   Status = a.Status,
                                   Guid = a.Guid,
-                                  LandLordSexName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
+                                  TypeName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
                               }).OrderByDescending(x => x.Id).AsQueryable();
 
-
+            var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering
                 datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
             if (data.Sorted != null)//for sorting
                 datasource = QueryableDataOperations.PerformSorting(datasource, data.Sorted);
             if (data.Search != null)
                 datasource = QueryableDataOperations.PerformSearching(datasource, data.Search);
-           var count = await datasource.CountAsync();
+            count = await datasource.CountAsync();
             if (data.Skip >= 0)//for paging
                 datasource = QueryableDataOperations.PerformSkip(datasource, data.Skip);
             if (data.Take > 0)//for paging
@@ -129,23 +115,15 @@ IWebHostEnvironment currentEnvironment)
                 Count = count
             };
         }
-
-        public override async Task<List<LandLordDto>> GetAllAsync()
+        public override async Task<OperationResult> AddAsync(WebNewsDto model)
         {
-            var query = _repo.FindAll(x => x.Status == 1).ProjectTo<LandLordDto>(_configMapper);
-
-            var data = await query.ToListAsync();
-            return data;
-
-        }
-        public override async Task<OperationResult> AddAsync(LandLordDto model)
-        {
-            var item = _mapper.Map<LandLord>(model);
+            var item = _mapper.Map<WebNews>(model);
             item.Status = StatusConstants.Default;
             _repo.Add(item);
             try
             {
                 await _unitOfWork.SaveChangeAsync();
+
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,
@@ -156,15 +134,51 @@ IWebHostEnvironment currentEnvironment)
             }
             catch (Exception ex)
             {
+                    await _logger.LogStoreProcedure(new LoggerParams {
+                    Type= EvseLogConst.Create,
+                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
                 operationResult = ex.GetMessageError();
             }
             return operationResult;
         }
+        public override async Task<OperationResult> UpdateAsync(WebNewsDto model)
+        {
+            var item = _mapper.Map<WebNews>(model);
+            _repo.Update(item);
+            try
+            {
+                await _unitOfWork.SaveChangeAsync();
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = item
+                };
+            }
+            catch (Exception ex)
+            {
+                    await _logger.LogStoreProcedure(new LoggerParams {
+                    Type= EvseLogConst.Update,
+                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+        }
+        public override async Task<List<WebNewsDto>> GetAllAsync()
+        {
+            var query = _repo.FindAll(x=> x.Status == StatusConstants.Default).ProjectTo<WebNewsDto>(_configMapper);
 
+            var data = await query.OrderByDescending(x=>x.Id).ToListAsync();
+            return data;
+
+        }
         public override async Task<OperationResult> DeleteAsync(object id)
         {
-            var item = await _repo.FindByIDAsync(id);
-            item.Status = StatusConstants.Delete;
+            var item = _repo.FindByID(id.ToDecimal());
+            item.Status = StatusConstants.Delete3;
             _repo.Update(item);
             try
             {
@@ -179,13 +193,18 @@ IWebHostEnvironment currentEnvironment)
             }
             catch (Exception ex)
             {
+                    await _logger.LogStoreProcedure(new LoggerParams {
+                    Type= EvseLogConst.Delete,
+                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
                 operationResult = ex.GetMessageError();
             }
             return operationResult;
         }
+     
         public async Task<object> GetAudit(object id)
         {
-            var data = await _repo.FindAll(x => x.Id.Equals(id)).AsNoTracking().Select(x => new { x.UpdateBy, x.CreateBy, x.UpdateDate, x.CreateDate }).FirstOrDefaultAsync();
+            var data = await _repo.FindAll(x => x.Id.Equals(id)).AsNoTracking().Select(x=> new {x.UpdateBy, x.CreateBy, x.UpdateDate, x.CreateDate }).FirstOrDefaultAsync();
             string createBy = "N/A";
             string createDate = "N/A";
             string updateBy = "N/A";
@@ -200,14 +219,14 @@ IWebHostEnvironment currentEnvironment)
                 };
             if (data.UpdateBy.HasValue)
             {
-                var updateAudit = await _repoXAccount.FindAll(x => x.AccountId == data.UpdateBy).AsNoTracking().Select(x => new { x.Uid }).FirstOrDefaultAsync();
-                updateBy = updateBy != null ? updateAudit.Uid : "N/A";
+                var updateAudit = await _repoXAccount.FindAll(x => x.AccountId == data.UpdateBy).AsNoTracking().Select(x=> new { x.Uid }).FirstOrDefaultAsync();
+                updateBy = updateAudit != null && updateBy != null ? updateAudit.Uid : "N/A";
                 updateDate = data.UpdateDate.HasValue ? data.UpdateDate.Value.ToString("yyyy/MM/dd HH:mm:ss") : "N/A";
             }
             if (data.CreateBy.HasValue)
             {
                 var createAudit = await _repoXAccount.FindAll(x => x.AccountId == data.CreateBy).AsNoTracking().Select(x => new { x.Uid }).FirstOrDefaultAsync();
-                createBy = createAudit != null ? createAudit.Uid : "N/A";
+                createBy = createAudit != null && createAudit != null ? createAudit.Uid : "N/A";
                 createDate = data.CreateDate.HasValue ? data.CreateDate.Value.ToString("yyyy/MM/dd HH:mm:ss") : "N/A";
             }
             return new
@@ -219,15 +238,12 @@ IWebHostEnvironment currentEnvironment)
             };
         }
 
-        public async Task<OperationResult> AddFormAsync(LandLordDto model)
+        public async Task<OperationResult> AddFormAsync(WebNewsDto model)
         {
-            var check = await CheckExistName(model.LandLordName);
-            if (!check.Success) return check;
-            var checkLandLordNo = await CheckExistNo(model.LandLordNo);
-            if (!checkLandLordNo.Success) return checkLandLordNo;
+          
             FileExtension fileExtension = new FileExtension();
             var avatarUniqueFileName = string.Empty;
-            var avatarFolderPath = "FileUploads\\images\\landlord\\avatar";
+            var avatarFolderPath = "FileUploads\\images\\webbanner\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
             if (model.File != null)
             {
@@ -235,13 +251,12 @@ IWebHostEnvironment currentEnvironment)
                 if (!files.IsNullOrEmpty())
                 {
                     avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
-                    model.PhotoPath = $"/FileUploads/images/landlord/avatar/{avatarUniqueFileName}";
+                    model.PhotoPath = $"/FileUploads/images/webbanner/avatar/{avatarUniqueFileName}";
                 }
             }
             try
             {
-                var item = _mapper.Map<LandLord>(model);
-                item.Upwd = model.Upwd.ToSha512();
+                var item = _mapper.Map<WebNews>(model);
                 item.Status = StatusConstants.Default;
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
@@ -269,63 +284,18 @@ IWebHostEnvironment currentEnvironment)
             return operationResult;
         }
 
-        public async Task<OperationResult> CheckExistName(string landlordName)
-        {
-            var item = await _repo.FindAll(x => x.LandLordName == landlordName).AnyAsync();
-            if (item)
-            {
-                return new OperationResult { StatusCode = HttpStatusCode.OK, Message = "The landlord name already existed!", Success = false };
-            }
-            operationResult = new OperationResult
-            {
-                StatusCode = HttpStatusCode.OK,
-                Success = true,
-                Data = item
-            };
-            return operationResult;
-        }
-
-        public async Task<OperationResult> CheckExistNo(string landlordNo)
-        {
-            var item = await _repo.FindAll(x => x.LandLordNo == landlordNo).AnyAsync();
-            if (item)
-            {
-                return new OperationResult { StatusCode = HttpStatusCode.OK, Message = "The landlord NO already existed!", Success = false };
-            }
-            operationResult = new OperationResult
-            {
-                StatusCode = HttpStatusCode.OK,
-                Success = true,
-                Data = item
-            };
-            return operationResult;
-        }
-        public async Task<OperationResult> UpdateFormAsync(LandLordDto model)
+    
+        public async Task<OperationResult> UpdateFormAsync(WebNewsDto model)
         {
 
             FileExtension fileExtension = new FileExtension();
-            var itemModel = await _repo.FindAll(x => x.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
-            if (itemModel.LandLordName != model.LandLordName)
-            {
-                var check = await CheckExistName(model.LandLordName);
-                if (!check.Success) return check;
-            }
-
-            if (itemModel.LandLordNo != model.LandLordNo)
-            {
-                var checkLandLordNo = await CheckExistNo(model.LandLordNo);
-                if (!checkLandLordNo.Success) return checkLandLordNo;
-            }
-                if (itemModel.Upwd != model.Upwd)
-            {
-                itemModel.Upwd = model.Upwd.ToSha512();
-            }
-            var item = _mapper.Map<LandLord>(model);
+           
+            var item = _mapper.Map<WebNews>(model);
 
 
             // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
             var avatarUniqueFileName = string.Empty;
-            var avatarFolderPath = "FileUploads\\images\\landlord\\avatar";
+            var avatarFolderPath = "FileUploads\\images\\webbanner\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
 
             if (model.File != null)
@@ -336,7 +306,7 @@ IWebHostEnvironment currentEnvironment)
                     if (!item.PhotoPath.IsNullOrEmpty())
                         fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.PhotoPath.Replace("/", "\\").Replace("/", "\\")}");
                     avatarUniqueFileName = await fileExtension.WriteAsync(filesAvatar, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
-                    item.PhotoPath = $"/FileUploads/images/landlord/avatar/{avatarUniqueFileName}";
+                    item.PhotoPath = $"/FileUploads/images/webbanner/avatar/{avatarUniqueFileName}";
                 }
             }
 
@@ -370,6 +340,7 @@ IWebHostEnvironment currentEnvironment)
             return operationResult;
         }
 
+
         public async Task<object> DeleteUploadFile(decimal key)
         {
             try
@@ -397,14 +368,14 @@ IWebHostEnvironment currentEnvironment)
             }
             catch (Exception ex)
             {
-    await _logger.LogStoreProcedure(new LoggerParams {
-                    Type= EvseLogConst.Delete,
-                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Delete,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
                 return new { status = true };
             }
         }
-
 
     }
 }

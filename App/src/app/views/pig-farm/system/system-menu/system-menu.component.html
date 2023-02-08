@@ -14,6 +14,8 @@
         [allowResizing]="true"
         [allowSorting]="true"
         gridLines="Both"
+        [query]="query"
+
         [locale]="locale"
         (actionBegin)="actionBegin($event)"
         (actionComplete)="actionComplete($event)"
@@ -43,6 +45,16 @@
             </span>
           </button>
         </ng-template>
+        <ng-template #menuTypeTemplate let-data>
+          <app-code-type-dropdownlist
+          id="menu-type2"
+          [codeType]="'Menu_Type'"
+          [(selectedValue)]="menuType"
+         (change)="menuTypeChange($event)"
+        >
+        </app-code-type-dropdownlist>
+        </ng-template>
+
         <ng-template #parentTemplate let-data>
           <ejs-dropdownlist
             id="toolbar_dropdown"

@@ -1,13 +1,13 @@
 ﻿{
    "CodeGenerationMode": 1,
-   "ContextClassName": "EvseDataContext",
+   "ContextClassName": "EvseDataContext2",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": "",
-   "OutputContextPath": "Data",
-   "OutputPath": "Models",
+   "OutputContextPath": "Data2",
+   "OutputPath": "Models2",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "Evse",
    "Schemas": null,
@@ -15,113 +15,15 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Account_Config]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[CODE_HELP]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[CODE_Permission]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[CODE_ServiceType]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[CODE_TYPE]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Contract]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Device]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Employee]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Engineer]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[LandLord]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Member]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[ParkingLot]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Payment]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Payment_Log]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RefreshTokens]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Site]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SYS_MENU]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SystemConfig]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SystemLanguage]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[USER_CONFIG]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[xAccount]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[xAccount_Group]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[xAccount_Permission]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[xAccount_Role]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[xAccount_Setting]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[xAccountGroup_Permission]",
+         "Name": "[dbo].[WebNews]",
          "ObjectType": 0
       }
    ],
    "UiHint": "WIN-R03G03NSERJ.EVSE",
+   "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": false,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
@@ -129,9 +31,7 @@
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
-   "UseNoConstructor": false,
    "UseNoDefaultConstructor": false,
-   "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
