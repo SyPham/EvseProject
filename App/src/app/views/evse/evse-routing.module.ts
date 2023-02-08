@@ -93,6 +93,16 @@ const routes: Routes = [
     },
    canActivate: [AuthGuard]
   },
+  {
+    path: 'evse/web-news',
+    component: WebBannerComponent,
+    data: {
+      title: 'Web News',
+      breadcrumb: 'Web News',
+      functionCode: 'WebNews'
+    },
+   canActivate: [AuthGuard]
+  },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

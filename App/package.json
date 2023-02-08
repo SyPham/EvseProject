@@ -50,6 +50,7 @@
     "@syncfusion/ej2-angular-popups": "^19.4.53",
     "@syncfusion/ej2-angular-schedule": "^19.4.55",
     "@syncfusion/ej2-angular-treegrid": "^19.4.56",
+    "@syncfusion/ej2-angular-richtexteditor": "^19.4.56",
     "@syncfusion/ej2-locale": "^19.4.41",
     "@types/intro.js": "^3.0.0",
     "admin-lte": "^3.0.2",
