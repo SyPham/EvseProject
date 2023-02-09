@@ -6,6 +6,7 @@ if (ip === '10.4.4.224') {
 export const environment = {
   production: false,
   apiUrl: `http://${ip}:58/api/`,
+  apiUrlImage: `http://${ip}:58`,
   versionCheckURL : '/assets/version.json',
   domain: `http://10.4.5.174:58`
 };

@@ -10,6 +10,7 @@ import { StationComponent } from './station/station.component';
 import { BankComponent } from './bank/bank.component';
 import { ContractComponent } from './contract/contract.component';
 import { WebBannerComponent } from './web-banner/web-banner.component';
+import { WebNewsComponent } from './web-news/web-news.component';
 
 const routes: Routes = [
   
@@ -95,7 +96,7 @@ const routes: Routes = [
   },
   {
     path: 'evse/web-news',
-    component: WebBannerComponent,
+    component: WebNewsComponent,
     data: {
       title: 'Web News',
       breadcrumb: 'Web News',

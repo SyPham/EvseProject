@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService } from '@pigfarm-core';
@@ -15,7 +15,7 @@ import { DataManager, Query, UrlAdaptor, Predicate } from '@syncfusion/ej2-data'
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   fieldsLang: object = { text: "name", value: "id" };
   menus: any;
   lang: string;
@@ -32,8 +32,9 @@ export class HomeComponent implements OnInit {
     { id: "En", name: "En" },
     { id: "Vi", name: "Vi" },
   ];
-  baseUrl = environment.apiUrl;
+  baseUrl = environment.apiUrlImage;
   banners= [];
+  news= [];
   constructor(
     private spinner: NgxSpinnerService,
     private sysMenuService: SysMenuService,
@@ -55,7 +56,7 @@ export class HomeComponent implements OnInit {
   loadBannerData() {
    
      new DataManager({
-      url: `${this.baseUrl}WebBanner/LoadData?lang=${localStorage.getItem('lang')}`,
+      url: `${environment.apiUrl}WebBanner/LoadData?lang=${localStorage.getItem('lang')}`,
       adaptor: new UrlAdaptor()
     }).executeQuery(new Query()).then((res: any) => {
       this.banners = res.result.result;
@@ -63,8 +64,11 @@ export class HomeComponent implements OnInit {
       
     });;
   }
+ 
   ngAfterViewInit(): void {
+    
     $(function () {
+
       $('.nav > .sidebar-toggle').on('click', function (e) {
           e.preventDefault();
           $('.sidebar-toggle').toggleClass('active');
@@ -135,6 +139,8 @@ export class HomeComponent implements OnInit {
       this.spinner.hide();
     });
   }
+  
+
   langValueChange(args) {
     const lang = args.itemData.id.toLowerCase();
     localStorage.removeItem("lang");

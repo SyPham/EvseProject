@@ -12,14 +12,16 @@ import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import { WebNews } from 'src/app/_core/_model/evse/model';
 import { WebNewsService } from 'src/app/_core/_service/evse/web-news.service';
-
+import { ToolbarService, LinkService, ImageService, TableService, HtmlEditorService, ToolbarType } from '@syncfusion/ej2-angular-richtexteditor';
+import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 declare let window:any;
 declare let $: any;
 
 @Component({
   selector: 'app-web-news',
   templateUrl: './web-news.component.html',
-  styleUrls: ['./web-news.component.scss']
+  styleUrls: ['./web-news.component.scss'],
+  providers: [ToolbarService, LinkService, ImageService, HtmlEditorService, TableService]
 })
 export class WebNewsComponent extends BaseComponent implements OnInit {
   isAdmin = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN_CANCEL';
@@ -40,6 +42,15 @@ export class WebNewsComponent extends BaseComponent implements OnInit {
   file: any;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
+  public tools: ToolbarModule = {
+    type: ToolbarType.Expand,
+    enableFloating :false,
+    items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
+        'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
+        'Formats', 'Alignments', 'NumberFormatList', 'BulletFormatList',
+        'Outdent', 'Indent', '|', 'ClearFormat',
+        'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
+};
   constructor(
     private service: WebNewsService,
     public modalService: NgbModal,

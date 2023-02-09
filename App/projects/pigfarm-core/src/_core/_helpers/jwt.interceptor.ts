@@ -7,11 +7,13 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AuthService } from '../_service/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-    constructor(private authService: AuthService) { }
+    constructor(private router: Router) {
+        console.log(this.router.url);
+     }
 
     intercept(
         request: HttpRequest<unknown>,

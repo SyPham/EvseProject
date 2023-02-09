@@ -24,7 +24,7 @@ namespace Evse.Services
         Task<object> GetAudit(object id);
         Task<object> GetByGuid(string guid);
     }
-    public class ContractService : ServiceBase<Contract, ContractDto>, IContractService
+    public class ContractService : ServiceBase<Contract, ContractDto>, IContractService, IScopeService
     {
         private readonly IRepositoryBase<Contract> _repo;
         private readonly IRepositoryBase<XAccount> _repoXAccount;

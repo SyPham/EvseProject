@@ -50,6 +50,8 @@ import { CommonModule } from '@angular/common';
 import { GiltInDropdownlistComponent } from './components/gilt-in-dropdownlist/gilt-in-dropdownlist.component';
 import { DeviceDropdownlistComponent } from './components/device-component.ts/device-dropdownlist.component';
 import { SiteDropdownlistComponent } from './components/site-component.ts/site-dropdownlist.component';
+import { PigfarmRichtexteditorComponent } from './components/pigfarm-richtexteditor/pigfarm-richtexteditor.component';
+import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 const commponents = [
   PigDropdownlistComponent,
   PenDropdownlistComponent,
@@ -97,7 +99,8 @@ const commponents = [
   BomGiltDropdownlistComponent,
   RecordSaleDropdownlistComponent,
   SiteDropdownlistComponent,
-  DeviceDropdownlistComponent
+  DeviceDropdownlistComponent,
+  PigfarmRichtexteditorComponent
 ]
 
 @NgModule({
@@ -117,6 +120,8 @@ const commponents = [
     DatePickerAllModule,
     ComboBoxModule,
     UploaderModule,
+    RichTextEditorAllModule,
+
   ],
   exports: [
     ...commponents,

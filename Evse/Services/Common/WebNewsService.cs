@@ -243,7 +243,7 @@ IWebHostEnvironment currentEnvironment
           
             FileExtension fileExtension = new FileExtension();
             var avatarUniqueFileName = string.Empty;
-            var avatarFolderPath = "FileUploads\\images\\webbanner\\avatar";
+            var avatarFolderPath = "FileUploads\\images\\webnews\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
             if (model.File != null)
             {
@@ -251,7 +251,7 @@ IWebHostEnvironment currentEnvironment
                 if (!files.IsNullOrEmpty())
                 {
                     avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
-                    model.PhotoPath = $"/FileUploads/images/webbanner/avatar/{avatarUniqueFileName}";
+                    model.PhotoPath = $"/FileUploads/images/webnews/avatar/{avatarUniqueFileName}";
                 }
             }
             try
@@ -295,7 +295,7 @@ IWebHostEnvironment currentEnvironment
 
             // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
             var avatarUniqueFileName = string.Empty;
-            var avatarFolderPath = "FileUploads\\images\\webbanner\\avatar";
+            var avatarFolderPath = "FileUploads\\images\\webnews\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
 
             if (model.File != null)
@@ -306,7 +306,7 @@ IWebHostEnvironment currentEnvironment
                     if (!item.PhotoPath.IsNullOrEmpty())
                         fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.PhotoPath.Replace("/", "\\").Replace("/", "\\")}");
                     avatarUniqueFileName = await fileExtension.WriteAsync(filesAvatar, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
-                    item.PhotoPath = $"/FileUploads/images/webbanner/avatar/{avatarUniqueFileName}";
+                    item.PhotoPath = $"/FileUploads/images/webnews/avatar/{avatarUniqueFileName}";
                 }
             }
 

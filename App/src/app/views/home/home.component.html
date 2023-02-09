@@ -49,10 +49,11 @@
   </div>
 </nav>
 
+
 <div id="carouselExampleControls"  class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active" *ngFor="let item of banners">
-        <img class="d-block w-100" [src]="item.photoPath" [alt]="item.subject">
+        <img class="d-block w-100" [routerLink]="item.link" [src]="baseUrl + item.photoPath" [alt]="item.subject">
       </div>
      
     </div>
@@ -68,138 +69,16 @@
 
   <div class="row my-4">
     <div class="col-12">
-        <ol class="breadcrumb mb-0">
+        <!-- <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="#" class="font-weight-bold">上 新 活動 門 相 報</a></li>
             <li class="breadcrumb-item"><a href="#">提供 最 新</a></li>
             <li class="breadcrumb-item"><a href="#">最 熱門 的 各 類 活動 資訊</a></li>
             <li class="breadcrumb-item active" aria-current="page">每 周 更 新</li>
-          </ol>
+          </ol> -->
     </div>
   </div>
-
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <div class="col">
-      <div class="card shadow-sm">
-        <img src="../../../assets/images/blog1.jpg" class="d-block w-100" >
-        <div class="card-body">
-          <p class="card-text">引 人 注 目的 活動 標題</p>
-          <p class="card-text">12/19/2022</p>
-          <p></p>
-         
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card shadow-sm">
-        <img src="../../../assets/images/blog2.jpg" class="d-block w-100" >
-        <div class="card-body">
-          <p class="card-text">引 人 注 目的 活動 標題</p>
-          <p class="card-text">12/12/2022</p>
-         
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card shadow-sm">
-        <img src="../../../assets/images/blog3.jpg" class="d-block w-100" >
-        <div class="card-body">
-          <p class="card-text">引 人 注 目的 活動 標題</p>
-          <p class="card-text">12/05/2022</p>
-          
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="d-flex align-items-center justify-content-center my-2">
-    <a class="btn btn-danger text-white" >{{'了解更多' | translate}}<i class="fa fa-arrow-right ml-2"></i></a>
-  </div>
-
-  <div class="d-flex align-items-lg-end justify-content-between my-2" style="border-bottom: 2px solid #1f3b2c;">
-    <h3>成為投資人</h3> <span>2023.01.02</span>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-5">
-        <!-- Product image -->
-        <a href="javascript: void(0);" class="text-center d-block mb-4">
-            <img src="../../../assets/images/blog4.png" class="img-fluid"  alt="Product-img">
-        </a>
-    </div> <!-- end col -->
-    <div class="col-lg-7">
-        <form class="ps-lg-4">
-            <!-- Product title -->
-            <h3 class="mt-0">什麼是投資人 <a href="javascript: void(0);" class="text-muted"><i class="mdi mdi-square-edit-outline ms-2"></i></a> </h3>
-            <!-- Product description -->
-            <div class="mt-4">
-                <p>什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人??? </p>
-                <div class="d-flex align-items-center justify-content-center my-2">
-                    <a class="btn btn-primary text-white" routerLink="/mobile/landlord-login" >{{'成為投資人' | translate}}</a>
-                  </div>
-            </div>
-           
-        </form>
-    </div> <!-- end col -->
-</div>
-
-
-
-<div class="d-flex align-items-lg-end justify-content-between my-2" style="border-bottom: 2px solid #1f3b2c;">
-    <h3>成為工程師</h3> <span>2023.01.02</span>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-5">
-        <!-- Product image -->
-        <a href="javascript: void(0);" class="text-center d-block mb-4">
-            <img src="../../../assets/images/blog5.png" class="img-fluid"  alt="Product-img">
-        </a>
-    </div> <!-- end col -->
-    <div class="col-lg-7">
-        <form class="ps-lg-4">
-            <!-- Product title -->
-            <h3 class="mt-0">什麼是投資人 <a href="javascript: void(0);" class="text-muted"><i class="mdi mdi-square-edit-outline ms-2"></i></a> </h3>
-            <!-- Product description -->
-            <div class="mt-4">
-                <p>什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人??? </p>
-                <div class="d-flex align-items-center justify-content-center my-2">
-                    <a class="btn btn-primary text-white" >{{'成為工程師' | translate}}</a>
-                  </div>
-            </div>
-           
-        </form>
-    </div> <!-- end col -->
-</div>
-
-
-
-<div class="d-flex align-items-lg-end justify-content-between my-2" style="border-bottom: 2px solid #1f3b2c;">
-    <h3>成為停車會員</h3> <span>2023.01.02</span>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-5">
-        <!-- Product image -->
-        <a href="javascript: void(0);" class="text-center d-block mb-4">
-            <img src="../../../assets/images/blog6.png" class="img-fluid"  alt="Product-img">
-        </a>
-    </div> <!-- end col -->
-    <div class="col-lg-7">
-        <form class="ps-lg-4">
-            <!-- Product title -->
-            <h3 class="mt-0">什麼是投資人 <a href="javascript: void(0);" class="text-muted"><i class="mdi mdi-square-edit-outline ms-2"></i></a> </h3>
-            <!-- Product description -->
-            <div class="mt-4">
-                <p>什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人???什麼是投資人??? </p>
-                <div class="d-flex align-items-center justify-content-center my-2">
-                    <a class="btn btn-primary text-white" >{{'我要停車' | translate}}</a>
-                  </div>
-            </div>
-           
-        </form>
-    </div> <!-- end col -->
-</div>
+  <app-news></app-news>
+<app-new-role></app-new-role>
 
 <div class="footer" style="height: auto; background-color: #233b2e">
 

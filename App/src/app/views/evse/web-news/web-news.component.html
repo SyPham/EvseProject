@@ -124,7 +124,18 @@
   <div class="modal-body" id="option">
 
     <div class="row">
-
+      <div class="col-6">
+        <div class="form-group">
+          <label for="engineerSex">{{ "WebNews_Type" | translate }}</label>
+          <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+          <app-code-type-dropdownlist
+            id="webnew-type-remote"
+            [codeType]="'WebNews_Type'"
+            [(selectedValue)]="model.type"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
 
       <div class="col-md-6">
         <div class="form-group">
@@ -154,6 +165,19 @@
         </div>
       </div>
 
+      <div class="col-6">
+        <div class="form-group">
+          <label for="News_Date">{{
+            "News_Date" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.newsDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
       <div class="col-md-6">
         <div class="form-group">
           <label for="sortId">{{ "WebNews_SortId" | translate }}</label>
@@ -166,7 +190,17 @@
         </div>
       </div>
 
+      <div class="col-12 mb-2">
+        <label for="body">{{ "WebNews_Body" | translate }}</label>
+
+        <ejs-richtexteditor  [toolbarSettings]='tools' saveInterval='1' [showCharCount]='true' maxLength='5000' #defaultRTE id='defaultRTE'  [(value)]='model.body'>
+        
+          </ejs-richtexteditor>
+      </div>
+
       <div class="col-12 text-center">
+
+
         <div class="kv-avatar">
           <div class="file-loading">
             <input

@@ -127,6 +127,8 @@ import { PigfarmCoreModule } from '@pigfarm-core';
 import { environment } from 'src/environments/environment';
 import { AutoLogoutService } from './_core/_service/apply-orders/auto-log-off.service';
 import { NavbarComponent } from './views/layout/navbar/navbar.component';
+import { NewsComponent } from './views/home/news/news.component';
+import { NewRoleComponent } from './views/home/new-role/new-role.component';
 console.log(environment.apiUrl)
 let lang = localStorage.getItem('lang');
 if (!lang) {
@@ -156,6 +158,8 @@ if (!lang) {
     ReportBarChartComponent,
     ReportLineChartComponent,
     NavbarComponent,
+    NewsComponent,
+    NewRoleComponent
 
   ],
   imports: [

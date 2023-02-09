@@ -34,7 +34,7 @@ import { WebBannerComponent } from './web-banner/web-banner.component';
 import { BankActionComponent } from './bank/bank-action/bank-action.component';
 import { ContractActionComponent } from './contract/contract-action/contract-action.component';
 import { WebNewsComponent } from './web-news/web-news.component';
-import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { RichTextEditorAllModule, RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 interface Environment {
   production: boolean;
   apiUrl: string;
@@ -57,7 +57,7 @@ interface Environment {
     DatePickerAllModule,
     CoreDirectivesModule,
     ChartModule,
-    RichTextEditorAllModule,
+    RichTextEditorModule,
     SharedModule.forRoot(),
     PigfarmCoreModule.forRoot(environment.apiUrl),
   ],

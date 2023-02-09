@@ -16,7 +16,7 @@
 @import '../node_modules/@syncfusion/ej2-treegrid/styles/bootstrap4.css';
 @import '../node_modules/sweetalert2/dist/sweetalert2.min.css';
 @import '../node_modules/@syncfusion/ej2-angular-dropdowns/styles/bootstrap4.css';
-
+@import '../node_modules/@syncfusion/ej2-richtexteditor/styles/bootstrap4.css';
 /* @import '../node_modules/@syncfusion/ej2-lists/styles/bootstrap4.css'; */
 /* @import '../node_modules/animate.css/animate.css'; */
 /* @import '../pretty-checkbox/src/pretty-checkbox.scss'; */

@@ -35,24 +35,19 @@ export class BankComponent  extends BaseComponent implements OnInit, OnChanges {
     }
 
   ngOnInit() {
+    this.loadData();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty("parkingLot")) {
-      if (changes?.parkingLot.currentValue != changes?.parkingLot.previousValue) {
-       this.loadData();
-      }
-     }
+   
   }
   loadData() {
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
-    this.query = new Query()
-    .where('parkingLotGuid', 'equal', this.parkingLot?.guid);
     this.dataSource = new DataManager({
       url: `${this.baseUrl}Bank/LoadData?lang=${lang}`,
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
-    },this.query);
+    });
 }
 
   toolbarClick(args) {
