@@ -1,9 +1,9 @@
 <div class="flex">
-    <div class="item">
+    <div class="item" [style.background-color]="bg" >
   
         <form class="login_box"  (ngSubmit)="login()">
-            <img src="../../../assets/images/logo.png" alt="logo" style="padding-bottom: 10px;" />
-            <h3 style="color:#5D3422">{{'EVSE 後台管理系統' | translate}}</h3>
+            <img [src]="baseUrl + logo" alt="logo" style="padding-bottom: 10px;" />
+            <h3 style="color:#5D3422">{{titleName}}</h3>
             <div class="account">
               <label> {{'Username' | translate}} </label>
               <input type="text"  [(ngModel)]="username"

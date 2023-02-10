@@ -38,12 +38,11 @@ export class ContractComponent  extends BaseComponent implements OnInit, OnChang
     this.loadData();
   }
   ngOnChanges(changes: SimpleChanges): void {
-  
+   
   }
   loadData() {
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
-
     this.dataSource = new DataManager({
       url: `${this.baseUrl}Contract/LoadData?lang=${lang}`,
       adaptor: new UrlAdaptor,

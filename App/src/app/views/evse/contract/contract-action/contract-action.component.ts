@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService, BaseComponent, UtilitiesService } from '@pigfarm-core';
 import { ImagePathConstants } from 'src/app/_core/_constants';
-import { Contract, ParkingLot, Site } from 'src/app/_core/_model/evse/model';
+import { Contract} from 'src/app/_core/_model/evse/model';
 import { ContractService } from 'src/app/_core/_service/evse/contract.service';
 import { environment } from 'src/environments/environment';
 declare let $: any;
@@ -45,6 +45,7 @@ export class ContractActionComponent  extends BaseComponent implements OnInit {
   open() {
     if (this.guid) {
       this.service.getByGuid(this.guid).subscribe(data=> {
+        debugger
         this.model = data;
         this.modalService.open(this.actionModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       })

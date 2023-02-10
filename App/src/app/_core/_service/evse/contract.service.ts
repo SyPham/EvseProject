@@ -16,6 +16,6 @@ export class ContractService extends CURDService<Contract> {
     super(environment.apiUrl,http,"Contract", utilitiesService);
   }
   getByGuid(guid): Observable<any> {
-    return this.http.get<any>(`${this.base}Contract/GetByGuid?guid=${guid}`, {});
+    return this.http.get<any>(`${this.base}Contract/GetByGuidV2?guid=${guid}`, {});
   }
 }

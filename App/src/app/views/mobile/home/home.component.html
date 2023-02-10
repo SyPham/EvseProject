@@ -19,11 +19,11 @@
     </div>
 
     <div class="line"></div>
-    <div *ngIf="!isMobileMode" class="flex-container-bio-desktop">
+    <div  class="flex-container-bio-desktop">
       <div (click)="backDesktop()">{{ 'Desktop' | translate }}</div>
     </div>
 
-    <div *ngIf="isMobileMode" class="flex-container-bio-desktop">
+    <div  class="flex-container-bio-desktop">
       <div (click)="logout()">{{ 'SIGN_OUT' | translate }}</div>
     </div>
   </div>

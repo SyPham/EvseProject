@@ -139,7 +139,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   logout() {
     this.authService.logOut().subscribe(() => {
       const uri = this.router.url;
-      this.cookieService.deleteAll("/");
+      this.cookieService.delete('remember_landlord');
+      this.cookieService.delete('key_temp_landlord');
 
       this.router.navigate(["login"], {
         queryParams: { uri },

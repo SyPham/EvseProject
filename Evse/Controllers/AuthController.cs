@@ -88,6 +88,12 @@ namespace Evse.Controllers
             await _authService.LogOut();
             return NoContent();
         }
+[HttpPost]
+        public async Task<IActionResult> LogOutLandlordAsync()
+        {
+            await _authService.LogOutLandlord();
+            return NoContent();
+        }
 
     }
 

@@ -1,6 +1,5 @@
 <div class="card">
   <div class="card-body p-0">
-
       <ejs-grid
     #grid
     id="grid"
@@ -45,7 +44,7 @@
         [width]="200"
         textAlign="Left"
         headerTextAlign="Center"
-        headerText="{{ 'Contract_Subject' | translate }}"
+        [headerText]="'Contract_Subject_Key' | translate "
       >
       </e-column>
   

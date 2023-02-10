@@ -31,6 +31,7 @@ namespace Evse.Services
     {
         Task<XAccount> Login(string username, string password);
         Task LogOut();
+        Task LogOutLandlord();
         Task<bool> CheckLock(string username);
         Task<OperationResult> ResetPassword(ResetPasswordDto reset);
         Task<OperationResult> RegisterLandlord(RegisterLandlordDto reset);
@@ -281,6 +282,39 @@ namespace Evse.Services
                 _repo.Update(account);
                 await _unitOfWork.SaveChangeAsync();
                 LogStoreProcedure(account.AccountId, "LogIn").ConfigureAwait(false).GetAwaiter();
+#if DEBUG
+
+#else
+                //var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+                //var message = $"{account.Uid} logged out the system on {dateTime}";
+                //foreach (var a in _tokens)
+                //{
+                //    _lineService.SendMessage(new MessageParams
+                //    {
+                //        Token = a,
+                //        Message = message
+                //    }).ConfigureAwait(false).GetAwaiter();
+                //}
+#endif
+
+
+            }
+            catch
+            {
+            }
+
+        }
+          public async Task LogOutLandlord()
+        {
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var accountId = JWTExtensions.GetDecodeTokenByID(token);
+            var account = await _repoLandlord.FindByIDAsync(accountId.ToDecimal());
+            account.Lastlogin = DateTime.Now;
+            try
+            {
+                _repoLandlord.Update(account);
+                await _unitOfWork.SaveChangeAsync();
+                LogStoreProcedure(account.Id, "LogIn").ConfigureAwait(false).GetAwaiter();
 #if DEBUG
 
 #else

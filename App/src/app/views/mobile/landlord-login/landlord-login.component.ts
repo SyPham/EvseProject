@@ -6,6 +6,15 @@ import { Subscription } from "rxjs";
 import { AuthService } from "src/app/_core/_service/auth.service";
 import { TranslateService } from "@ngx-translate/core";
 import { AlertifyService } from "@pigfarm-core";
+import { AuthLandlordService } from "src/app/_core/_service/auth-landlord.service";
+import {
+  DataManager,
+  Query,
+  UrlAdaptor,
+  Predicate,
+} from "@syncfusion/ej2-data";
+import { environment } from "src/environments/environment";
+
 @Component({
   selector: "app-landlord-login",
   templateUrl: "./landlord-login.component.html",
@@ -14,6 +23,8 @@ import { AlertifyService } from "@pigfarm-core";
 export class LandlordLoginComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
+  baseUrl = environment.apiUrlImage;
+
   username = "";
   password = "";
   private subscription: Subscription;
@@ -25,17 +36,20 @@ export class LandlordLoginComponent
   remember = false;
   loading = 0;
   key: string;
+  logo: any;
+  titleName: any = '後台管理系統';
+  bg: any = '#fff9f1';
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
+    private authService: AuthLandlordService,
     private cookieService: CookieService,
     private alertifyService: AlertifyService,
     private trans: TranslateService
   ) {
-    if (this.cookieService.get("remember") !== undefined) {
-      if (this.cookieService.get("remember") === "Yes") {
-        this.key = this.cookieService.get("key_temp");
+    if (this.cookieService.get("remember_landlord") !== undefined) {
+      if (this.cookieService.get("remember_landlord") === "Yes") {
+        this.key = this.cookieService.get("key_temp_landlord");
         this.remember = true;
         this.loginRememberMe(+this.key);
       }
@@ -46,8 +60,10 @@ export class LandlordLoginComponent
   role: number;
   ngAfterViewInit(): void {}
   ngOnInit(): void {
-    const accessToken = localStorage.getItem("token");
-    const refreshToken = localStorage.getItem("refresh_token");
+    this.loadConfigData();
+    this.loadLogoData();
+    const accessToken = localStorage.getItem("token_landlord");
+    const refreshToken = localStorage.getItem("refresh_token_landlord");
     if (
       accessToken &&
       refreshToken &&
@@ -87,11 +103,11 @@ export class LandlordLoginComponent
       }
 
       if (this.remember) {
-        this.cookieService.set("remember", "Yes");
-        this.cookieService.set("key_temp", data.user.id);
+        this.cookieService.set("remember_landlord", "Yes");
+        this.cookieService.set("key_temp_landlord", data.user.id);
       } else {
-        this.cookieService.set("remember", "No");
-        this.cookieService.set("key_temp", "");
+        this.cookieService.set("remember_landlord", "No");
+        this.cookieService.set("key_temp_landlord", "");
       }
      
       let backUrl = "/mobile/home";
@@ -128,11 +144,11 @@ export class LandlordLoginComponent
       }
 
       if (this.remember) {
-        this.cookieService.set("remember", "Yes");
-        this.cookieService.set("key_temp", data.user.id);
+        this.cookieService.set("remember_landlord", "Yes");
+        this.cookieService.set("key_temp_landlord", data.user.id);
       } else {
-        this.cookieService.set("remember", "No");
-        this.cookieService.set("key_temp", "");
+        this.cookieService.set("remember_landlord", "No");
+        this.cookieService.set("key_temp_landlord", "");
       }
      
       let backUrl = "/evse/home";
@@ -151,6 +167,43 @@ export class LandlordLoginComponent
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
-
-
+  loadLogoData() {
+    let query = new Query();
+    query.where("type", "equal", "Logo");
+    new DataManager({
+      url: `${environment.apiUrl}WebNews/LoadData?lang=${localStorage.getItem(
+        "lang"
+      )}`,
+      adaptor: new UrlAdaptor(),
+    })
+      .executeQuery(query.sortBy("sortId"))
+      .then((res: any) => {
+        var data = res.result.result;
+        this.logo = data.length > 0 ? data[0].photoPath : "../../../assets/images/logo.png";
+      })
+      .catch((err) => {});
+  }
+  loadConfigData() {
+    let query = new Query();
+    query.where("type", "equal", "Evse_Login_Config");
+    const accessToken = localStorage.getItem("token");
+    new DataManager({
+      url: `${environment.apiUrl}SystemConfig/GetDataDropdownlist`,
+      adaptor: new UrlAdaptor(),
+      headers: [{ authorization: `Bearer ${accessToken}` }],
+    })
+      .executeQuery(query)
+      .then((x: any) => {
+        const configData = x.result;
+        for (const item of configData) {
+          if (item.no === 'title') {
+            this.titleName = item.value;
+          } 
+          if (item.no === 'background-color') {
+            this.bg = item.value
+          }
+        }
+       
+      });
+  }
 }

@@ -55,7 +55,11 @@ namespace Evse.Controllers
             return Ok(await _service.GetWithPaginationsAsync(paramater));
         }
      
-
+ [HttpGet]
+        public async Task<ActionResult> GetByGuidV2(string guid)
+        {
+            return Ok(await _service.GetByGuid(guid));
+        }
         [HttpPost]
         public async Task<ActionResult> LoadData([FromBody] DataManager request, string lang)
         {

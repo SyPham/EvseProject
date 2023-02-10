@@ -16,6 +16,7 @@ import { DataManager, Query, UrlAdaptor, Predicate } from '@syncfusion/ej2-data'
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+  
   fieldsLang: object = { text: "name", value: "id" };
   menus: any;
   lang: string;
@@ -35,6 +36,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   baseUrl = environment.apiUrlImage;
   banners= [];
   news= [];
+  logo: any;
   constructor(
     private spinner: NgxSpinnerService,
     private sysMenuService: SysMenuService,
@@ -51,6 +53,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadBannerData();
+    this.loadLogoData();
    
   }
   loadBannerData() {
@@ -139,7 +142,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.spinner.hide();
     });
   }
-  
+  loadLogoData() {
+    let query = new Query();
+    query.where("type", "equal", "Logo");
+    new DataManager({
+      url: `${environment.apiUrl}WebNews/LoadData?lang=${localStorage.getItem(
+        "lang"
+      )}`,
+      adaptor: new UrlAdaptor(),
+    })
+      .executeQuery(query.sortBy("sortId"))
+      .then((res: any) => {
+        var data = res.result.result;
+        this.logo = data.length > 0 ? data[0].photoPath : "../../../assets/images/logo.png";
+      })
+      .catch((err) => {});
+  }
+
 
   langValueChange(args) {
     const lang = args.itemData.id.toLowerCase();

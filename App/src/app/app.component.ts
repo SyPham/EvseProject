@@ -7,6 +7,14 @@ import { environment } from 'src/environments/environment';
 import { AutoLogoutService } from './_core/_service/apply-orders/auto-log-off.service';
 import { VersionCheckService } from './_core/_service/version-check.service';
 import { XAccountService } from './_core/_service/xaccount.service';
+
+import {
+  DataManager,
+  Query,
+  UrlAdaptor,
+  Predicate,
+} from "@syncfusion/ej2-data";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,6 +22,7 @@ import { XAccountService } from './_core/_service/xaccount.service';
 })
 export class AppComponent implements OnInit {
   titleKey = 'EVSE 後台管理系統';
+  titleName: any;
   constructor(
     private versionCheckService: VersionCheckService,
     private title:Title,
@@ -24,12 +33,34 @@ export class AppComponent implements OnInit {
   }
   ngOnInit(): void {
   
-    this.translate.get(this.titleKey).subscribe(name=>{
-      this.title.setTitle(name);
-    });
-   
+    // this.translate.get(this.titleKey).subscribe(name=>{
+    //   this.title.setTitle(name);
+    // });
+   this.loadTitleData();
     this.versionCheckService.initVersionCheck(environment.versionCheckURL);
 
   }
+  loadTitleData() {
+    let query = new Query();
+    query.where("type", "equal", "EVSE_Title");
+    query.where("no", "equal", "title");
+
+    const accessToken = localStorage.getItem("token");
+    new DataManager({
+      url: `${environment.apiUrl}SystemConfig/GetDataDropdownlist`,
+      adaptor: new UrlAdaptor(),
+      headers: [{ authorization: `Bearer ${accessToken}` }],
+    })
+      .executeQuery(query)
+      .then((x: any) => {
+        const configData = x.result;
+        const item = configData[0];
+        this.titleName = configData.length > 0 ? item.value : this.translate.instant(this.titleKey);
+        this.title.setTitle(this.titleName);
+       
+      });
+  }
+  
+
 }
 

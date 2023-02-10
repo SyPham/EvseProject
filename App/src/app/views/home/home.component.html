@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light home-navbar" id="navbar">
   <div class="container-fluid">
       <a href="#" class="navbar-brand" style="padding: 8px 5px 5px 5px; background-color: #fff; border-radius: 30px;">
-        <img src="../../../assets/images/logo.png" alt="EVSE 後台管理系統" class="mr-2" />
+        <img [src]="baseUrl + logo" alt="EVSE 後台管理系統" class="mr-2" />
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -50,18 +50,18 @@
 </nav>
 
 
-<div id="carouselExampleControls"  class="carousel slide" data-ride="carousel">
+<div id="banner"  class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
-      <div class="carousel-item active" *ngFor="let item of banners">
+      <div class="carousel-item" [class.active]="i == 0" *ngFor="let item of banners; let i = index">
         <img class="d-block w-100" [routerLink]="item.link" [src]="baseUrl + item.photoPath" [alt]="item.subject">
       </div>
      
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <a class="carousel-control-prev" href="#banner" role="button" data-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="sr-only">{{'Previous' | translate}}</span>
     </a>
-    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <a class="carousel-control-next" href="#banner" role="button" data-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">{{'Next' | translate}}</span>
     </a>

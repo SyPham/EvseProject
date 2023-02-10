@@ -37,6 +37,7 @@ export class NewRoleComponent implements OnInit {
       .executeQuery(query.sortBy("sortId"))
       .then((res: any) => {
         var data = res.result.result;
+        debugger
         this.news = data;
       })
       .catch((err) => {});

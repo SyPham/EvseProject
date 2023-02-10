@@ -11,7 +11,7 @@ import { OperationResult } from '../_model/operation.result';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService implements OnDestroy {
+export class AuthLandlordService implements OnDestroy {
   baseUrl = environment.apiUrl + 'auth/login';
   base = environment.apiUrl;
 
@@ -52,23 +52,7 @@ export class AuthService implements OnDestroy {
     window.removeEventListener('storage', this.storageEventListener.bind(this));
   }
 
-  login(username: string, password: string) {
-    return this.http
-      .post<OperationResult>(`${this.apiUrl}/login`, { username, password })
-      .pipe(
-        map(res => {
-          const applicationUser = res.data as ApplicationUser;
-          this.cookieService.set("refreshToken", applicationUser.refreshToken,  {
-            expires: 1000 * 60 * 365,
-            domain: environment.domain,
-            secure: true,
-            sameSite:'Strict'
-        })
-          this.setLocalStorage(applicationUser);
-          return applicationUser;
-        })
-      );
-  }
+
   loginlanlord(username: string, password: string) {
     return this.http
       .post<OperationResult>(`${this.apiUrl}/loginlandlord`, { username, password })
@@ -86,18 +70,7 @@ export class AuthService implements OnDestroy {
         })
       );
   }
-  loginRememberMe(id) {
-    return this.http
-      .post<OperationResult>(`${this.apiUrl}/LoginRemember`, { id })
-      .pipe(
-        map(res => {
-          const applicationUser = res.data as ApplicationUser;
-          const user = res.data.user;
-          this.setLocalStorage(applicationUser);
-          return applicationUser;
-        })
-      );
-  }
+
   registerLandlord(username, password) {
     return this.http
       .post<OperationResult>(`${this.apiUrl}/RegisterLandlord`, { username, password })
@@ -116,37 +89,12 @@ export class AuthService implements OnDestroy {
       );
   }
 
-  refreshToken() {
-    const refreshToken = localStorage.getItem('refresh-token');
-    const token = localStorage.getItem('token');
-    if (!refreshToken || refreshToken === undefined + '') {
-      this.clearLocalStorage();
-      return of(null);
-    }
-    const timeout = this.jwtHelper.isTokenExpired();
-    if (timeout === false) {
-      return of(null);
-    }
-    return this.http
-      .post<OperationResult>(`${this.apiUrl}/RefreshToken`, {token, refreshToken })
-      .pipe(
-        map( res => {
-          const applicationUser = res.data as ApplicationUser;
-          this.setLocalStorage(applicationUser);
-          this.startTokenTimer();
-          return applicationUser;
-        }),
-        catchError((err) => {
-          this.clearLocalStorage();
-          return throwError(err);
-        }),
-      );
-  }
+  
   refreshTokenLandlord() {
     const refreshToken = localStorage.getItem('refresh-token_landlord');
     const token = localStorage.getItem('token_landlord');
     if (!refreshToken || refreshToken === undefined + '') {
-      this.clearLocalStorage();
+      this.clearLocalStorageLandlord();
       return of(null);
     }
     const timeout = this.jwtHelper.isTokenExpired();
@@ -158,23 +106,18 @@ export class AuthService implements OnDestroy {
       .pipe(
         map( res => {
           const applicationUser = res.data as ApplicationUser;
-          this.setLocalStorage(applicationUser);
+          this.setLocalStorageLandlord(applicationUser);
           this.startTokenTimer();
           return applicationUser;
         }),
         catchError((err) => {
-          this.clearLocalStorage();
+          this.clearLocalStorageLandlord();
           return throwError(err);
         }),
       );
   }
 
-  setLocalStorage(data: ApplicationUser) {
-    localStorage.setItem('user', JSON.stringify(data.user));
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('refresh-token', data.refreshToken);
-    localStorage.setItem('login-event', 'login' + Math.random());
-  }
+  
   setLocalStorageLandlord(data: ApplicationUser) {
     localStorage.setItem('user_landlord', JSON.stringify(data.user));
     localStorage.setItem('token_landlord', data.token);
@@ -182,18 +125,7 @@ export class AuthService implements OnDestroy {
     localStorage.setItem('login-event_landlord', 'login' + Math.random());
   }
 
-  clearLocalStorage() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    localStorage.removeItem('refresh-token');
-    localStorage.removeItem('login-event');
-    localStorage.removeItem('functions');
-    localStorage.removeItem('menuItem');
-    localStorage.removeItem('farmGuid');
-    localStorage.removeItem('menus');
-    localStorage.removeItem('lastAction');
-    localStorage.setItem('logout-event', 'logout' + Math.random());
-  }
+  
 
   clearLocalStorageLandlord() {
     localStorage.removeItem('user_landlord');
@@ -208,7 +140,7 @@ export class AuthService implements OnDestroy {
     localStorage.setItem('logout-event_landlord', 'logout' + Math.random());
   }
   private getTokenRemainingTime() {
-    const accessToken = localStorage.getItem('token');
+    const accessToken = localStorage.getItem('token_landlord');
     if (!accessToken) {
       return 0;
     }
@@ -223,7 +155,7 @@ export class AuthService implements OnDestroy {
     this.timer = of(true)
       .pipe(
         delay(timeout),
-        tap(() => this.refreshToken().subscribe())
+        tap(() => this.refreshTokenLandlord().subscribe())
       )
       .subscribe();
   }
@@ -238,22 +170,22 @@ export class AuthService implements OnDestroy {
     return result;
   }
   public loggedIn() {
-    if (this.validToken()) {
-      return !this.jwtHelper.isTokenExpired();
+    if (localStorage.getItem("access_token_landlord")) {
+      return true;
     }
     return false;
   }
   logOut() {
-    const refreshToken = localStorage.getItem('refresh-token');
+    const refreshToken = localStorage.getItem('refresh-token_landlord');
     if (!refreshToken || refreshToken === undefined + '' || this.validToken() === false) {
-      this.clearLocalStorage();
+      this.clearLocalStorageLandlord();
       return of(null);
     }
     return this.http
-      .post(`${this.apiUrl}/logout`, {})
+      .post(`${this.apiUrl}/logoutlogoutlandlord`, {})
       .pipe(
         finalize(() => {
-          this.clearLocalStorage();
+          this.clearLocalStorageLandlord();
           this.stopTokenTimer();
       })
       );
@@ -261,7 +193,7 @@ export class AuthService implements OnDestroy {
   logOutLandlord() {
     const refreshToken = localStorage.getItem('refresh-token_landlord');
     if (!refreshToken || refreshToken === undefined + '' || this.validToken() === false) {
-      this.clearLocalStorage();
+      this.clearLocalStorageLandlord();
       return of(null);
     }
     return this.http
