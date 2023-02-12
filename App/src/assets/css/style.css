@@ -16771,7 +16771,7 @@ label.required:after, .label.required:after, *.required:after {
     height: 485px;
     padding-top: 80px;
     background-size: cover;
-    background-image: url(/assets/images/banner.png);
+    /* background-image: url(/assets/images/banner.png); */
 }
 
     .banner h2 {
@@ -18415,3 +18415,14 @@ h2.company-title {
             }
 }
 
+.swiper-button-next, .swiper-button-prev {
+    color: #62677e !important;
+    font-weight: bold;
+}
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    color: #fff !important;
+    font-weight: bold;
+}
+.swiper-pagination-bullet-active{
+    color: #fff !important;
+}

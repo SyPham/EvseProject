@@ -1,8 +1,8 @@
 <div class="row p-3"  *ngFor="let item of news; let i = index">
   <div class="col-lg-5">
       <!-- Product image -->
-      <a href="javascript: void(0);" class="text-center d-block mb-4">
-          <img  [routerLink]="item.link" [src]="baseUrl + item.photoPath" class="img-fluid img-thumbnail"  [alt]="item.subject">
+      <a  [href]="item.link" target="_blank"  class="text-center d-block mb-4">
+          <img [src]="baseUrl + item.photoPath" class="img-fluid img-thumbnail"  [alt]="item.subject">
       </a>
   </div> <!-- end col -->
   <div class="col-lg-7">

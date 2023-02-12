@@ -23,9 +23,6 @@ export class HomeComponent implements OnInit {
     private authService: AuthLandlordService
     ) {
      }
-  isMobileMode: boolean = JSON.parse(localStorage.getItem('user')).mobileMode
-  Group_No: string = JSON.parse(localStorage.getItem('user')).groupCode
-  SystemGroupNo : SystemGroupNo = {} as SystemGroupNo
   ngOnInit() {
     this.username =
     JSON.parse(localStorage.getItem("user_landlord"))?.username || "Guest";

@@ -33,11 +33,7 @@ export class NewsComponent implements OnInit {
       .executeQuery(query.sortBy("sortId"))
       .then((res: any) => {
         var data = res.result.result;
-        if (data.length > 0) {
-          for (var i = 0; i < data.length; i += 3) {
-            this.news.push(data.slice(i, i + 3));
-          }
-        }
+        this.news =data;
       })
       .catch((err) => {});
   }

@@ -1,4 +1,4 @@
-<div id="news" class="carousel slide" data-ride="carousel">
+<!-- <div id="news" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item" [class.active]="i == 0" *ngFor="let childrens of news; let i = index">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -26,4 +26,34 @@
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
-  </div>
+  </div> -->
+
+  <swiper
+  [slidesPerView]="3"
+[loop]="true"
+[navigation]="true"
+[autoplay]="{ delay: 2000, disableOnInteraction: false }"
+[pagination]="{ clickable: true, dynamicBullets: true }"
+>
+<ng-container  *ngFor="let item of news; let i = index">
+<ng-template  swiperSlide>
+
+
+      <div class="card shadow-sm">
+        <a [href]="item.link" target="_blank">
+          <img  style="  display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;" [src]="baseUrl + item.photoPath" [alt]="item.subject" loading="lazy" />
+        </a>
+        <div class="card-body">
+          <p class="card-text">{{item.subject}}</p>
+          <p class="card-text">{{item.newsDate | date: "yyyy-MM-dd"}}</p>
+          <p></p>
+         
+        </div>
+      </div>
+  
+</ng-template>
+</ng-container>
+</swiper>

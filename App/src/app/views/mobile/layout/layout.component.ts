@@ -31,7 +31,6 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   public width: string = "290px";
   mediaQuery: string = "(min-width: 600px)";
   target: string = ".main-content";
-  isMobileMode: boolean = JSON.parse(localStorage.getItem('user')).groupCode === SystemGroupNo.LandRoyal || JSON.parse(localStorage.getItem('user')).groupCode === SystemGroupNo.Member || JSON.parse(localStorage.getItem('user')).groupCode === SystemGroupNo.Engineer
   currentRouter_default: string = '/mobile/home'
   currentRouter: string = ''
   subscription: Subscription = new Subscription();
@@ -84,16 +83,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   }
 
   toggleSidebar() {
-    if(this.isMobileMode) {
-      this.router.navigate(["/mobile/home"]);
-    }else {
-      this.router.navigate(['/mobile/home'])
-    }
-    // .then(() => {
-    //   window.location.reload();
-    // });
-    // this.router.navigate(["/mobile/home"]);
-    // this.sidebarTreeviewInstance.toggle();
+   
   }
   goBack() {
     const homeUrl = this.router.url.includes("home");

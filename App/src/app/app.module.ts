@@ -129,6 +129,7 @@ import { AutoLogoutService } from './_core/_service/apply-orders/auto-log-off.se
 import { NavbarComponent } from './views/layout/navbar/navbar.component';
 import { NewsComponent } from './views/home/news/news.component';
 import { NewRoleComponent } from './views/home/new-role/new-role.component';
+import { SwiperModule } from 'swiper/angular';
 console.log(environment.apiUrl)
 let lang = localStorage.getItem('lang');
 if (!lang) {
@@ -179,6 +180,7 @@ if (!lang) {
     ChartAllModule,
     GridAllModule,
     AccumulationChartAllModule,
+    SwiperModule,
     PigfarmCoreModule.forRoot(environment.apiUrl),
     JwtModule.forRoot({
       config: {

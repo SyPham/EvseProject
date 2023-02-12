@@ -8,7 +8,32 @@ import { DashboardService } from 'src/app/_core/_service/dashboard.service';
 import { SysMenuService } from 'src/app/_core/_service/sys-menu.service';
 import { environment } from 'src/environments/environment';
 declare let $: any;
+declare let window: any;
 import { DataManager, Query, UrlAdaptor, Predicate } from '@syncfusion/ej2-data';
+
+import SwiperCore , {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Virtual,
+  Zoom,
+  Autoplay,
+  Thumbs,
+  Controller,
+} from 'swiper';
+
+SwiperCore.use([
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Virtual,
+  Zoom,
+  Autoplay,
+  Thumbs,
+  Controller
+]);
 
 @Component({
   selector: 'app-home',
@@ -50,6 +75,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.subscription.unsubscribe();
   }
   ngOnInit() {
+   
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadBannerData();
@@ -71,7 +97,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     
     $(function () {
-
+     
       $('.nav > .sidebar-toggle').on('click', function (e) {
           e.preventDefault();
           $('.sidebar-toggle').toggleClass('active');
