@@ -38,11 +38,11 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build and publish API
-      run: dotnet publish ./EvseProject -o $(Build.ArtifactStagingDirectory)/api
+      run: dotnet publish ./EvseProject/Evse -o $(Build.ArtifactStagingDirectory)/api
 
     - name: Build and publish Angular app
       run: |
-        cd ./EvseProject
+        cd ./EvseProject/App
         npm ci
         npm run build -- --prod --output-path $(Build.ArtifactStagingDirectory)/app
 

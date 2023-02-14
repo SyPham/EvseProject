@@ -1318,6 +1318,16 @@ namespace Evse.Data
                 entity.Property(e => e.UpdateDate)
                     .HasColumnName("UPDATE_DATE")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.Longitude)
+                                    .HasColumnName("Longitude")
+                                    .HasMaxLength(20);
+                entity.Property(e => e.Latitude)
+                                    .HasColumnName("Latitude")
+                                    .HasMaxLength(20);
+                entity.Property(e => e.LandlordGuid)
+                                    .HasColumnName("LandlordGuid")
+                                    .HasMaxLength(20);
             });
 
             modelBuilder.Entity<SysMenu>(entity =>

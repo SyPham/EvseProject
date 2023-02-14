@@ -126,6 +126,9 @@ IWebHostEnvironment currentEnvironment)
                                   DeleteBy = a.DeleteBy,
                                   Status = a.Status,
                                   Guid = a.Guid,
+                                  Longitude = a.Longitude,
+                                  Latitude = a.Latitude,
+                                  LandlordGuid = a.LandlordGuid,
                                   TypeName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
                                   SiteLocationName = l == null ? "" : lang == Languages.EN ? l.CodeNameEn ?? l.CodeName : lang == Languages.VI ? l.CodeNameVn ?? l.CodeName : lang == Languages.CN ? l.CodeNameCn ?? l.CodeName : l.CodeName,
                               }).OrderByDescending(x => x.Id).AsQueryable();

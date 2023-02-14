@@ -25,5 +25,8 @@ namespace Evse.Models
         public decimal? DeleteBy { get; set; }
         public decimal? Status { get; set; }
         public string Guid { get; set; }
+        public string Longitude { get; set; }
+        public string Latitude { get; set; }
+        public string LandlordGuid { get; set; }
     }
 }

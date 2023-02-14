@@ -18,6 +18,9 @@ export interface Site {
     status: number | null;
     guid: string;
     file: any;
+    longitude: any;
+    latitude: any;
+    landlordGuid: any;
 }
 export interface ParkingLot {
     id: number;

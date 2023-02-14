@@ -29,6 +29,9 @@ namespace Evse.DTO
         public string TypeName { get; set; }
         public string SiteLocationName { get; set; }
 
+        public string Longitude { get; set; }
+        public string Latitude { get; set; }
+        public string LandlordGuid { get; set; }
         public List<IFormFile> File { get; set; }
     }
 }
