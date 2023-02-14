@@ -6,6 +6,8 @@ import { SystemGroupNo } from 'src/app/_core/enum/SystemGroupNo';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { AuthLandlordService } from 'src/app/_core/_service/auth-landlord.service';
 import { AuthService } from 'src/app/_core/_service/auth.service';
+import { environment } from 'src/environments/environment';
+declare let $: any;
 
 @Component({
   selector: 'app-home',
@@ -26,6 +28,8 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.username =
     JSON.parse(localStorage.getItem("user_landlord"))?.username || "Guest";
+    this.configImage();
+
   }
   backDesktop() {
     this.router.navigate(['/'])
@@ -52,5 +56,31 @@ export class HomeComponent implements OnInit {
   noFunction() {
     alert('This function is not ready!')
   }
+  configImage() {
+    const option = {
+      overwriteInitial: true,
+      maxFileSize: 1500,
+      showClose: false,
+      showCaption: false,
+      browseLabel: '',
+      removeLabel: '',
+      browseIcon: '<i class="bi-folder2-open"></i>',
+      removeIcon: '<i class="bi-x-lg"></i>',
+      removeTitle: 'Cancel or reset changes',
+      elErrorContainer: '#kv-avatar-errors-1',
+      msgErrorClass: 'alert alert-block alert-danger',
+      defaultPreviewContent: '<img src="../../../../../assets/images/no-img.jpg" alt="No Image">',
+      layoutTemplates: { main2: '{preview} ' + ' {browse}' },
+      allowedFileExtensions: ["jpg", "png", "gif"],
+      initialPreview: [],
+      initialPreviewConfig: [],
+      deleteUrl: `${environment.apiUrl}Landlord/DeleteUploadFile`
+    };
+  
+    $("#avatar-1").fileinput(option);;
+    let that = this;
+    $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
 
+    });
+  }
 }

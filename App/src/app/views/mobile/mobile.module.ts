@@ -51,6 +51,9 @@ import { LandlordLoginComponent } from './landlord-login/landlord-login.componen
 import { LandlordRegisterComponent } from './landlord-register/landlord-register.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { CustomLoader } from 'src/app/_core/_helper/custom-loader';
+import { FieldComponent } from './field/field.component';
+import { FieldScreenDetailComponent } from './field/field-screen-detail/field-screen-detail.component';
+import { BankAccountScreenComponent } from './account-screen/bank-account-screen/bank-account-screen.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -66,7 +69,11 @@ if (!lang) {
     LandlordProfileComponent,
     LandlordDemoComponent,
     LandlordLoginComponent,
-    LandlordRegisterComponent
+    LandlordRegisterComponent,
+    FieldComponent,
+    FieldScreenDetailComponent,
+    BankAccountScreenComponent
+    
   ],
   imports: [
     CommonModule,

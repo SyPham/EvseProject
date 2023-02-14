@@ -1,22 +1,49 @@
 <div class="main-content" id="main-text">
 
   <div class="sidebar-content">
-    <div class="flex-container-bio mt-3 mr-mobile">
+
+    <div class="row p-2">
+      <div class="col-12 text-center">
+        <div class="kv-avatar">
+          <div class="file-loading">
+            <input
+              id="avatar-1"
+              name="avatar-1"
+              type="file"
+              required
+            />
+          </div>
+        </div>
+        <div class="kv-avatar-hint">
+          <small>{{ "Select file < 5000 KB" | translate }}</small>
+        </div>
+      </div>
+     
+      </div>
+
+    <!-- <div class="flex-container-bio mt-3 mr-mobile">
       <div routerLink="/mobile/landlord-profile">{{ 'My profile' | translate }}</div>
     </div>
+  -->
+
+    <div class="line"></div>
+    <div class="flex-container-bio">
+      <div routerLink="/mobile/account">{{ 'My Account' | translate }}</div>
+    </div>
+
+    <div class="line"></div>
+    <div class="flex-container-bio">
+      <div routerLink="/mobile/report">{{ 'My Report' | translate }}</div>
+    </div>
+
     <div class="flex-container-bio mr-mobile">
+      <div routerLink="/mobile/field">{{ 'My Field' | translate }}</div>
+    </div>
+
+    <!-- <div class="flex-container-bio mr-mobile">
       <div routerLink="/mobile/repair">{{ 'Repair' | translate }}</div>
     </div>
-
-    <div class="line"></div>
-    <div class="flex-container-bio">
-      <div routerLink="/mobile/report">{{ 'Report' | translate }}</div>
-    </div>
-
-    <div class="line"></div>
-    <div class="flex-container-bio">
-      <div routerLink="/mobile/account">{{ 'Account' | translate }}</div>
-    </div>
+     -->
 
     <div class="line"></div>
     <div  class="flex-container-bio-desktop">

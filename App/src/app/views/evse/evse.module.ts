@@ -35,6 +35,7 @@ import { BankActionComponent } from './bank/bank-action/bank-action.component';
 import { ContractActionComponent } from './contract/contract-action/contract-action.component';
 import { WebNewsComponent } from './web-news/web-news.component';
 import { RichTextEditorAllModule, RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { LandlordBankComponent } from './landlord/landlord-bank/landlord-bank.component';
 interface Environment {
   production: boolean;
   apiUrl: string;
@@ -78,7 +79,8 @@ interface Environment {
     WebBannerComponent,
     BankActionComponent,
     ContractActionComponent,
-    WebNewsComponent
+    WebNewsComponent,
+    LandlordBankComponent
   ]
 })
 export class EvseModule {
