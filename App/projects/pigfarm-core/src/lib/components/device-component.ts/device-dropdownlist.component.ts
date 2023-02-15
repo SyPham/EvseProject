@@ -47,7 +47,7 @@ export class DeviceDropdownlistComponent implements OnInit, OnChanges {
     if (e.text === '') {
       e.updateData(this.data);
     } else {
-      const query = this.dropdownObj.query.clone().search(e.text, ['deviceNo','deviceName', 'type']);
+      const query = this.dropdownObj.query.clone().search(e.text, ['deviceNo','deviceName']);
       e.updateData(this.data, query);
     }
   };

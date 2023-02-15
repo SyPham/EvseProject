@@ -35,7 +35,9 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<WebBannerDto, WebBanner>();
             CreateMap<ContractDto, Contract>();
             CreateMap<WebNewsDto, WebNews>();
-            
+            CreateMap<User2BankDto, User2Bank>();
+            CreateMap<User2Bank, User2BankDto>();
+
 
         }
     }

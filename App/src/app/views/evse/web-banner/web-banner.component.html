@@ -154,12 +154,49 @@
         </div>
       </div>
 
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="Start_Date">{{
+            "Start_Date" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.startDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="End_Date">{{
+            "End_Date" | translate
+          }}</label>
+          <ejs-datepicker
+            locale="en-US"
+            format="yyyy/MM/dd"
+            [(ngModel)]="model.endDate"
+          ></ejs-datepicker>
+        </div>
+      </div>
       <div class="col-md-6">
         <div class="form-group">
           <label for="sortId">{{ "WebBanner_SortId" | translate }}</label>
           <input
             [(ngModel)]="model.sortId"
             min="0"
+            type="number"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="status">{{ "WebBanner_Status" | translate }}</label>
+          <input
+            [(ngModel)]="model.status"
             type="number"
             class="form-control"
           />

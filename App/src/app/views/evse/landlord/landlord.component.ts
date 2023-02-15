@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import { Landlord } from 'src/app/_core/_model/evse/model';
 import { LandlordService } from 'src/app/_core/_service/evse/landlord.service';
+import { User2BankService } from 'src/app/_core/_service/evse/user-2bank.service';
 
 declare let window:any;
 declare let $: any;
@@ -22,7 +23,6 @@ declare let $: any;
   styleUrls: ['./landlord.component.scss']
 })
 export class LandlordComponent extends BaseComponent implements OnInit {
-  isAdmin = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN_CANCEL';
   data: DataManager;
   modalReference: NgbModalRef;
   active = "Detail"
@@ -40,6 +40,7 @@ export class LandlordComponent extends BaseComponent implements OnInit {
   file: any;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
+  landLordGuid: any;
   constructor(
     private service: LandlordService,
     public modalService: NgbModal,
@@ -48,7 +49,7 @@ export class LandlordComponent extends BaseComponent implements OnInit {
      private config: NgbTooltipConfig,
     public translate: TranslateService,
     private utilityService: UtilitiesService,
-
+    private user2BankService: User2BankService
   ) {
 	    super(translate,environment.apiUrl);
       if (this.isAdmin === false) {
@@ -399,6 +400,8 @@ export class LandlordComponent extends BaseComponent implements OnInit {
   }
   rowSelected(args) {
     this.model = {...args.data};
+    this.landLordGuid = args.data.guid
+    this.user2BankService.changeUser2Bank(args.data.guid)
     this.getAudit(this.model.id)
   }
 }

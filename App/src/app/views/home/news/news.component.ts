@@ -5,6 +5,7 @@ import {
   UrlAdaptor,
   Predicate,
 } from "@syncfusion/ej2-data";
+import { WebNewsService } from "src/app/_core/_service/evse/web-news.service";
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -16,25 +17,16 @@ export class NewsComponent implements OnInit {
   news = [];
   baseUrl = environment.apiUrlImage;
 
-  constructor() {}
+  constructor(private webNewsService: WebNewsService) {}
 
   ngOnInit(): void {
     this.loadNewsData();
   }
+
   loadNewsData() {
-    let query = new Query();
-    query.where("type", "equal", "News");
-    new DataManager({
-      url: `${environment.apiUrl}WebNews/LoadData?lang=${localStorage.getItem(
-        "lang"
-      )}`,
-      adaptor: new UrlAdaptor(),
+    this.webNewsService.getWebNews().subscribe(x=> {
+      this.news = x;
     })
-      .executeQuery(query.sortBy("sortId"))
-      .then((res: any) => {
-        var data = res.result.result;
-        this.news =data;
-      })
-      .catch((err) => {});
+    
   }
 }

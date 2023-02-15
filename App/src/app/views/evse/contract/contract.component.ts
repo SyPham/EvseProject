@@ -35,6 +35,18 @@ export class ContractComponent  extends BaseComponent implements OnInit, OnChang
     }
 
   ngOnInit() {
+    let lang = localStorage.getItem("lang");
+    let languages = JSON.parse(localStorage.getItem("languages"));
+    // setCulture(lang);
+    let load = {
+      [lang]: {
+        grid: languages["grid"],
+        pager: languages["pager"],
+        "multi-select": languages["multiselect"],
+        uploader: languages["uploader"],
+      },
+    };
+    L10n.load(load);
     this.loadData();
   }
   ngOnChanges(changes: SimpleChanges): void {

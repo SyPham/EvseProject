@@ -429,3 +429,28 @@
       display: block;
     }
   }
+
+#header-section {
+  position: relative;
+
+}    
+#myLinks {
+  display: none;
+  background: white;
+  border: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-top: 55px;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 5px 5px 5px rgb(0 0 0 / 20%);
+  border-radius: 5px
+}
+#myLinks a {
+  font-size: 16px;
+  color: #015478;
+  padding: 14px 16px;
+  text-decoration: none;
+  display: block;
+}

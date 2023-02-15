@@ -219,3 +219,13 @@ export interface WebNews {
     typeName: string;
     file: any;
 }
+export interface User2Bank {
+    id: number;
+    userGuid: string;
+    bankGuid: string;
+    bankAccount: string;
+    status: any | null;
+    comment: string;
+    createDate: string | null;
+    guid: string;
+}

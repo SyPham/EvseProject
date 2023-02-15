@@ -11,9 +11,19 @@ import { BankComponent } from './bank/bank.component';
 import { ContractComponent } from './contract/contract.component';
 import { WebBannerComponent } from './web-banner/web-banner.component';
 import { WebNewsComponent } from './web-news/web-news.component';
+import { GoogleMapComponent } from './google-map/google-map.component';
 
 const routes: Routes = [
-  
+  {
+    path: 'evse/google-map',
+    component: GoogleMapComponent,
+    data: {
+      title: 'Google Map',
+      breadcrumb: 'Google Map',
+      functionCode: 'Google Map'
+    },
+  //  canActivate: [AuthGuard]
+  },
    {
     path: 'evse/home',
     component: HomeComponent,

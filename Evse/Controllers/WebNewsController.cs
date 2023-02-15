@@ -16,7 +16,16 @@ namespace Evse.Controllers
         {
             _service = service;
         }
-
+        [HttpGet]
+        public async Task<ActionResult> GetWebNews()
+        {
+            return Ok(await _service.GetWebNews());
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetWebPages()
+        {
+            return Ok(await _service.GetWebPages());
+        }
         [HttpGet]
         public async Task<ActionResult> GetAllAsync()
         {
@@ -39,7 +48,7 @@ namespace Evse.Controllers
             return StatusCodeResult(await _service.UpdateAsync(model));
         }
 
-    [HttpPost]
+        [HttpPost]
         public async Task<ActionResult> AddFormAsync([FromForm] WebNewsDto model)
         {
             return Ok(await _service.AddFormAsync(model));
@@ -68,7 +77,7 @@ namespace Evse.Controllers
         {
             return Ok(await _service.GetWithPaginationsAsync(paramater));
         }
-      
+
         [HttpGet]
         public async Task<ActionResult> GetAudit(decimal id)
         {

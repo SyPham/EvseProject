@@ -60,6 +60,13 @@ namespace Evse.Controllers
             var data = await _service.LoadData(request);
             return Ok(data);
         }
+        [HttpPost]
+        public async Task<ActionResult> GetDataDropdownlist([FromBody] DataManager request)
+        {
+
+            var data = await _service.GetDataDropdownlist(request);
+            return Ok(data);
+        }
         [HttpGet]
         public async Task<ActionResult> GetByGuid(string guid)
         {

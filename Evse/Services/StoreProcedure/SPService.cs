@@ -15,6 +15,9 @@ namespace Evse.Services
 
     public interface ISPService
     {
+        Task<object> GetWebBanners();
+        Task<object> GetWebNews();
+        Task<object> GetWebPages();
         Task Breeding2SowIn(string recordGuid, string storeProcedureName);
         Task Sow(string recordGuid, string storeProcedureName);
         Task Suckling(string recordGuid, string storeProcedureName);
@@ -53,8 +56,78 @@ namespace Evse.Services
 
         }
       
+   public async Task<object> GetWebBanners()
+        {
+            using (SqlConnection conn = new SqlConnection(_defaultConnection))
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    await conn.OpenAsync();
+                }
+                string sql = "GetWebBanners";
+                var parameters = new { };
+                try
+                {
+                    var datasource = await conn.QueryAsync(sql, commandType: CommandType.StoredProcedure);
+                    return await Task.FromResult(datasource);
+                }
+                catch
+                {
+                    return new List<dynamic> { };
 
-       
+                }
+
+            }
+
+        }
+       public async Task<object> GetWebPages()
+        {
+            using (SqlConnection conn = new SqlConnection(_defaultConnection))
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    await conn.OpenAsync();
+                }
+                string sql = "GetWebPages";
+                var parameters = new { };
+                try
+                {
+                    var datasource = await conn.QueryAsync(sql, commandType: CommandType.StoredProcedure);
+                    return await Task.FromResult(datasource);
+                }
+                catch
+                {
+                    return new List<dynamic> { };
+
+                }
+
+            }
+
+        }
+       public async Task<object> GetWebNews()
+        {
+            using (SqlConnection conn = new SqlConnection(_defaultConnection))
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    await conn.OpenAsync();
+                }
+                string sql = "GetWebNews";
+                var parameters = new { };
+                try
+                {
+                    var datasource = await conn.QueryAsync(sql, commandType: CommandType.StoredProcedure);
+                    return await Task.FromResult(datasource);
+                }
+                catch
+                {
+                    return new List<dynamic> { };
+
+                }
+
+            }
+
+        }
 
 
      

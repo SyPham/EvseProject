@@ -52,6 +52,8 @@ import { DeviceDropdownlistComponent } from './components/device-component.ts/de
 import { SiteDropdownlistComponent } from './components/site-component.ts/site-dropdownlist.component';
 import { PigfarmRichtexteditorComponent } from './components/pigfarm-richtexteditor/pigfarm-richtexteditor.component';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { LandlordDropdownlistComponent } from './components/landlord-dropdownlist/landlord-dropdownlist.component';
+import { BankDropdownlistComponent } from './components/bank-dropdownlist/bank-dropdownlist.component';
 const commponents = [
   PigDropdownlistComponent,
   PenDropdownlistComponent,
@@ -100,12 +102,14 @@ const commponents = [
   RecordSaleDropdownlistComponent,
   SiteDropdownlistComponent,
   DeviceDropdownlistComponent,
-  PigfarmRichtexteditorComponent
+  PigfarmRichtexteditorComponent,
+  LandlordDropdownlistComponent,
+  BankDropdownlistComponent
 ]
 
 @NgModule({
   declarations: [
-    ...commponents,
+    ...commponents
   ],
   imports: [
     DropDownListModule,

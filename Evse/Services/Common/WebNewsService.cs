@@ -29,6 +29,10 @@ namespace Evse.Services
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(WebNewsDto model);
         Task<OperationResult> UpdateFormAsync(WebNewsDto model);
+
+           Task<object> GetWebNews();
+        Task<object> GetWebPages();
+        
     }
     public class WebNewsService : ServiceBase<WebNews, WebNewsDto>, IWebNewsService, IScopeService
     {
@@ -37,6 +41,7 @@ namespace Evse.Services
         private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ISPService _spService;
         private readonly MapperConfiguration _configMapper;
 private readonly IEvseLoggerService _logger;
         private readonly IWebHostEnvironment _currentEnvironment;
@@ -51,7 +56,8 @@ private readonly IEvseLoggerService _logger;
 IEvseLoggerService logger
 ,
 IWebHostEnvironment currentEnvironment
-            )
+,
+ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
@@ -62,6 +68,7 @@ IWebHostEnvironment currentEnvironment
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _configMapper = configMapper;
+            _spService = spService;
         }
         public async Task<object> GetByGuid(string guid)
         {
@@ -70,7 +77,7 @@ IWebHostEnvironment currentEnvironment
         }
         public async Task<object> LoadData(DataManager data, string lang)
         {
-            var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
+            var datasource = (from a in _repo.FindAll()
                               join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.WebNews_Type && x.Status == "Y") on a.Type equals b.CodeNo into ab
                               from t in ab.DefaultIfEmpty()
 
@@ -257,7 +264,7 @@ IWebHostEnvironment currentEnvironment
             try
             {
                 var item = _mapper.Map<WebNews>(model);
-                item.Status = StatusConstants.Default;
+                // item.Status = StatusConstants.Default;
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
 
@@ -377,5 +384,14 @@ IWebHostEnvironment currentEnvironment
             }
         }
 
+        public async Task<object> GetWebNews()
+        {
+           return await _spService.GetWebNews();
+        }
+
+        public async Task<object> GetWebPages()
+        {
+           return await _spService.GetWebPages();
+        }
     }
 }

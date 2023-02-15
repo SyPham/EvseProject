@@ -47,7 +47,7 @@ export class SiteDropdownlistComponent implements OnInit, OnChanges {
     if (e.text === '') {
       e.updateData(this.data);
     } else {
-      const query = this.dropdownObj.query.clone().search(e.text, ['siteNo','siteName', 'type']);
+      const query = this.dropdownObj.query.clone().search(e.text, ['siteNo','siteName']);
       e.updateData(this.data, query);
     }
   };

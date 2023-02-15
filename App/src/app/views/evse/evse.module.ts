@@ -36,13 +36,18 @@ import { ContractActionComponent } from './contract/contract-action/contract-act
 import { WebNewsComponent } from './web-news/web-news.component';
 import { RichTextEditorAllModule, RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { LandlordBankComponent } from './landlord/landlord-bank/landlord-bank.component';
+import { GoogleMapComponent } from './google-map/google-map.component';
+import { AgmCoreModule, LazyMapsAPILoaderConfigLiteral } from '@agm/core';
+import { LandlordBankActionComponent } from './landlord/landlord-bank/landlord-bank-action/landlord-bank-action.component';
 interface Environment {
   production: boolean;
   apiUrl: string;
   versionCheckURL: string;
   domain: string;
 }
-
+const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
+  apiKey: "AIzaSyAi9VYgdZUeOo2Wngl_5ho1H4_5clWGFTU"
+}
 @NgModule({
   providers: [
     DatePipe,
@@ -61,6 +66,9 @@ interface Environment {
     RichTextEditorModule,
     SharedModule.forRoot(),
     PigfarmCoreModule.forRoot(environment.apiUrl),
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyAi9VYgdZUeOo2Wngl_5ho1H4_5clWGFTU"
+    }),
   ],
   declarations: [
     HomeComponent,
@@ -80,7 +88,9 @@ interface Environment {
     BankActionComponent,
     ContractActionComponent,
     WebNewsComponent,
-    LandlordBankComponent
+    LandlordBankComponent,
+    GoogleMapComponent,
+    LandlordBankActionComponent
   ]
 })
 export class EvseModule {

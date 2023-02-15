@@ -117,6 +117,14 @@ const routes: Routes = [
     }
   },
   {
+    path: 'login',
+    component: LandlordLoginComponent,
+    data: {
+      title: 'Login',
+      skip: 0
+    }
+  },
+  {
     path: 'landlord-register',
     component: LandlordRegisterComponent,
     data: {

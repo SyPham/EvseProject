@@ -57,6 +57,7 @@ namespace Evse.Data
         public virtual DbSet<XAccountPermission> XAccountPermissions { get; set; }
         public virtual DbSet<XAccountRole> XAccountRoles { get; set; }
         public virtual DbSet<XAccountSetting> XAccountSettings { get; set; }
+        public virtual DbSet<User2Bank> User2Banks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -1326,8 +1327,46 @@ namespace Evse.Data
                                     .HasColumnName("Latitude")
                                     .HasMaxLength(20);
                 entity.Property(e => e.LandlordGuid)
-                                    .HasColumnName("LandlordGuid")
+                                    .HasColumnName("Landlord_GUID")
                                     .HasMaxLength(20);
+            });
+  modelBuilder.Entity<User2Bank>(entity =>
+            {
+                entity.ToTable("User2Bank");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.BankAccount)
+                    .HasColumnName("Bank_Account")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.BankGuid)
+                    .HasColumnName("Bank_GUID")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UserGuid)
+                    .HasColumnName("User_GUID")
+                    .HasMaxLength(40);
             });
 
             modelBuilder.Entity<SysMenu>(entity =>

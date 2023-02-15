@@ -4,6 +4,13 @@
     <div class="col-lg-12 col-sm-12 col-md-12" id="sidebar-section">
 
       <div class="main-header" id="header-section">
+
+        <div id="myLinks">
+          <a (click)="toggleSidebar()" routerLink="/mobile/account">{{ 'My Account' | translate }}</a>
+          <a (click)="toggleSidebar()" routerLink="/mobile/report">{{ 'My Report' | translate }}</a>
+          <a (click)="toggleSidebar()" routerLink="/mobile/field">{{ 'My Field' | translate }}</a>
+          
+        </div>
         <ul class="header-list">
           <li 
           class="float-right header-style icon-menu"
@@ -30,34 +37,6 @@
       </div>
 
       <router-outlet></router-outlet>
-
-      <!-- <div class="footer d-sm-block d-lg-none"  style="height: 100px; background-color: #145574;">
-
-        <div class="row">
-          <div class="col d-sm-block d-lg-none d-flex align-items-center justify-content-center">
-            <a  class="btn-mobile-login" >{{'COPY_RIGHT' | translate}}</a>
-          </div>
-        </div>
-      
-      </div>
-      <div class="clearfix">
-        <div class="float-left">
-          
-        </div>
-        <div class="float-right">
-          
-        </div>
-      </div> -->
     </div>
   </div>
 </div>
-<!-- <div class="mb-5"></div> -->
-<!-- 
-<footer>
-  <div class="navbar navbar-mobile">
-    <a [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active"  routerLink="/mobile/home"><i class="fa fa-home"></i> {{ 'Home' | translate }}</a>
-    <a [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active"  routerLink="/mobile/repair"><i class="fa fa-cog"></i> {{ 'Repair' | translate }}</a>
-    <a [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active"  routerLink="/mobile/report"><i class="fa fa-file"></i> {{ 'Report' | translate }}</a>
-    <a [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active"  routerLink="/mobile/account"><i class="fa fa-user"></i> {{ 'Account' | translate }}</a>
-  </div>
-</footer> -->

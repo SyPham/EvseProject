@@ -282,6 +282,7 @@ export class WebNewsComponent extends BaseComponent implements OnInit {
       this.title = 'WebNews_Edit_Model';
     } else {
       this.model.id = 0;
+      this.model.status = 1;
       this.title = 'WebNews_Add_Model';
     }
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});

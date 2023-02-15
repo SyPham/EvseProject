@@ -19,6 +19,7 @@
         public const string EMPLOYEE_SEX = "EMPLOYEE_SEX";
         public const string WebBanner_Type = "WebBanner_Type";
         public const string WebNews_Type = "WebNews_Type";
+        public const string User2Bank = "User2Bank";
 
 
     }

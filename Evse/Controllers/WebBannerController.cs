@@ -18,6 +18,11 @@ namespace Evse.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> GetWebBanners()
+        {
+            return Ok(await _service.GetWebBanners());
+        }
+        [HttpGet]
         public async Task<ActionResult> GetAllAsync()
         {
             return Ok(await _service.GetAllAsync());
@@ -39,7 +44,7 @@ namespace Evse.Controllers
             return StatusCodeResult(await _service.UpdateAsync(model));
         }
 
-    [HttpPost]
+        [HttpPost]
         public async Task<ActionResult> AddFormAsync([FromForm] WebBannerDto model)
         {
             return Ok(await _service.AddFormAsync(model));
@@ -68,7 +73,7 @@ namespace Evse.Controllers
         {
             return Ok(await _service.GetWithPaginationsAsync(paramater));
         }
-      
+
         [HttpGet]
         public async Task<ActionResult> GetAudit(decimal id)
         {

@@ -114,6 +114,49 @@
               />
             </div>
           </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="Landlord_Guid">{{ "Landlord_Guid" | translate }}</label>
+              <app-landlord-dropdownlist
+                id="Landlord_Guid"
+                [(selectedValue)]="model.landlordGuid"
+              >
+              </app-landlord-dropdownlist>
+            </div>
+          </div>
+          <div class="w-100"></div>
+
+          <div class="col-6">
+            <label>{{ "Latitude" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 20 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="20"
+                type="text"
+                [(ngModel)]="model.latitude"
+                class="form-control"
+              />
+            </div>
+          </div>
+          
+          <div class="col-6">
+            <label>{{ "Longitude" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 20 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="20"
+                type="text"
+                [(ngModel)]="model.longitude"
+                class="form-control"
+              />
+            </div>
+          </div>
+         
+
           <div class="col-md-12 text-center">
             <div class="kv-avatar">
               <div class="file-loading">
@@ -145,6 +188,16 @@
         </div>
       </div>
   <div class="modal-footer">
+
+    <button
+    type="button"
+    class="btn btn-light"
+    ngbTooltip="CLOSE"
+    (click)="modal.close('Close click')"
+  >
+    {{ "CLOSE" | translate }}
+  </button>
+  
     <button
     [disabled]="!model.siteName || !model.siteNo || !model.type"
     (click)="save()"

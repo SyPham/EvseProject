@@ -52,4 +52,10 @@ export class WebNewsService extends CURDService<WebNews> {
   getByGuid(guid): Observable<any> {
     return this.http.get<any>(`${this.base}WebNews/GetByGuid?guid=${guid}`, {});
   }
+  getWebNews(): Observable<any> {
+    return this.http.get<any>(`${this.base}WebNews/GetWebNews`, {});
+  }
+  getWebPages(): Observable<any> {
+    return this.http.get<any>(`${this.base}WebNews/GetWebPages`, {});
+  }
 }

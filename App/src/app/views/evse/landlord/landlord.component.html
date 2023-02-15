@@ -146,11 +146,13 @@
     <div class="card-body table-responsive p-0">
       <nav class="nav nav-pills nav-justified p-2" >
         <a class="nav-link my-nav" (click)="active='Detail'" [ngClass]="{ 'active': active == 'Detail'}">{{'Landlord_Detail' | translate}}</a>
+        <a class="nav-link my-nav" (click)="active='Bank'" [ngClass]="{ 'active': active == 'Bank'}">{{'Landlord_Bank' | translate}}</a>
       
       </nav>
 
+<section class="p-2" *ngIf="active=='Detail'">
 
-    <div class="row p-2">
+    <div class="row">
       <div class="col-6">
         <div class="form-group">
           <label for="Site_GUID">{{ "Site_GUID" | translate }}</label>
@@ -165,7 +167,7 @@
     </div>
     
 
-    <div class="row p-2">
+    <div class="row">
 
       <div class="col-md-6">
         <div class="form-group">
@@ -350,7 +352,7 @@
       </div>
     </div>
 
-    <div class="row p-2">
+    <div class="row">
       <div class="col-12">
       <div class="mr-auto" *ngIf="model?.id > 0">
         <p>
@@ -400,7 +402,11 @@
       </button>
     </div>
   </div>
+</section>
 
+<section class="p-2">
+  <app-landlord-bank [landLordGuid]="landLordGuid"></app-landlord-bank>
+</section>
     </div>
     <!-- /.card-body -->
   </div>

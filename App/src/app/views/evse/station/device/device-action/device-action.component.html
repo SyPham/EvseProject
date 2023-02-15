@@ -130,6 +130,14 @@
     
   <div class="modal-footer">
     <button
+    type="button"
+    class="btn btn-light"
+    ngbTooltip="CLOSE"
+    (click)="modal.close('Close click')"
+  >
+    {{ "CLOSE" | translate }}
+  </button>
+    <button
     [disabled]="!model.deviceName || !model.deviceNo || !model.deviceType"
     (click)="save()"
     class="btn btn-primary"

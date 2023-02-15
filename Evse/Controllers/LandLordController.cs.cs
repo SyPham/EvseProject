@@ -84,5 +84,12 @@ namespace Evse.Controllers
         {
             return Ok(await _service.GetAudit(id));
         }
+           [HttpPost]
+        public async Task<ActionResult> GetDataDropdownlist([FromBody] DataManager request)
+        {
+
+            var data = await _service.GetDataDropdownlist(request);
+            return Ok(data);
+        }
     }
 }

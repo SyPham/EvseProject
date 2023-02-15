@@ -22,6 +22,7 @@ import SwiperCore , {
   Thumbs,
   Controller,
 } from 'swiper';
+import { WebBannerService } from 'src/app/_core/_service/evse/web-banner.service';
 
 SwiperCore.use([
   Navigation,
@@ -64,6 +65,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   logo: any;
   constructor(
     private spinner: NgxSpinnerService,
+    private webBannerService: WebBannerService,
     private sysMenuService: SysMenuService,
     private dashService: DashboardService,
     private translate: TranslateService,
@@ -83,15 +85,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
    
   }
   loadBannerData() {
-   
-     new DataManager({
-      url: `${environment.apiUrl}WebBanner/LoadData?lang=${localStorage.getItem('lang')}`,
-      adaptor: new UrlAdaptor()
-    }).executeQuery(new Query()).then((res: any) => {
-      this.banners = res.result.result;
-    }).catch((err) => {
-      
-    });;
+    this.webBannerService.getWebBanners().subscribe(x=> {
+      this.banners = x;
+    })
   }
  
   ngAfterViewInit(): void {

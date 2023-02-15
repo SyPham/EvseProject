@@ -271,6 +271,7 @@ export class WebBannerComponent extends BaseComponent implements OnInit {
       this.title = 'WebBanner_Edit_Model';
     } else {
       this.model.id = 0;
+      this.model.status = 1;
       this.title = 'WebBanner_Add_Model';
     }
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});

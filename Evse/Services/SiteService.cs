@@ -73,6 +73,23 @@ IWebHostEnvironment currentEnvironment)
                                   SiteName = a.SiteName,
                                   Name = $"{a.SiteNo} - {a.SiteName}",
                                   Status = a.Status,
+                                  Type = a.Type,
+                                  SitePrincipal = a.SitePrincipal,
+                                  SiteTel = a.SiteTel,
+                                  SiteAddress = a.SiteAddress,
+                                  SiteLocation = a.SiteLocation,
+                                  SitePhoto = a.SitePhoto,
+
+                                  Comment = a.Comment,
+                                  CreateDate = a.CreateDate,
+                                  CreateBy = a.CreateBy,
+                                  UpdateDate = a.UpdateDate,
+                                  UpdateBy = a.UpdateBy,
+                                  DeleteDate = a.DeleteDate,
+                                  DeleteBy = a.DeleteBy,
+                                  Longitude = a.Longitude,
+                                  Latitude = a.Latitude,
+                                  LandlordGuid = a.LandlordGuid,
 
                               }).OrderByDescending(x => x.Id).AsQueryable();
 

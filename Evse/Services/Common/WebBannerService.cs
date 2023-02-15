@@ -24,6 +24,7 @@ namespace Evse.Services
     public interface IWebBannerService : IServiceBase<WebBanner, WebBannerDto>
     {
         Task<object> LoadData(DataManager data, string lang);
+        Task<object> GetWebBanners();
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
@@ -40,6 +41,7 @@ namespace Evse.Services
         private readonly MapperConfiguration _configMapper;
 private readonly IEvseLoggerService _logger;
         private readonly IWebHostEnvironment _currentEnvironment;
+        private readonly ISPService _spService;
 
         public WebBannerService(
             IRepositoryBase<WebBanner> repo,
@@ -51,7 +53,8 @@ private readonly IEvseLoggerService _logger;
 IEvseLoggerService logger
 ,
 IWebHostEnvironment currentEnvironment
-            )
+,
+ISPService spService)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
@@ -62,6 +65,7 @@ IWebHostEnvironment currentEnvironment
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _configMapper = configMapper;
+            _spService = spService;
         }
         public async Task<object> GetByGuid(string guid)
         {
@@ -70,7 +74,7 @@ IWebHostEnvironment currentEnvironment
         }
         public async Task<object> LoadData(DataManager data, string lang)
         {
-            var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
+            var datasource = (from a in _repo.FindAll()
                               join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.WebBanner_Type && x.Status == "Y") on a.Type equals b.CodeNo into ab
                               from t in ab.DefaultIfEmpty()
 
@@ -255,7 +259,7 @@ IWebHostEnvironment currentEnvironment
             try
             {
                 var item = _mapper.Map<WebBanner>(model);
-                item.Status = StatusConstants.Default;
+                // item.Status = StatusConstants.Default;
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
 
@@ -375,5 +379,9 @@ IWebHostEnvironment currentEnvironment
             }
         }
 
+        public async Task<object> GetWebBanners()
+        {
+           return await _spService.GetWebBanners();
+        }
     }
 }

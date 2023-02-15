@@ -117,6 +117,15 @@
     
   <div class="modal-footer">
     <button
+    type="button"
+    class="btn btn-light"
+    ngbTooltip="CLOSE"
+    (click)="modal.close('Close click')"
+  >
+    {{ "CLOSE" | translate }}
+  </button>
+  
+    <button
     [disabled]="!model.parkingLotName || !model.parkingLotNo || !model.parkingLotType"
     (click)="save()"
     class="btn btn-primary"

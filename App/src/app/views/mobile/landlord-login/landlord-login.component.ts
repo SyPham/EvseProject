@@ -60,6 +60,10 @@ export class LandlordLoginComponent
   role: number;
   ngAfterViewInit(): void {}
   ngOnInit(): void {
+    let skip = +this.route.snapshot.data.skip
+    if (skip == 0) {
+      this.router.navigate(['/mobile/landlord-demo']);
+    }
     this.loadConfigData();
     this.loadLogoData();
     const accessToken = localStorage.getItem("token_landlord");

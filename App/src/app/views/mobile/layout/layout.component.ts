@@ -50,7 +50,14 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
   }
-
+  myFunction() {
+    var x = document.getElementById("myLinks");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
+  }
   public data: Object[] = [
     {
       nodeId: "01",
@@ -83,7 +90,12 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   }
 
   toggleSidebar() {
-   
+    var x = document.getElementById("myLinks");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
   }
   goBack() {
     const homeUrl = this.router.url.includes("home");
