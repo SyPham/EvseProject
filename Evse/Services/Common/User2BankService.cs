@@ -28,6 +28,9 @@ namespace Evse.Services
         Task<object> GetByGuid(string guid);
         Task<object> LoadData(DataManager dataManager, string lang);
 
+        Task<object> DeleteUploadFile(decimal key);
+        Task<OperationResult> AddFormAsync(User2BankDto model);
+        Task<OperationResult> UpdateFormAsync(User2BankDto model);
     }
     public class User2BankService : ServiceBase<User2Bank, User2BankDto>, IUser2BankService, IScopeService
     {
@@ -161,6 +164,141 @@ IEvseLoggerService logger,
                 Count = count
             };
         }
-       
+
+        public async Task<OperationResult> AddFormAsync(User2BankDto model)
+        {
+           
+            FileExtension fileExtension = new FileExtension();
+            var avatarUniqueFileName = string.Empty;
+            var avatarFolderPath = "FileUploads\\images\\user2Bank\\avatar";
+            string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
+            if (model.File != null)
+            {
+                IFormFile files = model.File.FirstOrDefault();
+                if (!files.IsNullOrEmpty())
+                {
+                    avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+                    model.PhotoPath = $"/FileUploads/images/user2Bank/avatar/{avatarUniqueFileName}";
+                }
+            }
+            try
+            {
+                var item = _mapper.Map<User2Bank>(model);
+                _repo.Add(item);
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.AddSuccess,
+                    Success = true,
+                    Data = model
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Create,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                if (!avatarUniqueFileName.IsNullOrEmpty())
+                    fileExtension.Remove($"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+        }
+
+        
+        public async Task<OperationResult> UpdateFormAsync(User2BankDto model)
+        {
+
+            FileExtension fileExtension = new FileExtension();
+            var item = _mapper.Map<User2Bank>(model);
+
+            // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
+            var avatarUniqueFileName = string.Empty;
+            var avatarFolderPath = "FileUploads\\images\\user2Bank\\avatar";
+            string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
+
+            if (model.File != null)
+            {
+                IFormFile filesAvatar = model.File.FirstOrDefault();
+                if (!filesAvatar.IsNullOrEmpty())
+                {
+                    if (!item.PhotoPath.IsNullOrEmpty())
+                        fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.PhotoPath.Replace("/", "\\").Replace("/", "\\")}");
+                    avatarUniqueFileName = await fileExtension.WriteAsync(filesAvatar, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+                    item.PhotoPath = $"/FileUploads/images/user2Bank/avatar/{avatarUniqueFileName}";
+                }
+            }
+
+            try
+            {
+
+                _repo.Update(item);
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = model
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                // Nếu tạo ra file rồi mã lưu db bị lỗi thì xóa file vừa tạo đi
+                if (!avatarUniqueFileName.IsNullOrEmpty())
+                    fileExtension.Remove($"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+        }
+
+        public async Task<object> DeleteUploadFile(decimal key)
+        {
+            try
+            {
+                var item = await _repo.FindByIDAsync(key);
+                if (item != null)
+                {
+                    string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, item.PhotoPath);
+                    FileExtension fileExtension = new FileExtension();
+                    var avatarUniqueFileName = item.PhotoPath;
+                    if (!avatarUniqueFileName.IsNullOrEmpty())
+                    {
+                        var result = fileExtension.Remove($"{_currentEnvironment.WebRootPath}\\{item.PhotoPath}");
+                        if (result)
+                        {
+                            item.PhotoPath = string.Empty;
+                            _repo.Update(item);
+                            await _unitOfWork.SaveChangeAsync();
+                        }
+                    }
+                }
+
+
+                return new { status = true };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Delete,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                return new { status = true };
+            }
+        }
+
     }
 }

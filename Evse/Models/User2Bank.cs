@@ -14,6 +14,8 @@ namespace Evse.Models
         public decimal? Status { get; set; }
         public string Comment { get; set; }
         public DateTime? CreateDate { get; set; }
+        public string PhotoPath { get; set; }
+
         public string Guid { get; set; }
     }
 }

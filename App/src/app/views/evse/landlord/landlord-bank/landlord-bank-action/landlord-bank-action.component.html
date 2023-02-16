@@ -53,6 +53,23 @@
             </div>
           </div>
 
+          <div class="col-12 text-center">
+            <div class="kv-avatar">
+              <div class="file-loading">
+                <input
+                  id="avatar-3"
+                  name="avatar-3"
+                  (change)="onFileChangeLogo($event)"
+                  type="file"
+                  required
+                />
+              </div>
+            </div>
+            <div class="kv-avatar-hint">
+              <small>{{ "Select file < 5000 KB" | translate }}</small>
+            </div>
+          </div>
+
           <div class="col-12">
             <label>{{ "User2Bank_Comment" | translate }} </label>
             <div class="form-group">

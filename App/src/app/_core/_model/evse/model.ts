@@ -228,4 +228,7 @@ export interface User2Bank {
     comment: string;
     createDate: string | null;
     guid: string;
+    photoPath: string;
+    file: any;
+
 }

@@ -13,6 +13,8 @@ namespace Evse.DTO.auth
         public string AccountName { get; set; }
         public string NickName { get; set; }
         public string Email { get; set; }
+        public string Mobile { get; set; }
+        public string FullName { get; set; }
         public string GroupCode { get; set; }
         public object GroupID { get; set; }
         public object PageSizeSetting { get; set; }

@@ -41,7 +41,7 @@
       flex-wrap: wrap;
   }
   .flex-container-bio > div {
-      font-size: 12px;
+      font-size: 18px;
       color: #015478;
       text-align: center;
       background-color: rgba(242, 242, 242, 1);
@@ -61,7 +61,7 @@
     flex-wrap: wrap;
 }
   .flex-container-bio-desktop > div {
-    font-size: 12px;
+    font-size: 18px;
     color: whitesmoke;
     text-align: center;
     background-color: rgba(22, 155, 213, 1);
@@ -75,4 +75,18 @@
     height: 40px;
     line-height: 40px;
     box-shadow: 5px 5px 5px rgb(0 0 0 / 20%);
+}
+.fs-base {
+  font-size: 18px !important;
+}
+.image-mobile {
+  position: relative;
+  margin-right: 20px;
+}
+
+.image-mobile .edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: -20px;
+  cursor: pointer;
 }

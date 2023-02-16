@@ -280,7 +280,8 @@ export class LandlordComponent extends BaseComponent implements OnInit {
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
    this.configImage();
   }
-  configImage(id="avatar-1") {
+
+  configImage() {
     const option = {
       overwriteInitial: true,
       maxFileSize: 1500,
@@ -314,9 +315,9 @@ export class LandlordComponent extends BaseComponent implements OnInit {
       }
       option.initialPreviewConfig = [a];
     }
-    $("#avatar-1").fileinput(option);;
+    $("#avatar-2").fileinput(option);;
     let that = this;
-    $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
+    $('#avatar-2').on('filedeleted', function (event, key, jqXHR, data) {
       console.log('Key = ' + key);
       that.file = null;
       that.model.file = null;
@@ -401,6 +402,7 @@ export class LandlordComponent extends BaseComponent implements OnInit {
   rowSelected(args) {
     this.model = {...args.data};
     this.landLordGuid = args.data.guid
+    this.service.changeLandlord(args.data.guid);
     this.user2BankService.changeUser2Bank(args.data.guid)
     this.getAudit(this.model.id)
   }

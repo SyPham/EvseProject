@@ -15,17 +15,18 @@ namespace Evse.Controllers
         {
             _service = service;
         }
+          [HttpGet]
+        public async Task<object> GetBankAccountByLandlordGuid(string guid)
+        {
+            return Ok(await _service.GetBankAccountByLandlordGuid(guid));
+        }
 
         [HttpGet]
         public async Task<ActionResult> GetAllAsync()
         {
             return Ok(await _service.GetAllAsync());
         }
-        [HttpPost]
-        public async Task<ActionResult> DeleteUploadFile([FromForm] decimal key)
-        {
-            return Ok(await _service.DeleteUploadFile(key));
-        }
+       
         [HttpPost]
         public async Task<ActionResult> AddAsync([FromBody] LandLordDto model)
         {
@@ -37,8 +38,12 @@ namespace Evse.Controllers
         {
             return StatusCodeResult(await _service.UpdateAsync(model));
         }
-
-    [HttpPost]
+        [HttpPost]
+        public async Task<ActionResult> DeleteUploadFile([FromForm] decimal key)
+        {
+            return Ok(await _service.DeleteUploadFile(key));
+        }
+        [HttpPost]
         public async Task<ActionResult> AddFormAsync([FromForm] LandLordDto model)
         {
             return Ok(await _service.AddFormAsync(model));

@@ -66,5 +66,21 @@ namespace Evse.Controllers
             var data = await _service.LoadData(request, lang);
             return Ok(data);
         }
+        [HttpPost]
+        public async Task<ActionResult> DeleteUploadFile([FromForm] decimal key)
+        {
+            return Ok(await _service.DeleteUploadFile(key));
+        }
+        [HttpPost]
+        public async Task<ActionResult> AddFormAsync([FromForm] User2BankDto model)
+        {
+            return Ok(await _service.AddFormAsync(model));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateFormAsync([FromForm] User2BankDto model)
+        {
+            return Ok(await _service.UpdateFormAsync(model));
+        }
     }
 }

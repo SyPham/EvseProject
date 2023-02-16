@@ -1,16 +1,64 @@
-<div class="d-flex justify-content-center align-items-center my-5">
-  <div id="u19" class="ax_default image">
-    <img id="u19_img" style="width: 261px; height: 173px" class="img " src="https://d1icd6shlvmxi6.cloudfront.net/gsc/4G2XFU/ac/37/13/ac3713c7d7ef4b6d8b9f1c199212aebd/images/mobile_landlord_bankaccount2/u19.png?pageId=761a5933-f77e-411d-8402-6511e94eb765">
-   
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item "><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item "><a routerLink="/mobile/account">{{'My Account' | translate}}</a></li>
+    <li class="breadcrumb-item active">{{'Bank Account' | translate}}</li>
+  </ol>
+</nav>
+<div class="row p-2">
+  <div class="col-12">
+    <div class="form-group">
+      <label for="User2Bank_Bank">{{ "User2Bank_Bank" | translate }}</label>
+      <app-bank-dropdownlist
+        id="bank"
+        [(selectedValue)]="model.bankGuid"
+      >
+      </app-bank-dropdownlist>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <label>{{ "User2Bank_Bank_Account" | translate }} </label>
+    <span class="max-length">
+      ( {{ "Text length" | translate }} <= 40 )</span
+    >
+    <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+    <div class="form-group">
+      <input
+        maxlength="40"
+        type="text"
+        [(ngModel)]="model.bankAccount"
+        class="form-control"
+      />
+    </div>
   </div>
 
   
 </div>
 
-<div class="d-flex justify-content-center align-items-center mb-5">
-  <p><span>上傳銀行存摺</span></p>
+<div class="row p-2">
+  <div class="col-12 text-center">
+    <div class="kv-avatar">
+      <div class="file-loading">
+        <input
+          id="avatar-1"
+          name="avatar-1"
+          (change)="onFileChangeLogo($event)"
+          type="file"
+          required
+        />
+      </div>
+    </div>
+    <div class="kv-avatar-hint">
+      <small>{{ "Select file < 5000 KB" | translate }}</small>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center align-items-center">
+  <p><span>{{ '上傳銀行存摺' | translate}}</span></p>
 </div>
 
 <div class="d-flex justify-content-center align-items-center mb-5">
-  <button type="button" class="btn btn-primary">確認新增</button>
+  <button [disabled]="!model.bankAccount" (click)="create()" type="button" class="btn btn-primary">{{ 'Submit' | translate }}</button>
 </div>

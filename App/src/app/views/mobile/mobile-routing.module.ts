@@ -14,6 +14,8 @@ import { LandlordDemoComponent } from './landlord-demo/landlord-demo.component';
 import { FieldComponent } from './field/field.component';
 import { FieldScreenDetailComponent } from './field/field-screen-detail/field-screen-detail.component';
 import { BankAccountScreenComponent } from './account-screen/bank-account-screen/bank-account-screen.component';
+import { BankAccountFinishScreenComponent } from './account-screen/bank-account-finish-screen/bank-account-finish-screen.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -74,6 +76,17 @@ const routes: Routes = [
         //canActivate: [AuthGuard]
       },
       {
+        path: 'field/detail/:guid',
+        component: FieldScreenDetailComponent,
+        data: {
+          title: 'Field Detail',
+          breadcrumb: 'Field Detail',
+          functionCode: 'Field Detail'
+
+        },
+        //canActivate: [AuthGuard]
+      },
+      {
         path: 'report',
         component: ReportScreenComponent,
         data: {
@@ -98,6 +111,17 @@ const routes: Routes = [
       {
         path: 'account/bank',
         component: BankAccountScreenComponent,
+        data: {
+          title: 'Bank Account',
+          breadcrumb: 'Bank Account',
+          functionCode: 'Bank Account'
+
+        },
+        //canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/bank/finish',
+        component: BankAccountFinishScreenComponent,
         data: {
           title: 'Bank Account',
           breadcrumb: 'Bank Account',

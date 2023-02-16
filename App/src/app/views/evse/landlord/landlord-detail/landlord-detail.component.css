@@ -1,5 +1,3 @@
-
-
 .kv-avatar .krajee-default.file-preview-frame,
 .kv-avatar .krajee-default.file-preview-frame:hover {
   margin: 0;
@@ -13,7 +11,7 @@
 }
 .kv-avatar .file-input {
   display: table-cell;
-  width: 113px;
+  width: 213px;
 }
 .kv-reqd {
   color: red;

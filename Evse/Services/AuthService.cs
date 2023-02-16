@@ -644,7 +644,9 @@ namespace Evse.Services
             user.Lastlogin = DateTime.Now;
             await _unitOfWork.SaveChangeAsync();
             var userResponse = _mapper.Map<UserForDetailDto>(user);
-         
+            userResponse.Mobile = user.LandLordMobile;
+            userResponse.Email = user.LandLordEmail;
+            userResponse.FullName = user.LandLordName;
             LogStoreProcedure(user.Id, "LogIn").ConfigureAwait(false).GetAwaiter();
 
 #if DEBUG

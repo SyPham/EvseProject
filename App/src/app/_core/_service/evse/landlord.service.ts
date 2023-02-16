@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { CURDService, OperationResult, UtilitiesService } from '@pigfarm-core';
 import { environment } from 'src/environments/environment';
 import { Landlord } from '../../_model/evse/model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,11 @@ export class LandlordService extends CURDService<Landlord> {
   {
     super(environment.apiUrl,http,"Landlord", utilitiesService);
   }
-
+  private recordSource = new BehaviorSubject(null );
+  currentLandlord = this.recordSource.asObservable();
+  changeLandlord(value) {
+    this.recordSource.next(value)
+  }
   insertForm(model: Landlord): Observable<OperationResult> {
     for (const key in model) {
       if (Object.prototype.hasOwnProperty.call(model, key)) {
@@ -52,4 +56,8 @@ export class LandlordService extends CURDService<Landlord> {
   getByGuid(guid): Observable<any> {
     return this.http.get<any>(`${this.base}Landlord/GetByGuid?guid=${guid}`, {});
   }
+  getBankAccountByLandlordGuid(guid): Observable<any> {
+    return this.http.get<any>(`${this.base}Landlord/GetBankAccountByLandlordGuid?guid=${guid}`, {});
+  }
+  
 }

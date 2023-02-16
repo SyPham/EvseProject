@@ -1333,7 +1333,9 @@ namespace Evse.Data
   modelBuilder.Entity<User2Bank>(entity =>
             {
                 entity.ToTable("User2Bank");
-
+   entity.Property(e => e.PhotoPath)
+                    .HasColumnName("Photo_Path")
+                    .HasMaxLength(200);
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
                     .HasColumnType("numeric(18, 0)")

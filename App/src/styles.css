@@ -544,7 +544,20 @@ color: white;
 
 
 #menu-type2 > .e-input-group {
-  box-shadow: none !important;
+  box-shadow: unset !important;
   padding: 0 !important;
+
+}
+.mobile-breadcrumb {
+  background-color: #195771 !important;
+  border-radius: 0 !important;
+
+}
+.mobile-breadcrumb li {
+  color: white !important;
+
+}
+.mobile-nav {
+  border-radius: unset !important;
 
 }

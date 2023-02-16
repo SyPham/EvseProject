@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { LandlordService } from 'src/app/_core/_service/evse/landlord.service';
 
 @Component({
-  selector: 'app-account-screen',
-  templateUrl: './account-screen.component.html',
-  styleUrls: ['./account-screen.component.css']
+  selector: 'app-bank-account-finish-screen',
+  templateUrl: './bank-account-finish-screen.component.html',
+  styleUrls: ['./bank-account-finish-screen.component.css']
 })
-export class AccountScreenComponent implements OnInit {
+export class BankAccountFinishScreenComponent implements OnInit {
   user: any = JSON.parse(localStorage.getItem('user_landlord'))
   input: any;
-
   constructor(private landlordService: LandlordService) { }
 
   ngOnInit(): void {
@@ -21,4 +20,5 @@ export class AccountScreenComponent implements OnInit {
       console.log(input)
     })
   }
+
 }

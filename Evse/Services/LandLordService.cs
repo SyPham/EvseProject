@@ -25,6 +25,7 @@ namespace Evse.Services
     {
         Task<object> LoadData(DataManager data, string lang);
         Task<object> GetByGuid(string guid);
+        Task<object> GetBankAccountByLandlordGuid(string guid);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(LandLordDto model);
@@ -33,6 +34,8 @@ namespace Evse.Services
     public class LandLordService : ServiceBase<LandLord, LandLordDto>, ILandLordService, IScopeService
     {
         private readonly IRepositoryBase<LandLord> _repo;
+        private readonly IRepositoryBase<Bank> _repoBank;
+        private readonly IRepositoryBase<User2Bank> _repoUser2Bank;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly IUnitOfWork _unitOfWork;
@@ -49,7 +52,9 @@ namespace Evse.Services
             MapperConfiguration configMapper,
 IEvseLoggerService logger
 ,
-IWebHostEnvironment currentEnvironment)
+IWebHostEnvironment currentEnvironment,
+IRepositoryBase<User2Bank> repoUser2Bank,
+IRepositoryBase<Bank> repoBank)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
@@ -60,6 +65,8 @@ IWebHostEnvironment currentEnvironment)
             _mapper = mapper;
             _configMapper = configMapper;
             _currentEnvironment = currentEnvironment;
+            _repoUser2Bank = repoUser2Bank;
+            _repoBank = repoBank;
         }
         public async Task<object> GetByGuid(string guid)
         {
@@ -405,6 +412,18 @@ IWebHostEnvironment currentEnvironment)
             }
         }
 
+        public async Task<object> GetBankAccountByLandlordGuid(string guid)
+        {
+            var data = from a in _repoUser2Bank.FindAll()
+                        join b in _repoBank.FindAll() on a.BankGuid equals b.Guid
+                        where a.UserGuid == guid
+                        select new {
+                            a.BankAccount,
+                            b.BankNo,
+                            b.BankName,
 
+                        };
+            return await data.FirstOrDefaultAsync();
+        }
     }
 }

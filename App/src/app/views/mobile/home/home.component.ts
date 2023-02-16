@@ -16,7 +16,7 @@ declare let $: any;
 })
 export class HomeComponent implements OnInit {
   username: any;
-  
+  user = JSON.parse(localStorage.getItem('user_landlord'))
   constructor(
     public router: Router,
     private cookieService: CookieService,
@@ -57,6 +57,9 @@ export class HomeComponent implements OnInit {
     alert('This function is not ready!')
   }
   configImage() {
+    var btnCust = '<button type="button" class="btn btn-secondary edit-profile" >' +
+    '<i class="bi-tag"></i>' +
+    '</button>'; 
     const option = {
       overwriteInitial: true,
       maxFileSize: 1500,
@@ -69,8 +72,8 @@ export class HomeComponent implements OnInit {
       removeTitle: 'Cancel or reset changes',
       elErrorContainer: '#kv-avatar-errors-1',
       msgErrorClass: 'alert alert-block alert-danger',
-      defaultPreviewContent: '<img src="../../../../../assets/images/no-img.jpg" alt="No Image">',
-      layoutTemplates: { main2: '{preview} ' + ' {browse}' },
+      defaultPreviewContent: '<img class="img-circle" src="../../../../../assets/images/no-img.jpg" alt="No Image">',
+      layoutTemplates: { main2: '{preview} ' +  btnCust + ' {browse}' },
       allowedFileExtensions: ["jpg", "png", "gif"],
       initialPreview: [],
       initialPreviewConfig: [],
@@ -81,6 +84,9 @@ export class HomeComponent implements OnInit {
     let that = this;
     $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
 
+    });
+    $('.edit-profile').on('click', function (event, key, jqXHR, data) {
+      alert(1)
     });
   }
 }

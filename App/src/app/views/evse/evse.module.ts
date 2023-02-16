@@ -39,6 +39,7 @@ import { LandlordBankComponent } from './landlord/landlord-bank/landlord-bank.co
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { AgmCoreModule, LazyMapsAPILoaderConfigLiteral } from '@agm/core';
 import { LandlordBankActionComponent } from './landlord/landlord-bank/landlord-bank-action/landlord-bank-action.component';
+import { LandlordDetailComponent } from './landlord/landlord-detail/landlord-detail.component';
 interface Environment {
   production: boolean;
   apiUrl: string;
@@ -90,7 +91,8 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     WebNewsComponent,
     LandlordBankComponent,
     GoogleMapComponent,
-    LandlordBankActionComponent
+    LandlordBankActionComponent,
+    LandlordDetailComponent
   ]
 })
 export class EvseModule {

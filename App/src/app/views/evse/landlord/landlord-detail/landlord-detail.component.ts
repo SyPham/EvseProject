@@ -1,88 +1,68 @@
-
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService, BaseComponent, UtilitiesService } from '@pigfarm-core';
+import { Subscription } from 'rxjs';
 import { ImagePathConstants } from 'src/app/_core/_constants';
-import { User2Bank} from 'src/app/_core/_model/evse/model';
-import { User2BankService } from 'src/app/_core/_service/evse/user-2bank.service';
-
+import { Landlord } from 'src/app/_core/_model/evse/model';
+import { LandlordService } from 'src/app/_core/_service/evse/landlord.service';
 import { environment } from 'src/environments/environment';
 declare let $: any;
 @Component({
-  selector: 'app-landlord-bank-action',
-  templateUrl: './landlord-bank-action.component.html',
-  styleUrls: ['./landlord-bank-action.component.scss']
+  selector: 'app-landlord-detail',
+  templateUrl: './landlord-detail.component.html',
+  styleUrls: ['./landlord-detail.component.css']
 })
-export class LandlordBankActionComponent   extends BaseComponent implements OnInit {
-  @Input() title: string = "User2Bank_Detail";
-  @Input() guid: string | null;
-  @Output() saveChange = new EventEmitter()
-  model: User2Bank
+export class LandlordDetailComponent extends BaseComponent implements OnInit {
+  model: Landlord = {} as Landlord;
   file: any;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
+  landLordGuid: any;
+  subscription = new Subscription()
+
   constructor(
-    private modalService: NgbModal,
-    private service: User2BankService,
-    public translate: TranslateService,
     private alertify: AlertifyService,
     private datePipe: DatePipe,
+    private service: LandlordService,
+    public translate: TranslateService,
     private utilityService: UtilitiesService,
 
 
-    ) {
-	    super(translate,environment.apiUrl);
-
-     }
-  @ViewChild('actionModal') actionModal: TemplateRef<any>;
-
-  ngOnInit() {
+  ) { 
+    super(translate,environment.apiUrl);
   }
-  initModel() {
-    this.model = {} as User2Bank;
-    this.guid = null;
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
-  open() {
-    if (this.guid) {
-      this.service.getByGuid(this.guid).subscribe(data=> {
-        this.model = data;
-       
-        this.model.status = this.model.status + ''
-
-        this.modalService.open(this.actionModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
-       this.configImage();
-      
-      })
-    } else {
-      this.modalService.open(this.actionModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
-      this.configImage();
-   
-    }
-   
-	}
-  
-  close() {
-		this.modalService.dismissAll();
-	}
-  onFileChangeLogo(args) {
-    this.file = args.target.files[0];
-  }
-  ToFormatModel(model: any) {
-    for (let key in model) {
-      let value = model[key];
-      if (value && value instanceof Date) {
-        if (key === 'createDate') {
-          model[key] = this.datePipe.transform(value, "yyyy/MM/dd HH:mm:ss");
-        } else {
-          model[key] = this.datePipe.transform(value, "yyyy/MM/dd");
-        }
-      } else {
-        model[key] = value;
+  ngOnInit(): void {
+    this.subscription.add(this.service.currentLandlord.subscribe(x=> {
+      this.landLordGuid = x;
+      if (this.landLordGuid) {
+      this.getAudit(this.landLordGuid);
+        this.service.getByGuid(x).subscribe(a=> {
+          this.model = a;
+        });
       }
+    
+    }))
+    this.configImage();
+  }
+  getAudit(id) {
+    this.service.getAudit(id).subscribe(data => {
+      this.audit = data;
+    });
+
+  }
+  sexChange(value) {
+    this.model.landLordSex = value;
     }
-    return model;
+  save() {
+    if (this.model.id > 0) {
+      this.update();
+    } else {
+      this.create();
+    }
   }
   create() {
     this.alertify.confirm4(
@@ -91,20 +71,16 @@ export class LandlordBankActionComponent   extends BaseComponent implements OnIn
        this.alert.createTitle,
        this.alert.createMessage,
        () => {
+         this.model.file = this.file || [];
          delete this.model['column'];
          delete this.model['index'];
-         this.model.status = +this.model.status
-         this.model.file = this.file || [];
          this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {
                this.alertify.success(this.alert.created_ok_msg);
-               this.saveChange.emit()
-               this.close();
+ 
              } else {
-               this.translate.get(res.message).subscribe((data: string) => {
-                 this.alertify.warning(data, true);
-               });
+               this.alertify.warning(this.alert.system_error_msg);
              }
  
            },
@@ -118,7 +94,6 @@ export class LandlordBankActionComponent   extends BaseComponent implements OnIn
      );
  
    }
-
    update() {
     this.alertify.confirm4(
        this.alert.yes_message,
@@ -126,18 +101,15 @@ export class LandlordBankActionComponent   extends BaseComponent implements OnIn
        this.alert.updateTitle,
        this.alert.updateMessage,
        () => {
+         this.model.file = this.file || [];
          delete this.model['column'];
          delete this.model['index'];
-         this.model.status = +this.model.status
-         this.model.file = this.file || [];
          this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {
                this.alertify.success(this.alert.updated_ok_msg);
-               this.saveChange.emit();
-               this.close();
              } else {
-               this.alertify.warning(res.message, true);
+               this.alertify.warning(this.alert.system_error_msg);
              }
            },
            (error) => {
@@ -149,16 +121,23 @@ export class LandlordBankActionComponent   extends BaseComponent implements OnIn
        }
      );
  
+ 
    }
-   save() {
-
-    if (this.model.id > 0) {
-      this.update();
-    } else {
-      this.create();
-    }
-  }
-
+   ToFormatModel(model: any) {
+     for (let key in model) {
+       let value = model[key];
+       if (value && value instanceof Date) {
+         if (key === 'createDate') {
+           model[key] = this.datePipe.transform(value, "yyyy/MM/dd HH:mm:ss");
+         } else {
+           model[key] = this.datePipe.transform(value, "yyyy/MM/dd");
+         }
+       } else {
+         model[key] = value;
+       }
+     }
+     return model;
+   }
   configImage() {
     const option = {
       overwriteInitial: true,
@@ -172,7 +151,7 @@ export class LandlordBankActionComponent   extends BaseComponent implements OnIn
       removeTitle: 'Cancel or reset changes',
       elErrorContainer: '#kv-avatar-errors-1',
       msgErrorClass: 'alert alert-block alert-danger',
-      defaultPreviewContent: '<img src="../../../../../../assets/images/no-img.jpg" alt="No Image">',
+      defaultPreviewContent: '<img src="../../../../../assets/images/no-img.jpg" alt="No Image">',
       layoutTemplates: { main2: '{preview} ' + ' {browse}' },
       allowedFileExtensions: ["jpg", "png", "gif"],
       initialPreview: [],
@@ -193,9 +172,9 @@ export class LandlordBankActionComponent   extends BaseComponent implements OnIn
       }
       option.initialPreviewConfig = [a];
     }
-    $("#avatar-3").fileinput(option);;
+    $("#avatar-1").fileinput(option);;
     let that = this;
-    $('#avatar-3').on('filedeleted', function (event, key, jqXHR, data) {
+    $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
       console.log('Key = ' + key);
       that.file = null;
       that.model.file = null;
@@ -216,6 +195,12 @@ export class LandlordBankActionComponent   extends BaseComponent implements OnIn
     }
     return this.noImage;
   }
- 
-
+  onFileChangeLogo(args) {
+    this.file = args.target.files[0];
+  }
+  cancel() {
+    this.audit = {}
+    this.file = null
+    this.model = {} as Landlord;
+  }
 }
