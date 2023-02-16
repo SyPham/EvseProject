@@ -1,12 +1,16 @@
 /*#region video-background-home */
 #video-background-home {
     position: relative;
-    display: block;
-    font-size: 20px;
-    max-height: 600px;
-    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
 }
-
+  
+#video-background-home iframe {
+    position: absolute;
+    width: 100vw;
+    height: 90vh;
+  }
     #video-background-home img {
         position: absolute;
         top: 0;
@@ -17,7 +21,7 @@
 
     #video-background-home .info {
         position: absolute;
-        top: 50%;
+        bottom:42px;
         left: 0;
         z-index: 3;
         transform: translate(0, -50%);
@@ -61,3 +65,15 @@
     font-size: 20px;
     line-height: 60px;
 }
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  }
+  
+  .video-container iframe {
+    position: absolute;
+    width: 100vw;
+    height: 90vh;
+  }
