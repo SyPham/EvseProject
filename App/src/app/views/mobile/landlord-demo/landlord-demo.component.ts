@@ -41,7 +41,7 @@ baseUrl = environment.apiUrl;
   URL(url) {
     if (url) {
       if (url.includes("?")=== false) {
-        url = url + '?showinfo=0&autoplay=1&loop=1&controls=0&rel=0&enablejsapi=1&mute=1'
+        url = url + '?rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=0&autoplay=1'
       }
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
