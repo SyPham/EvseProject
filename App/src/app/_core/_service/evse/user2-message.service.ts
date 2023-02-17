@@ -2,15 +2,21 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 
-import { CURDService, UtilitiesService } from '@pigfarm-core';
+import { CURDService, OperationResult, UtilitiesService } from '@pigfarm-core';
 import { environment } from 'src/environments/environment';
 import { User2Message } from '../../_model/evse/model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class User2MessageService extends CURDService<User2Message> {
+  private recordSource = new BehaviorSubject(null );
+  currentUser2Message = this.recordSource.asObservable();
 
+  changeUser2Message(value) {
+    this.recordSource.next(value)
+  }
   constructor(http: HttpClient,utilitiesService: UtilitiesService)
   {
     super(environment.apiUrl,http,"User2Message", utilitiesService);
@@ -20,7 +26,9 @@ export class User2MessageService extends CURDService<User2Message> {
   }
 
   countByUserId(guid): Observable<any> {
-    debugger
     return this.http.get<any>(`${this.base}User2Message/CountByUserId?guid=${guid}`, {});
+  }
+  seen(guid: string): Observable<OperationResult> {
+    return this.http.put<OperationResult>(`${this.base}User2Message/Seen?guid=${guid}`, {}).pipe(catchError(this.handleError));
   }
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SidebarComponent } from '@syncfusion/ej2-angular-navigations';
@@ -16,7 +16,7 @@ import { User2MessageService } from 'src/app/_core/_service/evse/user2-message.s
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent implements OnInit, AfterViewInit {
+export class LayoutComponent implements OnInit, OnDestroy {
   user = JSON.parse(localStorage.getItem('user_landlord'))
 
   fieldsLang: object = { text: "name", value: "id" };
@@ -52,7 +52,8 @@ export class LayoutComponent implements OnInit, AfterViewInit {
       this.currentRouter = event.url
     });
   }
-  ngAfterViewInit(): void {
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
   myFunction() {
     var x = document.getElementById("myLinks");
@@ -90,6 +91,11 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     this.router.navigate(["/mobile/home"]);
   }
   ngOnInit() {
+   this.subscription.add(this.user2MessageService.currentUser2Message.subscribe(check => {
+      if (check) {
+        this.countAlert();
+      }
+    }))
     this.countAlert();
   }
   countAlert() {

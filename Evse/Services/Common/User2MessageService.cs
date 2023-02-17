@@ -23,6 +23,7 @@ namespace Evse.Services
         Task<object> LoadData(DataManager data, string lang);
         Task<object> GetAudit(object id);
         Task<object> GetByGuid(string guid);
+        Task<OperationResult> Seen(string guid);
         Task<int> CountByUserId(string guid);
     }
     public class User2MessageService : ServiceBase<User2Message, User2MessageDto>, IUser2MessageService, IScopeService
@@ -55,7 +56,7 @@ _logger = logger;
         }
         public async Task<object> LoadData(DataManager data, string lang)
         {
-            var datasource = _repo.FindAll(x => x.Status == StatusConstants.Default).OrderByDescending(x => x.Id).AsQueryable();
+            var datasource = _repo.FindAll().OrderByDescending(x => x.Id).AsQueryable();
 
             if (data.Where != null) // for filtering
                 datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
@@ -201,7 +202,37 @@ _logger = logger;
 
         public async Task<int> CountByUserId(string guid)
         {
-            return await _repo.FindAll(x => x.UserGuid == guid).CountAsync();
+            return await _repo.FindAll(x => x.UserGuid == guid && x.Status != StatusConstants.Default).CountAsync();
+        }
+
+        public async Task<OperationResult> Seen(string guid)
+        {
+             var item = await _repo.FindAll(x => x.Guid == guid)
+              .FirstOrDefaultAsync();
+            item.Status = StatusConstants.Default;
+            item.ReadDate = DateTime.Now;
+            _repo.Update(item);
+            try
+            {
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = item
+                };
+            }
+            catch (Exception ex)
+            {
+                    await _logger.LogStoreProcedure(new LoggerParams {
+                    Type= EvseLogConst.Create,
+                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
         }
     }
 }
