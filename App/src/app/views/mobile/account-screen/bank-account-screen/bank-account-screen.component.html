@@ -61,4 +61,5 @@
 
 <div class="d-flex justify-content-center align-items-center mb-5">
   <button [disabled]="!model.bankAccount" (click)="create()" type="button" class="btn btn-primary">{{ 'Submit' | translate }}</button>
+  <button (click)="cancel()" type="button" class="btn btn-secondary ml-2">{{ 'Cancel' | translate }}</button>
 </div>

@@ -26,6 +26,7 @@ namespace Evse.Data
         {
             _contextAccessor = contextAccessor;
         }
+        public virtual DbSet<User2Message> User2Messages { get; set; }
 
         public virtual DbSet<WebNews> WebNews { get; set; }
 
@@ -1330,6 +1331,52 @@ namespace Evse.Data
                                     .HasColumnName("Landlord_GUID")
                                     .HasMaxLength(20);
             });
+
+            modelBuilder.Entity<User2Message>(entity =>
+            {
+                entity.ToTable("User2Message");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Content).HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Icon).HasMaxLength(40);
+
+                entity.Property(e => e.Link).HasMaxLength(200);
+
+                entity.Property(e => e.ReadDate)
+                    .HasColumnName("Read_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Subject).HasMaxLength(50);
+
+                entity.Property(e => e.Type).HasMaxLength(40);
+
+                entity.Property(e => e.UserGuid)
+                    .HasColumnName("User_GUID")
+                    .HasMaxLength(40);
+            });
+
   modelBuilder.Entity<User2Bank>(entity =>
             {
                 entity.ToTable("User2Bank");

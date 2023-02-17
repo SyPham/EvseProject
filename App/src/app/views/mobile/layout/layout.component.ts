@@ -10,12 +10,14 @@ import { Location } from "@angular/common";
 import { Subscription } from 'rxjs';
 import { filter, distinctUntilChanged, map } from 'rxjs/operators';
 import { SystemGroupNo } from 'src/app/_core/enum/SystemGroupNo';
+import { User2MessageService } from 'src/app/_core/_service/evse/user2-message.service';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit, AfterViewInit {
+  user = JSON.parse(localStorage.getItem('user_landlord'))
 
   fieldsLang: object = { text: "name", value: "id" };
   fields: object = { text: "siteName", value: "guid" };
@@ -34,6 +36,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   currentRouter_default: string = '/mobile/home'
   currentRouter: string = ''
   subscription: Subscription = new Subscription();
+  count: any = 0;
   constructor(
     private router: Router,
     private location: Location,
@@ -42,6 +45,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     private cookieService: CookieService,
     private alertify: AlertifyService,
     private serviceDash: DashboardService,
+    private user2MessageService: User2MessageService,
 
   ) {
     this.router.events.pipe( filter((event: any) => event instanceof NavigationEnd) ).subscribe(event => { 
@@ -86,9 +90,13 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     this.router.navigate(["/mobile/home"]);
   }
   ngOnInit() {
-
+    this.countAlert();
   }
-
+  countAlert() {
+    this.user2MessageService.countByUserId(this.user?.guid).subscribe(count => {
+      this.count = count
+    })
+  }
   toggleSidebar() {
     var x = document.getElementById("myLinks");
     if (x.style.display === "block") {

@@ -12,10 +12,10 @@
           
         </div>
         <ul class="header-list">
-          <li  class="float-right">
+          <li  class="float-right" *ngIf="count > 0">
             <div class="notification">
-              <div class="notBtn" href="#">
-               <div class = "number">3</div>
+              <div class="notBtn"  routerLink="/mobile/alert" >
+               <div class = "number">{{count}}</div>
                  <!-- <div class="number2">10</div> -->
                 <i class="fas fa-bell"></i>
                 <!-- <div class="box">

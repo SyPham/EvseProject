@@ -2,14 +2,14 @@
 #video-background-home {
     position: relative;
     width: 100vw;
-    height: 100vh;
+    height: 93vh;
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
 }
   
 #video-background-home iframe {
     position: absolute;
     width: 100vw;
-    height: 90vh;
+    height: 82vh;
   }
     #video-background-home img {
         position: absolute;

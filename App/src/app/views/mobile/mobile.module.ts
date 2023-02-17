@@ -55,6 +55,7 @@ import { FieldComponent } from './field/field.component';
 import { FieldScreenDetailComponent } from './field/field-screen-detail/field-screen-detail.component';
 import { BankAccountScreenComponent } from './account-screen/bank-account-screen/bank-account-screen.component';
 import { BankAccountFinishScreenComponent } from './account-screen/bank-account-finish-screen/bank-account-finish-screen.component';
+import { AlertScreenComponent } from './alert-screen/alert-screen.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -74,7 +75,8 @@ if (!lang) {
     FieldComponent,
     FieldScreenDetailComponent,
     BankAccountScreenComponent,
-    BankAccountFinishScreenComponent
+    BankAccountFinishScreenComponent,
+    AlertScreenComponent
     
   ],
   imports: [

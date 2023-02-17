@@ -143,5 +143,7 @@ export class BankAccountScreenComponent  extends BaseComponent implements OnInit
      );
  
    }
-
+   cancel() {
+    this.router.navigate(['/mobile/account'])
+   }
 }

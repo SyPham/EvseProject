@@ -232,3 +232,18 @@ export interface User2Bank {
     file: any;
 
 }
+
+export interface User2Message {
+    id: number;
+    userGuid: string;
+    type: string;
+    icon: string;
+    subject: string;
+    content: string;
+    link: string;
+    createDate: string | null;
+    createBy: number | null;
+    readDate: string | null;
+    status: number | null;
+    guid: string;
+}
