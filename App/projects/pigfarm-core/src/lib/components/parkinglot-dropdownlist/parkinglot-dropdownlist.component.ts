@@ -14,17 +14,17 @@ import { DropDownListComponent } from "@syncfusion/ej2-angular-dropdowns";
 import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: "app-site-dropdownlist",
-  templateUrl: "./site-dropdownlist.component.html",
-  styleUrls: ["./site-dropdownlist.component.css"],
+  selector: "app-parkinglot-dropdownlist",
+  templateUrl: "./parkinglot-dropdownlist.component.html",
+  styleUrls: ["./parkinglot-dropdownlist.component.scss"],
 })
-export class SiteDropdownlistComponent implements OnInit, OnChanges {
+export class ParkinglotDropdownlistComponent implements OnInit, OnChanges {
   @Input() id = "site-remote";
   @Input() selectedValue: any;
+  @Input() siteGuid: any;
   @Input() placeholder = "";
   @Input() disabled = false;
   @Input() enabledLoad = true;
-  @Input() landlordGuid = "";
   @Output() change = new EventEmitter<any>();
   @Output() ngModelChange = new EventEmitter<any>();
   @Output() selectedValueName = new EventEmitter<any>();
@@ -60,7 +60,7 @@ export class SiteDropdownlistComponent implements OnInit, OnChanges {
     } else {
       const query = this.dropdownObj.query
         .clone()
-        .search(e.text, ["siteNo", "siteName"]);
+        .search(e.text, ["parkingLotNo", "parkingLotName"]);
       e.updateData(this.data, query);
     }
   };
@@ -69,12 +69,12 @@ export class SiteDropdownlistComponent implements OnInit, OnChanges {
   ngOnInit() {}
   loadData() {
     this.query = new Query().where("status", "equal", 1);
-    if (this.landlordGuid) {
-      this.query.where("landlordGuid", "equal", this.landlordGuid);
+    if (this.siteGuid) {
+      this.query.where("siteGuid", "equal", this.siteGuid);
     }
     this.data = new DataManager(
       {
-        url: `${this.baseUrl}Site/GetDataDropdownlist`,
+        url: `${this.baseUrl}ParkingLot/GetDataDropdownlist`,
         adaptor: new UrlAdaptor(),
         crossDomain: true,
       },
@@ -86,14 +86,11 @@ export class SiteDropdownlistComponent implements OnInit, OnChanges {
     if (changes["selectedValue"]) {
       this.selectedValueChange.emit(this.selectedValue);
     }
-
     this.selectedValue = this.selectedValue || "";
-    if (changes["landlordGuid"] && changes["landlordGuid"].currentValue ) {
+    if (changes["siteGuid"] && changes["siteGuid"].currentValue) {
       this.loadData();
-    } 
-    if (changes["enabledLoad"] && changes["enabledLoad"].currentValue == true && !changes["landlordGuid"]?.currentValue) {
-      debugger
-   
+    }
+    if (changes["enabledLoad"] && changes["enabledLoad"].currentValue == true && !changes["siteGuid"]?.currentValue) {
       this.loadData();
     }
   }

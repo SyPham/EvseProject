@@ -20,7 +20,7 @@ export class User2MessageService extends CURDService<User2Message> {
   }
 
   countByUserId(guid): Observable<any> {
-    debugger
+    // debugger
     return this.http.get<any>(`${this.base}User2Message/CountByUserId?guid=${guid}`, {});
   }
 }

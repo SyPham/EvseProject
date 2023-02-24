@@ -1,1 +1,50 @@
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3613.6556977141795!2d121.23202831537937!3d25.07965624261276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34429fc062d215d5%3A0x70a3b690a9b5b109!2zU8OibiBiYXkgcXXhu5FjIHThur8gxJDDoG8gVmnDqm4gxJDDoGkgTG9hbg!5e0!3m2!1svi!2s!4v1674145334671!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<nav aria-label="breadcrumb" class="mobile-nav">
+    <ol class="breadcrumb mobile-breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{'My Report' | translate}}</li>
+    </ol>
+  </nav>
+
+<div class="row p-2">
+
+  <div class="col-12 mb-4">
+    <app-device-dropdownlist
+    id="device"
+    [placeholder]="'Choose a device' | translate"
+    [(selectedValue)]="deviceGuid"
+  >
+  </app-device-dropdownlist>
+  </div>
+  <div class="col-12">
+    <ejs-schedule #schedule
+    id="schedule"
+    [selectedDate]="selectedDate" 
+    [eventSettings]="eventSettings"
+    (selectedDateChange)="selectedDateChange($event)"
+    (popupOpen)="onPopupOpen($event)" 
+    [locale]='localeSchedule'
+    (cellClick)="cellClick($event)"
+    (eventRendered)="onEventRendered($event)"
+    (eventClick)="onClick($event)"
+    cssClass='schedule-event-template' 
+  >
+
+  <e-views>
+    <e-view option='Month' >
+      <ng-template #eventTemplate let-data>
+        <div class='template-wrap' [style.background-color]="data.BackgoundColor" style="width: 100%;cursor: pointer;">
+          <div class="subject" 
+            [style.padding-top]="data.PaddingTop" 
+            [style.text-align]="data.TextAlign" 
+            [style.font-size]="data.Fontsize"
+            [style.background-color]="data.BackgoundColor" 
+            [innerHTML]="templateData(data.Subject)">
+          </div>
+        </div>
+      </ng-template>
+    </e-view>
+  </e-views>
+  
+  </ejs-schedule>
+  </div>
+</div>

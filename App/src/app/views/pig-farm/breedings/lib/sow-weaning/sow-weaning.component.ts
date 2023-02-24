@@ -192,7 +192,7 @@ export class SowWeaningComponent
 
   // loadSelectedPig() {
   //   this.serviceBreeding2Sow.getBreeding2SowIn(this.model.breedingGuid).subscribe((res: any) => {
-  //     debugger
+  //     // debugger
   //     this.selectedPigData = res;
   //   });
   // }

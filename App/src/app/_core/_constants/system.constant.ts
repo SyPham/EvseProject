@@ -164,7 +164,7 @@ export class ActionConstants {
 export class ImagePathConstants {
   public static NO_IMAGE = '/assets/images/default-avatar-male.png';
   public static NO_IMAGE_COMPONENT = '/assets/images/pages/content-img-4.jpg';
-  public static NO_IMAGE_ACTION_COMPONENT = '/assets/images/no-image.png';
+  public static NO_IMAGE_ACTION_COMPONENT = '/assets/images/no-img.jpg';
 }
 export class SystemConfigConst {
   public static Order_Amount = "ORDER_AMOUNT";

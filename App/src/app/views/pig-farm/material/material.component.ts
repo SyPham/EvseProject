@@ -222,7 +222,7 @@ export class MaterialComponent extends BaseComponent implements OnInit {
       () => {
         this.model.expireDate = this.convertDate(this.model.expireDate);
         this.model.farmGuid = localStorage.getItem('farmGuid');
-        debugger
+        // debugger
         this.service.update(this.model as Material).subscribe(
           (res) => {
             if (res.success === true) {

@@ -1,29 +1,31 @@
+
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService, BaseComponent, UtilitiesService } from '@pigfarm-core';
 import { ImagePathConstants } from 'src/app/_core/_constants';
-import { Contract} from 'src/app/_core/_model/evse/model';
-import { ContractService } from 'src/app/_core/_service/evse/contract.service';
+import { Device, ParkingLot, Site } from 'src/app/_core/_model/evse/model';
+import { DeviceService } from 'src/app/_core/_service/evse/device.service';
 import { environment } from 'src/environments/environment';
 declare let $: any;
 @Component({
-  selector: 'app-contract-action',
-  templateUrl: './contract-action.component.html',
-  styleUrls: ['./contract-action.component.scss']
+  selector: 'app-landlord-device-action',
+  templateUrl: './landlord-device-action.component.html',
+  styleUrls: ['./landlord-device-action.component.css']
 })
-export class ContractActionComponent  extends BaseComponent implements OnInit {
-  @Input() title: string = "Contract_Detail";
+export class LandlordDeviceActionComponent  extends BaseComponent implements OnInit {
+  @Input() title: string = "Device_Detail";
   @Input() guid: string | null;
+  @Input() landlordGuid: string | null;
   @Output() saveChange = new EventEmitter()
-  model: Contract
+  model: Device
   file: any;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   constructor(
     private modalService: NgbModal,
-    private service: ContractService,
+    private service: DeviceService,
     public translate: TranslateService,
     private alertify: AlertifyService,
     private datePipe: DatePipe,
@@ -39,13 +41,12 @@ export class ContractActionComponent  extends BaseComponent implements OnInit {
   ngOnInit() {
   }
   initModel() {
-    this.model = {} as Contract;
+    this.model = {} as Device;
     this.guid = null;
   }
   open() {
     if (this.guid) {
       this.service.getByGuid(this.guid).subscribe(data=> {
-        // debugger
         this.model = data;
         this.modalService.open(this.actionModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       })

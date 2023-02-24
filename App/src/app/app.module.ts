@@ -130,7 +130,7 @@ import { NavbarComponent } from './views/layout/navbar/navbar.component';
 import { NewsComponent } from './views/home/news/news.component';
 import { NewRoleComponent } from './views/home/new-role/new-role.component';
 import { SwiperModule } from 'swiper/angular';
-console.log(environment.apiUrl)
+
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -160,7 +160,7 @@ if (!lang) {
     ReportLineChartComponent,
     NavbarComponent,
     NewsComponent,
-    NewRoleComponent
+    NewRoleComponent,
 
   ],
   imports: [

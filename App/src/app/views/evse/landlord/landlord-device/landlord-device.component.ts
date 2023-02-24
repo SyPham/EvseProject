@@ -1,90 +1,63 @@
 
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { AlertifyService, BaseComponent } from '@pigfarm-core';
 import { GridComponent } from '@syncfusion/ej2-angular-grids';
 import { L10n,setCulture } from '@syncfusion/ej2-base';
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
-import { User2Bank, ParkingLot, Site } from 'src/app/_core/_model/evse/model';
+import { Device, ParkingLot, Site } from 'src/app/_core/_model/evse/model';
 import { DataManager, Query, UrlAdaptor } from '@syncfusion/ej2-data';
-import { LandlordBankActionComponent } from './landlord-bank-action/landlord-bank-action.component';
-import { User2BankService } from 'src/app/_core/_service/evse/user-2bank.service';
+import { DeviceService } from 'src/app/_core/_service/evse/device.service';
+import { LandlordDeviceActionComponent } from './landlord-device-action/landlord-device-action.component';
 import { Subscription } from 'rxjs';
-import { ImagePathConstants } from 'src/app/_core/_constants';
 
 @Component({
-  selector: 'app-landlord-bank',
-  templateUrl: './landlord-bank.component.html',
-  styleUrls: ['./landlord-bank.component.css']
+  selector: 'app-landlord-device',
+  templateUrl: './landlord-device.component.html',
+  styleUrls: ['./landlord-device.component.scss']
 })
-export class LandlordBankComponent  extends BaseComponent implements OnInit, OnChanges, OnDestroy {
- @Input() site: Site
- @Input() parkingLot: ParkingLot
+export class LandlordDeviceComponent  extends BaseComponent implements OnInit, OnChanges {
  locale = localStorage.getItem('lang');
  @ViewChild('grid') public grid: GridComponent;
- @ViewChild(LandlordBankActionComponent) public action: LandlordBankActionComponent;
+ @ViewChild(LandlordDeviceActionComponent) public action: LandlordDeviceActionComponent;
  toolbarOptions = ['Add', 'Search'];
   editSettings = { showDeleteConfirmDialog: false, allowEditing: false, allowAdding: true, allowDeleting: false, mode: 'Normal' };
   dataSource: any;
   baseUrl = environment.apiUrl;
   public query: Query ;
-  @Input() landLordGuid: any;
-  subscription = new Subscription()
-  apiHost = environment.apiUrl.replace('/api/', '');
-  noImage = ImagePathConstants.NO_IMAGE_ACTION_COMPONENT;
+  subscription: any = new Subscription();
+  landlordGuid: any;
+  
   constructor(
     private alertify: AlertifyService,
-    private service: User2BankService,
+    private service: DeviceService,
     public translate: TranslateService,
     ) { 
       super(translate,environment.apiUrl); 
     }
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-  isImgUrl(url) {
-    return fetch(url, {method: 'HEAD'}).then(res => {
-      return res.headers.get('Content-Type').startsWith('image')
-    })
-  }
- async image(img) {
-  const check = await this.image(img);
-    return check ? img : this.noImage ;
-  }
+
   ngOnInit() {
-    let lang = localStorage.getItem("lang");
-    let languages = JSON.parse(localStorage.getItem("languages"));
-    // setCulture(lang);
-    let load = {
-      [lang]: {
-        grid: languages["grid"],
-        pager: languages["pager"],
-        "multi-select": languages["multiselect"],
-        uploader: languages["uploader"],
-      },
-    };
-    L10n.load(load);
-    this.subscription.add(this.service.currentUser2Bank.subscribe(x=> {
-      this.landLordGuid = x;
+    this.subscription.add(this.service.currentDevice.subscribe(x=> {
+      this.landlordGuid = x;
       this.loadData();
     }))
   }
-  ngOnChanges(changes: SimpleChanges): void {
-
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
+  ngOnChanges(changes: SimpleChanges): void {
+   
+    }
   loadData() {
-    this.query = new Query();
-    this.query.where("userGuid", "equal", this.landLordGuid);
-    
     const accessToken = localStorage.getItem('token');
     const lang = localStorage.getItem('lang');
+    this.query = new Query()
     this.dataSource = new DataManager({
-      url: `${this.baseUrl}User2Bank/LoadData?lang=${lang}`,
+      url: `${this.baseUrl}Device/GetLandlordDevice?lang=${lang}&landlordGuid=${this.landlordGuid}`,
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
-    }, this.query.sortByDesc("id"));
+    },this.query);
 }
-
 
   toolbarClick(args) {
     switch (args.item.id) {
@@ -94,7 +67,6 @@ export class LandlordBankComponent  extends BaseComponent implements OnInit, OnC
       case 'grid_add':
         args.cancel = true;
         this.action.initModel();
-        this.action.model.userGuid = this.landLordGuid;
         this.action.open();
         break;
       default:

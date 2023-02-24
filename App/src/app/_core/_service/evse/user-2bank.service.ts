@@ -15,16 +15,16 @@ import { User2Bank } from '../../_model/evse/model';
 export class User2BankService extends CURDService<User2Bank> {
   private recordSource = new BehaviorSubject(null );
   currentUser2Bank = this.recordSource.asObservable();
-
+  changeUser2Bank(value) {
+    this.recordSource.next(value)
+  }
   private recordSource2 = new BehaviorSubject([] );
   currentUser2Bank2 = this.recordSource2.asObservable();
   constructor( http: HttpClient,utilitiesService: UtilitiesService)
   {
     super(environment.apiUrl,http,"User2Bank", utilitiesService);
   }
-  changeUser2Bank(value) {
-    this.recordSource.next(value)
-  }
+  
   insertForm(model: User2Bank): Observable<OperationResult> {
     for (const key in model) {
       if (Object.prototype.hasOwnProperty.call(model, key)) {

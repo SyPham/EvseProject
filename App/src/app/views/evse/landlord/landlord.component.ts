@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
 import { Landlord } from 'src/app/_core/_model/evse/model';
 import { LandlordService } from 'src/app/_core/_service/evse/landlord.service';
 import { User2BankService } from 'src/app/_core/_service/evse/user-2bank.service';
+import { DeviceService } from 'src/app/_core/_service/evse/device.service';
 
 declare let window:any;
 declare let $: any;
@@ -49,7 +50,9 @@ export class LandlordComponent extends BaseComponent implements OnInit {
      private config: NgbTooltipConfig,
     public translate: TranslateService,
     private utilityService: UtilitiesService,
-    private user2BankService: User2BankService
+    private user2BankService: User2BankService,
+    private  deviceService: DeviceService,
+
   ) {
 	    super(translate,environment.apiUrl);
       if (this.isAdmin === false) {
@@ -404,6 +407,7 @@ export class LandlordComponent extends BaseComponent implements OnInit {
     this.landLordGuid = args.data.guid
     this.service.changeLandlord(args.data.guid);
     this.user2BankService.changeUser2Bank(args.data.guid)
+    this.deviceService.changeDevice(args.data.guid)
     this.getAudit(this.model.id)
   }
 }

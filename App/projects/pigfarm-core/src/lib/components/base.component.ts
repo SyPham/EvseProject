@@ -14,7 +14,7 @@ export abstract class BaseComponent {
   printBy: string;
   audit: any;
   sortOptions = { columns: [{ field: 'estDate', direction: 'Descending' }, { field: 'id', direction: 'Descending' }] };
-  isAdmin = JSON.parse(localStorage.getItem('user')).groupCode === 'ADMIN';
+  isAdmin = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN';
   baseUrl = ''
   alert = {
     updateMessage: this.translate.instant(MessageConstants.UPDATE_MESSAGE),

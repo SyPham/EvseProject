@@ -154,6 +154,7 @@
             <label for="Site_GUID">{{ "Site_GUID" | translate }}</label>
             <app-site-dropdownlist
               id="Site_GUID"
+              [enabledLoad]="true"
               [(selectedValue)]="model.siteGuid"
             >
             </app-site-dropdownlist>
@@ -422,6 +423,7 @@
         <label for="Site_GUID">{{ "Site_GUID" | translate }}</label>
         <app-site-dropdownlist
           id="Site_GUID"
+          [enabledLoad]="true"
           [(selectedValue)]="model.siteGuid"
         >
         </app-site-dropdownlist>

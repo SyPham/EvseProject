@@ -22,6 +22,7 @@
           <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
           <app-site-dropdownlist
             id="site"
+            [enabledLoad]="true"
             [(selectedValue)]="model.siteGuid"
           >
           </app-site-dropdownlist>

@@ -5,12 +5,16 @@ import { HttpClient } from '@angular/common/http';
 import { CURDService, UtilitiesService } from '@pigfarm-core';
 import { environment } from 'src/environments/environment';
 import { Device } from '../../_model/evse/model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceService extends CURDService<Device> {
-
+  private recordSource = new BehaviorSubject(null );
+  currentDevice = this.recordSource.asObservable();
+  changeDevice(value) {
+    this.recordSource.next(value)
+  }
   constructor(http: HttpClient,utilitiesService: UtilitiesService)
   {
     super(environment.apiUrl,http,"Device", utilitiesService);

@@ -40,6 +40,8 @@ import { GoogleMapComponent } from './google-map/google-map.component';
 import { AgmCoreModule, LazyMapsAPILoaderConfigLiteral } from '@agm/core';
 import { LandlordBankActionComponent } from './landlord/landlord-bank/landlord-bank-action/landlord-bank-action.component';
 import { LandlordDetailComponent } from './landlord/landlord-detail/landlord-detail.component';
+import { LandlordDeviceComponent } from './landlord/landlord-device/landlord-device.component';
+import { LandlordDeviceActionComponent } from './landlord/landlord-device/landlord-device-action/landlord-device-action.component';
 interface Environment {
   production: boolean;
   apiUrl: string;
@@ -92,7 +94,9 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     LandlordBankComponent,
     GoogleMapComponent,
     LandlordBankActionComponent,
-    LandlordDetailComponent
+    LandlordDetailComponent,
+    LandlordDeviceComponent,
+    LandlordDeviceActionComponent
   ]
 })
 export class EvseModule {

@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AgendaService, DayService, MonthAgendaService, MonthService, ScheduleModule, WeekService, WorkWeekService } from '@syncfusion/ej2-angular-schedule';
 
 
 export function tokenGetter() {
@@ -56,11 +57,48 @@ import { FieldScreenDetailComponent } from './field/field-screen-detail/field-sc
 import { BankAccountScreenComponent } from './account-screen/bank-account-screen/bank-account-screen.component';
 import { BankAccountFinishScreenComponent } from './account-screen/bank-account-finish-screen/bank-account-finish-screen.component';
 import { AlertScreenComponent } from './alert-screen/alert-screen.component';
+import { ReportScreenComponent } from './report-screen/report-screen.component';
+import { loadCldr, setCulture, L10n } from '@syncfusion/ej2-base';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
   lang = localStorage.getItem('lang');
 }
+declare var require: any;
+setCulture(lang == 'tw' || lang == 'cn' ? 'zh' : lang);
+let languages = JSON.parse(localStorage.getItem('languages'));
+
+let load = {
+  [lang]: {
+    grid: languages['grid'],
+    pager: languages['pager'],
+    dropdowns: languages['dropdownlist'],
+    schedule: languages['schedule']
+  }
+};
+L10n.load(load);
+loadCldr(
+  require('cldr-data/supplemental/numberingSystems.json'),
+  require('cldr-data/main/en/ca-gregorian.json'),
+  require('cldr-data/main/en/numbers.json'),
+  require('cldr-data/main/en/timeZoneNames.json'),
+  require('cldr-data/supplemental/weekdata.json')); 
+
+loadCldr(
+  require('cldr-data/supplemental/numberingSystems.json'),
+  require('cldr-data/main/zh/ca-gregorian.json'),
+  require('cldr-data/main/zh/numbers.json'),
+  require('cldr-data/main/zh/timeZoneNames.json'),
+  require('cldr-data/supplemental/weekdata.json')); 
+
+  loadCldr(
+    require('cldr-data/supplemental/numberingSystems.json'),
+    require('cldr-data/main/vi/ca-gregorian.json'),
+    require('cldr-data/main/vi/numbers.json'),
+    require('cldr-data/main/vi/timeZoneNames.json'),
+    require('cldr-data/supplemental/weekdata.json'));
+
+    
 @NgModule({
   declarations: [
     MobileComponent,
@@ -76,7 +114,8 @@ if (!lang) {
     FieldScreenDetailComponent,
     BankAccountScreenComponent,
     BankAccountFinishScreenComponent,
-    AlertScreenComponent
+    AlertScreenComponent,
+    ReportScreenComponent
     
   ],
   imports: [
@@ -90,6 +129,7 @@ if (!lang) {
     CoreDirectivesModule,
     SidebarModule,
     MenuAllModule,
+    ScheduleModule,
     SharedModule.forRoot(),
     TranslateModule.forRoot({
       loader: {provide: TranslateLoader, useClass: CustomLoader},
@@ -98,7 +138,13 @@ if (!lang) {
     PigfarmCoreModule.forRoot(environment.apiUrl),
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    DayService, 
+    WeekService, 
+    WorkWeekService, 
+    MonthService,
+    AgendaService,
+    MonthAgendaService
   ]
 })
 export class MobileModule {

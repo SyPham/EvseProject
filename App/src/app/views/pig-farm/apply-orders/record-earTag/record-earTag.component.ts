@@ -186,7 +186,7 @@ public onFilteringPig: any = (e: any) => {
   onChangeType(e) {
     this.service.changLable(e.itemData?.name)
     this.valueLabel = e.itemData?.name;
-    //debugger
+    //// debugger
      // this.visibledRfid = e.itemData?.guid === '03'
   }
     constructor(

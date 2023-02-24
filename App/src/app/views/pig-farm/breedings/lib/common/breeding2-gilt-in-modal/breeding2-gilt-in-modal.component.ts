@@ -234,7 +234,7 @@ export class Breeding2GiltInModalComponent
       }
       const index = this.dataSource.findIndex((x) => x.id === e.data["id"]);
       if (index !== -1) {
-        debugger
+        // debugger
         this.dataSource[index] = { ...e.data };
         this.dataSourceChange.emit(this.dataSource);
 

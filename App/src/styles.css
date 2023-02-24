@@ -17,6 +17,8 @@
 @import '../node_modules/sweetalert2/dist/sweetalert2.min.css';
 @import '../node_modules/@syncfusion/ej2-angular-dropdowns/styles/bootstrap4.css';
 @import '../node_modules/@syncfusion/ej2-richtexteditor/styles/bootstrap4.css';
+@import '~@syncfusion/ej2-angular-schedule/styles/bootstrap4.css';
+
 /* @import '../node_modules/@syncfusion/ej2-lists/styles/bootstrap4.css'; */
 /* @import '../node_modules/animate.css/animate.css'; */
 /* @import '../pretty-checkbox/src/pretty-checkbox.scss'; */
@@ -560,4 +562,29 @@ color: white;
 .mobile-nav {
   border-radius: unset !important;
 
+}
+
+
+  
+.schedule-event-template.e-schedule .e-vertical-view .e-content-wrap .e-appointment {
+  border-radius: 8px;
+  height: 100px!important;
+}
+
+.e-schedule .e-month-view .e-work-days, .e-schedule .e-month-agenda-view .e-work-days {
+  height: 130px !important;
+}
+
+.e-schedule .e-month-view .e-appointment, .e-schedule .e-month-agenda-view .e-appointment {
+  height: 80px !important;
+  white-space: initial;
+
+}
+
+.e-schedule.e-device .e-toolbar-item.e-add {
+  display: none !important;
+}
+
+.e-schedule.e-device .e-toolbar-item.e-today {
+  display: none !important;
 }

@@ -77,5 +77,13 @@ namespace Evse.Controllers
         {
             return Ok(await _service.GetAudit(id));
         }
+
+          [HttpPost]
+        public async Task<ActionResult> GetLandlordDevice([FromBody] DataManager request, string lang, string landlordGuid)
+        {
+
+            var data = await _service.GetLandlordDevice(request, lang,landlordGuid);
+            return Ok(data);
+        }
     }
 }

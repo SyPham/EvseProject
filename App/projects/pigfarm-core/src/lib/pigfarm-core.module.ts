@@ -54,6 +54,7 @@ import { PigfarmRichtexteditorComponent } from './components/pigfarm-richtextedi
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { LandlordDropdownlistComponent } from './components/landlord-dropdownlist/landlord-dropdownlist.component';
 import { BankDropdownlistComponent } from './components/bank-dropdownlist/bank-dropdownlist.component';
+import { ParkinglotDropdownlistComponent } from './components/parkinglot-dropdownlist/parkinglot-dropdownlist.component';
 const commponents = [
   PigDropdownlistComponent,
   PenDropdownlistComponent,
@@ -104,7 +105,8 @@ const commponents = [
   DeviceDropdownlistComponent,
   PigfarmRichtexteditorComponent,
   LandlordDropdownlistComponent,
-  BankDropdownlistComponent
+  BankDropdownlistComponent,
+  ParkinglotDropdownlistComponent
 ]
 
 @NgModule({

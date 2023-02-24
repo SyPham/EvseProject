@@ -67,6 +67,7 @@ IWebHostEnvironment currentEnvironment)
 
                                   Id = a.Id,
                                   Guid = a.Guid,
+                                  SiteGuid = a.SiteGuid,
                                   ParkingLotNo= a.ParkingLotNo,
                                   ParkingLotName = a.ParkingLotName,
                                   Name = $"{a.ParkingLotNo} - {a.ParkingLotName}",

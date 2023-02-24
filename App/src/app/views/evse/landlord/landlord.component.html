@@ -147,6 +147,7 @@
       <nav class="nav nav-pills nav-justified p-2" >
         <a class="nav-link my-nav" (click)="active='Detail'" [ngClass]="{ 'active': active == 'Detail'}">{{'Landlord_Detail' | translate}}</a>
         <a class="nav-link my-nav" [class.disabled]="!landLordGuid" (click)="active='Bank'" [ngClass]="{ 'active': active == 'Bank'}">{{'Landlord_Bank' | translate}}</a>
+        <a class="nav-link my-nav" [class.disabled]="!landLordGuid" (click)="active='Device'" [ngClass]="{ 'active': active == 'Device'}">{{'Landlord_Device' | translate}}</a>
       
       </nav>
 
@@ -157,6 +158,11 @@
 <section class="p-2"  *ngIf="active == 'Bank'" >
   <app-landlord-bank [landLordGuid]="landLordGuid"></app-landlord-bank>
 </section>
+
+<section class="p-2" *ngIf="active=='Device'">
+  <app-landlord-device ></app-landlord-device>
+  </section>
+
     </div>
     <!-- /.card-body -->
   </div>
@@ -184,6 +190,7 @@
           <label for="Site_GUID">{{ "Site_GUID" | translate }}</label>
           <app-site-dropdownlist
             id="Site_GUID"
+            [enabledLoad]="true"
             [(selectedValue)]="model.siteGuid"
           >
           </app-site-dropdownlist>

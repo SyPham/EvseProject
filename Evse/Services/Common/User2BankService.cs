@@ -143,6 +143,7 @@ IEvseLoggerService logger,
                            Status = a.Status,
                            CreateDate = a.CreateDate,
                            Comment = a.Comment,
+                           PhotoPath = a.PhotoPath,
                            StatusName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
                        }).AsQueryable();
 

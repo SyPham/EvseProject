@@ -39,7 +39,9 @@ export class LandlordDetailComponent extends BaseComponent implements OnInit {
     this.subscription.add(this.service.currentLandlord.subscribe(x=> {
       this.landLordGuid = x;
       if (this.landLordGuid) {
-      this.getAudit(this.landLordGuid);
+        if (this.model?.id) {
+          this.getAudit(this.model.id);
+        }
         this.service.getByGuid(x).subscribe(a=> {
           this.model = a;
         });

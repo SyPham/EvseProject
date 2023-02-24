@@ -40,7 +40,7 @@ export class BreadcrumbComponent implements OnInit {
   }
 
   buildBreadCrumb(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {
-    // debugger
+    // // debugger
     // If no routeConfig is avalailable we are on the root path
     let disable = route.routeConfig && route.routeConfig.data ? route.routeConfig.data.disable : false;
     let root = route.routeConfig && route.routeConfig.data ? route.routeConfig.data.root : false;
