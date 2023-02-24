@@ -36,6 +36,12 @@ namespace Evse.Controllers
             return StatusCodeResult(await _service.UpdateAsync(model));
         }
 
+        [HttpPut]
+        public async Task<ActionResult> Seen([FromQuery] string guid)
+        {
+            return StatusCodeResult(await _service.Seen(guid));
+        }
+
       
         [HttpDelete]
         public async Task<ActionResult> DeleteAsync(decimal id)

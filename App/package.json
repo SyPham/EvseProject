@@ -63,6 +63,7 @@
     "bootstrap4-toggle": "^3.6.1",
     "chartjs-plugin-datalabels": "^0.7.0",
     "cldr-data": "^36.0.0",
+    "font-awesome": "^4.7.0",
     "moment": "^2.24.0",
     "ngx-clipboard": "^13.0.1",
     "ngx-cookie-service": "^10.1.1",

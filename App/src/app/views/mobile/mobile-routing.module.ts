@@ -132,7 +132,7 @@ const routes: Routes = [
         //canActivate: [AuthGuard]
       },
       {
-        path: 'account/alert',
+        path: 'alert',
         component: AlertScreenComponent,
         data: {
           title: 'Bank Account',
