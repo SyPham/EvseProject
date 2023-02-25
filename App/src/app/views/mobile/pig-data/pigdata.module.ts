@@ -48,7 +48,7 @@ import {
   PiglistScreenComponent,
   PiglistDetailScreenComponent,
 } from ".";
-import { PigfarmCoreModule } from "@pigfarm-core";
+import { PigfarmCoreModule } from "herr-core";
 import { environment } from "src/environments/environment";
 
 let lang = localStorage.getItem("lang");

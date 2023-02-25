@@ -5,7 +5,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { CommandModel, GridComponent } from '@syncfusion/ej2-angular-grids';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { Record2PigService } from 'src/app/_core/_service/apply-orders';
 import { PenService } from 'src/app/_core/_service/farms';

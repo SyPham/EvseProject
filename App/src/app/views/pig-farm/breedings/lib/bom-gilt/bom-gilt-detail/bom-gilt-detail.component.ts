@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { BomGiltService } from '../../../services';
 import { BomGilt } from '../../../config';
-import { BaseDetailComponent } from '@pigfarm-core';
+import { BaseDetailComponent } from 'herr-core';
 import { environment } from 'src/environments/environment';
 
 @Component({

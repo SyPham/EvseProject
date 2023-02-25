@@ -7,7 +7,7 @@ import {
 declare let window: any;
 import { L10n, setCulture } from "@syncfusion/ej2-base";
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from "@angular/core";
-import { BaseComponent } from "@pigfarm-core";
+import { BaseComponent } from "herr-core";
 import { environment } from "src/environments/environment";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { ExcelExportCompleteArgs, ExcelExportProperties, GridComponent } from "@syncfusion/ej2-angular-grids";

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertifyService } from '@pigfarm-core';
+import { AlertifyService } from 'herr-core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { DashboardService } from 'src/app/_core/_service/dashboard.service';

@@ -36,7 +36,7 @@ import { SowQuarantineComponent } from './sow-quarantine/sow-quarantine.componen
 import { SowRotationComponent } from './sow-rotation/sow-rotation.component';
 import { SowSiloComponent } from './sow-silo/sow-silo.component';
 import { Environment } from '../config';
-import {  PigfarmCoreModule } from '@pigfarm-core';
+import {  PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 import { Breeding2GiltInModalComponent } from './common/breeding2-gilt-in-modal/breeding2-gilt-in-modal.component';
 import { Breeding2GiltInV2Component } from './gilt-in/breeding2-gilt-in-v2/breeding2-gilt-in-v2.component';

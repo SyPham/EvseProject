@@ -22,7 +22,7 @@ import { CoreDirectivesModule } from 'src/app/_core/_directive/core.directives.m
 import { BoarSemenTestingComponent } from './boar-semen-testing/boar-semen-testing.component';
 import { BoarQuarantineComponent } from './boar-quarantine/boar-quarantine.component';
 import { environment } from 'src/environments/environment';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { Boar2SemenMixComponent } from '../common/boar2-semen-mix/boar2-semen-mix.component';
 import { NewBoarInComponent } from './new-boar-in/new-boar-in.component';
 import { Breeding2BoarInComponent } from './new-boar-in/breeding2-gilt-in/breeding2-gilt-in.component';

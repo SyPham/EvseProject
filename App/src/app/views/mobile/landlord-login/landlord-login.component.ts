@@ -5,7 +5,7 @@ import { UserForLogin } from "src/app/_core/_model/user";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/_core/_service/auth.service";
 import { TranslateService } from "@ngx-translate/core";
-import { AlertifyService } from "@pigfarm-core";
+import { AlertifyService } from "herr-core";
 import { AuthLandlordService } from "src/app/_core/_service/auth-landlord.service";
 import {
   DataManager,

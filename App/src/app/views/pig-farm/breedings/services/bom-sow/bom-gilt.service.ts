@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BomGilt, Environment } from '../../config';
 import { BehaviorSubject } from 'rxjs';
-import { CURDService, UtilitiesService } from '@pigfarm-core';
+import { CURDService, UtilitiesService } from 'herr-core';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

@@ -16,7 +16,7 @@ import { RecordDiagnosisTreatmentComponent } from './record-diagnosis/record-dia
 import { UploaderModule } from '@syncfusion/ej2-angular-inputs';
 import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { L10n, loadCldr, setCulture } from '@syncfusion/ej2-base';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 import { RecordAccidentFeeComponent } from './record-accident-fee/record-accident-fee.component';
 import { RecordAccidentFeeModalComponent } from './record-sale/record-accident-fee-modal/record-accident-fee-modal.component';

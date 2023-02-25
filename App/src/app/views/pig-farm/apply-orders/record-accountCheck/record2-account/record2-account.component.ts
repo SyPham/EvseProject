@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BaseComponent, AlertifyService } from '@pigfarm-core';
+import { BaseComponent, AlertifyService } from 'herr-core';
 import { GridComponent } from '@syncfusion/ej2-angular-grids';
 import { Record2Account } from 'src/app/_core/_model/apply-orders';
 import { RecordMarketService } from 'src/app/_core/_service/apply-orders';

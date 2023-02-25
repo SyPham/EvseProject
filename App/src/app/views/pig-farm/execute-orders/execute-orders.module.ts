@@ -12,7 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { ApplyOrdersModule } from '../apply-orders/apply-orders.module';
 import { ExeRecordDiagnosisTreatmentComponent } from './exe-record-diagnosis/exe-record-diagnosis-treatment/exe-record-diagnosis-treatment.component';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 
 const ROUTING_MODULE = [

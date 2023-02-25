@@ -2,7 +2,7 @@ import { AlertifyService } from './../../../../_core/_service/alertify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { BaseDetailComponent } from '@pigfarm-core';
+import { BaseDetailComponent } from 'herr-core';
 import { Bom } from 'src/app/_core/_model/bom';
 import { BOMShareService } from 'src/app/_core/_service/bom.share.service';
 import { BOMService } from 'src/app/_core/_service/bom.service';

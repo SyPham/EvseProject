@@ -10,7 +10,7 @@ import { Query } from "@syncfusion/ej2-data";
 import moment from "moment";
 import { AutoLogoutService } from "src/app/_core/_service/apply-orders/auto-log-off.service";
 import { XAccountService } from "src/app/_core/_service/xaccount.service";
-import { AlertifyService } from "@pigfarm-core";
+import { AlertifyService } from "herr-core";
 import { Subscription } from "rxjs";
 import { NgxSpinnerService } from "ngx-spinner";
 import { SysMenuService } from "src/app/_core/_service/sys-menu.service";

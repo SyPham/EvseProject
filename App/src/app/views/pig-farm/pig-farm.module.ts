@@ -33,7 +33,7 @@ import { RecordInOutComponent } from './record-in-out/record-in-out.component';
 import { SystemConfigComponent } from './system/system-config/system-config.component';
 import { environment } from '../../../environments/environment'
 import { BreedingModule } from './breedings/lib/breeding.module';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { TransferFeeComponent } from './transfer-fee/transfer-fee.component';
 import { AbattoirLevelComponent } from './abattoir-level/abattoir-level.component';
 interface Environment {

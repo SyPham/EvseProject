@@ -35,7 +35,7 @@ import { CoreDirectivesModule } from 'src/app/_core/_directive/core.directives.m
 import { FarmComponent } from './farm/farm.component';
 import { SharedModule } from 'src/app/_core/commons/shared.module';
 import { environment } from 'src/environments/environment';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 
 
 const ROUTING_MODULE = [

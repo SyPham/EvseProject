@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "build:lib": "ng build --project ngx-org-chart && yarn run scss:bundle",
-    "build:lib2": "ng build --project @pigfarm-core && yarn run scss:bundle",
+    "build:lib2": "ng build --project @pigfarm-core --configuration production && yarn run scss:bundle",
     "scss:bundle": "scss-bundle -e ./projects/ngx-org-chart/src/_theming.scss -o ./dist/ngx-org-chart/_theming.scss",
     "lint": "node --max_old_space_size=8192 --harmony node_modules/@angular/cli/bin/ng lint",
     "start": "ng serve --open --host localhost --port 1000 --disable-host-check",
@@ -64,6 +64,7 @@
     "chartjs-plugin-datalabels": "^0.7.0",
     "cldr-data": "^36.0.0",
     "font-awesome": "^4.7.0",
+    "herr-core": "^0.0.1",
     "moment": "^2.24.0",
     "ngx-clipboard": "^13.0.1",
     "ngx-cookie-service": "^10.1.1",

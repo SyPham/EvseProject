@@ -1,5 +1,5 @@
 import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ViewChild, TemplateRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';

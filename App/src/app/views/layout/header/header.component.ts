@@ -10,7 +10,7 @@ import { Query } from "@syncfusion/ej2-data";
 import moment from "moment";
 import { AutoLogoutService } from "src/app/_core/_service/apply-orders/auto-log-off.service";
 import { XAccountService } from "src/app/_core/_service/xaccount.service";
-import { AlertifyService } from "@pigfarm-core";
+import { AlertifyService } from "herr-core";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",

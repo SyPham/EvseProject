@@ -4,7 +4,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { extend } from '@syncfusion/ej2-angular-grids';
 import { config } from 'rxjs';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { DataManager, Query, UrlAdaptor } from '@syncfusion/ej2-data';
 import { Router, ActivatedRoute } from '@angular/router';

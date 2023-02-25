@@ -35,7 +35,7 @@ import { BomBoarDetailComponent } from './bom-boar-detail/bom-boar-detail.compon
 import { BomMoveComponent } from './bom-move/bom-move.component';
 import { BomFeedingComponent } from './bom-feeding/bom-feeding.component';
 import { BomWeighingComponent } from './bom-weighing/bom-weighing.component';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 const ROUTING_MODULE = [
   BomBoarRoutingModule

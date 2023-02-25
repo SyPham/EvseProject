@@ -11,7 +11,7 @@ import {
   ɵɵtrustConstantResourceUrl,
 } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { BaseComponent } from "@pigfarm-core";
+import { BaseComponent } from "herr-core";
 import { L10n, setCulture } from "@syncfusion/ej2-base";
 import { DatePipe } from "@angular/common";
 import {

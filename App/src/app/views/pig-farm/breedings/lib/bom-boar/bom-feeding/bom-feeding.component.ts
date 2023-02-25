@@ -10,7 +10,7 @@ import { AccountRole } from 'src/app/_core/_model/account-role';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { BOMService } from 'src/app/_core/_service/bom.service';
 import { Bom } from 'src/app/_core/_model/bom';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { BomFeeding } from 'src/app/_core/_model/bom-feeding';

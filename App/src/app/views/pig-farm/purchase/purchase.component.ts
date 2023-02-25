@@ -4,7 +4,7 @@ import { NgbModal, NgbModalRef, NgbTooltipConfig } from '@ng-bootstrap/ng-bootst
 import { ExcelExportCompleteArgs, ExcelExportProperties, GridComponent } from '@syncfusion/ej2-angular-grids';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { setCulture, L10n } from '@syncfusion/ej2-base';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { Purchase } from 'src/app/_core/_model/purchase';

@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
 import { BOMWeighingService } from 'src/app/_core/_service/bom-weighing.service';
 import { BomSowService } from '../../../services';
 import { BomSow } from '../../../config';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 
 @Component({
   selector: 'app-bom-weighing',

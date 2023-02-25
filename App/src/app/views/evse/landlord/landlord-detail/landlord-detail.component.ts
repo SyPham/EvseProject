@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertifyService, BaseComponent, UtilitiesService } from '@pigfarm-core';
+import { AlertifyService, BaseComponent, UtilitiesService } from 'herr-core';
 import { Subscription } from 'rxjs';
 import { ImagePathConstants } from 'src/app/_core/_constants';
 import { Landlord } from 'src/app/_core/_model/evse/model';

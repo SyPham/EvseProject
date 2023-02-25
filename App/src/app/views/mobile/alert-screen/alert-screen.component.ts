@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { DataManager, UrlAdaptor ,Query } from '@syncfusion/ej2-data';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
-import { AlertifyService } from '@pigfarm-core';
+import { AlertifyService } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

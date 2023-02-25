@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { OperationResult } from 'src/app/_core/_model/operation.result';
-import { CURDService, UtilitiesService } from '@pigfarm-core';
+import { CURDService, UtilitiesService } from 'herr-core';
 import { environment } from 'src/environments/environment';
 import { BoarQuarantine } from '../../config';
 

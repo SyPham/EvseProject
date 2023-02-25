@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-import { BaseComponent, AlertifyService } from '@pigfarm-core';
+import { BaseComponent, AlertifyService } from 'herr-core';
 import { CommandColumnService, CommandModel, EditService, ExcelExportCompleteArgs, ExcelExportProperties, GridComponent } from '@syncfusion/ej2-angular-grids';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { RecordAccidentFeeService } from 'src/app/_core/_service/apply-orders/record-accident-fee.service';

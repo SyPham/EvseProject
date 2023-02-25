@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertifyService } from '@pigfarm-core';
+import { AlertifyService } from 'herr-core';
 import { ChartTheme, ILoadedEventArgs } from '@syncfusion/ej2-angular-charts';
 import { DropDownListComponent } from '@syncfusion/ej2-angular-dropdowns';
 import { Browser } from '@syncfusion/ej2-base';

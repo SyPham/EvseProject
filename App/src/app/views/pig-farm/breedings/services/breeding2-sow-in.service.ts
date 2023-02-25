@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Breeding2SowIn } from '../config';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { CURDService, UtilitiesService } from '@pigfarm-core';
+import { CURDService, UtilitiesService } from 'herr-core';
 import { environment } from 'src/environments/environment';
 
 

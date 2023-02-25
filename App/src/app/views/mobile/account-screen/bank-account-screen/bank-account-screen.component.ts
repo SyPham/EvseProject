@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertifyService,BaseComponent, UtilitiesService } from '@pigfarm-core';
+import { AlertifyService,BaseComponent, UtilitiesService } from 'herr-core';
 import { ImagePathConstants } from 'src/app/_core/_constants';
 import { environment } from 'src/environments/environment';
 import { User2BankService } from 'src/app/_core/_service/evse/user-2bank.service';

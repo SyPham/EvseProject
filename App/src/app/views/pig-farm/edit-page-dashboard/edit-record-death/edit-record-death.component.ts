@@ -12,7 +12,7 @@ import {
   MessageConstants,
   StatusConstants,
 } from "projects/pigfarm-core/src/_core/_constants";
-import { AlertifyService, BaseComponent } from "@pigfarm-core";
+import { AlertifyService, BaseComponent } from "herr-core";
 import { TranslateService } from "@ngx-translate/core";
 import { DatePipe } from "@angular/common";
 import { PigService } from "src/app/_core/_service/pigs";

@@ -6,7 +6,7 @@ import { NgbModalRef, NgbModal, NgbTooltipConfig } from '@ng-bootstrap/ng-bootst
 import { GridComponent } from '@syncfusion/ej2-angular-grids';
 import { MessageConstants } from 'src/app/_core/_constants';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
 import { MakeOrderService, RecordCullingService } from 'src/app/_core/_service/records';
 import { RecordCulling } from 'src/app/_core/_model/records';

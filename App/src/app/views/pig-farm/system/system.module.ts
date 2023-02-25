@@ -60,7 +60,7 @@ import { SettingDashboardTableComponent } from './setting-dashboard/setting-dash
 import { CreateDashboardComponent } from './setting-dashboard/create-dashboard/create-dashboard.component';
 import { CreateAreaComponent } from './setting-dashboard/create-area/create-area.component';
 import { ApplyOrderConfigComponent, ColumnConfigComponent } from './apply-order-config';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 declare var require: any;
 import { L10n, loadCldr, setCulture } from '@syncfusion/ej2-base';

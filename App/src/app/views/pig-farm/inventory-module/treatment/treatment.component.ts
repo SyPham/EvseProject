@@ -3,7 +3,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { GridComponent, ExcelExportProperties, ExcelExportCompleteArgs } from '@syncfusion/ej2-angular-grids';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
 import { setCulture, L10n } from '@syncfusion/ej2-base';
 import { TreatmentMasterService } from 'src/app/_core/_service/inventories';

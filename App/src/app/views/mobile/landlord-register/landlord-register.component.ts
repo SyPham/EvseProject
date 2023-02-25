@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { AuthService } from "src/app/_core/_service/auth.service";
-import { AlertifyService } from "@pigfarm-core";
+import { AlertifyService } from "herr-core";
 import { TranslateService } from "@ngx-translate/core";
 @Component({
   selector: 'app-landlord-register',

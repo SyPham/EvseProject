@@ -6,7 +6,7 @@ import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridComponent } from '@syncfusion/ej2-angular-grids';
 import { MessageConstants } from 'src/app/_core/_constants';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { PigCulling, PigDisease } from 'src/app/_core/_model/pig-disease';

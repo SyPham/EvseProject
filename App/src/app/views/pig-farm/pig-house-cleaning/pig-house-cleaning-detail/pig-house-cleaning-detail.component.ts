@@ -1,4 +1,4 @@
-import { BaseDetailComponent } from '@pigfarm-core';
+import { BaseDetailComponent } from 'herr-core';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PigHouseCleaning } from 'src/app/_core/_model/pig-house-cleaning';

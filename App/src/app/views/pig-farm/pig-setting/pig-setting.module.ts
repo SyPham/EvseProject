@@ -30,7 +30,7 @@ import { DatePipe } from '@angular/common';
 import { CoreDirectivesModule } from 'src/app/_core/_directive/core.directives.module';
 import { PigSettingRoutingModule } from './pig-setting.routing.module';
 import { PigComponent } from '.';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 import { NgxOrgChartModule } from 'ngx-org-chart';
 import { PigOrganizationModalComponent } from './pig/pig-organization-modal/pig-organization-modal.component';

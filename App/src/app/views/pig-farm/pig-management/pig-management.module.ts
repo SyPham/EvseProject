@@ -51,7 +51,7 @@ import { CullingComponent,
 import { SharedModule } from 'src/app/_core/commons/shared.module';
 
 import { MakeOrderPenComponent } from './make-order-pen/make-order-pen.component';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 
 const ROUTING_MODULE = [

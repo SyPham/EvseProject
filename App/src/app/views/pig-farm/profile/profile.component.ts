@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { Profile } from 'src/app/_core/_model/xaccount';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
-import { UtilitiesService } from '@pigfarm-core';
+import { UtilitiesService } from 'herr-core';
 import { XAccountService } from 'src/app/_core/_service/xaccount.service';
 import { environment } from 'src/environments/environment';
 declare let $: any;

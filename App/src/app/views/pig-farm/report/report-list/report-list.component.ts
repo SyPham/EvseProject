@@ -28,7 +28,7 @@ import { ReportService } from "src/app/_core/_service/report.service";
 import { distinctUntilChanged, filter, map } from "rxjs/operators";
 import { ReportConfigService } from "src/app/_core/_service/report-config.service";
 import { DataManager, Query, UrlAdaptor } from "@syncfusion/ej2-data";
-import { BaseComponent } from "@pigfarm-core";
+import { BaseComponent } from "herr-core";
 
 declare let window: any;
 

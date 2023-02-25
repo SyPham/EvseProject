@@ -3,7 +3,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UrlAdaptor, DataManager } from '@syncfusion/ej2-data';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { PigFarmVectorControl } from 'src/app/_core/_model/pig-farm-vector';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { PigFarmVectorControlService } from 'src/app/_core/_service/pig-farm-vector';

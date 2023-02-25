@@ -39,7 +39,7 @@ import { SharedModule } from 'src/app/_core/commons/shared.module';
 
 import { WeighingComponent } from './weighing/weighing.component';
 import { environment } from 'src/environments/environment';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 
 const ROUTING_MODULE = [
   BOMRoutingModule

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { AlertifyService, BaseComponent } from '@pigfarm-core';
+import { AlertifyService, BaseComponent } from 'herr-core';
 import { GridComponent } from '@syncfusion/ej2-angular-grids';
 import { L10n,setCulture } from '@syncfusion/ej2-base';
 import { SiteService } from 'src/app/_core/_service/evse/site.service';

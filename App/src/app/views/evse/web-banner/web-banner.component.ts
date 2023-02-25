@@ -5,7 +5,7 @@ import { ExcelExportCompleteArgs, ExcelExportProperties, GridComponent } from '@
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { setCulture, L10n } from '@syncfusion/ej2-base';
-import { BaseComponent, UtilitiesService } from '@pigfarm-core';
+import { BaseComponent, UtilitiesService } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';

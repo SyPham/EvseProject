@@ -4,7 +4,7 @@ import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
-import { BaseDetailComponent } from '@pigfarm-core';
+import { BaseDetailComponent } from 'herr-core';
 import { SystemConfigConst } from 'src/app/_core/_constants';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { DataManager, Query, UrlAdaptor } from "@syncfusion/ej2-data";

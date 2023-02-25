@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UrlAdaptor, DataManager } from '@syncfusion/ej2-data';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { RecordFeedingService } from 'src/app/_core/_service/records';
 import { environment } from 'src/environments/environment';

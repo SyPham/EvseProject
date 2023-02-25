@@ -28,7 +28,7 @@ import { CoreDirectivesModule } from 'src/app/_core/_directive/core.directives.m
 import { SharedModule } from 'src/app/_core/commons/shared.module';
 
 import { environment } from 'src/environments/environment';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { EditPageDashboardRoutingModule } from './edit-page-dashboard.routing.module';
 import { EditRecordDeathComponent } from './edit-record-death/edit-record-death.component';
 

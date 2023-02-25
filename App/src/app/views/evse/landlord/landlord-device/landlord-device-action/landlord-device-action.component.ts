@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertifyService, BaseComponent, UtilitiesService } from '@pigfarm-core';
+import { AlertifyService, BaseComponent, UtilitiesService } from 'herr-core';
 import { ImagePathConstants } from 'src/app/_core/_constants';
 import { Device, ParkingLot, Site } from 'src/app/_core/_model/evse/model';
 import { DeviceService } from 'src/app/_core/_service/evse/device.service';

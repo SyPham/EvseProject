@@ -18,7 +18,7 @@ import {
 
 } from '.';
 import { environment } from 'src/environments/environment';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 
 
 const ROUTING_MODULE = [

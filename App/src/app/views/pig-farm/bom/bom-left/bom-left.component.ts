@@ -8,7 +8,7 @@ import { MessageConstants } from 'src/app/_core/_constants';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { BOMService } from 'src/app/_core/_service/bom.service';
 import { Bom } from 'src/app/_core/_model/bom';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
 import { BOMShareService } from 'src/app/_core/_service/bom.share.service';
 import { environment } from 'src/environments/environment';

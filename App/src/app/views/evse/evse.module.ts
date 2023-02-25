@@ -16,7 +16,7 @@ import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
 import { ChartModule } from '@syncfusion/ej2-angular-charts';
 
 import { environment } from '../../../environments/environment'
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { HomeComponent } from './home/home.component';
 import { StationComponent } from './station/station.component';
 import { SiteComponent } from './station/site/site.component';

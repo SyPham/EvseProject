@@ -11,7 +11,7 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Employee } from 'src/app/_core/_model/employee';
 import { MessageConstants } from 'src/app/_core/_constants';
 import { setCulture, L10n } from '@syncfusion/ej2-base';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';

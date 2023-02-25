@@ -42,7 +42,7 @@ import {
   RecordWeighingComponent,
 } from ".";
 import { BatchWorkComponent } from './batch-work.component';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 const ROUTING_MODULE = [
   BatchWorkRoutingModule

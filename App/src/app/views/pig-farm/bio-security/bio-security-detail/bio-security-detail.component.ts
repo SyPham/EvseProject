@@ -1,4 +1,4 @@
-import { BaseDetailComponent } from '@pigfarm-core';
+import { BaseDetailComponent } from 'herr-core';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BioSMaster } from 'src/app/_core/_model/bios';

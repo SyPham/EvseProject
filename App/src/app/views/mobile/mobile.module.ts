@@ -43,7 +43,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 
 import { SigninScreenComponent } from './signin-screen/signin-screen.component';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 import { AccountScreenComponent } from './account-screen/account-screen.component';
 import { LandlordProfileComponent } from './landlord-profile/landlord-profile.component';

@@ -9,7 +9,7 @@ import { SharedModule } from 'src/app/_core/commons/shared.module';
 import { CoreDirectivesModule } from 'src/app/_core/_directive/core.directives.module';
 import { RepairComponent, RepairDetailComponent, RepairRecordComponent } from '.';
 import { environment } from 'src/environments/environment';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 
 
 const ROUTING_MODULE = [

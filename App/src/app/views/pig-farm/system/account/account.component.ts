@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { EmployeeService } from './../../../../_core/_service/employee.service';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
@@ -17,7 +17,7 @@ import { AccountTypeService } from 'src/app/_core/_service/account-type.service'
 import { CheckBoxSelectionService, FilteringEventArgs } from '@syncfusion/ej2-angular-dropdowns';
 import { DataManager, Query, UrlAdaptor } from '@syncfusion/ej2-data';
 import { environment } from 'src/environments/environment';
-import { UtilitiesService } from '@pigfarm-core';
+import { UtilitiesService } from 'herr-core';
 import { EmitType, setCulture, L10n } from '@syncfusion/ej2-base';
 import { XAccountService } from 'src/app/_core/_service/xaccount.service';
 import { FarmService } from 'src/app/_core/_service/farms';

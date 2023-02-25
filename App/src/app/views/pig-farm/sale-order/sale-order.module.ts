@@ -8,7 +8,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { SharedModule } from 'src/app/_core/commons/shared.module';
 import { CoreDirectivesModule } from 'src/app/_core/_directive/core.directives.module';
 import { SaleOrderRoutingModule } from './sale-order.routing.module';
-import { PigfarmCoreModule } from '@pigfarm-core';
+import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 
 const ROUTING_MODULE = [

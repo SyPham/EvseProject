@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-import { BaseComponent } from '@pigfarm-core';
+import { BaseComponent } from 'herr-core';
 import { AlertifyService } from 'src/app/_core/_service/alertify.service';
 import { BreedingDetailModalComponent } from './breeding-detail-modal/breeding-detail-modal.component';
 import { BreedingModalComponent } from './breeding-modal/breeding-modal.component';

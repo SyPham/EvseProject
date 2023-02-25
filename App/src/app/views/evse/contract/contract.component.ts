@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { AlertifyService, BaseComponent } from '@pigfarm-core';
+import { AlertifyService, BaseComponent } from 'herr-core';
 import { GridComponent } from '@syncfusion/ej2-angular-grids';
 import { L10n,setCulture } from '@syncfusion/ej2-base';
 import { environment } from 'src/environments/environment';

@@ -28,7 +28,7 @@ import {
   GridComponent,
 } from "@syncfusion/ej2-angular-grids";
 import { AlertifyService } from "src/app/_core/_service/alertify.service";
-import { BaseComponent } from "@pigfarm-core";
+import { BaseComponent } from "herr-core";
 import { TranslateService } from "@ngx-translate/core";
 import { environment } from "src/environments/environment";
 import { PigService } from "src/app/_core/_service/pigs/pig.service";
