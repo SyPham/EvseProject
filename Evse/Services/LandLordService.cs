@@ -421,9 +421,11 @@ IRepositoryBase<Bank> repoBank)
                             a.BankAccount,
                             b.BankNo,
                             b.BankName,
+                            a.PhotoPath,
+                           a.Id,
 
                         };
-            return await data.FirstOrDefaultAsync();
+            return await data.OrderByDescending(x=> x.Id).FirstOrDefaultAsync();
         }
     }
 }

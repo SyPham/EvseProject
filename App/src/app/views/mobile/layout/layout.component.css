@@ -627,3 +627,14 @@
 }
 
 
+.my-img-thumbnail {
+  padding: 0.25rem;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  max-width: 100%;
+  min-height: 180px;
+  width: 80%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
