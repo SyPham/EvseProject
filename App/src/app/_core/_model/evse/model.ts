@@ -247,3 +247,14 @@ export interface User2Message {
     status: number | null;
     guid: string;
 }
+export interface ReportError {
+    id: number;
+    deviceGuid: string;
+    guid: string;
+    deviceLeftGuid: string;
+    deviceRightGuid: string;
+    errorType: string;
+    errorDetail: string;
+    errorFixedDate: string | null;
+    errorFixedDetail: string;
+}

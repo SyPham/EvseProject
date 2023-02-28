@@ -15,7 +15,7 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[User2Message]",
+         "Name": "[dbo].[Report_Error]",
          "ObjectType": 0
       }
    ],

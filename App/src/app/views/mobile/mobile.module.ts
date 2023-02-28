@@ -59,6 +59,8 @@ import { BankAccountFinishScreenComponent } from './account-screen/bank-account-
 import { AlertScreenComponent } from './alert-screen/alert-screen.component';
 import { ReportScreenComponent } from './report-screen/report-screen.component';
 import { loadCldr, setCulture, L10n } from '@syncfusion/ej2-base';
+import { ReportErrorComponent } from './field/report-error/report-error.component';
+import { ReportErrorDetailComponent } from './field/report-error-detail/report-error-detail.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -115,7 +117,9 @@ loadCldr(
     BankAccountScreenComponent,
     BankAccountFinishScreenComponent,
     AlertScreenComponent,
-    ReportScreenComponent
+    ReportScreenComponent,
+    ReportErrorComponent,
+    ReportErrorDetailComponent
     
   ],
   imports: [

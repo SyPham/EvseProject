@@ -1,0 +1,57 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item " aria-current="page" routerLink="/mobile/field">{{'My Field' | translate}}</li>
+    <li class="breadcrumb-item " aria-current="page" [routerLink]="'/mobile/field/detail/' + input?.guid">{{'Field Detail' | translate}}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{'Report Error' | translate}}</li>
+  </ol>
+</nav>
+<div class="card m-2">
+  <div class="card-body p-1">
+    <div class="row">
+      <div class="col-5 text-center d-flex align-items-center justify-content-center">
+        <img
+        [src]="input?.sitePhoto ? baseUrl + input?.sitePhoto : noImage"
+        width="150"
+        height="150"
+        [alt]="input.siteName"
+        class="img-fluid"
+        />
+      </div>
+      <div class="col-7">
+        <h2 class="lead"><b>{{input?.siteName}}</b></h2>
+        <p class="text-muted text-sm">
+          {{ input?.siteAddress }}
+        </p>
+        <p>
+          {{ input?.comment }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+
+      <div class="col-6" *ngFor="let item of dataSource; let i = index">
+        <div class="row" [routerLink]="'/mobile/field/detail/' + input?.guid + '/report-error/detail/' + item.guid">
+          <div class="col-5 text-center d-flex align-items-center justify-content-center">
+            <img
+            src="../../../../../assets/images/device.jpg"
+            style="width: 150px; "
+            [alt]="item?.deviceName"
+            class="img-fluid"
+            />
+          </div>
+          <div class="col-7">
+            <div class="title"><b>{{item?.deviceName}}</b></div>
+            <p class="text-muted text-sm">
+              {{ item?.deviceNo }}
+            </p>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

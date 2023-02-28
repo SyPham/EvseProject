@@ -16,6 +16,8 @@ import { FieldScreenDetailComponent } from './field/field-screen-detail/field-sc
 import { BankAccountScreenComponent } from './account-screen/bank-account-screen/bank-account-screen.component';
 import { BankAccountFinishScreenComponent } from './account-screen/bank-account-finish-screen/bank-account-finish-screen.component';
 import { AlertScreenComponent } from './alert-screen/alert-screen.component';
+import { ReportErrorComponent } from './field/report-error/report-error.component';
+import { ReportErrorDetailComponent } from './field/report-error-detail/report-error-detail.component';
 
 const routes: Routes = [
   {
@@ -83,6 +85,28 @@ const routes: Routes = [
           title: 'Field Detail',
           breadcrumb: 'Field Detail',
           functionCode: 'Field Detail'
+
+        },
+        //canActivate: [AuthGuard]
+      },
+      {
+        path: 'field/detail/:guid/report-error',
+        component: ReportErrorComponent,
+        data: {
+          title: 'Report Error',
+          breadcrumb: 'Report Error',
+          functionCode: 'Report Error'
+
+        },
+        //canActivate: [AuthGuard]
+      },
+      {
+        path: 'field/detail/:guid/report-error/detail/:device',
+        component: ReportErrorDetailComponent,
+        data: {
+          title: 'Report Error Detail',
+          breadcrumb: 'Report Error Detail',
+          functionCode: 'Report Error Detail'
 
         },
         //canActivate: [AuthGuard]

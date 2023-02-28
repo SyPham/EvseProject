@@ -43,6 +43,7 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<Contract, ContractDto>();
             CreateMap<WebNews, WebNewsDto>();
             CreateMap<User2MessageDto, User2Message>();
+            CreateMap<ReportErrorDto, ReportError>();
 
         }
 

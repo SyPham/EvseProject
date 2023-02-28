@@ -2,7 +2,6 @@
 #nullable disable
 using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Evse.Models;
 using System.Reflection;
 using Microsoft.AspNetCore.Http;
@@ -29,6 +28,7 @@ namespace Evse.Data
         public virtual DbSet<User2Message> User2Messages { get; set; }
 
         public virtual DbSet<WebNews> WebNews { get; set; }
+        public virtual DbSet<ReportError> ReportErrors { get; set; }
 
         public virtual DbSet<AccountConfig> AccountConfigs { get; set; }
         public virtual DbSet<CodeHelp> CodeHelps { get; set; }
@@ -62,6 +62,47 @@ namespace Evse.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ReportError>(entity =>
+            {
+                entity.ToTable("Report_Error");
+                entity.Property(e => e.Id)
+                .HasColumnName("ID")
+                .HasColumnType("numeric(18, 0)")
+            .ValueGeneratedOnAdd();
+
+            entity.Property(e => e.DeviceGuid)
+                .HasColumnName("Device_GUID")
+            .HasMaxLength(40);
+
+            entity.Property(e => e.DeviceLeftGuid)
+                .HasColumnName("Device_Left_GUID")
+            .HasMaxLength(40);
+
+            entity.Property(e => e.DeviceRightGuid)
+                .HasColumnName("Device_Right_GUID")
+                .HasMaxLength(40);
+
+            entity.Property(e => e.ErrorDetail)
+                .HasColumnName("Error_Detail")
+                .HasColumnType("ntext");
+
+            entity.Property(e => e.ErrorFixedDate)
+                .HasColumnName("Error_Fixed_Date")
+                .HasColumnType("datetime");
+
+            entity.Property(e => e.ErrorFixedDetail)
+                .HasColumnName("Error_Fixed_Detail")
+                .HasColumnType("ntext");
+
+            entity.Property(e => e.ErrorType)
+                .HasColumnName("Error_Type")
+                .HasMaxLength(10);
+
+            entity.Property(e => e.Guid)
+                .HasColumnName("GUID")
+                .HasMaxLength(40)
+                .HasDefaultValueSql("(newid())");
+        });
             modelBuilder.Entity<Bank>(entity =>
             {
                 entity.ToTable("Bank");
