@@ -1,26 +1,27 @@
+
 import { Component, OnDestroy, OnInit, AfterViewInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { AuthService } from "src/app/_core/_service/auth.service";
 import { AlertifyService } from "herr-core";
 import { TranslateService } from "@ngx-translate/core";
-import { AuthLandlordService } from "src/app/_core/_service/auth-landlord.service";
+import { AuthEngineerService } from "src/app/_core/_service/auth-engineer.service";
 @Component({
-  selector: 'app-landlord-register',
-  templateUrl: './landlord-register.component.html',
-  styleUrls: ['./landlord-register.component.css']
+  selector: 'app-engineer-register',
+  templateUrl: './engineer-register.component.html',
+  styleUrls: ['./engineer-register.component.scss']
 })
-export class LandlordRegisterComponent implements OnInit {
+export class EngineerRegisterComponent implements OnInit {
   username;
   password;
   agree
   areaName: string;
   constructor(
-    private activatedRoute: ActivatedRoute,
     private router: Router,
-    private authService: AuthLandlordService,
+    private authService: AuthEngineerService,
     private cookieService: CookieService,
     private alertifyService: AlertifyService,
+    private activatedRoute: ActivatedRoute,
     private trans: TranslateService
   ) { }
 
@@ -36,7 +37,7 @@ export class LandlordRegisterComponent implements OnInit {
   }
   authentication() {
     return this.authService
-      .registerLandlord(this.username, this.password)
+      .registerEngineer(this.username, this.password)
       .toPromise();
   }
   async register() {

@@ -22,6 +22,8 @@ export class ReportErrorDetailComponent  extends BaseComponent implements OnInit
   baseUrl = environment.apiUrlImage;
   noImage = ImagePathConstants.NO_IMAGE_ACTION_COMPONENT;
   inputDevice: any;
+  errorTypeData: any;
+  areaName: string;
   constructor(
     private activatedRoute: ActivatedRoute,
     private siteService: SiteService,
@@ -38,8 +40,40 @@ export class ReportErrorDetailComponent  extends BaseComponent implements OnInit
      }
 
   ngOnInit() {
+    const area = this.activatedRoute.snapshot.params.area;
+    this.areaName = "";
+    if (area === "landlord") {
+      this.areaName = "landlord"
+    }
+    else if (area === "engineer") {
+      this.areaName = "engineer"
+    }
     this.loadDetail();
     this.loadDeviceDetail();
+    this.loadErrorType();
+  }
+  change(e) {
+    this.model.errorType = e.value;
+  }
+  loadErrorType() {
+    new DataManager({
+      url: `${
+        environment.apiUrl
+      }CodeType/GetDataDropdownlist?lang=${localStorage.getItem(
+        "lang"
+      )}&codeType=Error_Type`,
+      adaptor: new UrlAdaptor(),
+      crossDomain: true,
+    })
+      .executeQuery(
+        new Query()
+          .skip(this.skip)
+          .take(this.take)
+          .addParams("lang", localStorage.getItem("lang"))
+      )
+      .then((data: any) => {
+        this.errorTypeData = data.result;
+      });
   }
   loadDetail() {
     const guid = this.activatedRoute.snapshot.params.guid;

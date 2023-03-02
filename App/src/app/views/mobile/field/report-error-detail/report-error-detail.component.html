@@ -1,8 +1,8 @@
 <nav aria-label="breadcrumb" class="mobile-nav">
   <ol class="breadcrumb mobile-breadcrumb">
-    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
-    <li class="breadcrumb-item " aria-current="page" routerLink="/mobile/field">{{'My Field' | translate}}</li>
-    <li class="breadcrumb-item " aria-current="page" [routerLink]="'/mobile/field/detail/' + input?.guid">{{'Field Detail' | translate}}</li>
+    <li class="breadcrumb-item"><a [routerLink]="'/mobile/home/' + areaName">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item " aria-current="page" [routerLink]="'/mobile/field/' + areaName">{{'My Field' | translate}}</li>
+    <li class="breadcrumb-item " aria-current="page" [routerLink]="'/mobile/field/' + areaName +'/detail/' + input?.guid">{{'Field Detail' | translate}}</li>
     <li class="breadcrumb-item active" aria-current="page">{{'Report Error' | translate}}</li>
   </ol>
 </nav>
@@ -49,8 +49,13 @@
 
   </div>
 </div>
-
 <div class="row p-2">
+  <div class="col" *ngFor="let item of errorTypeData">
+    <ejs-radiobutton [label]="item.name" (change)="change($event)" [checked]="item.guid == model.errorType" [(value)]="item.guid" name="default"></ejs-radiobutton>
+  </div>
+</div>
+<div class="row p-2">
+ 
   <div class="col-12">
     <div class="form-group">
       <label for="exampleFormControlTextarea1">{{ 'Error_Fixed_Detail' | translate}}</label>
@@ -65,7 +70,7 @@
     <span> {{'Submit' | translate}}</span>
   </div>
  
-  <div class="field-info d-flex justify-content-center align-items-center mb-2"  routerLink="/mobile/field">
+  <div class="field-info d-flex justify-content-center align-items-center mb-2"  [routerLink]="'/mobile/field/' + areaName">
     <i class="fa fa-file mr-1"></i> 
     <span> {{'Back To Field' | translate}}</span>
   </div>

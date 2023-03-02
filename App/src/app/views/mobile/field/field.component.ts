@@ -9,6 +9,7 @@ import {
 import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
 import { environment } from "src/environments/environment";
 import { ImagePathConstants } from "src/app/_core/_constants";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-field",
@@ -18,12 +19,25 @@ import { ImagePathConstants } from "src/app/_core/_constants";
 export class FieldComponent implements OnInit {
   dataSource: any;
   baseUrl = environment.apiUrlImage;
-  user = JSON.parse(localStorage.getItem("user_landlord"));
+  user = {} as any;
   noImage = ImagePathConstants.NO_IMAGE_ACTION_COMPONENT;
+  areaName: string;
 
-  constructor() {}
+  constructor(
+    private activatedRoute: ActivatedRoute
+
+  ) {}
 
   ngOnInit() {
+    const area = this.activatedRoute.snapshot.params.area;
+    this.areaName = "";
+    if (area === "landlord") {
+      this.areaName = "landlord"
+    }
+    else if (area === "engineer") {
+      this.areaName = "engineer"
+    }
+    this.user = JSON.parse(localStorage.getItem(`user_${this.areaName}`))
     this.loadData();
   }
   loadData() {

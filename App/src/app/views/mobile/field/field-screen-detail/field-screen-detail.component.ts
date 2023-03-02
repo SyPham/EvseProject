@@ -14,6 +14,7 @@ export class FieldScreenDetailComponent implements OnInit {
   input: Site = <Site>{}
   baseUrl = environment.apiUrlImage;
   noImage = ImagePathConstants.NO_IMAGE_ACTION_COMPONENT;
+  areaName: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -21,6 +22,15 @@ export class FieldScreenDetailComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    const area = this.activatedRoute.snapshot.params.area;
+    this.areaName = "";
+    if (area === "landlord") {
+      this.areaName = "landlord"
+    }
+    else if (area === "engineer") {
+      this.areaName = "engineer"
+    }
+    
     this.loadDetail();
   }
   loadDetail() {

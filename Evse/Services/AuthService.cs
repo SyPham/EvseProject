@@ -27,26 +27,33 @@ using Dapper;
 
 namespace Evse.Services
 {
-    public interface IAuthService: IScopeService
+    public interface IAuthService : IScopeService
     {
         Task<XAccount> Login(string username, string password);
         Task LogOut();
         Task LogOutLandlord();
+        Task LogOutEngineer();
         Task<bool> CheckLock(string username);
         Task<OperationResult> ResetPassword(ResetPasswordDto reset);
         Task<OperationResult> RegisterLandlord(RegisterLandlordDto reset);
+        Task<OperationResult> RegisterEngineer(RegisterEngineerDto reset);
         Task<OperationResult> ForgotPassword(string email);
         Task<OperationResult> ForgotUsername(string email);
         Task<OperationResult> LoginAsync(UserForLoginDto loginDto);
         Task<OperationResult> LoginAsync(decimal ID);
+        Task<OperationResult> LoginEngineerAsync(decimal ID);
         Task<OperationResult> RefreshTokenAsync(string token, string refreshToken);
         Task<OperationResult> LoginLandlordAsync(UserForLoginDto loginDto);
-         Task<OperationResult> RefreshTokenLandlordAsync(string token, string refreshToken);
-         Task<OperationResult> LoginRememberLandlordAsync(decimal ID);
+        Task<OperationResult> RefreshTokenLandlordAsync(string token, string refreshToken);
+        Task<OperationResult> RefreshTokenEngineerAsync(string token, string refreshToken);
+        Task<OperationResult> LoginRememberLandlordAsync(decimal ID);
+        Task<OperationResult> LoginEngineerAsync(UserForLoginDto loginDto);
+        Task<OperationResult> LoginRememberEngineerAsync(decimal ID);
     }
     public class AuthService : IAuthService
     {
         private readonly IRepositoryBase<XAccount> _repo;
+        private readonly IRepositoryBase<Engineer> _repoEngineer;
         private readonly IRepositoryBase<LandLord> _repoLandlord;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccountGroup> _repoXAccountGroup;
@@ -81,7 +88,8 @@ namespace Evse.Services
             IWebHostEnvironment currentEnvironment,
             IConfiguration config,
         IConfiguration configuration
-            )
+,
+        IRepositoryBase<Engineer> repoEngineer)
         {
             _repo = repo;
             _config = config;
@@ -102,6 +110,7 @@ namespace Evse.Services
             _tokenValidationParameters = tokenValidationParameters;
             _currentEnvironment = currentEnvironment;
             _configuration = configuration;
+            _repoEngineer = repoEngineer;
         }
 
         public async Task<bool> CheckLock(string username)
@@ -162,7 +171,7 @@ namespace Evse.Services
 
         }
 
- public async Task<OperationResult> LoginLandlordAsync(UserForLoginDto loginDto)
+        public async Task<OperationResult> LoginLandlordAsync(UserForLoginDto loginDto)
         {
             var account = await _repoLandlord.FindAll(x => x.Uid == loginDto.Username && (x.Status == 1 || x.Status == 0))
                 .FirstOrDefaultAsync();
@@ -196,6 +205,42 @@ namespace Evse.Services
             };
 
         }
+
+         public async Task<OperationResult> LoginEngineerAsync(UserForLoginDto loginDto)
+        {
+            var account = await _repoEngineer.FindAll(x => x.Uid == loginDto.Username && (x.Status == 1 || x.Status == 0))
+                .FirstOrDefaultAsync();
+            if (account == null)
+                return new OperationResult
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Message = "The account name is not available!",
+                    Success = false
+                };
+
+            if (account.Status == 0)
+                return new OperationResult
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Message = "The account is locked!",
+                    Success = false
+                };
+
+            if (account.Upwd.VerifyHashedPassword(loginDto.Password.ToSha512()))
+            {
+
+                return await GenerateOperationResultForUserEngineerAsync(account, loginDto.Password);
+            }
+
+            return new OperationResult
+            {
+                StatusCode = HttpStatusCode.NotFound,
+                Message = "The account name or password is incorrect!",
+                Success = false
+            };
+
+        }
+
 
         private async Task LogStoreProcedure(decimal accountId, string logText)
         {
@@ -250,6 +295,29 @@ namespace Evse.Services
             };
 
         }
+
+        public async Task<OperationResult> LoginEngineerAsync(decimal ID)
+        {
+            var account = await _repoEngineer.FindAll().FirstOrDefaultAsync(x => x.Id == ID && (x.Status == 1 || x.Status == 1));
+            if (account != null && account.Status == 0)
+                return new OperationResult
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Message = "The account is locked!",
+                    Success = false
+                };
+            if (account != null)
+                return await GenerateOperationResultForUserEngineerAsync(account, "");
+
+            return new OperationResult
+            {
+                StatusCode = HttpStatusCode.Unauthorized,
+                Message = "",
+                Success = false
+            };
+
+        }
+
         public async Task<OperationResult> LoginRememberLandlordAsync(decimal ID)
         {
             var account = await _repoLandlord.FindAll().FirstOrDefaultAsync(x => x.Id == ID && (x.Status == 1 || x.Status == 0));
@@ -262,6 +330,27 @@ namespace Evse.Services
                 };
             if (account != null)
                 return await GenerateOperationResultForUserLandlordAsync(account, "");
+
+            return new OperationResult
+            {
+                StatusCode = HttpStatusCode.Unauthorized,
+                Message = "",
+                Success = false
+            };
+
+        }
+         public async Task<OperationResult> LoginRememberEngineerAsync(decimal ID)
+        {
+            var account = await _repoEngineer.FindAll().FirstOrDefaultAsync(x => x.Id == ID && (x.Status == 1 || x.Status == 0));
+            if (account != null && account.Status == 0)
+                return new OperationResult
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Message = "The account is locked!",
+                    Success = false
+                };
+            if (account != null)
+                return await GenerateOperationResultForUserEngineerAsync(account, "");
 
             return new OperationResult
             {
@@ -304,7 +393,7 @@ namespace Evse.Services
             }
 
         }
-          public async Task LogOutLandlord()
+        public async Task LogOutLandlord()
         {
             string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             var accountId = JWTExtensions.GetDecodeTokenByID(token);
@@ -337,7 +426,39 @@ namespace Evse.Services
             }
 
         }
+        public async Task LogOutEngineer()
+        {
+            string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var accountId = JWTExtensions.GetDecodeTokenByID(token);
+            var account = await _repoEngineer.FindByIDAsync(accountId.ToDecimal());
+            account.Lastlogin = DateTime.Now;
+            try
+            {
+                _repoEngineer.Update(account);
+                await _unitOfWork.SaveChangeAsync();
+                LogStoreProcedure(account.Id, "LogIn").ConfigureAwait(false).GetAwaiter();
+#if DEBUG
 
+#else
+                //var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+                //var message = $"{account.Uid} logged out the system on {dateTime}";
+                //foreach (var a in _tokens)
+                //{
+                //    _lineService.SendMessage(new MessageParams
+                //    {
+                //        Token = a,
+                //        Message = message
+                //    }).ConfigureAwait(false).GetAwaiter();
+                //}
+#endif
+
+
+            }
+            catch
+            {
+            }
+
+        }
         public async Task<OperationResult> RefreshTokenAsync(string token, string refreshToken)
         {
             var validatedToken = GetPrincipalFromToken(token);
@@ -394,7 +515,7 @@ namespace Evse.Services
 
             return await GenerateOperationResultForUserAsync(user, "");
         }
- public async Task<OperationResult> RefreshTokenLandlordAsync(string token, string refreshToken)
+        public async Task<OperationResult> RefreshTokenLandlordAsync(string token, string refreshToken)
         {
             var validatedToken = GetPrincipalFromToken(token);
 
@@ -449,6 +570,62 @@ namespace Evse.Services
             var user = await _repoLandlord.FindByIDAsync(query.Value);
 
             return await GenerateOperationResultForUserLandlordAsync(user, "");
+        }
+         public async Task<OperationResult> RefreshTokenEngineerAsync(string token, string refreshToken)
+        {
+            var validatedToken = GetPrincipalFromToken(token);
+
+            if (validatedToken == null)
+            {
+                return new OperationResult { Message = "Invalid token!", StatusCode = HttpStatusCode.BadRequest, Success = false };
+            }
+
+            var expiryDateUnix = (validatedToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value).ToLong();
+
+            var expiryDateTimeUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(expiryDateUnix);
+
+            if (expiryDateTimeUtc > DateTime.Now)
+            {
+                return new OperationResult { Message = "Unexpired token!", StatusCode = HttpStatusCode.BadRequest, Success = false };
+            }
+
+            var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+
+            var storedRefreshToken = await _repoRefreshToken.FindAll().AsNoTracking().FirstOrDefaultAsync(x => x.JwtId == refreshToken);
+
+            if (storedRefreshToken == null)
+            {
+                return new OperationResult { Message = "Token does not existed!", StatusCode = HttpStatusCode.BadRequest, Success = false };
+            }
+
+            if (DateTime.Now > storedRefreshToken.ExpiryDate)
+            {
+                return new OperationResult { Message = "Token has expired!", StatusCode = HttpStatusCode.BadRequest, Success = false };
+            }
+
+            if (storedRefreshToken.Invalidated)
+            {
+                return new OperationResult { Message = "Token is invalidated!", StatusCode = HttpStatusCode.BadRequest, Success = false };
+            }
+
+            if (storedRefreshToken.Used)
+            {
+                return new OperationResult { Message = "Token is used!", StatusCode = HttpStatusCode.BadRequest, Success = false };
+            }
+
+            if (storedRefreshToken.JwtId != jti)
+            {
+                return new OperationResult { Message = "Token does not match!", StatusCode = HttpStatusCode.BadRequest, Success = false };
+            }
+
+            storedRefreshToken.Used = true;
+            _repoRefreshToken.Update(storedRefreshToken);
+            await _unitOfWork.SaveChangeAsync();
+            var query = validatedToken.Claims.FirstOrDefault(x => x.Type == "id");
+            if (query == null) return new OperationResult { Message = "Invalid token!", StatusCode = HttpStatusCode.BadRequest, Success = false };
+            var user = await _repoEngineer.FindByIDAsync(query.Value);
+
+            return await GenerateOperationResultForUserEngineerAsync(user, "");
         }
         public async Task<OperationResult> ResetPassword(ResetPasswordDto reset)
         {
@@ -560,6 +737,7 @@ namespace Evse.Services
             user.LastLoginDate = DateTime.Now;
             await _unitOfWork.SaveChangeAsync();
             var userResponse = _mapper.Map<UserForDetailDto>(user);
+             userResponse.Area = "Web";
             var pageSizeSetting = await _repoCodeType.FindAll(x => x.CodeNo == user.PageSizeSetting && CodeTypeConst.PageSize_Setting == x.CodeType1 && x.Status == "Y").AsNoTracking().Select(x => x.CodeName).FirstOrDefaultAsync();
             if (pageSizeSetting != null)
             {
@@ -611,7 +789,7 @@ namespace Evse.Services
                 }
             };
         }
-          private async Task<OperationResult> GenerateOperationResultForUserLandlordAsync(LandLord user, string password)
+        private async Task<OperationResult> GenerateOperationResultForUserLandlordAsync(LandLord user, string password)
         {
             var claims = new[]
             {
@@ -647,6 +825,72 @@ namespace Evse.Services
             userResponse.Mobile = user.LandLordMobile;
             userResponse.Email = user.LandLordEmail;
             userResponse.FullName = user.LandLordName;
+            userResponse.Area = "Landlord";
+            LogStoreProcedure(user.Id, "LogIn").ConfigureAwait(false).GetAwaiter();
+
+#if DEBUG
+
+#else
+            //var dateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+            //var message = $"{employee.NickName} logged in the system on {dateTime}";
+            //foreach (var a in _tokens)
+            //{
+            //    _lineService.SendMessage(new MessageParams
+            //    {
+            //        Token = a,
+            //        Message = message
+            //    }).ConfigureAwait(false).GetAwaiter();
+            //}
+#endif
+
+            return new OperationResult
+            {
+                Success = true,
+                Data = new
+                {
+                    Token = tokenValue,
+                    RefreshToken = refreshToken.JwtId,
+                    User = userResponse
+                }
+            };
+        }
+private async Task<OperationResult> GenerateOperationResultForUserEngineerAsync(Engineer user, string password)
+        {
+            var claims = new[]
+            {
+                            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                        };
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.Add(_jwtSettings.TokenLifetime),
+                //Expires = DateTime.Now.Add(TimeSpan.FromSeconds(15)),
+                SigningCredentials =
+                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenValue = tokenHandler.WriteToken(token);
+            var refreshToken = new RefreshToken
+            {
+                JwtId = token.Id,
+                AccountId = user.Id.ToInt(),
+                CreationDate = DateTime.Now,
+                ExpiryDate = DateTime.Now.AddMonths(6),
+                Token = tokenValue
+            };
+
+            _repoRefreshToken.Add(refreshToken);
+            user.Lastlogin = DateTime.Now;
+            await _unitOfWork.SaveChangeAsync();
+            var userResponse = _mapper.Map<UserForDetailDto>(user);
+            userResponse.Mobile = user.EngineerMobile;
+            userResponse.Email = user.EngineerEmail;
+            userResponse.FullName = user.EngineerName;
+             userResponse.Area = "Engineer";
             LogStoreProcedure(user.Id, "LogIn").ConfigureAwait(false).GetAwaiter();
 
 #if DEBUG
@@ -819,10 +1063,10 @@ namespace Evse.Services
         {
             var account = await _repoLandlord.FindAll().FirstOrDefaultAsync(x => x.Uid == reset.Username);
 
-             if (account != null)
+            if (account != null)
                 return new OperationResult
                 {
-                   Success = false,
+                    Success = false,
                     Data = null,
                     Message = "Your username does exist"
                 };
@@ -830,8 +1074,8 @@ namespace Evse.Services
             item.Uid = reset.Username;
             item.Upwd = reset.Password.ToSha512();
             item.Status = 1;
-             _repoLandlord.Add(item);
-                await _unitOfWork.SaveChangeAsync();
+            _repoLandlord.Add(item);
+            await _unitOfWork.SaveChangeAsync();
             return new OperationResult
             {
                 Success = true,
@@ -839,5 +1083,31 @@ namespace Evse.Services
                 Data = account
             };
         }
+
+        public async Task<OperationResult> RegisterEngineer(RegisterEngineerDto reset)
+        {
+            var account = await _repoEngineer.FindAll().FirstOrDefaultAsync(x => x.Uid == reset.Username);
+
+            if (account != null)
+                return new OperationResult
+                {
+                    Success = false,
+                    Data = null,
+                    Message = "Your username does exist"
+                };
+            var item = new Engineer();
+            item.Uid = reset.Username;
+            item.Upwd = reset.Password.ToSha512();
+            item.Status = 1;
+            _repoEngineer.Add(item);
+            await _unitOfWork.SaveChangeAsync();
+            return new OperationResult
+            {
+                Success = true,
+                StatusCode = HttpStatusCode.OK,
+                Data = account
+            };
+        }
+
     }
 }

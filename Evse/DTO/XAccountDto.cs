@@ -91,6 +91,12 @@ namespace Evse.DTO
         public string Username { get; set; }
         public string Password { get; set; }
     }
+           public partial class RegisterEngineerDto
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+    
     public partial class StoreProfileDto
     {
         public string NickName { get; set; }

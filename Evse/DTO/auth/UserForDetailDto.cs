@@ -17,6 +17,7 @@ namespace Evse.DTO.auth
         public string FullName { get; set; }
         public string GroupCode { get; set; }
         public object GroupID { get; set; }
+        public string Area { get; set; }
         public object PageSizeSetting { get; set; }
         public object PageSizeSettingValue { get; set; }
         public object PageSizeSettingList { get; set; }

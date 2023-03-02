@@ -1,7 +1,7 @@
 <nav aria-label="breadcrumb" class="mobile-nav">
   <ol class="breadcrumb mobile-breadcrumb">
-    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
-    <li class="breadcrumb-item " aria-current="page" routerLink="/mobile/field">{{'My Field' | translate}}</li>
+    <li class="breadcrumb-item"><a [routerLink]="'/mobile/home/' + areaName">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item " aria-current="page" [routerLink]="'/mobile/field/' + areaName">{{'My Field' | translate}}</li>
     <li class="breadcrumb-item active" aria-current="page">{{'Field Detail' | translate}}</li>
   </ol>
 </nav>
@@ -35,7 +35,7 @@
   <h4 class="mr-4"> <span class="badge badge-danger">3</span> {{'Error' | translate}}</h4>
 </div>
 <div class="p-2">
-  <div class="field-info d-flex justify-content-center align-items-center mb-2" [routerLink]="'/mobile/field/detail/' + input.guid + '/report-error'">
+  <div class="field-info d-flex justify-content-center align-items-center mb-2" [routerLink]="'/mobile/field/' + areaName + '/detail/' + input.guid + '/report-error'">
     <i class="fa fa-exclamation-triangle mr-1" aria-hidden="true"></i>
     <span> {{'Report Error' | translate}}</span>
   </div>
@@ -46,7 +46,7 @@
   </div>
 
    
-  <div class="field-info d-flex justify-content-center align-items-center mb-2" routerLink="/mobile/field">
+  <div class="field-info d-flex justify-content-center align-items-center mb-2" [routerLink]="'/mobile/field/' + areaName">
     <i class="fa fa-home mr-1"></i> 
     <span> {{ 'Back to Field' | translate}}</span>
   </div>

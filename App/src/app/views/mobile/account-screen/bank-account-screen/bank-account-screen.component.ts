@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService,BaseComponent, UtilitiesService } from 'herr-core';
 import { ImagePathConstants } from 'src/app/_core/_constants';
@@ -19,7 +19,8 @@ export class BankAccountScreenComponent  extends BaseComponent implements OnInit
   baseUrl = environment.apiUrl;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
-  user: any = JSON.parse(localStorage.getItem('user_landlord'))
+  user: any = {} as any
+  areaName: string;
 
   constructor(
     private utilityService: UtilitiesService,
@@ -28,11 +29,21 @@ export class BankAccountScreenComponent  extends BaseComponent implements OnInit
     private service: User2BankService,
     public datePipe: DatePipe,
     public router: Router,
-  ) { 
+    private activatedRoute: ActivatedRoute
+    ) { 
     super(translate,environment.apiUrl);
   }
 
   ngOnInit() {
+    const area = this.activatedRoute.snapshot.params.area;
+    this.areaName = "";
+    if (area === "landlord") {
+      this.areaName = "landlord"
+    }
+    else if (area === "engineer") {
+      this.areaName = "engineer"
+    }
+    this.user = JSON.parse(localStorage.getItem(`user_${this.areaName}`))
     this.configImage();
   }
   configImage() {
@@ -53,7 +64,7 @@ export class BankAccountScreenComponent  extends BaseComponent implements OnInit
       allowedFileExtensions: ["jpg", "png", "gif"],
       initialPreview: [],
       initialPreviewConfig: [],
-      deleteUrl: `${environment.apiUrl}Landlord/DeleteUploadFile`
+      deleteUrl: `${environment.apiUrl}${this.areaName}/DeleteUploadFile`
     };
     if (this.model.photoPath) {
       this.model.photoPath = this.imagePath(this.model.photoPath);
@@ -63,7 +74,7 @@ export class BankAccountScreenComponent  extends BaseComponent implements OnInit
       const a = {
         caption: '',
         width: '',
-        url: `${environment.apiUrl}Landlord/DeleteUploadFile`, // server delete action
+        url: `${environment.apiUrl}${this.areaName}/DeleteUploadFile`, // server delete action
         key: this.model.id,
         extra: { id: this.model.id }
       }
@@ -125,7 +136,7 @@ export class BankAccountScreenComponent  extends BaseComponent implements OnInit
            (res) => {
              if (res.success === true) {
                this.alertify.success(this.alert.created_ok_msg);
-               this.router.navigate(['/mobile/account/bank/finish'])
+               this.router.navigate([`/mobile/account/bank/finish/${this.areaName}`])
              } else {
                this.translate.get(res.message).subscribe((data: string) => {
                  this.alertify.warning(data, true);
@@ -144,6 +155,6 @@ export class BankAccountScreenComponent  extends BaseComponent implements OnInit
  
    }
    cancel() {
-    this.router.navigate(['/mobile/account'])
+    this.router.navigate([`/mobile/account/${this.areaName}`])
    }
 }

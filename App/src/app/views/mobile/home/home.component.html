@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb" class="mobile-nav">
   <ol class="breadcrumb mobile-breadcrumb">
-    <li class="breadcrumb-item active"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item active"><a [routerLink]="'/mobile/home/' + areaName">{{'Home' | translate}}</a></li>
   </ol>
 </nav>
 <div class="main-content" id="main-text">
@@ -10,7 +10,7 @@
       <div class="image-mobile">
         <img style="border: 1px solid; width: 80px;" src="../../../../../assets/images/no-img.jpg" alt="Avatar" class="img-fluid rounded-circle">
         <div class="edit-icon">
-          <i class="fa fa-edit" routerLink="/mobile/landlord-profile" style="font-size:20px"></i>
+          <i class="fa fa-edit" [routerLink]="'/mobile/'+ areaName+ '-profile'" style="font-size:20px"></i>
         </div>
       </div>
      
@@ -23,16 +23,16 @@
 
     <div class="line"></div>
     <div class="flex-container-bio">
-      <div routerLink="/mobile/account">{{ 'My Account' | translate }}</div>
+      <div [routerLink]="'/mobile/account/' + areaName">{{ 'My Account' | translate }}</div>
     </div>
 
     <div class="line"></div>
     <div class="flex-container-bio">
-      <div routerLink="/mobile/report">{{ 'My Report' | translate }}</div>
+      <div [routerLink]="'/mobile/report/' + areaName">{{ 'My Report' | translate }}</div>
     </div>
 
     <div class="flex-container-bio mr-mobile">
-      <div routerLink="/mobile/field">{{ 'My Field' | translate }}</div>
+      <div [routerLink]="'/mobile/field/' + areaName">{{ 'My Field' | translate }}</div>
     </div>
 
     <div  class="flex-container-bio-desktop">

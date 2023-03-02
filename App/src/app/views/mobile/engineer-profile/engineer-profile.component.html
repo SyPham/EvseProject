@@ -1,0 +1,186 @@
+<nav aria-label="breadcrumb" class="mobile-nav">
+  <ol class="breadcrumb mobile-breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{'Landlord Profile' | translate}}</li>
+  </ol>
+</nav>
+<div class="row p-2">
+  <div class="col-12 text-center">
+    <div class="kv-avatar">
+      <div class="file-loading">
+        <input
+          id="avatar-1"
+          name="avatar-1"
+          (change)="onFileChangeLogo($event)"
+          type="file"
+          required
+        />
+      </div>
+    </div>
+    <div class="kv-avatar-hint">
+      <small>{{ "Select file < 5000 KB" | translate }}</small>
+    </div>
+  </div>
+ 
+  </div>
+  
+
+  <div class="row p-2">
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="engineerNo">{{ "Engineer_NO" | translate }}</label>
+        <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        >
+
+        <input
+          [(ngModel)]="model.engineerNo"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="engineerName">{{ "Engineer_NAME" | translate }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        >
+
+        <input
+          [(ngModel)]="model.engineerName"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+    
+    <div class="col-12">
+    <div class="form-group">
+      <label for="engineerSex">{{ "Engineer_SEX" | translate }}</label>
+      <app-code-type-dropdownlist
+        id="sex-remote"
+        [codeType]="'Engineer_SEX'"
+        (ngModelChange)="sexChange($event)"
+        [selectedValue]="model.engineerSex + ''"
+      >
+      </app-code-type-dropdownlist>
+    </div>
+  </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="engineerBirthday">{{
+          "Engineer_BIRTHDAY" | translate
+        }}</label>
+        <ejs-datepicker
+          locale="en-US"
+          format="yyyy/MM/dd"
+          [(ngModel)]="model.engineerBirthday"
+        ></ejs-datepicker>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="engineerIdcard">{{
+          "Engineer_IDCARD" | translate
+        }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 20 )</span
+        >
+        <input
+          [(ngModel)]="model.engineerIdcard"
+          maxlength="20"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="engineerEmail">{{ "Engineer_EMAIL" | translate }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 100 )</span
+        >
+        <input
+          [(ngModel)]="model.engineerEmail"
+          maxlength="100"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="engineerMobile">{{
+          "Engineer_MOBILE" | translate
+        }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 10 )</span
+        >
+        <input
+          [(ngModel)]="model.engineerMobile"
+          maxlength="10"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="engineerAddress">{{
+          "Engineer_ADDRESS" | translate
+        }}</label>
+        <span class="max-length">
+          ( {{ "Text length" | translate }} <= 100 )</span
+        >
+        <input
+          [(ngModel)]="model.engineerAddress"
+          maxlength="100"
+          type="text"
+          class="form-control"
+        />
+      </div>
+    </div>
+  
+    <div class="col-12">
+      <label>{{ "Engineer_COMMENT" | translate }}</label>
+      <div class="form-group">
+        <textarea
+          class="form-control"
+          [(ngModel)]="model.comment"
+          cols="4"
+          rows="4"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="row p-2">
+    <div class="col-12">
+    <button
+      type="button"
+      class="btn btn-light ml-2 float-right"
+      (click)="cancel()"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    <button
+      type="submit"
+      [disabled]="!model.engineerName"
+      (click)="save()"
+      class="btn btn-primary float-right"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+  </div>
+</div>

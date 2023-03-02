@@ -1,7 +1,7 @@
 <nav aria-label="breadcrumb" class="mobile-nav">
     <ol class="breadcrumb mobile-breadcrumb">
-      <li class="breadcrumb-item "><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
-      <li class="breadcrumb-item "><a routerLink="/mobile/account">{{'My Account' | translate}}</a></li>
+      <li class="breadcrumb-item "><a [routerLink]="'/mobile/home/' + areaName">{{'Home' | translate}}</a></li>
+      <li class="breadcrumb-item "><a [routerLink]="'/mobile/account/' + areaName">{{'My Account' | translate}}</a></li>
       <li class="breadcrumb-item active">{{'Bank Account' | translate}}</li>
     </ol>
   </nav>

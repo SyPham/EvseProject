@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb" class="mobile-nav">
   <ol class="breadcrumb mobile-breadcrumb">
-    <li class="breadcrumb-item "><a routerLink="/mobile/home">{{'Home' | translate}}</a></li>
+    <li class="breadcrumb-item "><a [routerLink]="'/mobile/home/' + areaName">{{'Home' | translate}}</a></li>
     <li class="breadcrumb-item active">{{'My Account' | translate}}</li>
   </ol>
 </nav>
@@ -31,7 +31,7 @@
   <img class="my-img-thumbnail" [src]="input.photoPath ? apiHost + input.photoPath : noImage" [alt]="input.bankAccount">
  </div>
 
-  <div class="account-info d-flex justify-content-center align-items-center m-2" routerLink="/mobile/account/bank">
+  <div class="account-info d-flex justify-content-center align-items-center m-2" [routerLink]="'/mobile/account/bank/' + areaName">
     <i class="fa fa-plus mr-1 fs-account" ></i> 
     <span class="fs-account"> {{ 'Add Bank Account' | translate }}</span>
   </div>

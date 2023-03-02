@@ -16,12 +16,22 @@ export class ReportErrorComponent implements OnInit {
   baseUrl = environment.apiUrlImage;
   noImage = ImagePathConstants.NO_IMAGE_ACTION_COMPONENT;
   dataSource: any;
+  areaName: string;
   constructor(
     private activatedRoute: ActivatedRoute,
     private siteService: SiteService,
     ) { }
 
   ngOnInit() {
+    const area = this.activatedRoute.snapshot.params.area;
+    this.areaName = "";
+    if (area === "landlord") {
+      this.areaName = "landlord"
+    }
+    else if (area === "engineer") {
+      this.areaName = "engineer"
+    }
+    
     this.loadDetail();
   }
   loadDetail() {

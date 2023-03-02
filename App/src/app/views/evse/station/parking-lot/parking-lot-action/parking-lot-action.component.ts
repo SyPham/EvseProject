@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService, BaseComponent, UtilitiesService } from 'herr-core';
 import { ImagePathConstants } from 'src/app/_core/_constants';
-import { ParkingLot, Site } from 'src/app/_core/_model/evse/model';
+import { Device, ParkingLot, Site } from 'src/app/_core/_model/evse/model';
 import { ParkingLotService } from 'src/app/_core/_service/evse/parking-lot.service';
 import { environment } from 'src/environments/environment';
 declare let $: any;
@@ -18,6 +18,7 @@ export class ParkingLotActionComponent  extends BaseComponent implements OnInit 
   @Input() guid: string | null;
   @Input() site: Site;
   @Output() saveChange = new EventEmitter()
+  @Input() device: Device;
   model: ParkingLot
   file: any;
   apiHost = environment.apiUrl.replace('/api/', '');
@@ -86,6 +87,7 @@ export class ParkingLotActionComponent  extends BaseComponent implements OnInit 
        () => {
          delete this.model['column'];
          delete this.model['index'];
+         this.model.deviceGuid = this.device.guid;
          this.service.add(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {
@@ -119,6 +121,7 @@ export class ParkingLotActionComponent  extends BaseComponent implements OnInit 
        () => {
          delete this.model['column'];
          delete this.model['index'];
+         this.model.deviceGuid = this.device.guid;
          this.service.update(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {

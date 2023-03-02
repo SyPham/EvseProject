@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { EventRenderedArgs, EventSettingsModel, MonthService, PopupOpenEventArgs, ScheduleComponent, View } from '@syncfusion/ej2-angular-schedule';
 import { L10n,setCulture } from '@syncfusion/ej2-base';
 
@@ -46,13 +47,25 @@ export class ReportScreenComponent implements OnInit {
   eventAdded: boolean = false;
   @ViewChild("schedule") public scheduleObj: ScheduleComponent;
   deviceGuid
+  areaName: string;
+  user: any;
   constructor(
     private datePipe: DatePipe,
     private sanitizer: DomSanitizer,
+    private activatedRoute: ActivatedRoute
 
   ) { }
 
   ngOnInit(): void {
+    const area = this.activatedRoute.snapshot.params.area;
+    this.areaName = "";
+    if (area === "landlord") {
+      this.areaName = "landlord"
+    }
+    else if (area === "engineer") {
+      this.areaName = "engineer"
+    }
+    this.user = JSON.parse(localStorage.getItem(`user_${this.areaName}`))
     let lang = localStorage.getItem('lang');
     let languages = JSON.parse(localStorage.getItem('languages'));
     // setCulture(lang);

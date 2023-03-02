@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ParkingLot, Site } from 'src/app/_core/_model/evse/model';
+import { Device, ParkingLot, Site } from 'src/app/_core/_model/evse/model';
 
 @Component({
   selector: 'app-station',
@@ -9,6 +9,7 @@ import { ParkingLot, Site } from 'src/app/_core/_model/evse/model';
 export class StationComponent implements OnInit {
   site: Site
   parkingLot: ParkingLot
+  device: Device
 
   constructor() { }
 

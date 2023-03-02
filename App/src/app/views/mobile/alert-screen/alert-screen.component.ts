@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import { AlertifyService } from 'herr-core';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthLandlordService } from 'src/app/_core/_service/auth-landlord.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-alert-screen',
@@ -14,16 +16,29 @@ import { TranslateService } from '@ngx-translate/core';
 export class AlertScreenComponent implements OnInit {
   dataSource: any;
   user = JSON.parse(localStorage.getItem('user_landlord'))
+  areaName: string;
 
   constructor(
     private user2MessageService: User2MessageService,
     private datePipe: DatePipe,
     private alertify: AlertifyService,
     private translateService: TranslateService,
+    private activatedRoute: ActivatedRoute,
+
 
   ) { }
 
   ngOnInit() {
+    const area = this.activatedRoute.snapshot.params.area;
+    this.areaName = "";
+    if (area === "landlord") {
+      this.areaName = "landlord"
+    }
+    else if (area === "engineer") {
+      this.areaName = "engineer"
+    }
+    this.user = JSON.parse(localStorage.getItem(`user_${this.areaName}`))
+
     this.loadData()
   }
   formatDate(date) {

@@ -15,8 +15,6 @@
     [editSettings]="editSettings"
     [toolbar]="toolbarOptions"
     (toolbarClick)="toolbarClick($event)"
-  (recordClick)="recordClick($event)"
-    
   >
     <e-columns>
       <e-column
@@ -76,4 +74,4 @@
 
   </div>
 </div>
-<app-parking-lot-action [site]="site" (saveChange)="saveChange()"></app-parking-lot-action>
+<app-parking-lot-action [site]="site" [device]="device" (saveChange)="saveChange()"></app-parking-lot-action>

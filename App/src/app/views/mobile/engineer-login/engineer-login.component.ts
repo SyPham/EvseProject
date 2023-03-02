@@ -1,3 +1,4 @@
+
 import { Component, OnDestroy, OnInit, AfterViewInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
@@ -6,7 +7,7 @@ import { Subscription } from "rxjs";
 import { AuthService } from "src/app/_core/_service/auth.service";
 import { TranslateService } from "@ngx-translate/core";
 import { AlertifyService } from "herr-core";
-import { AuthLandlordService } from "src/app/_core/_service/auth-landlord.service";
+import { AuthEngineerService } from "src/app/_core/_service/auth-engineer.service";
 import {
   DataManager,
   Query,
@@ -16,11 +17,11 @@ import {
 import { environment } from "src/environments/environment";
 
 @Component({
-  selector: "app-landlord-login",
-  templateUrl: "./landlord-login.component.html",
-  styleUrls: ["./landlord-login.component.css"],
+  selector: 'app-engineer-login',
+  templateUrl: './engineer-login.component.html',
+  styleUrls: ['./engineer-login.component.css']
 })
-export class LandlordLoginComponent
+export class EngineerLoginComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
   baseUrl = environment.apiUrlImage;
@@ -42,19 +43,19 @@ export class LandlordLoginComponent
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthLandlordService,
+    private authService: AuthEngineerService,
     private cookieService: CookieService,
     private alertifyService: AlertifyService,
     private trans: TranslateService
   ) {
-    if (this.cookieService.get("remember_landlord") !== undefined) {
-      if (this.cookieService.get("remember_landlord") === "Yes") {
-        this.key = this.cookieService.get("key_temp_landlord");
+    if (this.cookieService.get("remember_engineer") !== undefined) {
+      if (this.cookieService.get("remember_engineer") === "Yes") {
+        this.key = this.cookieService.get("key_temp_engineer");
         this.remember = true;
         this.loginRememberMe(+this.key);
       }
     }
-    let backUrl = "/mobile/home/landlord";
+    let backUrl = "/mobile/home/engineer";
     this.uri = this.route.snapshot.queryParams.uri || backUrl;
   }
   role: number;
@@ -62,23 +63,23 @@ export class LandlordLoginComponent
   ngOnInit(): void {
     let skip = +this.route.snapshot.data.skip
     if (skip == 0) {
-      this.router.navigate(['/mobile/landlord-demo']);
+      this.router.navigate(['/mobile/engineer-demo']);
     }
     this.loadConfigData();
     this.loadLogoData();
-    const accessToken = localStorage.getItem("token_landlord");
-    const refreshToken = localStorage.getItem("refresh_token_landlord");
+    const accessToken = localStorage.getItem("token_engineer");
+    const refreshToken = localStorage.getItem("refresh_token_engineer");
     if (
       accessToken &&
       refreshToken &&
-      this.route.routeConfig.path === "/mobile/landlord-login"
+      this.route.routeConfig.path === "/mobile/engineer-login"
     ) {
-      let backUrl = "/mobile/home/landlord";
+      let backUrl = "/mobile/home/engineer";
       const uri = decodeURI(this.uri) || backUrl;
       this.router.navigate([uri]);
     }
     if (this.authService.loggedIn()) {
-      let backUrl = "/mobile/home/landlord";
+      let backUrl = "/mobile/home/engineer";
       const uri = decodeURI(this.uri) || backUrl;
       this.router.navigate([uri]);
     }
@@ -107,14 +108,14 @@ export class LandlordLoginComponent
       }
 
       if (this.remember) {
-        this.cookieService.set("remember_landlord", "Yes");
-        this.cookieService.set("key_temp_landlord", data.user.id);
+        this.cookieService.set("remember_engineer", "Yes");
+        this.cookieService.set("key_temp_engineer", data.user.id);
       } else {
-        this.cookieService.set("remember_landlord", "No");
-        this.cookieService.set("key_temp_landlord", "");
+        this.cookieService.set("remember_engineer", "No");
+        this.cookieService.set("key_temp_engineer", "");
       }
      
-      let backUrl = "/mobile/home/landlord";
+      let backUrl = "/mobile/home/engineer";
       this.router.navigate([backUrl]);
       this.alertifyService.success(this.trans.instant("Login Success!"));
       this.loading = 0;
@@ -138,7 +139,7 @@ export class LandlordLoginComponent
     }
     try {
       const data = await this.authService
-        .loginRememberMeLandlord(key)
+        .loginRememberMeEngineer(key)
         .toPromise();
       const currentLang = localStorage.getItem("lang");
       if (currentLang) {
@@ -148,14 +149,14 @@ export class LandlordLoginComponent
       }
 
       if (this.remember) {
-        this.cookieService.set("remember_landlord", "Yes");
-        this.cookieService.set("key_temp_landlord", data.user.id);
+        this.cookieService.set("remember_engineer", "Yes");
+        this.cookieService.set("key_temp_engineer", data.user.id);
       } else {
-        this.cookieService.set("remember_landlord", "No");
-        this.cookieService.set("key_temp_landlord", "");
+        this.cookieService.set("remember_engineer", "No");
+        this.cookieService.set("key_temp_engineer", "");
       }
      
-      let backUrl = "/evse/home";
+      let backUrl = "/mobile/home/engineer";
       this.router.navigate([backUrl]);
       this.loading = 0;
     } catch (error) {

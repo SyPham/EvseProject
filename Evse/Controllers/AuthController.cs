@@ -1,18 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Evse.DTO;
 using Evse.DTO.auth;
-using Evse.Helpers;
 using Evse.Services;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Evse.Controllers
@@ -32,7 +22,7 @@ namespace Evse.Controllers
         {
             return StatusCodeResult(await _authService.RefreshTokenAsync(model.token, model.refreshToken));
         }
-         [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> RefreshTokenLandlordAsync([FromBody] RefreshTokenViewModel model)
         {
             return StatusCodeResult(await _authService.RefreshTokenLandlordAsync(model.token, model.refreshToken));
@@ -44,7 +34,15 @@ namespace Evse.Controllers
         {
             return StatusCodeResult(await _authService.LoginAsync(model));
         }
-         [HttpPost]
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginEngineerAsync([FromBody] UserForLoginDto model)
+        {
+            return StatusCodeResult(await _authService.LoginEngineerAsync(model));
+        }
+
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> LoginLandlordAsync([FromBody] UserForLoginDto model)
         {
@@ -55,15 +53,28 @@ namespace Evse.Controllers
         {
             return StatusCodeResult(await _authService.LoginAsync(request.ID));
         }
-          [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> LoginRememberLandlordAsync([FromBody] UserForLoginRememberDto request)
         {
             return StatusCodeResult(await _authService.LoginRememberLandlordAsync(request.ID));
         }
-          [HttpPost]
+
+        [HttpPost]
+        public async Task<IActionResult> LoginRememberEngineerAsync([FromBody] UserForLoginRememberDto request)
+        {
+            return StatusCodeResult(await _authService.LoginEngineerAsync(request.ID));
+        }
+
+        [HttpPost]
         public async Task<IActionResult> RegisterLandlord([FromBody] RegisterLandlordDto request)
         {
             return StatusCodeResult(await _authService.RegisterLandlord(request));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterEngineer([FromBody] RegisterEngineerDto request)
+        {
+            return StatusCodeResult(await _authService.RegisterEngineer(request));
         }
 
         [HttpGet]
@@ -88,13 +99,18 @@ namespace Evse.Controllers
             await _authService.LogOut();
             return NoContent();
         }
-[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> LogOutLandlordAsync()
         {
             await _authService.LogOutLandlord();
             return NoContent();
         }
-
+        [HttpPost]
+        public async Task<IActionResult> LogOutEngineerAsync()
+        {
+            await _authService.LogOutEngineer();
+            return NoContent();
+        }
     }
 
 }

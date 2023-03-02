@@ -130,6 +130,8 @@ import { NavbarComponent } from './views/layout/navbar/navbar.component';
 import { NewsComponent } from './views/home/news/news.component';
 import { NewRoleComponent } from './views/home/new-role/new-role.component';
 import { SwiperModule } from 'swiper/angular';
+import { AuthEngineerService } from './_core/_service/auth-engineer.service';
+import { AuthLandlordService } from './_core/_service/auth-landlord.service';
 
 let lang = localStorage.getItem('lang');
 if (!lang) {
@@ -160,7 +162,7 @@ if (!lang) {
     ReportLineChartComponent,
     NavbarComponent,
     NewsComponent,
-    NewRoleComponent,
+    NewRoleComponent
 
   ],
   imports: [
@@ -202,6 +204,8 @@ if (!lang) {
     VersionCheckService,
     ErrorInterceptorProvider,
     AuthService,
+    AuthLandlordService,
+    AuthEngineerService,
     DatePipe,
     DashboardService,
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true }

@@ -1,27 +1,27 @@
+
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertifyService, UtilitiesService } from 'herr-core';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
-import { Landlord } from 'src/app/_core/_model/evse/model';
-import { LandlordService } from 'src/app/_core/_service/evse/landlord.service';
+import { Engineer } from 'src/app/_core/_model/evse/model';
+import { EngineerService } from 'src/app/_core/_service/evse/engineer.service';
 declare let $: any;
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-landlord-profile',
-  templateUrl: './landlord-profile.component.html',
-  styleUrls: ['./landlord-profile.component.css'],
-  providers: [DatePipe]
+  selector: 'app-engineer-profile',
+  templateUrl: './engineer-profile.component.html',
+  styleUrls: ['./engineer-profile.component.scss']
 })
-export class LandlordProfileComponent implements OnInit {
-  model: Landlord = {} as Landlord;
+export class EngineerProfileComponent implements OnInit {
+  model: Engineer = {} as Engineer;
   file
   baseUrl = environment.apiUrl;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
-  user = JSON.parse(localStorage.getItem('user_landlord'))
+  user = JSON.parse(localStorage.getItem('user_engineer'))
   alert = {
     updateMessage: this.translate.instant(MessageConstants.UPDATE_MESSAGE),
     updateTitle: this.translate.instant(MessageConstants.UPDATE_TITLE),
@@ -43,7 +43,7 @@ export class LandlordProfileComponent implements OnInit {
   };
   constructor(
     private utilityService: UtilitiesService,
-    private landlordService: LandlordService,
+    private engineerService: EngineerService,
     private alertify: AlertifyService,
     public translate: TranslateService,
     public datePipe: DatePipe,
@@ -54,7 +54,7 @@ export class LandlordProfileComponent implements OnInit {
     loadDetail() {
       const guid = this.user.guid;
       if (guid) {
-        this.landlordService.getByGuid(guid).subscribe(x=> {
+        this.engineerService.getByGuid(guid).subscribe(x=> {
           this.model = x;
         })
       }
@@ -65,7 +65,7 @@ export class LandlordProfileComponent implements OnInit {
     this.configImage();
   }
   sexChange(value) {
-    this.model.landLordSex = value;
+    this.model.engineerSex = value;
     }
   onFileChangeLogo(args) {
     this.file = args.target.files[0];
@@ -88,7 +88,7 @@ export class LandlordProfileComponent implements OnInit {
       allowedFileExtensions: ["jpg", "png", "gif"],
       initialPreview: [],
       initialPreviewConfig: [],
-      deleteUrl: `${environment.apiUrl}Landlord/DeleteUploadFile`
+      deleteUrl: `${environment.apiUrl}Engineer/DeleteUploadFile`
     };
     if (this.model.photoPath) {
       this.model.photoPath = this.imagePath(this.model.photoPath);
@@ -98,7 +98,7 @@ export class LandlordProfileComponent implements OnInit {
       const a = {
         caption: '',
         width: '',
-        url: `${environment.apiUrl}Landlord/DeleteUploadFile`, // server delete action
+        url: `${environment.apiUrl}Engineer/DeleteUploadFile`, // server delete action
         key: this.model.id,
         extra: { id: this.model.id }
       }
@@ -137,7 +137,7 @@ export class LandlordProfileComponent implements OnInit {
        this.alert.updateMessage,
        () => {
          this.model.file = this.file || [];
-         this.landlordService.updateForm(this.ToFormatModel(this.model)).subscribe(
+         this.engineerService.updateForm(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {
                this.alertify.success(this.alert.updated_ok_msg);
@@ -173,6 +173,6 @@ export class LandlordProfileComponent implements OnInit {
      return model;
    }
   cancel() {
-    this.router.navigate(['/mobile/home/landlord'])
+    this.router.navigate(['/mobile/home/engineer'])
   }
 }

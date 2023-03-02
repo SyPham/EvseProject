@@ -37,6 +37,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   currentRouter: string = ''
   subscription: Subscription = new Subscription();
   count: any = 0;
+  areaName: string;
   constructor(
     private router: Router,
     private location: Location,
@@ -46,6 +47,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private alertify: AlertifyService,
     private serviceDash: DashboardService,
     private user2MessageService: User2MessageService,
+    private activatedRoute: ActivatedRoute
 
   ) {
     this.router.events.pipe( filter((event: any) => event instanceof NavigationEnd) ).subscribe(event => { 
@@ -88,9 +90,18 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.sidebarTreeviewInstance.toggle();
   }
   goToHome() {
-    this.router.navigate(["/mobile/home"]);
+    this.router.navigate([`/mobile/home/${this.areaName}`]);
   }
   ngOnInit() {
+    const area = this.activatedRoute.snapshot.params.area;
+    this.areaName = "";
+    if (area === "landlord") {
+      this.areaName = "landlord"
+    }
+    else if (area === "engineer") {
+      this.areaName = "engineer"
+    }
+    this.user = JSON.parse(localStorage.getItem(`user_${this.areaName}`))
    this.subscription.add(this.user2MessageService.currentUser2Message.subscribe(check => {
       if (check) {
         this.countAlert();
@@ -116,7 +127,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     if (!homeUrl) {
       this.location.back();
     }else {
-      this.router.navigate(['/landlord-login'])
+      this.router.navigate([`/${this.areaName}-login`])
       .then(() => {
         window.location.reload();
       });
@@ -131,7 +142,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       const uri = this.router.url;
       this.cookieService.deleteAll("/");
 
-      this.router.navigate(["/mobile/landlord-login"], {
+      this.router.navigate([`/mobile/${this.areaName}-login`], {
         queryParams: { uri },
         replaceUrl: true,
       });
@@ -143,7 +154,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       this.logout();
       return;
     } else if (e.node.dataset.uid === "01") {
-      this.router.navigate(["/mobile/landlord-login"]);
+      this.router.navigate([`/mobile/${this.areaName}-login`]);
       return;
     }
   }

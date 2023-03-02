@@ -14,13 +14,17 @@ namespace Evse.Helpers.AutoMapper
         public EFToDtoMappingProfile()
         {
             var list = new List<int> { };
-        
+
             CreateMap<XAccount, UserForDetailDto>()
                 .ForMember(d => d.Username, o => o.MapFrom(x => x.Uid))
                 .ForMember(d => d.ID, o => o.MapFrom(x => x.AccountId));
 
-             CreateMap<LandLord, UserForDetailDto>()
-                .ForMember(d => d.Username, o => o.MapFrom(x => x.Uid));
+            CreateMap<LandLord, UserForDetailDto>()
+               .ForMember(d => d.Username, o => o.MapFrom(x => x.Uid));
+
+            CreateMap<Engineer, UserForDetailDto>()
+          .ForMember(d => d.Username, o => o.MapFrom(x => x.Uid));
+
             CreateMap<Employee, EmployeeDto>();
             CreateMap<Employee, EmployeeDto>();
             CreateMap<SystemLanguage, SystemLanguageDto>();
@@ -32,7 +36,7 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<CodeType, CodeTypeDto>();
             CreateMap<SystemConfig, SystemConfigDto>();
             CreateMap<Site, SiteDto>();
-               CreateMap<Member, MemberDto>();
+            CreateMap<Member, MemberDto>();
             CreateMap<LandLord, LandLordDto>();
             CreateMap<Engineer, EngineerDto>();
             CreateMap<Device, DeviceDto>();

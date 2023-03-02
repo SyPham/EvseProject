@@ -6,9 +6,9 @@
       <div class="main-header" id="header-section">
 
         <div id="myLinks">
-          <a (click)="toggleSidebar()" routerLink="/mobile/account">{{ 'My Account' | translate }}</a>
-          <a (click)="toggleSidebar()" routerLink="/mobile/report">{{ 'My Report' | translate }}</a>
-          <a (click)="toggleSidebar()" routerLink="/mobile/field">{{ 'My Field' | translate }}</a>
+          <a (click)="toggleSidebar()" [routerLink]="'/mobile/account/' + areaName">{{ 'My Account' | translate }}</a>
+          <a (click)="toggleSidebar()" [routerLink]="'/mobile/report/' + areaName">{{ 'My Report' | translate }}</a>
+          <a (click)="toggleSidebar()" [routerLink]="'/mobile/field/' + areaName">{{ 'My Field' | translate }}</a>
           
         </div>
         <ul class="header-list">

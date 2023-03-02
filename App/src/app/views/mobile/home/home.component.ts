@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { SystemGroupNo } from 'src/app/_core/enum/SystemGroupNo';
@@ -16,20 +16,32 @@ declare let $: any;
 })
 export class HomeComponent implements OnInit {
   username: any;
-  user = JSON.parse(localStorage.getItem('user_landlord'))
+  user = {} as any
+  areaName: string = "";
   constructor(
     public router: Router,
     private cookieService: CookieService,
     private alertify: AlertifyService,
     private trans: TranslateService,
+    private activatedRoute: ActivatedRoute,
     private authService: AuthLandlordService
     ) {
      }
   ngOnInit() {
-    this.username =
-    JSON.parse(localStorage.getItem("user_landlord"))?.username || "Guest";
-    this.configImage();
+    const area = this.activatedRoute.snapshot.params.area;
+    this.areaName = "";
+    if (area === "landlord") {
+      this.areaName = "landlord"
+    }
+    else if (area === "engineer") {
+      this.areaName = "engineer"
+    }
+    this.user = JSON.parse(localStorage.getItem(`user_${this.areaName}`))
 
+    this.username =
+    JSON.parse(localStorage.getItem(`user_${this.areaName}`))?.username || "Guest";
+    this.configImage();
+    console.log(this.user)
   }
   backDesktop() {
     this.router.navigate(['/'])
@@ -40,19 +52,15 @@ export class HomeComponent implements OnInit {
   logout() {
     this.authService.logOutLandlord().subscribe(() => {
       const uri = this.router.url;
-      this.cookieService.delete('remember_landlord');
-      this.cookieService.delete('key_temp_landlord');
+      this.cookieService.delete(`remember_${this.areaName}`);
+      this.cookieService.delete(`key_temp_${this.areaName}`);
       localStorage.setItem('lang','tw')
-      this.router.navigate(['/mobile/landlord-login']);
+      this.router.navigate([`/mobile/${this.areaName}-login`]);
       this.alertify.message(this.trans.instant('Logged out'));
     });
   }
-  goToDetail() {
-    this.router.navigate(['/mobile/detail']);
-  }
-  goToMakeOrder(type) {
-    this.router.navigate([`/mobile/pigdata/${type}`]);
-  }
+
+
   noFunction() {
     alert('This function is not ready!')
   }
@@ -77,7 +85,7 @@ export class HomeComponent implements OnInit {
       allowedFileExtensions: ["jpg", "png", "gif"],
       initialPreview: [],
       initialPreviewConfig: [],
-      deleteUrl: `${environment.apiUrl}Landlord/DeleteUploadFile`
+      deleteUrl: `${environment.apiUrl}${this.areaName}/DeleteUploadFile`
     };
   
     $("#avatar-1").fileinput(option);;

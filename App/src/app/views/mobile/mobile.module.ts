@@ -61,6 +61,10 @@ import { ReportScreenComponent } from './report-screen/report-screen.component';
 import { loadCldr, setCulture, L10n } from '@syncfusion/ej2-base';
 import { ReportErrorComponent } from './field/report-error/report-error.component';
 import { ReportErrorDetailComponent } from './field/report-error-detail/report-error-detail.component';
+import { EngineerLoginComponent } from './engineer-login/engineer-login.component';
+import { EngineerDemoComponent } from './engineer-demo/engineer-demo.component';
+import { EngineerRegisterComponent } from './engineer-register/engineer-register.component';
+import { EngineerProfileComponent } from './engineer-profile/engineer-profile.component';
 let lang = localStorage.getItem('lang');
 if (!lang) {
   localStorage.setItem('lang', 'tw');
@@ -119,8 +123,11 @@ loadCldr(
     AlertScreenComponent,
     ReportScreenComponent,
     ReportErrorComponent,
-    ReportErrorDetailComponent
-    
+    ReportErrorDetailComponent,
+    EngineerLoginComponent,
+    EngineerDemoComponent,
+    EngineerRegisterComponent,
+    EngineerProfileComponent
   ],
   imports: [
     CommonModule,
