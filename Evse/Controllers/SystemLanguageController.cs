@@ -40,6 +40,24 @@ namespace Evse.Controllers
         {
             return Ok(await _service.LoadLanguages(lang));
         }
+         [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> Localizations()
+        {
+            return Ok(await _service.Localizations());
+        }
+         [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> Localization(string lang)
+        {
+            return Ok(await _service.Localization(lang));
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> LocalizationV2(string lang)
+        {
+            return Ok(await _service.LocalizationV2(lang));
+        }
         [HttpPost]
         public async Task<ActionResult> AddAsync([FromBody] SystemLanguageDto model)
         {

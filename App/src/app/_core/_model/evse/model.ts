@@ -60,6 +60,8 @@ export interface Device {
     deleteBy: number | null;
     status: number | null;
     guid: string;
+    longitude: any;
+    latitude: any;
 }
 export interface Landlord {
     id: number;

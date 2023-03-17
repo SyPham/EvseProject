@@ -44,7 +44,7 @@ namespace Evse
         {
 
             services.AddHttpContextAccessor();
-            services.AddControllers()
+            services.AddMvc()
              .AddNewtonsoftJson(options =>
              {
                  options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Unspecified;

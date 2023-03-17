@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using NetUtility;
 using System.IO;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Evse.Services
 {
@@ -29,6 +30,8 @@ namespace Evse.Services
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(MemberDto model);
         Task<OperationResult> UpdateFormAsync(MemberDto model);
+        Task<OperationResult> UpdatePofileAsync(MemberProfileDto model);
+        Task<OperationResult> UpdateFileAsync(MemberUploadFileDto model);
     }
     public class MemberService : ServiceBase<Member, MemberDto>, IMemberService, IScopeService
     {
@@ -371,6 +374,61 @@ IWebHostEnvironment currentEnvironment)
             return operationResult;
         }
 
+        public async Task<OperationResult> UpdateFileAsync(MemberUploadFileDto model)
+        {
+
+            FileExtension fileExtension = new FileExtension();
+            var itemModel = await _repo.FindAll(x => x.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
+            var item = _mapper.Map<Member>(model);
+
+
+            // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
+            var avatarUniqueFileName = string.Empty;
+            var avatarFolderPath = "FileUploads\\images\\member\\avatar";
+            string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
+
+            if (model.File != null)
+            {
+                IFormFile filesAvatar = model.File;
+                if (!filesAvatar.IsNullOrEmpty())
+                {
+                    if (!item.PhotoPath.IsNullOrEmpty())
+                        fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.PhotoPath.Replace("/", "\\").Replace("/", "\\")}");
+                    avatarUniqueFileName = await fileExtension.WriteAsync(filesAvatar, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+                    item.PhotoPath = $"/FileUploads/images/member/avatar/{avatarUniqueFileName}";
+                }
+            }
+
+            try
+            {
+
+                _repo.Update(item);
+                await _unitOfWork.SaveChangeAsync();
+
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = model
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                // Nếu tạo ra file rồi mã lưu db bị lỗi thì xóa file vừa tạo đi
+                if (!avatarUniqueFileName.IsNullOrEmpty())
+                    fileExtension.Remove($"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+        }
+
         public async Task<object> DeleteUploadFile(decimal key)
         {
             try
@@ -406,6 +464,42 @@ IWebHostEnvironment currentEnvironment)
             }
         }
 
+        public async Task<OperationResult> UpdatePofileAsync(MemberProfileDto model)
+        {
+            try
+            {
+                var item = await _repo.FindByIDAsync(model.Id);
+                if (item != null)
+                {
+                    item.MemberAddress = model.MemberAddress;
+                    item.MemberEmail = model.MemberEmail;
+                    item.MemberMobile = model.MemberMobile;
+                    item.MemberName = model.MemberName;
+                    item.MemberBirthday = model.MemberBirthday;
+                    _repo.Update(item);
+                    await _unitOfWork.SaveChangeAsync();
+                      
+                }
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = model
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+               
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
 
+        }
     }
 }

@@ -43,4 +43,27 @@ namespace Evse.DTO
 
 
     }
+    public partial class MemberProfileDto
+    {
+        public decimal Id { get; set; }
+     
+        public string MemberName { get; set; }
+       
+    
+        public DateTime? MemberBirthday { get; set; }
+        public string MemberEmail { get; set; }
+        public string MemberMobile { get; set; }
+        public string MemberAddress { get; set; }
+
+
+    }
+
+      public partial class MemberUploadFileDto
+    {
+        public IFormFile File { get; set; }
+        public decimal Id { get; set; }
+
+
+    }
+
 }

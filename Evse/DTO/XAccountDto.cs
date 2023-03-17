@@ -81,6 +81,13 @@ namespace Evse.DTO
     {
         public string email { get; set; }
     }
+      
+     public partial class ChangePasswordDto
+    {
+        public decimal Id { get; set; }
+        public string Password { get; set; }
+        public string RePassword { get; set; }
+    }
     public partial class ResetPasswordDto
     {
         public string token { get; set; }

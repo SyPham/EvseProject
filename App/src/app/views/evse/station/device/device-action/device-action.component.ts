@@ -43,7 +43,7 @@ export class DeviceActionComponent  extends BaseComponent implements OnInit {
   initModel() {
     this.model = {} as Device;
     this.model.siteGuid = this.site.guid;
-    this.model.parkingLotGuid = this.parkingLot.guid;
+    // this.model.parkingLotGuid = this.parkingLot.guid;
     this.guid = null;
   }
   open() {

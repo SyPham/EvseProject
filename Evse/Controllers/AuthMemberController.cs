@@ -45,6 +45,10 @@ namespace Evse.Controllers
         {
             return Ok(await _authService.ForgotPassword(email));
         }
+        [HttpPut]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto request) {
+             return StatusCodeResult(await _authService.ChangePassword(request));
+        }
 
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto reset)

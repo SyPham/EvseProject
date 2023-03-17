@@ -129,6 +129,8 @@ IRepositoryBase<Site> repoSite)
                                   DeleteBy = a.DeleteBy,
                                   Status = a.Status,
                                   Guid = a.Guid,
+                                   Longitude = a.Longitude,
+                                  Latitude = a.Latitude,
                                   DeviceTypeName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
                               }).OrderByDescending(x => x.Id).AsQueryable();
 
@@ -306,6 +308,8 @@ IRepositoryBase<Site> repoSite)
                                   DeleteBy = a.DeleteBy,
                                   Status = a.Status,
                                   Guid = a.Guid,
+                                   Longitude = a.Longitude,
+                                  Latitude = a.Latitude,
                         };
 
             var count = await datasource.CountAsync();

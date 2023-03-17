@@ -43,11 +43,7 @@ namespace Evse.DTO
         public decimal Key { get; set; }
 
     }
-    public class ChangePasswordDto
-    {
-        public decimal ID { get; set; }
-        public string Upwd { get; set; }
-    }
+
     public class XChangePasswordDto
     {
         public decimal ID { get; set; }

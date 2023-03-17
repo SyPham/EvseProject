@@ -113,6 +113,39 @@
               />
             </div>
           </div>
+
+          <div class="col-6">
+            <label>{{ "Latitude" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 20 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="20"
+                type="text"
+                [(ngModel)]="model.latitude"
+                class="form-control"
+              />
+            </div>
+          </div>
+          
+          <div class="col-6">
+            <label>{{ "Longitude" | translate }}</label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 20 )</span
+            >
+            <div class="form-group">
+              <input
+                maxlength="20"
+                type="text"
+                [(ngModel)]="model.longitude"
+                class="form-control"
+              />
+            </div>
+          </div>
+         
+
+
         <div class="col-12">
           <label>{{ "AREA_COMMENT" | translate }} </label>
           <div class="form-group">

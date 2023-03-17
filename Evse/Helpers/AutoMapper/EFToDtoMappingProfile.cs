@@ -25,6 +25,9 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<Engineer, UserForDetailDto>()
           .ForMember(d => d.Username, o => o.MapFrom(x => x.Uid));
 
+            CreateMap<Member, UserMemberForDetailDto>()
+         .ForMember(d => d.Username, o => o.MapFrom(x => x.Uid));
+
             CreateMap<Employee, EmployeeDto>();
             CreateMap<Employee, EmployeeDto>();
             CreateMap<SystemLanguage, SystemLanguageDto>();

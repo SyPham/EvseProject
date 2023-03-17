@@ -33,6 +33,7 @@ namespace Evse.Services
         Task LogOut();
         Task<bool> CheckLock(string username);
         Task<OperationResult> ResetPassword(ResetPasswordDto reset);
+        Task<OperationResult> ChangePassword(ChangePasswordDto reset);
         Task<OperationResult> ForgotPassword(string email);
         Task<OperationResult> ForgotUsername(string email);
         Task<OperationResult> LoginAsync(UserForLoginDto loginDto);
@@ -305,7 +306,47 @@ namespace Evse.Services
 
             return await GenerateOperationResultForUserAsync(user, "");
         }
-       
+     public async  Task<OperationResult> ChangePassword(ChangePasswordDto reset) {
+             var account = await _repo.FindAll(x => x.Status == 1).AsNoTracking().FirstOrDefaultAsync(x => x.Id == reset.Id);
+            if (account == null)
+                return new OperationResult
+                {
+                    Success = false,
+                    Data = null,
+                    Message = "Your account does not exist"
+                };
+                if (reset.Password != reset.RePassword)
+                return new OperationResult
+                {
+                    Success = false,
+                    Data = null,
+                    Message = "Password and Repassword are not same"
+                };
+
+            account.Upwd = reset.Password.ToSha512();
+            try
+            {
+                _repo.Update(account);
+
+                await _unitOfWork.SaveChangeAsync();
+                return new OperationResult
+                {
+                    Success = true,
+                    Data = account,
+                    Message = "Reset password successfully"
+                };
+            }
+            catch (Exception)
+            {
+
+                return new OperationResult
+                {
+                    Success = false,
+                    Data = null,
+                    Message = "Can not change password"
+                };
+            }
+       }
         public async Task<OperationResult> ResetPassword(ResetPasswordDto reset)
         {
             var validatedToken = GetPrincipalFromToken(reset.token);
@@ -358,7 +399,7 @@ namespace Evse.Services
                     Data = null,
                     Message = "The account is locked!"
                 };
-            account.Upwd = reset.NewPassword;
+            account.Upwd = reset.NewPassword.ToSha512();
             try
             {
                 _repo.Update(account);
