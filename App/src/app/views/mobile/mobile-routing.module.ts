@@ -143,6 +143,17 @@ const routes: Routes = [
         //canActivate: [AuthGuard]
       },
       {
+        path: 'account',
+        component: AccountScreenComponent,
+        data: {
+          title: 'Account',
+          breadcrumb: 'Account',
+          functionCode: 'Account'
+
+        },
+        //canActivate: [AuthGuard]
+      },
+      {
         path: 'account/:area',
         component: AccountScreenComponent,
         data: {

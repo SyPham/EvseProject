@@ -113,7 +113,7 @@ const routes: Routes = [
       functionCode: 'WebNews'
     },
    canActivate: [AuthGuard]
-  },
+  }
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

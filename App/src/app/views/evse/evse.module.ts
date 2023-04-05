@@ -42,6 +42,8 @@ import { LandlordBankActionComponent } from './landlord/landlord-bank/landlord-b
 import { LandlordDetailComponent } from './landlord/landlord-detail/landlord-detail.component';
 import { LandlordDeviceComponent } from './landlord/landlord-device/landlord-device.component';
 import { LandlordDeviceActionComponent } from './landlord/landlord-device/landlord-device-action/landlord-device-action.component';
+import { NewsComponent } from './news/news.component';
+import { NewsDetailComponent } from './news/news-detail/news-detail.component';
 interface Environment {
   production: boolean;
   apiUrl: string;
@@ -96,7 +98,9 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     LandlordBankActionComponent,
     LandlordDetailComponent,
     LandlordDeviceComponent,
-    LandlordDeviceActionComponent
+    LandlordDeviceActionComponent,
+    NewsComponent,
+    NewsDetailComponent
   ]
 })
 export class EvseModule {

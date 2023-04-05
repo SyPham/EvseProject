@@ -77,7 +77,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.subscription.unsubscribe();
   }
   ngOnInit() {
-   
     this.lang = this.capitalize(localStorage.getItem("lang"));
     this.getMenu();
     this.loadBannerData();
@@ -115,6 +114,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   navigate(data) {
     const functionCode = data.functionCode;
+    if (functionCode === "ParkingLot") {
+      return  this.router.navigate([data.url])
+    }
     if (functionCode === 'Report'&& data.level === 2) {
       return;
     }
