@@ -132,6 +132,12 @@ import { NewRoleComponent } from './views/home/new-role/new-role.component';
 import { SwiperModule } from 'swiper/angular';
 import { AuthEngineerService } from './_core/_service/auth-engineer.service';
 import { AuthLandlordService } from './_core/_service/auth-landlord.service';
+import { HomeNavbarComponent } from './views/home/home-navbar/home-navbar.component';
+import { NewsDetailComponent } from './views/evse/news/news-detail/news-detail.component';
+import { News2Component } from './views/evse/news/news.component';
+import { GoogleMapComponent } from './views/evse/google-map/google-map.component';
+import { AgmCoreModule } from '@agm/core';
+import { EvseModule } from './views/evse/evse.module';
 
 let lang = localStorage.getItem('lang');
 if (!lang) {
@@ -162,7 +168,12 @@ if (!lang) {
     ReportLineChartComponent,
     NavbarComponent,
     NewsComponent,
-    NewRoleComponent
+    NewRoleComponent,
+    HomeNavbarComponent,
+    News2Component,
+    NewsDetailComponent,
+    GoogleMapComponent,
+
 
   ],
   imports: [
@@ -183,7 +194,11 @@ if (!lang) {
     GridAllModule,
     AccumulationChartAllModule,
     SwiperModule,
+    EvseModule,
     PigfarmCoreModule.forRoot(environment.apiUrl),
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyAi9VYgdZUeOo2Wngl_5ho1H4_5clWGFTU"
+    }),
     JwtModule.forRoot({
       config: {
         tokenGetter

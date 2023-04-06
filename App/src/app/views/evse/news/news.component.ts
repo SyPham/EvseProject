@@ -9,11 +9,11 @@ import { WebNewsService } from "src/app/_core/_service/evse/web-news.service";
 import { environment } from "src/environments/environment";
 
 @Component({
-  selector: 'app-news',
+  selector: 'app-news2',
   templateUrl: './news.component.html',
   styleUrls: ['./news.component.css']
 })
-export class NewsComponent implements OnInit {
+export class News2Component implements OnInit {
   news = [];
   baseUrl = environment.apiUrlImage;
 

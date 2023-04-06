@@ -1,11 +1,13 @@
+<app-home-navbar></app-home-navbar>
+
 <div class="row mt-3">
     <div class="col-lg-4 col-12" *ngFor="let item of news; let i = index">
-        <div class="card mb-3">
+        <a [routerLink]="'/news/detail/'+item.guid" class="card mb-3">
             <img class="card-img-top my-img" [src]="baseUrl + item.photoPath" [alt]="item.subject">
             <div class="card-body">
               <h5 class="card-title">{{item.subject}}</h5>
               <p class="card-text">{{item.newsDate | date: "yyyy-MM-dd"}}</p>
             </div>
-          </div>
+          </a>
     </div>
 </div>

@@ -19,8 +19,6 @@ export class LayoutComponent implements OnInit,AfterViewInit, OnDestroy {
   menus: any;
   lang: string;
   userid: number;
-  title: any;
-  btnText: any;
   parentActive = false;
   childActive = false;
   subActive = false;
@@ -62,47 +60,30 @@ export class LayoutComponent implements OnInit,AfterViewInit, OnDestroy {
   ngOnInit() {
     this.lang = localStorage.getItem('lang');
     this.userid = +JSON.parse(localStorage.getItem('user'))?.id;
-    this.subscription.add(this.dashService.currentFarm.subscribe(farmGuid => {
-      this.farmGuid = farmGuid;
-      if (this.farmGuid) {
-        this.getMenu();
-      }
-
-    }))
-    if (this.farmGuid) {
-      this.getMenu();
-    }
-    this.loadLang();
+    this.getMenu();
   }
 
-  loadLang() {
-      this.translate.get("Access-denied").subscribe(res => {
-        this.title = res;
-      });
-      this.translate.get("Back to login").subscribe(res => {
-        this.btnText = res;
-      });
-    }
-  getMenu() {
-    this.spinner.show();
-    this.sysMenuService.getMenusByFarm(this.lang, this.farmGuid).subscribe((menus: []) => {
-      this.menus = menus;
-      localStorage.setItem('menus', JSON.stringify(menus));
-      $(function () {
-        $('a.toggle').on('click', function (e) {
-          e.preventDefault();
-          $(this).closest('ul').find('a.toggle.active').not(this).removeClass('active');
-          $(this).toggleClass('active');
 
+    getMenu() {
+      this.spinner.show();
+      this.sysMenuService.getMenusByMenuType(this.lang.toLowerCase(), "BE").subscribe((menus: []) => {
+        this.menus = menus;
+        localStorage.setItem('menus', JSON.stringify(menus));
+        $(function () {
+          $('a.toggle').on('click', function (e) {
+            e.preventDefault();
+            $(this).closest('ul').find('a.toggle.active').not(this).removeClass('active');
+            $(this).toggleClass('active');
+  
+          });
         });
-      });
-      setTimeout(() => {
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500)
+      }, (err) => {
         this.spinner.hide();
-      }, 500)
-    }, (err) => {
-      this.spinner.hide();
-    });
-  }
+      });
+    }
   checkRole(data) {
     const functionCode = data.functionCode;
     const functions = JSON.parse(localStorage.getItem('functions')) || [];
@@ -123,7 +104,7 @@ export class LayoutComponent implements OnInit,AfterViewInit, OnDestroy {
       return this.router.navigate([data.url])
 
     } else {
-      this.alertify.errorBackToLogin(this.title, this.btnText, () => {
+      this.alertify.errorBackToLogin(this.translate.instant("Access-denied"), this.translate.instant("Back to login"), () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
         localStorage.removeItem('refresh-token');
@@ -157,7 +138,7 @@ export class LayoutComponent implements OnInit,AfterViewInit, OnDestroy {
         return  this.router.navigate([data.url])
       }
     } else {
-      this.alertify.errorBackToLogin(this.title, this.btnText, () => {
+      this.alertify.errorBackToLogin(this.translate.instant("Access-denied"), this.translate.instant("Back to login"), () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
         localStorage.removeItem('refresh-token');

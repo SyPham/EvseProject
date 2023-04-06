@@ -13,8 +13,9 @@ import { ReportComponent } from './views/pig-farm/report/report.component';
 import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
 import { AuthGuard } from './_core/_guards/auth.guard';
 import { SelectivePreloadingStrategyService } from './_core/_preloading/selective-preloading-strategy.service';
-import { NewsComponent } from './views/evse/news/news.component';
+import { News2Component } from './views/evse/news/news.component';
 import { NewsDetailComponent } from './views/evse/news/news-detail/news-detail.component';
+import { GoogleMapComponent } from './views/evse/google-map/google-map.component';
 
 const routes: Routes = [
   // App routes goes here here
@@ -22,6 +23,36 @@ const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
+  },
+  {
+    path: 'evse/google-map',
+    component: GoogleMapComponent,
+    data: {
+      title: 'Google Map',
+      breadcrumb: 'Google Map',
+      functionCode: 'Google Map'
+    },
+  //  canActivate: [AuthGuard]
+  },
+  {
+    path: 'news',
+    component: News2Component,
+    data: {
+      title: 'News',
+      breadcrumb: 'News',
+      functionCode: 'News'
+    },
+   //canActivate: [AuthGuard]
+  },
+  {
+    path: 'news/detail/:id',
+    component: NewsDetailComponent,
+    data: {
+      title: 'News Detail',
+      breadcrumb: 'News Detail',
+      functionCode: 'News Detail'
+    },
+   //canActivate: [AuthGuard]
   },
   {
     path: 'mobile',
@@ -34,26 +65,7 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     // canActivate: [AuthGuard],
     children: [
-      {
-        path: 'evse/news',
-        component: NewsComponent,
-        data: {
-          title: 'News',
-          breadcrumb: 'News',
-          functionCode: 'News'
-        },
-       //canActivate: [AuthGuard]
-      },
-      {
-        path: 'evse/news/detail/:id',
-        component: NewsDetailComponent,
-        data: {
-          title: 'News Detail',
-          breadcrumb: 'News Detail',
-          functionCode: 'News Detail'
-        },
-       //canActivate: [AuthGuard]
-      },
+
       {
         path: 'report/:kind',
         component: ReportComponent,
