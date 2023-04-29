@@ -10,6 +10,7 @@
 
         public const string Engineer_SEX = "Engineer_SEX";
         public const string Member_SEX = "Member_SEX";
+        public const string Member_Status = "Member_Status";
         public const string LandLord_SEX = "LandLord_SEX";
 
 

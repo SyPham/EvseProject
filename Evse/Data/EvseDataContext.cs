@@ -59,9 +59,97 @@ namespace Evse.Data
         public virtual DbSet<XAccountRole> XAccountRoles { get; set; }
         public virtual DbSet<XAccountSetting> XAccountSettings { get; set; }
         public virtual DbSet<User2Bank> User2Banks { get; set; }
-
+    public virtual DbSet<DeviceUser> DeviceUsers { get; set; }
+        public virtual DbSet<NotificationUser> NotificationUsers { get; set; }
+        public virtual DbSet<Topic> Topics { get; set; }
+        public virtual DbSet<TopicUser> TopicUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+             modelBuilder.Entity<DeviceUser>(entity =>
+            {
+                entity.ToTable("DeviceUser");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DeviceName).HasMaxLength(125);
+
+                entity.Property(e => e.ModelName).HasMaxLength(125);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.OsVersion).HasMaxLength(125);
+
+                entity.Property(e => e.Osname)
+                    .HasColumnName("OSName")
+                    .HasMaxLength(125);
+
+                entity.Property(e => e.Token).HasMaxLength(512);
+
+                entity.Property(e => e.UserId).HasColumnType("numeric(18, 0)");
+            });
+
+            modelBuilder.Entity<NotificationUser>(entity =>
+            {
+                entity.ToTable("NotificationUser");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Content).HasColumnType("ntext");
+
+                entity.Property(e => e.Description).HasMaxLength(512);
+
+                entity.Property(e => e.NotificationImage).HasMaxLength(512);
+
+                entity.Property(e => e.SendDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Title).HasMaxLength(512);
+
+                entity.Property(e => e.UserReciveId).HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UserSendId).HasColumnType("numeric(18, 0)");
+            });
+
+            modelBuilder.Entity<Topic>(entity =>
+            {
+                entity.ToTable("Topic");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Code).HasMaxLength(50);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(512);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Title).HasMaxLength(512);
+            });
+
+            modelBuilder.Entity<TopicUser>(entity =>
+            {
+                entity.ToTable("TopicUser");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Description).HasMaxLength(512);
+
+                entity.Property(e => e.TopicId).HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UserId).HasColumnType("numeric(18, 0)");
+            });
+
+
             modelBuilder.Entity<ReportError>(entity =>
             {
                 entity.ToTable("Report_Error");
@@ -1106,7 +1194,18 @@ namespace Evse.Data
             entity.Property(e => e.MemberIdcard)
                     .HasColumnName("Member_IDCARD")
                     .HasMaxLength(50);  
-                 
+                   entity.Property(e => e.CarName)
+                    .HasColumnName("Car_NAME")
+                    .HasMaxLength(200);
+                     entity.Property(e => e.CarNumber)
+                    .HasColumnName("Car_Number")
+                    .HasMaxLength(40);
+                     entity.Property(e => e.CarVIN)
+                    .HasColumnName("Car_VIN")
+                    .HasMaxLength(40);
+                       entity.Property(e => e.MemberStatus)
+                    .HasColumnName("Member_Status")
+                    .HasMaxLength(40);
             });
 
             modelBuilder.Entity<ParkingLot>(entity =>

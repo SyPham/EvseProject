@@ -1,15 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using NetUtility;
 using Newtonsoft.Json;
 
 namespace Evse.Helpers
 {
     public static class MyUtility
     {
+                public static List<string> GetRolesValue(this ClaimsPrincipal user)
+        {
+           return user.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x=>x.Value).ToList();
+        }
+         public static int GetUserId(this ClaimsPrincipal user)
+        {
+            return user.FindFirst(ClaimTypes.NameIdentifier).Value.ToInt();
+        }
+        public static string ToJsonString(this object value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            return JsonConvert.SerializeObject(value);
+        }
         private static readonly string _Salt = "K6KVX-6NWTF-2JPJ3-Q29H6-H8RC6";
         public static string ToEncryptPassword(this string password)
         {

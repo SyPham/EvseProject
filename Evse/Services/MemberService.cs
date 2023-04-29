@@ -32,6 +32,7 @@ namespace Evse.Services
         Task<OperationResult> UpdateFormAsync(MemberDto model);
         Task<OperationResult> UpdatePofileAsync(MemberProfileDto model);
         Task<OperationResult> UpdateFileAsync(MemberUploadFileDto model);
+        Task<MemberDto> GetByIdAndLangAsync(decimal id,string lang);
     }
     public class MemberService : ServiceBase<Member, MemberDto>, IMemberService, IScopeService
     {
@@ -69,12 +70,16 @@ IWebHostEnvironment currentEnvironment)
             return await _repo.FindAll(x => x.Guid == guid)
               .FirstOrDefaultAsync();
         }
-        public async Task<object> LoadData(DataManager data, string lang)
-        {
-            var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
+        public  async Task<MemberDto> GetByIdAndLangAsync(decimal id,string lang) {
+            return await Datasource(lang).Where(x => x.Id == id)
+              .FirstOrDefaultAsync();
+        }
+        private IQueryable<MemberDto> Datasource(string lang) {
+ var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
                               join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Member_SEX && x.Status == "Y") on a.MemberSex equals b.CodeNo into ab
                               from t in ab.DefaultIfEmpty()
-                            
+                            join c in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Member_Status && x.Status == "Y") on a.MemberStatus equals c.CodeNo into ac
+                              from status in ac.DefaultIfEmpty()
                               select new MemberDto
                               {
                                   Id = a.Id,
@@ -93,6 +98,9 @@ IWebHostEnvironment currentEnvironment)
 
                                   MemberLine = a.MemberLine,
                                   CarGuid = a.CarGuid,
+                                  CarName = a.CarName,
+                                  CarNumber = a.CarNumber,
+                                  CarVIN = a.CarVIN,
                                   PaymentGuid = a.PaymentGuid,
 
 
@@ -112,9 +120,16 @@ IWebHostEnvironment currentEnvironment)
                                   DeleteBy = a.DeleteBy,
                                   Status = a.Status,
                                   Guid = a.Guid,
+                                  MemberStatus = a.MemberStatus,
                                   MemberSexName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
+                                  StatusName = status == null ? "" : lang == Languages.EN ? status.CodeNameEn ?? status.CodeName : lang == Languages.VI ? status.CodeNameVn ?? status.CodeName : lang == Languages.CN ? status.CodeNameCn ?? status.CodeName : status.CodeName,
                               }).OrderByDescending(x => x.Id).AsQueryable();
-
+                              return datasource;
+        }
+        public async Task<object> LoadData(DataManager data, string lang)
+        {
+           
+            var datasource =Datasource(lang);
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering
                 datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
@@ -473,9 +488,15 @@ IWebHostEnvironment currentEnvironment)
                 {
                     item.MemberAddress = model.MemberAddress;
                     item.MemberEmail = model.MemberEmail;
+                    item.MemberIdcard = model.MemberIdcard;
                     item.MemberMobile = model.MemberMobile;
                     item.MemberName = model.MemberName;
                     item.MemberBirthday = model.MemberBirthday;
+                    item.MemberSex = model.MemberSex;
+                    item.CarName = model.CarName;
+                    item.CarNumber = model.CarNumber;
+                    item.CarVIN = model.CarVIN;
+                    item.CarGuid = model.CarGuid;
                     _repo.Update(item);
                     await _unitOfWork.SaveChangeAsync();
                       
