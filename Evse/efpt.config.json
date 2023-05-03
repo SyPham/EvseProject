@@ -15,19 +15,7 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[DeviceUser]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[NotificationUser]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Topic]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[TopicUser]",
+         "Name": "[dbo].[ImageConfig]",
          "ObjectType": 0
       }
    ],

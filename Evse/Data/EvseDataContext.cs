@@ -63,9 +63,65 @@ namespace Evse.Data
         public virtual DbSet<NotificationUser> NotificationUsers { get; set; }
         public virtual DbSet<Topic> Topics { get; set; }
         public virtual DbSet<TopicUser> TopicUsers { get; set; }
+        public virtual DbSet<ImageConfig> ImageConfigs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-             modelBuilder.Entity<DeviceUser>(entity =>
+            modelBuilder.Entity<ImageConfig>(entity =>
+            {
+                entity.ToTable("ImageConfig");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteBy)
+                    .HasColumnName("DELETE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.DeleteDate)
+                    .HasColumnName("DELETE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Path).HasMaxLength(1000);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Type).HasMaxLength(20);
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+
+                     entity.Property(e => e.Content)
+                    .HasColumnName("Content")
+                    .HasColumnType("ntext");
+                entity.Property(e => e.Title).HasMaxLength(200);
+            });
+            modelBuilder.Entity<DeviceUser>(entity =>
             {
                 entity.ToTable("DeviceUser");
 

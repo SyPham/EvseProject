@@ -44,6 +44,7 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<DeviceUser, DeviceUserDto>();
             CreateMap<Topic, TopicDto>();
             CreateMap<TopicUser, TopicUserDto>();
+            CreateMap<ImageConfig, ImageConfigDto>();
 
 
 

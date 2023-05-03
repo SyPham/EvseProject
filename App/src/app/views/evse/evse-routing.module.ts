@@ -11,6 +11,7 @@ import { BankComponent } from './bank/bank.component';
 import { ContractComponent } from './contract/contract.component';
 import { WebBannerComponent } from './web-banner/web-banner.component';
 import { WebNewsComponent } from './web-news/web-news.component';
+import { ImageConfigComponent } from './image-config/image-config.component';
 
 const routes: Routes = [
   
@@ -103,6 +104,16 @@ const routes: Routes = [
       functionCode: 'WebNews'
     },
    canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/image-config',
+    component: ImageConfigComponent,
+    data: {
+      title: 'Image Config',
+      breadcrumb: 'Image Config',
+      functionCode: 'Image Config'
+    },
+  // canActivate: [AuthGuard]
   }
 ];
 @NgModule({

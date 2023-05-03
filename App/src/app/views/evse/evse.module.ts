@@ -41,6 +41,8 @@ import { LandlordBankActionComponent } from './landlord/landlord-bank/landlord-b
 import { LandlordDetailComponent } from './landlord/landlord-detail/landlord-detail.component';
 import { LandlordDeviceComponent } from './landlord/landlord-device/landlord-device.component';
 import { LandlordDeviceActionComponent } from './landlord/landlord-device/landlord-device-action/landlord-device-action.component';
+import { ImageConfigComponent } from './image-config/image-config.component';
+import { ImageConfigActionComponent } from './image-config/image-config-action/image-config-action.component';
 
 interface Environment {
   production: boolean;
@@ -95,7 +97,9 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     LandlordBankActionComponent,
     LandlordDetailComponent,
     LandlordDeviceComponent,
-    LandlordDeviceActionComponent
+    LandlordDeviceActionComponent,
+    ImageConfigComponent,
+    ImageConfigActionComponent,
   ]
 })
 export class EvseModule {

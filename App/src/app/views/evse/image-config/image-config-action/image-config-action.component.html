@@ -1,0 +1,107 @@
+<ng-template #actionModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ title | translate }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+    <span aria-hidden="true">&times;</span>
+
+  </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="type">{{ "ImageConfig_Type" | translate }}</label>
+              <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+              <app-code-type-dropdownlist
+                id="ImageConfig_Type"
+                [codeType]="'ImageConfig_Type'"
+                [(selectedValue)]="model.type"
+              >
+              </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <label>{{ "ImageConfig_Title" | translate }} </label>
+            <span class="max-length">
+              ( {{ "Text length" | translate }} <= 200 )</span
+            >
+            <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+            <div class="form-group">
+              <input
+                maxlength="200"
+                type="text"
+                [(ngModel)]="model.title"
+                class="form-control"
+              />
+            </div>
+          </div>
+       
+
+
+          <div class="col-md-12 text-center">
+            <div class="kv-avatar">
+              <div class="file-loading">
+                <input
+                  id="avatar-1"
+                  name="avatar-1"
+                  (change)="onFileChangeLogo($event)"
+                  type="file"
+                  required
+                />
+              </div>
+            </div>
+            <div class="kv-avatar-hint">
+              <small>{{ 'Select file < 5000 KB' | translate }}</small>
+            </div>
+          </div>
+          
+          <div class="col-12">
+            <label>{{ "ImageConfig_Content" | translate }} </label>
+            <div class="form-group">
+              <textarea
+                class="form-control"
+                [(ngModel)]="model.content"
+                cols="4"
+                rows="4"
+              ></textarea>
+            </div>
+          </div>
+
+        <div class="col-12">
+          <label>{{ "AREA_COMMENT" | translate }} </label>
+          <div class="form-group">
+            <textarea
+              class="form-control"
+              [(ngModel)]="model.comment"
+              cols="4"
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+        </div>
+      </div>
+  <div class="modal-footer">
+
+    <button
+    type="button"
+    class="btn btn-light"
+    ngbTooltip="CLOSE"
+    (click)="modal.close('Close click')"
+  >
+    {{ "CLOSE" | translate }}
+  </button>
+  
+    <button
+    (click)="save()"
+    class="btn btn-primary"
+  >
+    {{ "SAVE" | translate }}
+  </button>
+  </div>
+</ng-template>

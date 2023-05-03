@@ -1,3 +1,20 @@
+export interface ImageConfig {
+    id: number;
+    type: string;
+    path: string;
+    comment: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    deleteDate: string | null;
+    deleteBy: number | null;
+    status: number | null;
+    guid: string;
+    file: any;
+    title: any;
+    content: any;
+}
 export interface Site {
     id: number;
     type: string;
