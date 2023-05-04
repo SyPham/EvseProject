@@ -49,6 +49,7 @@ import { FavoriteComponent } from './member/favorite/favorite.component';
 import { FavoriteActionComponent } from './member/favorite/favorite-action/favorite-action.component';
 import { DiscountComponent } from './member/discount/discount.component';
 import { DiscountActionComponent } from './member/discount/discount-action/discount-action.component';
+import { MaskedTextBoxModule } from '@syncfusion/ej2-angular-inputs';
 
 interface Environment {
   production: boolean;
@@ -76,6 +77,7 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     ChartModule,
     RichTextEditorModule,
     SharedModule.forRoot(),
+    MaskedTextBoxModule ,
     PigfarmCoreModule.forRoot(environment.apiUrl)
   ],
   exports: [

@@ -139,9 +139,13 @@ export interface Member {
     memberMobile: string;
     memberAddress: string;
     memberLine: string;
-    carGuid: string;
     paymentGuid: string;
     photoPath: string;
+    carGuid: any;
+    carName: any;
+    carNumber: any;
+    carVIN: any;
+    memberStatus
     file: any;
 }
 export interface Engineer {

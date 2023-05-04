@@ -325,6 +325,77 @@
                 />
               </div>
             </div>
+
+
+            <div class="col-6">
+              <div class="form-group">
+                <label for="CarName">{{
+                  "CarName" | translate
+                }}</label>
+                <span class="max-length">
+                  ( {{ "Text length" | translate }} <=200 )</span
+                >
+                <input
+                  [(ngModel)]="model.carName"
+                  maxlength="200"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            
+            <div class="col-6">
+              <div class="form-group">
+                <label for="CarNumber">{{
+                  "CarNumber" | translate
+                }}</label>
+                <ejs-maskedtextbox mask='LLL-[0-9][0-9][0-9][0-9]' [(ngModel)]="model.carNumber"></ejs-maskedtextbox>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label for="CarVIN">{{
+                  "CarVIN" | translate
+                }}</label>
+                <span class="max-length">
+                  ( {{ "Text length" | translate }} <=40 )</span
+                >
+                <input
+                  [(ngModel)]="model.carVIN"
+                  maxlength="40"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            
+            <div class="col-6">
+              <div class="form-group">
+                <label for="memberStatus">{{ "MemberStatus" | translate }}</label>
+                <app-code-type-dropdownlist
+                  id="memberStatus-remote"
+                  [codeType]="'Member_Status'"
+                  [(selectedValue)]="model.memberStatus"
+                >
+                </app-code-type-dropdownlist>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label for="Car_GUID">{{ "Car_GUID" | translate }}</label>
+                <app-code-type-dropdownlist
+                  id="memberStatus-remote"
+                  [codeType]="'Car_GUID'"
+                  [(selectedValue)]="model.carGuid"
+                >
+                </app-code-type-dropdownlist>
+              </div>
+            </div>
+
             <div class="col-12 text-center">
               <div class="kv-avatar">
                 <div class="file-loading">
@@ -597,6 +668,94 @@
           />
         </div>
       </div>
+
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="memberAddress">{{
+            "Member_ADDRESS" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 100 )</span
+          >
+          <input
+            [(ngModel)]="model.memberAddress"
+            maxlength="100"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="CarName">{{
+            "CarName" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <=200 )</span
+          >
+          <input
+            [(ngModel)]="model.carName"
+            maxlength="200"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="CarNumber">{{
+            "CarNumber" | translate
+          }}</label>
+          <ejs-maskedtextbox mask='000-000' [(ngModel)]="model.carNumber"></ejs-maskedtextbox>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="CarVIN">{{
+            "CarVIN" | translate
+          }}</label>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <=40 )</span
+          >
+          <input
+            [(ngModel)]="model.carVIN"
+            maxlength="40"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      
+      <div class="col-6">
+        <div class="form-group">
+          <label for="memberStatus">{{ "MemberStatus" | translate }}</label>
+          <app-code-type-dropdownlist
+            id="memberStatus-remote"
+            [codeType]="'Member_Status'"
+            [(selectedValue)]="model.memberStatus"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="Car_GUID">{{ "Car_GUID" | translate }}</label>
+          <app-code-type-dropdownlist
+            id="memberStatus-remote"
+            [codeType]="'Car_GUID'"
+            [(selectedValue)]="model.carGuid"
+          >
+          </app-code-type-dropdownlist>
+        </div>
+      </div>
+      
       <div class="col-12 text-center">
         <div class="kv-avatar">
           <div class="file-loading">
@@ -614,6 +773,7 @@
         </div>
       </div>
 
+      
       <div class="col-12">
         <label>{{ "Member_COMMENT" | translate }}</label>
         <div class="form-group">
