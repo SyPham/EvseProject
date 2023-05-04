@@ -1,0 +1,85 @@
+<div class="card">
+    <div class="card-body p-0">
+        <ejs-grid
+      #grid
+      id="grid"
+      [dataSource]="dataSource"
+      [allowPaging]="true"
+      [allowResizing]="true"
+      [allowSorting]="true"
+      [allowMultiSorting]='true'
+      [enableInfiniteScrolling]="true"
+      gridLines="Both"
+      [query]="query"
+      [editSettings]="editSettings"
+      [toolbar]="toolbarOptions"
+      (toolbarClick)="toolbarClick($event)"
+    (recordClick)="recordClick($event)"
+  
+      
+    >
+      <e-columns>
+  
+        <e-column
+        field="option"
+        [allowSorting]="false"
+        [allowSearching]="false"
+        [allowGrouping]="false"
+        [allowFiltering]="false"
+        [allowEditing]="false"
+        textAlign="Left"
+            headerTextAlign="Center"
+        width="80"
+        headerTextAlign="Center"
+        headerText="{{ 'OPTION' | translate}}"
+      >
+        <ng-template #template let-data>
+          <span (click)="delete(data.id)"class="delete-grid">
+            <i class="fa fa-trash"></i>
+          </span>
+          <span (click)="edit(data)" class="edit-grid">
+            <i class="fa fa-edit"></i>
+          </span>
+        </ng-template>
+      </e-column>
+  
+      <e-column
+      field="creditCardNo"
+      textAlign="Left"
+      headerTextAlign="Center"
+      headerText="{{ 'CreditCardNo' | translate }}"
+    >
+    </e-column>
+  
+    <e-column
+    field="creditCardMy"
+    textAlign="Left"
+    headerTextAlign="Center"
+    headerText="{{ 'CreditCard_My' | translate }}"
+  >
+  </e-column>
+  <e-column
+  field="creditCardCvc"
+  textAlign="Left"
+  headerTextAlign="Center"
+  headerText="{{ 'CreditCard_Cvc' | translate }}"
+>
+</e-column>
+       
+    
+        <e-column
+          field="id"
+          [allowSearching]="false"
+          textAlign="Left"
+          headerTextAlign="Center"
+          [isPrimaryKey]="true"
+          [visible]="false"
+          headerText="ID"
+        >
+        </e-column>
+      </e-columns>
+    </ejs-grid>
+  
+    </div>
+  </div>
+  <app-credit-card-action (saveChange)="saveChange()" [memberGuid]="memberGuid"></app-credit-card-action>

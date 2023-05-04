@@ -43,6 +43,12 @@ import { LandlordDeviceComponent } from './landlord/landlord-device/landlord-dev
 import { LandlordDeviceActionComponent } from './landlord/landlord-device/landlord-device-action/landlord-device-action.component';
 import { ImageConfigComponent } from './image-config/image-config.component';
 import { ImageConfigActionComponent } from './image-config/image-config-action/image-config-action.component';
+import { CreditCardComponent } from './member/credit-card/credit-card.component';
+import { CreditCardActionComponent } from './member/credit-card/credit-card-action/credit-card-action.component';
+import { FavoriteComponent } from './member/favorite/favorite.component';
+import { FavoriteActionComponent } from './member/favorite/favorite-action/favorite-action.component';
+import { DiscountComponent } from './member/discount/discount.component';
+import { DiscountActionComponent } from './member/discount/discount-action/discount-action.component';
 
 interface Environment {
   production: boolean;
@@ -100,6 +106,12 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     LandlordDeviceActionComponent,
     ImageConfigComponent,
     ImageConfigActionComponent,
+    CreditCardComponent,
+    CreditCardActionComponent,
+    FavoriteComponent,
+    FavoriteActionComponent,
+    DiscountComponent,
+    DiscountActionComponent
   ]
 })
 export class EvseModule {

@@ -64,8 +64,205 @@ namespace Evse.Data
         public virtual DbSet<Topic> Topics { get; set; }
         public virtual DbSet<TopicUser> TopicUsers { get; set; }
         public virtual DbSet<ImageConfig> ImageConfigs { get; set; }
+
+
+        public virtual DbSet<CreditCard> CreditCards { get; set; }
+        public virtual DbSet<Discount> Discounts { get; set; }
+        public virtual DbSet<Favorite> Favorites { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CreditCard>(entity =>
+            {
+                entity.ToTable("Credit_Card");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.CreditCardCvc)
+                    .HasColumnName("Credit_Card_CVC")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.CreditCardMy)
+                    .HasColumnName("Credit_Card_MY")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.CreditCardNo)
+                    .HasColumnName("Credit_Card_NO")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.DeleteBy)
+                    .HasColumnName("DELETE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.DeleteDate)
+                    .HasColumnName("DELETE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.MemberGuid)
+                    .HasColumnName("Member_GUID")
+                    .HasMaxLength(40);
+
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Discount>(entity =>
+            {
+                entity.ToTable("Discount");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteBy)
+                    .HasColumnName("DELETE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.DeleteDate)
+                    .HasColumnName("DELETE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.MemberGuid)
+                    .HasColumnName("Member_GUID")
+                    .HasMaxLength(40);
+
+
+                entity.Property(e => e.SiteGuid)
+                    .HasColumnName("Site_GUID")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DiscountTitle)
+                    .HasColumnName("Discount_Title")
+                    .HasMaxLength(40);
+                entity.Property(e => e.DiscountBody1)
+                  .HasColumnName("Discount_Body1")
+                  .HasMaxLength(100);
+                entity.Property(e => e.DiscountBody2)
+                  .HasColumnName("Discount_Body2")
+                  .HasMaxLength(100);
+                entity.Property(e => e.DiscountDeadline)
+                   .HasColumnName("Discount_Deadline")
+                   .HasColumnType("datetime");
+                entity.Property(e => e.DiscountLocation)
+                  .HasColumnName("Discount_Location")
+                  .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<Favorite>(entity =>
+            {
+                entity.ToTable("Favorite");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteBy)
+                    .HasColumnName("DELETE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.DeleteDate)
+                    .HasColumnName("DELETE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.MemberGuid)
+                    .HasColumnName("Member_GUID")
+                    .HasMaxLength(40);
+
+
+                entity.Property(e => e.SiteGuid)
+                    .HasColumnName("Site_GUID")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
             modelBuilder.Entity<ImageConfig>(entity =>
             {
                 entity.ToTable("ImageConfig");

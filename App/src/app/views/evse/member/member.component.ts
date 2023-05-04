@@ -402,4 +402,12 @@ export class MemberComponent extends BaseComponent implements OnInit {
     this.model = {...args.data};
     this.getAudit(this.model.id)
   }
+  onClickTab(value) {
+    if (!this.model.guid && value === 'Credit_Card') {
+     this.alertify.warning(this.translate.instant('Please choice a member'))
+     return;
+    }
+    this.active = value;
+    
+  }
 }

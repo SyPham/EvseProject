@@ -1,5 +1,5 @@
 
-  input, textarea {
+input, textarea {
     box-shadow: 0.5px 0.5px 1px;
   }
   label {
@@ -37,28 +37,4 @@
   height: 80px;
   border-radius: 5px;
   background-repeat: initial;
-}
-/* mobile width < 740px */
-@media only screen and (max-width: 46.1875rem) {
-  .left {
-    padding-right: 15px !important;
-    padding-bottom: 15px !important;
-  }
-}
-/* tablet width >= 740px and width < 1024px */
-@media only screen and (min-width: 46.1875rem) and (max-width: 63.9375rem) {
-  .left {
-    padding-right: 15px !important;
-    padding-bottom: 15px !important;
-
-  }
-}
-.e-grid .e-active {
-  background-color: #609b79 !important;
-}
-.hide {
-  visibility: hidden;
-}
-.show {
-  visibility: visible;
 }

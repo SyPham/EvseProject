@@ -113,7 +113,7 @@ const routes: Routes = [
       breadcrumb: 'Image Config',
       functionCode: 'Image Config'
     },
-  // canActivate: [AuthGuard]
+  canActivate: [AuthGuard]
   }
 ];
 @NgModule({

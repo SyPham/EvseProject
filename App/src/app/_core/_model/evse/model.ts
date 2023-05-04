@@ -277,3 +277,53 @@ export interface ReportError {
     errorFixedDate: string | null;
     errorFixedDetail: string;
 }
+export interface CreditCard {
+    id: number;
+    memberGuid: string;
+    creditCardNo: string;
+    creditCardMy: string;
+    creditCardCvc: string;
+    comment: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    deleteDate: string | null;
+    deleteBy: number | null;
+    status: number | null;
+    guid: string;
+}
+
+export interface Discount {
+    id: number;
+    memberGuid: string;
+    siteGuid: string;
+    discountTitle: string;
+    discountBody1: string;
+    discountBody2: string;
+    discountDeadline: string | null;
+    discountLocation: string;
+    comment: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    deleteDate: string | null;
+    deleteBy: number | null;
+    status: number | null;
+    guid: string;
+}
+export interface Favorite {
+    id: number;
+    memberGuid: string;
+    siteGuid: string;
+    comment: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    deleteDate: string | null;
+    deleteBy: number | null;
+    status: number | null;
+    guid: string;
+}

@@ -52,11 +52,14 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<User2MessageDto, User2Message>();
             CreateMap<ReportErrorDto, ReportError>();
 
-            CreateMap<NotificationUserDto, NotificationUser>();
-            CreateMap<DeviceUserDto, DeviceUser>();
-            CreateMap<TopicDto, Topic>();
-            CreateMap<TopicUserDto, TopicUser>();
-            CreateMap<ImageConfigDto, ImageConfig>();
+            CreateMap<NotificationUser, NotificationUserDto>();
+            CreateMap<DeviceUser, DeviceUserDto>();
+            CreateMap<Topic, TopicDto>();
+            CreateMap<TopicUser, TopicUserDto>();
+            CreateMap<ImageConfig, ImageConfigDto>();
+            CreateMap<CreditCard, CreditCardDto>();
+            CreateMap<Favorite, FavoriteDto>();
+            CreateMap<Discount, DiscountDto>();
 
         }
 

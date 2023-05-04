@@ -1,0 +1,65 @@
+<ng-template #actionModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{ title | translate }}</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+      <span aria-hidden="true">&times;</span>
+  
+    </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+
+        <div class="col-6">
+            <div class="form-group">
+              <label for="Site_GUID">{{ "Site_GUID" | translate }}</label>
+              <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+              <app-site-dropdownlist
+                id="Site_GUID"
+                [enabledLoad]="true"
+                [(selectedValue)]="model.siteGuid"
+              >
+              </app-site-dropdownlist>
+            </div>
+          </div>
+
+
+    
+          <div class="col-12">
+            <label>{{ "Favorite_COMMENT" | translate }} </label>
+            <div class="form-group">
+              <textarea
+                class="form-control"
+                [(ngModel)]="model.comment"
+                cols="4"
+                rows="4"
+              ></textarea>
+            </div>
+          </div>
+          </div>
+        </div>
+    <div class="modal-footer">
+  
+      <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    
+      <button
+      (click)="save()"
+      [disabled]="!model.siteGuid"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+    </div>
+  </ng-template>
+  

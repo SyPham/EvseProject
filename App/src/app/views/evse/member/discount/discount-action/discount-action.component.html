@@ -1,0 +1,138 @@
+<ng-template #actionModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{ title | translate }}</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+      <span aria-hidden="true">&times;</span>
+  
+    </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+
+        <div class="col-6">
+            <div class="form-group">
+              <label for="Site_GUID">{{ "Site_GUID" | translate }}</label>
+              <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+              <app-site-dropdownlist
+                id="Site_GUID"
+                [enabledLoad]="true"
+                [(selectedValue)]="model.siteGuid"
+              >
+              </app-site-dropdownlist>
+            </div>
+          </div>
+
+
+            <div class="col-6">
+                <label>{{ "DiscountTitle" | translate }} </label>
+                <span class="max-length">
+                  ( {{ "Text length" | translate }} <= 100 )</span
+                >
+              <span *ngIf="!(model.id > 0)" style="color: red">(*)</span>
+              <div class="form-group">
+                  <input
+                    maxlength="100"
+                    type="text"
+                    [(ngModel)]="model.discountTitle"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+  
+            <div class="col-6">
+              <label>{{ "DiscountBody1" | translate }} </label>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 100 )</span
+              >
+              <div class="form-group">
+                <input
+                  maxlength="100"
+                  type="text"
+                  [(ngModel)]="model.discountBody1"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            <div class="col-6">
+                <label>{{ "DiscountBody2" | translate }} </label>
+                <span class="max-length">
+                  ( {{ "Text length" | translate }} <= 100 )</span
+                >
+                <div class="form-group">
+                  <input
+                    maxlength="100"
+                    type="text"
+                    [(ngModel)]="model.discountBody2"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+            <div class="col-6">
+                    <div class="form-group">
+                    <label for="DiscountDeadline">{{
+                        "DiscountDeadline" | translate
+                    }}</label>
+                    <ejs-datepicker
+                        locale="en-US"
+                        format="yyyy/MM/dd"
+                        [(ngModel)]="model.discountDeadline"
+                    ></ejs-datepicker>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <label>{{ "DiscountLocation" | translate }} </label>
+                    <span class="max-length">
+                      ( {{ "Text length" | translate }} <= 100 )</span
+                    >
+                    <div class="form-group">
+                      <input
+                        maxlength="100"
+                        type="text"
+                        [(ngModel)]="model.discountLocation"
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+    
+          <div class="col-12">
+            <label>{{ "Discount_COMMENT" | translate }} </label>
+            <div class="form-group">
+              <textarea
+                class="form-control"
+                [(ngModel)]="model.comment"
+                cols="4"
+                rows="4"
+              ></textarea>
+            </div>
+          </div>
+          </div>
+        </div>
+    <div class="modal-footer">
+  
+      <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    
+      <button
+      (click)="save()"
+      [disabled]="!model.discountTitle || !model.siteGuid"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+    </div>
+  </ng-template>
+  

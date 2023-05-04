@@ -15,7 +15,15 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[ImageConfig]",
+         "Name": "[dbo].[Credit_Card]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Discount]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Favorite]",
          "ObjectType": 0
       }
    ],
