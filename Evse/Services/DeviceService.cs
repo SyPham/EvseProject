@@ -24,6 +24,7 @@ namespace Evse.Services
     public interface IDeviceService : IServiceBase<Device, DeviceDto>
     {
         Task<object> LoadData(DataManager data, string lang);
+        Task<object> LoadDataForMobile(DataManager data, string lang);
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
         Task<object> GetLandlordDevice(DataManager data, string lang,string landLordGuid);
@@ -127,6 +128,54 @@ IRepositoryBase<Site> repoSite)
                                   UpdateBy = a.UpdateBy,
                                   DeleteDate = a.DeleteDate,
                                   DeleteBy = a.DeleteBy,
+                                  Status = a.Status,
+                                  Guid = a.Guid,
+                                   Longitude = a.Longitude,
+                                  Latitude = a.Latitude,
+                                  DeviceTypeName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
+                              }).OrderByDescending(x => x.Id).AsQueryable();
+
+            var count = await datasource.CountAsync();
+            if (data.Where != null) // for filtering
+                datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
+            if (data.Sorted != null)//for sorting
+                datasource = QueryableDataOperations.PerformSorting(datasource, data.Sorted);
+            if (data.Search != null)
+                datasource = QueryableDataOperations.PerformSearching(datasource, data.Search);
+            count = await datasource.CountAsync();
+            if (data.Skip >= 0)//for paging
+                datasource = QueryableDataOperations.PerformSkip(datasource, data.Skip);
+            if (data.Take > 0)//for paging
+                datasource = QueryableDataOperations.PerformTake(datasource, data.Take);
+            return new
+            {
+                Result = await datasource.ToListAsync(),
+                Count = count
+            };
+        }
+         public async Task<object> LoadDataForMobile(DataManager data, string lang)
+        {
+            var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
+                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Lot_Type && x.Status == "Y") on a.DeviceType equals b.CodeNo into ab
+                              from t in ab.DefaultIfEmpty()
+                             join s in _repoSite.FindAll(x => x.Status == StatusConstants.Default) on a.SiteGuid equals s.Guid into asi
+                              from c in asi.DefaultIfEmpty()
+                              select new DeviceForMobileDto
+                              {
+                                  Id = a.Id,
+                                  ParkingLotGuid = a.ParkingLotGuid,
+                                  SiteGuid = a.SiteGuid,
+                                  DeviceType = a.DeviceType,
+                                  DeviceNo = a.DeviceNo,
+                                  DeviceName = a.DeviceName,
+                                  DeviceLeftNo = a.DeviceLeftNo,
+                                  DeviceLeftGuid = a.DeviceLeftGuid,
+                                  DeviceRightGuid = a.DeviceRightGuid,
+                                  DeviceRightNo = a.DeviceRightNo,
+                                    SiteNo = c.SiteNo,
+                                    SiteName = c.SiteName,
+                                    SiteAddress = c.SiteAddress,
+                                  Comment = a.Comment,
                                   Status = a.Status,
                                   Guid = a.Guid,
                                    Longitude = a.Longitude,

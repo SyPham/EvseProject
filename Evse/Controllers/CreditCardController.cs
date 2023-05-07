@@ -79,5 +79,11 @@ namespace Evse.Controllers
         {
             return Ok(await _service.GetAudit(id));
         }
+         [HttpGet]
+        public async Task<ActionResult> GetFirstAsync()
+        {
+            return Ok(await _service.GetFirstAsync());
+        }
+       
     }
 }

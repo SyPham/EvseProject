@@ -67,6 +67,13 @@ namespace Evse.Controllers
             var data = await _service.LoadData(request, lang);
             return Ok(data);
         }
+         [HttpPost]
+        public async Task<ActionResult> LoadDataForMobile([FromBody] DataManager request, string lang)
+        {
+
+            var data = await _service.LoadDataForMobile(request, lang);
+            return Ok(data);
+        }
         [HttpGet]
         public async Task<ActionResult> GetByGuid(string guid)
         {

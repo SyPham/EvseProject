@@ -60,6 +60,7 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<CreditCard, CreditCardDto>();
             CreateMap<Favorite, FavoriteDto>();
             CreateMap<Discount, DiscountDto>();
+            CreateMap<Payment, PaymentDto>();
 
         }
 

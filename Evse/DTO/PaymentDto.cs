@@ -5,11 +5,10 @@ using System.Collections.Generic;
 
 namespace Evse.DTO
 {
-    public partial class FavoriteDto
+    public partial class PaymentDto
     {
         public decimal Id { get; set; }
         public string MemberGuid { get; set; }
-        public string SiteGuid { get; set; }
         public string Comment { get; set; }
         public DateTime? CreateDate { get; set; }
         public decimal? CreateBy { get; set; }
@@ -19,18 +18,5 @@ namespace Evse.DTO
         public decimal? DeleteBy { get; set; }
         public decimal? Status { get; set; }
         public string Guid { get; set; }
-    }
-    public partial class AddFavoriteDto
-    {
-        public string MemberGuid { get; set; }
-        public string SiteGuid { get; set; }
-    }
-    public partial class FavoriteListItemDto
-    {
-        public decimal Id { get; set; }
-        public string SiteGuid { get; set; }
-        public string SiteName { get; set; }
-        public string SiteNo { get; set; }
-        public string SiteAddress { get; set; }
     }
 }

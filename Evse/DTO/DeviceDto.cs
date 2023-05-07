@@ -30,4 +30,27 @@ namespace Evse.DTO
     public string Longitude { get; set; }
         public string Latitude { get; set; }
     }
+ public partial class DeviceForMobileDto
+    {
+        public decimal Id { get; set; }
+        public string SiteGuid { get; set; }
+        public string SiteNo { get; set; }
+        public string SiteName { get; set; }
+        public string SiteAddress { get; set; }
+        public string ParkingLotGuid { get; set; }
+        public string DeviceType { get; set; }
+        public string DeviceNo { get; set; }
+        public string DeviceName { get; set; }
+        public string DeviceLeftNo { get; set; }
+        public string DeviceLeftGuid { get; set; }
+        public string DeviceRightNo { get; set; }
+        public string DeviceRightGuid { get; set; }
+        public string Comment { get; set; }
+        public decimal? Status { get; set; }
+        public string Guid { get; set; }
+        public string DeviceTypeName { get; set; }
+    public string Longitude { get; set; }
+        public string Latitude { get; set; }
+    }
+
 }

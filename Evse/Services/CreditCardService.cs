@@ -26,6 +26,7 @@ namespace Evse.Services
         Task<object> LoadData(DataManager data, string lang);
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
+        Task<CreditCard> GetFirstAsync();
    
     }
     public class CreditCardService : ServiceBase<CreditCard, CreditCardDto>, ICreditCardService, IScopeService
@@ -228,8 +229,9 @@ IWebHostEnvironment currentEnvironment)
             };
         }
 
-       
-
-
+        public async Task<CreditCard> GetFirstAsync()
+        {
+          return await _repo.FindAll(x => x.Status == 1).OrderByDescending(x=> x.Id).FirstOrDefaultAsync();
+        }
     }
 }

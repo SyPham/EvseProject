@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Evse.Controllers
 {
-    public class FavoriteController : ApiControllerBase
+    public class PaymentController : ApiControllerBase
     {
-        private readonly IFavoriteService _service;
+        private readonly IPaymentService _service;
 
-        public FavoriteController(IFavoriteService service)
+        public PaymentController(IPaymentService service)
         {
             _service = service;
         }
@@ -23,13 +23,13 @@ namespace Evse.Controllers
         }
        
         [HttpPost]
-        public async Task<ActionResult> AddAsync([FromBody] FavoriteDto model)
+        public async Task<ActionResult> AddAsync([FromBody] PaymentDto model)
         {
             return StatusCodeResult(await _service.AddAsync(model));
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateAsync([FromBody] FavoriteDto model)
+        public async Task<ActionResult> UpdateAsync([FromBody] PaymentDto model)
         {
             return StatusCodeResult(await _service.UpdateAsync(model));
         }
@@ -80,20 +80,6 @@ namespace Evse.Controllers
         {
             return Ok(await _service.GetAudit(id));
         }
-        [HttpGet]
-        public async Task<ActionResult> GetFavoritesForMobile(string memberGuid)
-        {
-            return Ok(await _service.GetFavoritesForMobile(memberGuid));
-        }
-         [HttpGet]
-        public async Task<ActionResult> GetFavoriteBySiteGuid(string siteGuid, string memberGuid)
-        {
-            return Ok(await _service.GetFavoriteBySiteGuid(siteGuid, memberGuid));
-        }
-        [HttpPut]
-        public async Task<ActionResult> ToggleFavorite([FromBody] AddFavoriteDto model)
-        {
-            return StatusCodeResult(await _service.ToggleFavorite(model));
-        }
+        
     }
 }

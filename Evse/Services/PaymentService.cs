@@ -21,19 +21,16 @@ using System.IO;
 
 namespace Evse.Services
 {
-    public interface IFavoriteService : IServiceBase<Favorite, FavoriteDto>
+    public interface IPaymentService : IServiceBase<Payment, PaymentDto>
     {
         Task<object> LoadData(DataManager data, string lang);
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
-        Task<OperationResult> ToggleFavorite(AddFavoriteDto favoriteDto);
-        Task<List<FavoriteListItemDto>> GetFavoritesForMobile(string memberGuid);
-        Task<FavoriteDto> GetFavoriteBySiteGuid(string guid,string memberGuid);
 
     }
-    public class FavoriteService : ServiceBase<Favorite, FavoriteDto>, IFavoriteService, IScopeService
+    public class PaymentService : ServiceBase<Payment, PaymentDto>, IPaymentService, IScopeService
     {
-        private readonly IRepositoryBase<Favorite> _repo;
+        private readonly IRepositoryBase<Payment> _repo;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly IRepositoryBase<Site> _repoSite;
@@ -42,8 +39,8 @@ namespace Evse.Services
         private readonly MapperConfiguration _configMapper;
         private readonly IEvseLoggerService _logger;
         private readonly IWebHostEnvironment _currentEnvironment;
-        public FavoriteService(
-            IRepositoryBase<Favorite> repo,
+        public PaymentService(
+            IRepositoryBase<Payment> repo,
             IRepositoryBase<CodeType> repoCodeType,
             IRepositoryBase<XAccount> repoXAccount,
             IRepositoryBase<Site> repoSite,
@@ -72,7 +69,6 @@ IWebHostEnvironment currentEnvironment)
                               {
 
                                   Id = a.Id,
-                                  SiteGuid = a.SiteGuid,
                                   MemberGuid = a.MemberGuid,
                                   Guid = a.Guid,
                                   Status = a.Status,
@@ -110,10 +106,9 @@ IWebHostEnvironment currentEnvironment)
         public async Task<object> LoadData(DataManager data, string lang)
         {
             var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
-                              select new FavoriteDto
+                              select new PaymentDto
                               {
                                   Id = a.Id,
-                                  SiteGuid = a.SiteGuid,
                                   MemberGuid = a.MemberGuid,
                                   Comment = a.Comment,
                                   CreateDate = a.CreateDate,
@@ -145,17 +140,17 @@ IWebHostEnvironment currentEnvironment)
             };
         }
 
-        public override async Task<List<FavoriteDto>> GetAllAsync()
+        public override async Task<List<PaymentDto>> GetAllAsync()
         {
-            var query = _repo.FindAll(x => x.Status == 1).ProjectTo<FavoriteDto>(_configMapper);
+            var query = _repo.FindAll(x => x.Status == 1).ProjectTo<PaymentDto>(_configMapper);
 
             var data = await query.ToListAsync();
             return data;
 
         }
-        public override async Task<OperationResult> AddAsync(FavoriteDto model)
+        public override async Task<OperationResult> AddAsync(PaymentDto model)
         {
-            var item = _mapper.Map<Favorite>(model);
+            var item = _mapper.Map<Payment>(model);
             item.Status = StatusConstants.Default;
             _repo.Add(item);
             try
@@ -234,88 +229,6 @@ IWebHostEnvironment currentEnvironment)
             };
         }
 
-        public async Task<OperationResult> ToggleFavorite(AddFavoriteDto favoriteDto)
-        {
-            var item = await _repo.FindAll(x => x.MemberGuid == favoriteDto.MemberGuid && x.SiteGuid == favoriteDto.SiteGuid).FirstOrDefaultAsync();
-            if (item == null)
-            {
-                var newItem = new Favorite();
-                newItem.SiteGuid = favoriteDto.SiteGuid;
-                newItem.MemberGuid = favoriteDto.MemberGuid;
-                newItem.Status = StatusConstants.Default;
-                _repo.Add(newItem);
-                operationResult = new OperationResult
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = MessageReponse.AddSuccess,
-                    Success = true,
-                    Data = newItem
-                };
-            } else
-            {
-                item.Status = item.Status == StatusConstants.Delete ?  StatusConstants.Default :  StatusConstants.Delete;
-                _repo.Update(item);
-                operationResult = new OperationResult
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = MessageReponse.AddSuccess,
-                    Success = true,
-                    Data = item
-                };
-            }
-            try
-            {
-                await _unitOfWork.SaveChangeAsync();
-            }
-            catch (Exception ex)
-            {
-                await _logger.LogStoreProcedure(new LoggerParams
-                {
-                    Type = EvseLogConst.Create,
-                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
-                }).ConfigureAwait(false);
-                operationResult = ex.GetMessageError();
-            }
-            return operationResult;
-        }
-
-        public async Task<List<FavoriteListItemDto>> GetFavoritesForMobile(string memberGuid)
-        {
-            var query = from a in _repo.FindAll(x=>x.MemberGuid == memberGuid && x.Status == StatusConstants.Default)
-                        
-                        select new FavoriteListItemDto
-                        {
-                            Id = a.Id,
-                                  SiteGuid = a.SiteGuid,
-
-                            SiteNo = (from b in _repoSite.FindAll() where b.Guid == a.SiteGuid select b.SiteNo).FirstOrDefault(),
-                            SiteName =(from b in _repoSite.FindAll() where b.Guid == a.SiteGuid select b.SiteName).FirstOrDefault(),
-                            SiteAddress =(from b in _repoSite.FindAll() where b.Guid == a.SiteGuid select b.SiteAddress).FirstOrDefault(),
-                        };
-            var items = await query.ToListAsync();
-
-            return items;
-        }
-
-        public async Task<FavoriteDto> GetFavoriteBySiteGuid(string siteGuid,string memberGuid)
-        {
-            return await (from a in _repo.FindAll(x => x.Status == StatusConstants.Default && x.SiteGuid    == siteGuid && x.MemberGuid == memberGuid)
-                              select new FavoriteDto
-                              {
-
-                                  Id = a.Id,
-                                  SiteGuid = a.SiteGuid,
-                                  MemberGuid = a.MemberGuid,
-                                  Guid = a.Guid,
-                                  Status = a.Status,
-                                  Comment = a.Comment,
-                                  CreateDate = a.CreateDate,
-                                  CreateBy = a.CreateBy,
-                                  UpdateDate = a.UpdateDate,
-                                  UpdateBy = a.UpdateBy,
-                                  DeleteDate = a.DeleteDate,
-                                  DeleteBy = a.DeleteBy,
-                              }).OrderByDescending(x => x.Id).FirstOrDefaultAsync();
-        }
+       
     }
 }

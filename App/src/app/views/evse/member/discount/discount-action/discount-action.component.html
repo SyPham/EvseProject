@@ -59,20 +59,7 @@
               </div>
             </div>
 
-            <div class="col-6">
-                <label>{{ "DiscountBody2" | translate }} </label>
-                <span class="max-length">
-                  ( {{ "Text length" | translate }} <= 100 )</span
-                >
-                <div class="form-group">
-                  <input
-                    maxlength="100"
-                    type="text"
-                    [(ngModel)]="model.discountBody2"
-                    class="form-control"
-                  />
-                </div>
-              </div>
+            
 
             <div class="col-6">
                     <div class="form-group">
@@ -101,7 +88,22 @@
                       />
                     </div>
                   </div>
-    
+                  <div class="col-12">
+                    <label>{{ "DiscountBody2" | translate }} </label>
+                    <span class="max-length">
+                      ( {{ "Text length" | translate }} <= 100 )</span
+                    >
+                    <div class="form-group">
+                      <textarea
+                      class="form-control"
+                      maxlength="100"
+                      [(ngModel)]="model.discountBody2"
+                      cols="4"
+                      rows="4"
+                    ></textarea>
+                     
+                    </div>
+                  </div>
           <div class="col-12">
             <label>{{ "Discount_COMMENT" | translate }} </label>
             <div class="form-group">
