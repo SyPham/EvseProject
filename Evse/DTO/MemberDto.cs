@@ -46,6 +46,7 @@ namespace Evse.DTO
         public string MemberSexName { get; set; }
         public string StatusName { get; set; }
         public string MemberStatus { get; set; }
+        public string LastLocation { get; set; }
 
 
     }
@@ -77,5 +78,11 @@ namespace Evse.DTO
 
 
     }
+  public partial class LastLocationDto
+    {
+        public string LastLocation { get; set; }
+        public string Guid { get; set; }
 
+
+    }
 }

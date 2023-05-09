@@ -33,6 +33,8 @@ namespace Evse.Services
         Task<OperationResult> UpdatePofileAsync(MemberProfileDto model);
         Task<OperationResult> UpdateFileAsync(MemberUploadFileDto model);
         Task<MemberDto> GetByIdAndLangAsync(decimal id,string lang);
+        Task<LastLocationDto> GetLastLocation(string guid);
+        Task<OperationResult> StoreLastLocation(LastLocationDto model);
     }
     public class MemberService : ServiceBase<Member, MemberDto>, IMemberService, IScopeService
     {
@@ -108,6 +110,7 @@ IWebHostEnvironment currentEnvironment)
                                   StartDate = a.StartDate,
                                   EndDate = a.EndDate,
                                   Lastlogin = a.Lastlogin,
+                             LastLocation = a.LastLocation,
                                   Lastuse = a.Lastuse,
 
 
@@ -521,6 +524,53 @@ IWebHostEnvironment currentEnvironment)
             }
             return operationResult;
 
+        }
+
+        public async Task<LastLocationDto> GetLastLocation(string guid)
+        {
+             var item = await _repo.FindAll().FirstOrDefaultAsync(x=> x.Guid == guid);
+            if (item != null) 
+            return new LastLocationDto {
+                Guid = guid,
+                LastLocation = item.LastLocation
+            };
+            else {
+                return null;
+            }
+        }
+
+        public async Task<OperationResult> StoreLastLocation(LastLocationDto model)
+        {
+             try
+            {
+                var item = await _repo.FindAll().FirstOrDefaultAsync(x=> x.Guid == model.Guid);
+                if (item != null)
+                {
+                 
+                    item.LastLocation = model.LastLocation;
+                    _repo.Update(item);
+                    await _unitOfWork.SaveChangeAsync();
+                      
+                }
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = model
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+               
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
         }
     }
 }

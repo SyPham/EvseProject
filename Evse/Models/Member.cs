@@ -40,5 +40,7 @@ namespace Evse.Models
         public string PaymentGuid { get; set; }
         public string PhotoPath { get; set; }
         public string MemberStatus { get; set; }
+        public string LastLocation { get; set; }
+
     }
 }

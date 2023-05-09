@@ -463,6 +463,7 @@ namespace Evse.Services
             userResponse.NickName = user.MemberName;
             userResponse.Avatar = user.PhotoPath;
             userResponse.AccountName =user.MemberName;
+            userResponse.LastLocation =user.LastLocation;
              userResponse.Area = "Member";
         
             LogStoreProcedure(user.Id, "LogIn").ConfigureAwait(false).GetAwaiter();

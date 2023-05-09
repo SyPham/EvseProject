@@ -61,5 +61,6 @@ namespace Evse.Models
         public string SiteGuid2 { get; set; }
         public string SiteGuid3 { get; set; }
         public string LocalLogin { get; set; }
+
     }
 }

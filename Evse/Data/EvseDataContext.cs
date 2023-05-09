@@ -1472,6 +1472,9 @@ namespace Evse.Data
                     .HasColumnName("ID")
                     .HasColumnType("numeric(18, 0)")
                     .ValueGeneratedOnAdd();
+         entity.Property(e => e.LastLocation)
+                    .HasColumnName("LastLocation")
+                    .HasMaxLength(200);
 
                 entity.Property(e => e.Comment)
                     .HasColumnName("COMMENT")
@@ -2369,7 +2372,7 @@ namespace Evse.Data
                 entity.Property(e => e.AccountNo)
                     .HasColumnName("Account_NO")
                     .HasMaxLength(20);
-
+       
                 entity.Property(e => e.AccountOrganization)
                     .HasColumnName("Account_Organization")
                     .HasColumnType("numeric(18, 0)");

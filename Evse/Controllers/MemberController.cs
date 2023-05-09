@@ -98,5 +98,15 @@ namespace Evse.Controllers
         {
             return Ok(await _service.GetAudit(id));
         }
+        [HttpGet]
+        public async Task<ActionResult> GetLastLocation(string guid)
+        {
+            return Ok(await _service.GetLastLocation(guid));
+        }
+        [HttpPut]
+        public async Task<ActionResult> StoreLastLocation([FromBody] LastLocationDto model)
+        {
+            return StatusCodeResult(await _service.StoreLastLocation(model));
+        }
     }
 }

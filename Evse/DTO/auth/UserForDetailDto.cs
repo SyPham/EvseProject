@@ -34,6 +34,7 @@ namespace Evse.DTO.auth
         public string FullName { get; set; }
         public string Area { get; set; }
         public string Avatar { get; set; }
+        public string LastLocation { get; set; }
      
     }
 }

@@ -143,7 +143,7 @@
               />
             </div>
           </div>
-          <div class="col-12  d-flex justify-content-center"  *ngIf="!(model.id > 0)">
+          <div class="col-12  d-flex justify-content-center"  *ngIf="model.id > 0">
             <ejs-qrcodegenerator  #barcode id="barcode" width="200px" height="150px" mode="SVG" [value]="model.guid" [displayText]=" {
               visibility: false
             }"></ejs-qrcodegenerator>

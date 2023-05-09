@@ -29,6 +29,7 @@ namespace Evse.Services
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(SiteDto model);
         Task<OperationResult> UpdateFormAsync(SiteDto model);
+        Task<object> LoadDataForMobile(DataManager data, string lang);
     }
     public class SiteService : ServiceBase<Site, SiteDto>, ISiteService, IScopeService
     {
@@ -168,7 +169,59 @@ IWebHostEnvironment currentEnvironment)
                 Count = count
             };
         }
+        public async Task<object> LoadDataForMobile(DataManager data, string lang)
+        {
+            var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
+                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Site_Type && x.Status == "Y") on a.Type equals b.CodeNo into ab
+                              from t in ab.DefaultIfEmpty()
+                              join c in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Site_Location && x.Status == "Y") on a.SiteLocation equals c.CodeNo into ac
+                              from l in ac.DefaultIfEmpty()
+                              select new SiteForMobileDto
+                              {
+                                  Id = a.Id,
+                                  Type = a.Type,
+                                  SiteNo = a.SiteNo,
+                                  SiteName = a.SiteName,
+                                  SitePrincipal = a.SitePrincipal,
+                                  SiteTel = a.SiteTel,
+                                  SiteAddress = a.SiteAddress,
+                                  SiteLocation = a.SiteLocation,
+                                  SitePhoto = a.SitePhoto,
 
+                                  Comment = a.Comment,
+                                  CreateDate = a.CreateDate,
+                                  CreateBy = a.CreateBy,
+                                  UpdateDate = a.UpdateDate,
+                                  UpdateBy = a.UpdateBy,
+                                  DeleteDate = a.DeleteDate,
+                                  DeleteBy = a.DeleteBy,
+                                  Status = a.Status,
+                                  Guid = a.Guid,
+                                  Longitude = a.Longitude,
+                                  Latitude = a.Latitude,
+                                  LandlordGuid = a.LandlordGuid,
+                                  TypeName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
+                                  SiteLocationName = l == null ? "" : lang == Languages.EN ? l.CodeNameEn ?? l.CodeName : lang == Languages.VI ? l.CodeNameVn ?? l.CodeName : lang == Languages.CN ? l.CodeNameCn ?? l.CodeName : l.CodeName,
+                              }).OrderByDescending(x => x.Id).AsQueryable();
+
+            var count = await datasource.CountAsync();
+            if (data.Where != null) // for filtering
+                datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
+            if (data.Sorted != null)//for sorting
+                datasource = QueryableDataOperations.PerformSorting(datasource, data.Sorted);
+            if (data.Search != null)
+                datasource = QueryableDataOperations.PerformSearching(datasource, data.Search);
+            count = await datasource.CountAsync();
+            if (data.Skip >= 0)//for paging
+                datasource = QueryableDataOperations.PerformSkip(datasource, data.Skip);
+            if (data.Take > 0)//for paging
+                datasource = QueryableDataOperations.PerformTake(datasource, data.Take);
+            return new
+            {
+                Result = await datasource.ToListAsync(),
+                Count = count
+            };
+        }
         public override async Task<List<SiteDto>> GetAllAsync()
         {
             var query = _repo.FindAll(x => x.Status == 1).ProjectTo<SiteDto>(_configMapper);
