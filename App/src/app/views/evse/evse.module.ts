@@ -50,6 +50,11 @@ import { FavoriteActionComponent } from './member/favorite/favorite-action/favor
 import { DiscountComponent } from './member/discount/discount.component';
 import { DiscountActionComponent } from './member/discount/discount-action/discount-action.component';
 import { MaskedTextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { CountyComponent } from './county/county.component';
+import { CountyActionComponent } from './county/county-action/county-action.component';
+import { TownshipComponent } from './county/township/township.component';
+import { TownshipActionComponent } from './county/township/township-action/township-action.component';
+import { QRCodeGeneratorAllModule } from '@syncfusion/ej2-angular-barcode-generator';
 
 interface Environment {
   production: boolean;
@@ -78,6 +83,7 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     RichTextEditorModule,
     SharedModule.forRoot(),
     MaskedTextBoxModule ,
+    QRCodeGeneratorAllModule ,
     PigfarmCoreModule.forRoot(environment.apiUrl)
   ],
   exports: [
@@ -113,7 +119,11 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     FavoriteComponent,
     FavoriteActionComponent,
     DiscountComponent,
-    DiscountActionComponent
+    DiscountActionComponent,
+    CountyComponent,
+    CountyActionComponent,
+    TownshipComponent,
+    TownshipActionComponent
   ]
 })
 export class EvseModule {

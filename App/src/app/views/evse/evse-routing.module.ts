@@ -12,9 +12,19 @@ import { ContractComponent } from './contract/contract.component';
 import { WebBannerComponent } from './web-banner/web-banner.component';
 import { WebNewsComponent } from './web-news/web-news.component';
 import { ImageConfigComponent } from './image-config/image-config.component';
+import { CountyComponent } from './county/county.component';
 
 const routes: Routes = [
-  
+  {
+    path: 'evse/county',
+    component: CountyComponent,
+    data: {
+      title: 'County',
+      breadcrumb: 'County',
+      functionCode: 'County'
+    },
+  // canActivate: [AuthGuard]
+  },
    {
     path: 'evse/home',
     component: HomeComponent,

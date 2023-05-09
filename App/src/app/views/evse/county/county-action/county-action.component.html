@@ -1,0 +1,116 @@
+<ng-template #actionModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{ title | translate }}</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+      <span aria-hidden="true">&times;</span>
+  
+    </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+           
+        <div class="col-6">
+          <label>{{ "CountyId" | translate }} </label>
+          <span *ngIf="!model.countyId" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 60 )</span
+          >
+          <div class="form-group">
+            <input
+              maxlength="60"
+              type="text"
+              [(ngModel)]="model.countyId"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+            <div class="col-6">
+              <label>{{ "County_Name" | translate }} </label>
+              <span *ngIf="!model.countyId" style="color: red">(*)</span>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 255 )</span
+              >
+              <div class="form-group">
+                <input
+                  maxlength="255"
+                  type="text"
+                  [(ngModel)]="model.countyName"
+                  class="form-control"
+                />
+              </div>
+            </div>
+  
+            <div class="col-6">
+                <label>{{ "County_CMT" | translate }} </label>
+                <span class="max-length">
+                  ( {{ "Text length" | translate }} <= 255 )</span
+                >
+                <div class="form-group">
+                  <input
+                    maxlength="255"
+                    type="text"
+                    [(ngModel)]="model.cmt"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+  
+            <div class="col-6">
+              <label>{{ "Latitude" | translate }}</label>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 20 )</span
+              >
+              <div class="form-group">
+                <input
+                  maxlength="20"
+                  type="text"
+                  [(ngModel)]="model.latitude"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            
+            <div class="col-6">
+              <label>{{ "Longitude" | translate }}</label>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 20 )</span
+              >
+              <div class="form-group">
+                <input
+                  maxlength="20"
+                  type="text"
+                  [(ngModel)]="model.longitude"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            
+          </div>
+        </div>
+    <div class="modal-footer">
+  
+      <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+    
+      <button
+      [disabled]="!model.countyName "
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+    </div>
+  </ng-template>
+  

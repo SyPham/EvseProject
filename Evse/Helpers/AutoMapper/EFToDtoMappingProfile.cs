@@ -61,7 +61,8 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<Favorite, FavoriteDto>();
             CreateMap<Discount, DiscountDto>();
             CreateMap<Payment, PaymentDto>();
-
+            CreateMap<Township, TownshipDto>();
+            CreateMap<County, CountyDto>();
         }
 
     }

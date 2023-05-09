@@ -1,0 +1,24 @@
+.title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    display: block;
+}
+.e-grid .e-active {
+    background-color: #609b79 !important;
+  }
+  
+  .no-gutters {
+    margin-right: 5px;
+    margin-left: 5px;
+  
+    > .col,
+    > [class*="col-"] {
+      padding-right: 8px;
+      padding-left: 0;
+    }
+    > [class*="col-"]:last-child {
+        padding-right: 0;
+        padding-left: 0;
+      }
+  }

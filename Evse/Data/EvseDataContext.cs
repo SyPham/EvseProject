@@ -25,6 +25,9 @@ namespace Evse.Data
         {
             _contextAccessor = contextAccessor;
         }
+        public virtual DbSet<County> Counties { get; set; }
+        public virtual DbSet<Township> Townships { get; set; }
+
         public virtual DbSet<User2Message> User2Messages { get; set; }
 
         public virtual DbSet<WebNews> WebNews { get; set; }
@@ -72,6 +75,136 @@ namespace Evse.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<County>(entity =>
+            {
+                entity.ToTable("COUNTY");
+
+                entity.Property(e => e.CountyId)
+                    .HasColumnName("COUNTY_ID")
+                    .HasMaxLength(60)
+                    .IsUnicode(false)
+                    .HasComment("縣市代號");
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1)
+                    .HasComment("刪除旗標；Y -刪除,N - 未刪除");
+
+                entity.Property(e => e.Cmt)
+                    .HasColumnName("CMT")
+                    .HasMaxLength(255)
+                    .HasComment("備註");
+
+                entity.Property(e => e.CountyName)
+                    .HasColumnName("COUNTY_NAME")
+                    .HasMaxLength(255)
+                    .HasComment("縣市名稱");
+
+                entity.Property(e => e.CountyNameOld)
+                    .HasColumnName("COUNTY_NAME_OLD")
+                    .HasMaxLength(255)
+                    .HasComment("舊縣市名稱");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)")
+                    .HasComment(" 建立人員");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasComment("建立日期");
+
+                entity.Property(e => e.Latitude)
+                    .HasColumnName("latitude")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.Longitude)
+                    .HasColumnName("longitude")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.SigningId)
+                    .HasColumnName("SIGNING_ID")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)")
+                    .HasComment(" 更新人員");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasComment(" 更新日期");
+            });
+
+            modelBuilder.Entity<Township>(entity =>
+            {
+                entity.ToTable("TOWNSHIP");
+
+                entity.Property(e => e.TownshipId)
+                    .HasColumnName("TOWNSHIP_ID")
+                    .HasMaxLength(60)
+                    .HasComment("鄉鎮市區代號");
+
+                entity.Property(e => e.CancelFlag)
+                    .HasColumnName("CANCEL_FLAG")
+                    .HasMaxLength(1)
+                    .HasComment("刪除旗標；Y -刪除,N - 未刪除");
+
+                entity.Property(e => e.Cmt)
+                    .HasColumnName("CMT")
+                    .HasMaxLength(255)
+                    .HasComment("備註");
+
+                entity.Property(e => e.CountyId)
+                    .HasColumnName("COUNTY_ID")
+                    .HasMaxLength(60)
+                    .HasComment("縣市代號");
+
+                entity.Property(e => e.CountyIdOld)
+                    .HasColumnName("COUNTY_ID_OLD")
+                    .HasMaxLength(60)
+                    .HasComment("舊縣市ID");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)")
+                    .HasComment("建立人員");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasComment("建立日期");
+
+                entity.Property(e => e.MlsId)
+                    .HasColumnName("MLS_ID")
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TownshipName)
+                    .HasColumnName("TOWNSHIP_NAME")
+                    .HasMaxLength(255)
+                    .HasComment("鄉鎮區名稱");
+
+                entity.Property(e => e.TownshipNameOld)
+                    .HasColumnName("TOWNSHIP_NAME_OLD")
+                    .HasMaxLength(255)
+                    .HasComment("舊行政區名稱");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)")
+                    .HasComment("更新人員");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasComment("更新日期");
+            });
+
             modelBuilder.Entity<CreditCard>(entity =>
             {
                 entity.ToTable("Credit_Card");

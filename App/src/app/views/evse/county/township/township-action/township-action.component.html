@@ -1,0 +1,101 @@
+<ng-template #actionModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{ title | translate }}</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+      <span aria-hidden="true">&times;</span>
+  
+    </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-6">
+          <label>{{ "TownshipId" | translate }} </label>
+          <span *ngIf="!model.townshipId" style="color: red">(*)</span>
+          <span class="max-length">
+            ( {{ "Text length" | translate }} <= 60 )</span
+          >
+          <div class="form-group">
+            <input
+              maxlength="60"
+              type="text"
+              [(ngModel)]="model.townshipId"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+            <div class="col-6">
+              <label>{{ "Township_Name" | translate }} </label>
+              <span *ngIf="!model.townshipId" style="color: red">(*)</span>
+              <span class="max-length">
+                ( {{ "Text length" | translate }} <= 255 )</span
+              >
+              <div class="form-group">
+                <input
+                  maxlength="255"
+                  type="text"
+                  [(ngModel)]="model.townshipName"
+                  class="form-control"
+                />
+              </div>
+            </div>
+  
+            <div class="col-6">
+                <label>{{ "Township_CMT" | translate }} </label>
+                <span class="max-length">
+                  ( {{ "Text length" | translate }} <= 255 )</span
+                >
+                <div class="form-group">
+                  <input
+                    maxlength="255"
+                    type="text"
+                    [(ngModel)]="model.cmt"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="col-6">
+                <label>{{ "Township_MLS_ID" | translate }} </label>
+                <span class="max-length">
+                  ( {{ "Text length" | translate }} <= 2 )</span
+                >
+                <div class="form-group">
+                  <input
+                    maxlength="2"
+                    type="text"
+                    [(ngModel)]="model.mlsId"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+         
+
+        </div>
+      </div>
+  
+      
+    <div class="modal-footer">
+      <button
+      type="button"
+      class="btn btn-light"
+      ngbTooltip="CLOSE"
+      (click)="modal.close('Close click')"
+    >
+      {{ "CLOSE" | translate }}
+    </button>
+      <button
+      [disabled]="!model.townshipName "
+      (click)="save()"
+      class="btn btn-primary"
+    >
+      {{ "SAVE" | translate }}
+    </button>
+    </div>
+  </ng-template>
+  

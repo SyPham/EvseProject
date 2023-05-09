@@ -11,4 +11,10 @@
         public const int Delete2 = -1;
         public const int Delete3 = 0;
     }
+    public class CancelFlagConstants
+    {
+        public const string YES = "Y";
+        public const string NO = "N";
+       
+    }
 }

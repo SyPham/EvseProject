@@ -331,3 +331,32 @@ export interface Favorite {
     status: number | null;
     guid: string;
 }
+
+export interface County {
+    countyId: string;
+    countyName: string;
+    cmt: string;
+    cancelFlag: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    signingId: number | null;
+    countyNameOld: string;
+    latitude: string;
+    longitude: string;
+}
+export interface Township {
+    countyId: string;
+    townshipId: string;
+    townshipName: string;
+    cmt: string;
+    cancelFlag: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    mlsId: string;
+    countyIdOld: string;
+    townshipNameOld: string;
+}
