@@ -15,11 +15,7 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[COUNTY]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[TOWNSHIP]",
+         "Name": "[dbo].[Device_error]",
          "ObjectType": 0
       }
    ],

@@ -53,6 +53,7 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<PaymentDto, Payment>();
             CreateMap<TownshipDto, Township>();
             CreateMap<CountyDto, County>();
+            CreateMap<DeviceErrorDto, DeviceError>();
 
 
 

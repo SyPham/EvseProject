@@ -25,6 +25,7 @@ namespace Evse.Data
         {
             _contextAccessor = contextAccessor;
         }
+        public virtual DbSet<DeviceError> DeviceErrors { get; set; }
         public virtual DbSet<County> Counties { get; set; }
         public virtual DbSet<Township> Townships { get; set; }
 
@@ -75,6 +76,89 @@ namespace Evse.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<DeviceError>(entity =>
+            {
+                entity.ToTable("Device_error");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteBy)
+                    .HasColumnName("DELETE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.DeleteDate)
+                    .HasColumnName("DELETE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeviceGuid)
+                    .HasColumnName("Device_GUID")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.DeviceL)
+                    .HasColumnName("Device_L")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.DeviceR)
+                    .HasColumnName("Device_R")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.EngineerGuid)
+                    .HasColumnName("Engineer_GUID")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.ErrorText)
+                    .HasColumnName("Error_Text")
+                    .HasMaxLength(1000);
+
+                entity.Property(e => e.ErrorType)
+                    .HasColumnName("Error_Type")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.LandLordGuid)
+                    .HasColumnName("LandLord_GUID")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.MemberGuid)
+                    .HasColumnName("Member_GUID")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.PhotoPath)
+                    .HasColumnName("Photo_Path")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<County>(entity =>
             {
                 entity.ToTable("COUNTY");
