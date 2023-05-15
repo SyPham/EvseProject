@@ -7,3 +7,6 @@
 input {
   cursor: pointer;
 }
+ul li {
+  list-style: none;
+}

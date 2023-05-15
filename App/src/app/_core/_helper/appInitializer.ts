@@ -8,15 +8,15 @@ export function appInitializer(authService: AuthService,authLandlordService: Aut
             //console.log('refresh token on app start up');
             const pathname = document.location.pathname;
             if (pathname.indexOf('mobile/landlord') !== -1) { 
-              authLandlordService.refreshTokenLandlord().subscribe().add(resolve);
+              authLandlordService?.refreshTokenLandlord().subscribe().add(resolve);
 
             }
            else  if (pathname.indexOf('mobile/landlord') !== -1) { 
-            authEngineerService.refreshTokenEngineer().subscribe().add(resolve);
+            authEngineerService?.refreshTokenEngineer().subscribe().add(resolve);
             } 
             else
             {
-              authService.refreshToken().subscribe().add(resolve);
+              authService?.refreshToken().subscribe().add(resolve);
             }
         });
 }
