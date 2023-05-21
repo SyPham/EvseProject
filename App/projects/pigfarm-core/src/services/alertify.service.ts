@@ -80,11 +80,28 @@ export class AlertifyService {
       }
     });
   }
-  confirm4(confirmButtonText = 'Yes',cancelButtonText = 'No', title: string, message: string, okCallback: () => void, cancelCallback: () => void ) {
+  confirm4(confirmButtonText = 'Yes',cancelButtonText = 'No', title: string, message: string, okCallback: () => void, cancelCallback: () => void , icon='warning') {
     Swal.fire({
       title,
       html: message,
-      icon: 'warning',
+      icon:icon,
+      showCancelButton: true,
+      confirmButtonText: confirmButtonText,
+      cancelButtonText: cancelButtonText
+    }).then((result) => {
+      if (result.value) {
+        okCallback();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        cancelCallback();
+      }
+    });
+  }
+  deleteConfirm(confirmButtonText = 'Yes',cancelButtonText = 'No', title: string, message: string, okCallback: () => void, cancelCallback: () => void ) {
+    Swal.fire({
+      title,
+      html: message,
+      icon:'question',
+      iconHtml: '<i class="fa fa-exclamation" aria-hidden="true"></i>',
       showCancelButton: true,
       confirmButtonText: confirmButtonText,
       cancelButtonText: cancelButtonText

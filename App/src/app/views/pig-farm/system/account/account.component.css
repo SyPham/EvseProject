@@ -31,3 +31,6 @@ label {
   border-radius: 5px;
   background-repeat: initial;
 }
+.page-text {
+  color:red;
+}

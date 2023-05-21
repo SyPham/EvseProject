@@ -21,9 +21,12 @@
       "commandName": "Project",
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "FIREBASE_KEY": "93JDQ3D83Z",
+        "IS_PRODUCT": "false",
+        "API_DOMAIN_URL": "http://localhost:58"
       },
-      "dotnetRunMessages": "true",
+      "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:58"
     },
     "Docker": {

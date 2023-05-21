@@ -1,4 +1,20 @@
-<div class="col-md-12" style="box-shadow: 1px 1px 20px; padding: 0">
+
+
+<div class="row" style="box-shadow: 1px 1px 20px; padding: 0">
+
+  <div class="col-12 my-2">
+    <button type="button" (click)="fnAdd(null)" class="btn btn-sm btn-success">{{ 'Add' | translate }}</button>
+  </div>
+  <div class="col-12 mb-2">
+    <div class="input-group mb-2" style="width: 300px;">
+      <input type="text" class="form-control" (keyup.enter)="fnSearch()"  [(ngModel)]="keyWord"  placeholder="{{ 'Type to search' | translate }}" >
+      <div class="input-group-append ml-2">
+        <button class="btn btn-outline-secondary" (click)="fnSearch()" type="button">{{ 'Search' | translate }}</button>
+      </div>
+    </div>
+  </div>
+
+<div class="col-md-12" >
   <div class="card main-card">
     <div class="card-body table-responsive p-0">
       <ejs-grid
@@ -12,7 +28,6 @@
         [locale]="locale"
         (actionBegin)="actionBegin($event)"
         (actionComplete)="actionComplete($event)"
-        [toolbar]="toolbarOptions"
         [pageSettings]="pageSettings"
         [searchSettings]='searchOptions'
         [allowExcelExport]="true"
@@ -34,64 +49,66 @@
             ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
           </button>
         </ng-template>
+
+        <ng-template #pagerTemplate let-data>
+          <pre
+          class="page-text"
+          [translate]="pageText"
+          [translateParams]="{ items: grid.pageSettings.totalRecordsCount }"
+          > </pre>
+         <div class="d-flex justify-content-center">
+          <ngb-pagination
+          [collectionSize]="grid.pageSettings.totalRecordsCount"
+          [(page)]="grid.pageSettings.currentPage"
+          [pageSize]="grid.pageSettings.pageSize"
+          [maxSize]="5"
+          [rotate]="true"
+          [ellipses]="false"
+          [boundaryLinks]="true"
+        >
+
+        <ng-template ngbPaginationFirst><i class="fa fa-step-backward"></i></ng-template>
+        <ng-template ngbPaginationLast><i class="fa fa-step-forward"></i></ng-template>
+        <ng-template ngbPaginationPrevious><i class="fa fa-caret-left"></i></ng-template>
+        <ng-template ngbPaginationNext><i class="fa fa-caret-right"></i></ng-template>
+        <ng-template ngbPaginationEllipsis>...</ng-template>
+        <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+
+      </ngb-pagination>
+         </div>
+          </ng-template>
+
         <e-columns>
-          <!-- <e-column
+          <e-column
             field="id"
 [allowSearching]="false"
             textAlign="Left"
           headerTextAlign="Center"
-            width="80"
+            [width]="80"
             [allowSorting]="false"
             [allowSearching]="false"
             [allowGrouping]="false"
             [allowFiltering]="false"
             [allowEditing]="false"
             isPrimaryKey="true"
-            headerText="#"
+            [headerText]="'NO.' | translate"
           >
             <ng-template #template let-data>
               {{ NO(data.index) }}
             </ng-template>
-          </e-column> -->
-
-          <e-column
-            field="option"
-            textAlign="Left"
-          headerTextAlign="Center"
-            width="80"
-            headerTextAlign="Center"
-            [allowSorting]="false"
-            [allowSearching]="false"
-            [allowGrouping]="false"
-            [allowFiltering]="false"
-            [allowEditing]="false"
-            headerText="{{ 'OPTION' | translate }}"
-          >
-            <ng-template #template let-data>
-              <span (click)="delete(data.accountId)" class="delete-grid">
-                <i class="fa fa-trash"></i>
-              </span>
-              <span (click)="openModal(optionModal, data)" class="edit-grid">
-                <i class="fa fa-edit"></i>
-              </span>
-              <span
-                (click)="openPermissionModal(permissionModal, data)"
-                class="permission-grid"
-              >
-                <i class="fa fa-cog"></i>
-              </span>
-            </ng-template>
           </e-column>
 
-          <e-column
+      
+
+          <!-- <e-column
             field="farmName"
             headerTextAlign="Center"
             width="120px"
             textAlign="Left"
             headerText="{{ 'ACCOUNT_FARM' | translate }}"
           >
-          </e-column>
-          <e-column
+          </e-column> -->
+          <!-- <e-column
             field="photoPath"
             textAlign="Left"
           headerTextAlign="Center"
@@ -110,15 +127,25 @@
                 [alt]="data.nickName"
               />
             </ng-template>
-          </e-column>
-          <e-column
+          </e-column> -->
+          <!-- <e-column
           field="accountNo"
           textAlign="Left"
           headerTextAlign="Center"
           width="80px"
           headerText="{{ 'ACCOUNT_NO' | translate }}"
         >
-        </e-column>
+        </e-column> -->
+
+        <e-column
+        field="uid"
+        width="120px"
+        textAlign="Left"
+      headerTextAlign="Center"
+        headerText="{{ 'ACCOUNT_USERNAME' | translate }}"
+      >
+      </e-column>
+
           <e-column
             field="accountName"
             width="120px"
@@ -127,16 +154,9 @@
             headerText="{{ 'ACCOUNT_NAME' | translate }}"
           >
           </e-column>
-          <e-column
-            field="uid"
-            width="120px"
-            textAlign="Left"
-          headerTextAlign="Center"
-            headerText="{{ 'ACCOUNT_USERNAME' | translate }}"
-          >
-          </e-column>
+      
 
-          <e-column
+          <!-- <e-column
             field="employeeNickName"
             width="120px"
             textAlign="Left"
@@ -151,7 +171,18 @@
           headerTextAlign="Center"
             headerText="{{ 'ACCOUNT_ACCOUNT_GROUP' | translate }}"
           >
-          </e-column>
+          </e-column> -->
+
+          <e-column
+          field="createDate"
+          editType="datetime"
+          format="yyyy-MM-dd HH:mm:ss"
+          textAlign="Left"
+        headerTextAlign="Center"
+          headerText="{{ 'Create_Date' | translate }}"
+        >
+        </e-column>
+
           <e-column
           field="statusName"
           textAlign="Left"
@@ -159,11 +190,36 @@
           headerText="{{ 'Account_Status' | translate }}"
         >
         </e-column>
+
+        <e-column
+        field="option"
+        textAlign="Left"
+      headerTextAlign="Center"
+        headerTextAlign="Center"
+        [allowSorting]="false"
+        [allowSearching]="false"
+        [allowGrouping]="false"
+        [allowFiltering]="false"
+        [allowEditing]="false"
+        headerText="{{ 'OPTION' | translate }}"
+      >
+        <ng-template #template let-data>
+       
+
+          <button type="button" (click)="fnEdit(data)" class="btn btn-sm btn-success">{{ 'Edit' | translate }}</button>
+          <button type="button" (click)="openPermissionModal(permissionModal, data)" class="btn btn-sm btn-primary mx-2">{{ 'Permission' | translate }}</button>
+          <button type="button" (click)="delete(data.accountId)" class="btn btn-sm btn-danger">{{ 'Delete' | translate }}</button>
+         
+      
+        </ng-template>
+      </e-column>
+
         </e-columns>
       </ejs-grid>
     </div>
     <!-- /.card-body -->
   </div>
+</div>
 </div>
 
 <ng-template #optionModal let-modal>

@@ -588,3 +588,19 @@ color: white;
 .e-schedule.e-device .e-toolbar-item.e-today {
   display: none !important;
 }
+.pagination .page-item .page-link {
+  border: none !important;
+
+}
+
+.pagination .page-item.active .page-link {
+  color: #1576B6!important;
+  background-color: #dee2e6!important;
+  border-color: #dee2e6!important;
+  border-radius: 5px;
+}
+.swal2-icon.swal2-question {
+  border-color: red !important;
+  background-color: red !important;
+  color: #fff !important;
+}

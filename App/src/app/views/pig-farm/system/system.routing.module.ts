@@ -12,6 +12,7 @@ import { ReportChartConfigComponent } from './report-chart-config/report-chart-c
 import { CodeTypeComponent } from './code-type/code-type.component';
 import { SettingDashboardComponent } from './setting-dashboard/setting-dashboard.component';
 import { ApplyOrderConfigComponent } from './apply-order-config';
+import { AccountActionComponent } from './account/account-action/account-action.component';
 
 const routes: Routes = [
   {
@@ -109,6 +110,17 @@ const routes: Routes = [
        {
         path: 'account',
         component: AccountComponent,
+        data: {
+          title: 'Account',
+          module: 'system',
+          breadcrumb: 'Account',
+          functionCode: 'Account'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/action/:id',
+        component: AccountActionComponent,
         data: {
           title: 'Account',
           module: 'system',

@@ -64,6 +64,7 @@ import { PigfarmCoreModule } from 'herr-core';
 import { environment } from 'src/environments/environment';
 declare var require: any;
 import { L10n, loadCldr, setCulture } from '@syncfusion/ej2-base';
+import { AccountActionComponent } from './account/account-action/account-action.component';
 loadCldr(
   require('cldr-data/supplemental/numberingSystems.json'),
   require('cldr-data/main/en/ca-gregorian.json'),
@@ -123,6 +124,7 @@ const IMG_PIPE = [
   declarations: [
     ...IMG_PIPE,
     AccountComponent,
+    AccountActionComponent,
     PrivilegeComponent,
     SystemComponent,
     XAccountGroupComponent,

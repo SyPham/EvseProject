@@ -311,6 +311,7 @@ IEvseLoggerService logger,
                             PhotoPath = x.PhotoPath,
                             AccountDomicileAddress = x.AccountDomicileAddress,
                             AccessTokenLineNotify = x.AccessTokenLineNotify,
+                            
                         };
 
             var data = await query.OrderByDescending(x => x.AccountId).ToListAsync();
