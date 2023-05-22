@@ -360,3 +360,67 @@ export interface Township {
     countyIdOld: string;
     townshipNameOld: string;
 }
+
+export interface Electrician {
+    id: number;
+    siteGuid: string;
+    uid: string;
+    upwd: string;
+    electricianNo: string;
+    electricianName: string;
+    electricianIdcard: string;
+    licensePath: string;
+    photoPath: string;
+    startDate: string | null;
+    endDate: string | null;
+    lastlogin: string | null;
+    lastuse: string | null;
+    comment: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    deleteDate: string | null;
+    deleteBy: number | null;
+    status: number | null;
+    guid: string;
+    electricianSex: string;
+    electricianBirthday: string | null;
+    electricianEmail: string;
+    electricianMobile: string;
+    electricianAddress: string;
+    electricianSexName: string;
+    file: any;
+}
+
+export interface Investor {
+    id: number;
+    siteGuid: string;
+    uid: string;
+    upwd: string;
+    investorNo: string;
+    investorName: string;
+    investorIdcard: string;
+    licensePath: string;
+    photoPath: string;
+    startDate: string | null;
+    endDate: string | null;
+    lastlogin: string | null;
+    lastuse: string | null;
+    comment: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    deleteDate: string | null;
+    deleteBy: number | null;
+    status: number | null;
+    guid: string;
+    investorSex: string;
+    investorBirthday: string | null;
+    investorEmail: string;
+    investorMobile: string;
+    investorAddress: string;
+    investorSexName: string;
+    file: any;
+}

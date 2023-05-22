@@ -15,7 +15,11 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Device_error]",
+         "Name": "[dbo].[Electrician]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Investor]",
          "ObjectType": 0
       }
    ],

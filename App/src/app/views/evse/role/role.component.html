@@ -1,0 +1,180 @@
+
+<div class="row" style="box-shadow: 1px 1px 20px; padding: 0">
+
+<div class="col-12 my-2">
+  <button type="button" (click)="fnAdd(null)" class="btn btn-sm btn-success">{{ 'Add' | translate }}</button>
+</div>
+<div class="col-12 mb-2">
+  <div class="input-group mb-2" style="width: 300px;">
+    <input type="text" class="form-control" (keyup.enter)="fnSearch()"  [(ngModel)]="keyWord"  placeholder="{{ 'Type to search' | translate }}" >
+    <div class="input-group-append ml-2">
+      <button class="btn btn-outline-secondary" (click)="fnSearch()" type="button">{{ 'Search' | translate }}</button>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="card main-card">
+    <!-- <div class="card-header">
+      <h3 class="card-title"><i class="fas fa-users"></i> User List
+      </h3>
+    </div> -->
+    <!-- /.card-header -->
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+      #grid
+      id="grid"
+      [dataSource]="data"
+      [allowPaging]="true"
+      [allowResizing]="true"
+      [allowSorting]="true"
+      gridLines="Both"
+      [query]="query"
+      [locale]="locale"
+      (actionBegin)="actionBegin($event)"
+      (actionComplete)="actionComplete($event)"
+      [editSettings]="editSettings"
+      [allowExcelExport]="true"
+      [pageSettings]="pageSettings"
+      (recordDoubleClick)="onDoubleClick($event)"
+      (rowSelected)="rowSelected($event)"
+      (toolbarClick)="toolbarClick($event)"
+      (headerCellInfo)='headerCellInfo($event)'
+      (excelExportComplete)="excelExpComplete($event)"
+      >
+      <ng-template #odsTemplate let-data>
+        <button
+          class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+          type="button"
+          id="grid_odsexport"
+          tabindex="-1"
+          (click)="odsExport()"
+          style="width: auto"
+        >
+          <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+          ><span class="e-tbar-btn-text">{{ 'Ods Export' | translate}} </span>
+        </button>
+      </ng-template>
+      <ng-template #parentTemplate let-data>
+        <ejs-dropdownlist id='toolbar_dropdown'
+              [allowFiltering]="true"
+              [fields]="fields"
+              [dataSource]="codeTypeData"
+              [(ngModel)]="codeTypeItem"
+              (change)="onChange($event)"
+              [placeholder]="'Choose a code type' | translate"
+              style="width: 200px;"
+              (filtering)='onFiltering2($event)'
+            >
+            <ng-template #itemTemplate let-data>
+              <div *ngIf="data.id === 'All'">
+                {{data.name | translate}}
+              </div>
+              <div *ngIf="data.id !== 'All'">
+                {{data.name }}
+              </div>
+          </ng-template>
+          </ejs-dropdownlist>
+</ng-template>
+<ng-template #pagerTemplate let-data>
+  <pre
+  class="page-text"
+  [translate]="pageText"
+  [translateParams]="{ items: grid.pageSettings.totalRecordsCount }"
+  > </pre>
+ <div class="d-flex justify-content-center">
+  <ngb-pagination
+  [collectionSize]="grid.pageSettings.totalRecordsCount"
+  [(page)]="grid.pageSettings.currentPage"
+  [pageSize]="grid.pageSettings.pageSize"
+  [maxSize]="5"
+  [rotate]="true"
+  [ellipses]="false"
+  [boundaryLinks]="true"
+>
+
+<ng-template ngbPaginationFirst><i class="fa fa-step-backward"></i></ng-template>
+<ng-template ngbPaginationLast><i class="fa fa-step-forward"></i></ng-template>
+<ng-template ngbPaginationPrevious><i class="fa fa-caret-left"></i></ng-template>
+<ng-template ngbPaginationNext><i class="fa fa-caret-right"></i></ng-template>
+<ng-template ngbPaginationEllipsis>...</ng-template>
+<ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+
+</ngb-pagination>
+ </div>
+  </ng-template>
+      <e-columns>
+        <e-column
+            field="id"
+[allowSearching]="false"
+            textAlign="Left"
+          headerTextAlign="Center"
+            [width]="80"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            isPrimaryKey="true"
+            [headerText]="'NO.' | translate"
+          >
+            <ng-template #template let-data>
+              {{ NO(data.index) }}
+            </ng-template>
+          </e-column>
+        <e-column
+        field="codeType1"
+        textAlign="Left"
+        [visible]="false"
+        [allowSearching]="false"
+          headerTextAlign="Center"
+        [validationRules]='commonRules'
+        headerText="{{ 'CODE_TYPE' | translate }}"
+      >
+      </e-column>
+        <e-column
+        field="codeNo"
+        textAlign="Left"
+          headerTextAlign="Center"
+        [validationRules]='commonRules'
+        headerText="{{ 'Role NO' | translate }}"
+      >
+      </e-column>
+
+        <e-column
+          field="codeName"
+          textAlign="Left"
+          headerTextAlign="Center"
+          [validationRules]='requireNameRules'
+          headerText="{{ 'Role name' | translate }}"
+        >
+        </e-column>
+       
+        <e-column
+        field="option"
+        textAlign="Left"
+      headerTextAlign="Center"
+        headerTextAlign="Center"
+        [allowSorting]="false"
+        [allowSearching]="false"
+        [allowGrouping]="false"
+        [allowFiltering]="false"
+        [allowEditing]="false"
+        headerText="{{ 'OPTION' | translate }}"
+      >
+        <ng-template #template let-data>
+       
+
+          <button type="button" (click)="fnEdit(data)" class="btn btn-sm btn-success mr-2">{{ 'Edit' | translate }}</button>
+          <button type="button" (click)="delete(data.accountId)" class="btn btn-sm btn-danger">{{ 'Delete' | translate }}</button>
+         
+      
+        </ng-template>
+      </e-column>
+      </e-columns>
+      </ejs-grid>
+
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+</div>

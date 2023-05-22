@@ -13,8 +13,19 @@ import { WebBannerComponent } from './web-banner/web-banner.component';
 import { WebNewsComponent } from './web-news/web-news.component';
 import { ImageConfigComponent } from './image-config/image-config.component';
 import { CountyComponent } from './county/county.component';
+import { RoleComponent } from './role/role.component';
 
 const routes: Routes = [
+  {
+    path: 'evse/role',
+    component: RoleComponent,
+    data: {
+      title: 'Role',
+      breadcrumb: 'Role',
+      functionCode: 'Role'
+    },
+  // canActivate: [AuthGuard]
+  },
   {
     path: 'evse/county',
     component: CountyComponent,

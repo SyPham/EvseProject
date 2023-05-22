@@ -12,7 +12,9 @@
         public const string Member_SEX = "Member_SEX";
         public const string Member_Status = "Member_Status";
         public const string LandLord_SEX = "LandLord_SEX";
-
+        public const string Investor_SEX = "Investor_SEX";
+        public const string Electrician_SEX = "Electrician_SEX";
+        
 
         public const string Account_Unit = "Account_Unit";
         public const string Employee_Status = "Employee_Status";

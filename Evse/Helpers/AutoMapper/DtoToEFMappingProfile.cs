@@ -54,7 +54,8 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<TownshipDto, Township>();
             CreateMap<CountyDto, County>();
             CreateMap<DeviceErrorDto, DeviceError>();
-
+            CreateMap<InvestorDto, Investor>();
+            CreateMap<ElectricianDto, Electrician>();
 
 
         }

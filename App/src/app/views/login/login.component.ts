@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/_core/_service/auth.service';
 import { PermissionService } from 'src/app/_core/_service/permission.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SystemGroupNo } from 'src/app/_core/enum/SystemGroupNo';
+import { environment } from 'src/environments/environment';
+import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -26,6 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   remember = false;
   loading = 0;
   key: string;
+  roles: any;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -49,6 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   ngOnInit(): void {
+    this.getRoles();
     const accessToken = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refresh_token');
     if (accessToken && refreshToken && this.route.routeConfig.path === 'login') {
@@ -69,7 +73,26 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.authService
       .login(this.username, this.password).toPromise();
   }
-
+  getRoles() {
+    new DataManager({
+      url: `${
+        environment.apiUrl
+      }CodeType/GetDataDropdownlist?lang=${localStorage.getItem(
+        "lang"
+      )}&codeType=RoleList`,
+      adaptor: new UrlAdaptor(),
+      crossDomain: true,
+    })
+      .executeQuery(
+        new Query()
+          .skip(0)
+          .take(1000)
+          .addParams("lang", localStorage.getItem("lang"))
+      )
+      .then((data: any) => {
+        this.roles = data.result;
+      });
+  }
   async login() {
     if (!this.username || !this.password) {
       return;

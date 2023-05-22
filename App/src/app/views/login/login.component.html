@@ -7,12 +7,14 @@
        
           <img src="../../../assets/images/logo.png" alt="logo" style="padding-bottom: 10px;" />
           <h3 style="color:#5D3422">{{'EVSE 後台管理系統' | translate}}</h3>
-          <ul>
-            <!-- To Render RadioButton. -->
+          <!-- <ul>
             <li><ejs-radiobutton routerLink="/login" label="{{'Web Login' | translate}}" name="web" checked="true"></ejs-radiobutton></li>
             <li><ejs-radiobutton routerLink="/mobile/landlord-login-2" label="{{'Landlord' | translate}}" name="landlord"></ejs-radiobutton></li>
             <li><ejs-radiobutton routerLink="/mobile/engineer-login" label="{{'Engineer' | translate}}" name="engineer"></ejs-radiobutton></li>
-            </ul>
+            </ul> -->
+            <ul *ngFor="let item of roles" class="row" >
+              <li class="col-4"><ejs-radiobutton routerLink="/login" [label]="item.name" name="web" [checked]="item.guid === 'admin'"></ejs-radiobutton></li>
+              </ul>
           <div class="account">
           
             <input type="text"  placeholder="{{'Username' | translate}}" [(ngModel)]="username"
