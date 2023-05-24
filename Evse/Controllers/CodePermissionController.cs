@@ -63,5 +63,10 @@ namespace Evse.Controllers
         {
             return Ok(await _service.GetAudit(id));
         }
+        [HttpGet]
+       public async Task<ActionResult> GetPermissionsByRoleId(string role, string lang)
+        {
+            return Ok(await _service.GetPermissionsByRoleId(role, lang));
+        }
     }
 }

@@ -7,36 +7,39 @@
        
           <img src="../../../assets/images/logo.png" alt="logo" style="padding-bottom: 10px;" />
           <h3 style="color:#5D3422">{{'EVSE 後台管理系統' | translate}}</h3>
-          <!-- <ul>
-            <li><ejs-radiobutton routerLink="/login" label="{{'Web Login' | translate}}" name="web" checked="true"></ejs-radiobutton></li>
-            <li><ejs-radiobutton routerLink="/mobile/landlord-login-2" label="{{'Landlord' | translate}}" name="landlord"></ejs-radiobutton></li>
-            <li><ejs-radiobutton routerLink="/mobile/engineer-login" label="{{'Engineer' | translate}}" name="engineer"></ejs-radiobutton></li>
-            </ul> -->
-            <ul *ngFor="let item of roles" class="row" >
-              <li class="col-4"><ejs-radiobutton routerLink="/login" [label]="item.name" name="web" [checked]="item.guid === 'admin'"></ejs-radiobutton></li>
-              </ul>
+          <div class="d-flex justify-content-around">
+            <div>
+              <ul *ngFor="let item of roles" class="row" >
+                <li class="col-4"><ejs-radiobutton routerLink="/login" [(value)]="item.guid" (change)="onChange($event)" [label]="item.name" name="web" [checked]="item.guid === 'Admin'"></ejs-radiobutton></li>
+                </ul>
+            </div>
+            <div>
+              <ul *ngFor="let item of roles2" class="row" >
+                <li class="col-4"><ejs-radiobutton routerLink="/login" [(value)]="item.guid" (change)="onChange($event)" [label]="item.name" name="web" [checked]="item.guid === 'Admin'"></ejs-radiobutton></li>
+                </ul>
+            </div>
+          </div>
+           
+              
           <div class="account">
           
             <input type="text"  placeholder="{{'Username' | translate}}" [(ngModel)]="username"
             name="username"  /><span></span>
           </div>
-          <div class="account">
-            <input type="password" name='password' placeholder="{{'Password' | translate}}" [(ngModel)]="password" />
+          <div class="account password">
+            <input [type]="inputType" name='password' placeholder="{{'Password' | translate}}" [(ngModel)]="password" />
+           <span class="eye" (click)="togglePassword()">
+            <i class="fa fa-eye" *ngIf="inputType==='password'" ></i>
+            <i class="fa fa-eye-slash" *ngIf="inputType==='text'" ></i>
+           </span>
           </div>
 
-          <input type="checkbox" id="remember" name="remember" (change)="onChangeRemember($event)" [(ngModel)]="remember" />
-          
-          <label> {{'Remember account' | translate}} </label>
-          <input type="hidden" value="xxx" />
+          <div class="forgot-password"><a href="/forgot-password">{{'Forgot password?' | translate}}</a></div>
           <button class="btn-login" id='submit' [disabled]="!username || !password" [class.disabled]="!username || !password">
 
             <span *ngIf="loading == 1" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             {{'Login' | translate}}
           </button>
-          <div class="link_box">
-              <div class="l-item"><a href="/forgot-password">{{'Forgot password?' | translate}}</a></div>
-              <!-- <div class="l-item txt-r"><a href="/forgot-username">{{'Forgot username?' | translate}}</a></div> -->
-          </div>
           <a class="icn_home" [routerLink]="'/home'"><i class="fas fa-2x fa-home"></i></a>
       </form>
   </div>

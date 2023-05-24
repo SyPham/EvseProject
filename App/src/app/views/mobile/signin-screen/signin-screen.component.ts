@@ -65,7 +65,7 @@ export class SigninScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   authentication() {
     return this.authService
-      .login(this.username, this.password).toPromise();
+      .login(this.username, this.password, "").toPromise();
   }
 
   async login() {

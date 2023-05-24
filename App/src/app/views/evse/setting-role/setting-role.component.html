@@ -1,0 +1,62 @@
+<div class="card" style="height:90vh">
+  <div class="card-body">
+
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <label class="mb-0">{{'ID' | translate}}: </label>
+      </div>
+      <div class="col-sm-3 text-secondary">
+        <input type="text" [placeholder]="'Enter ID'"  class="form-control">
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <label class="mb-0">{{'Roles' | translate}}: </label>
+      </div>
+      <div class="col-sm-6 text-secondary">
+        <ejs-dropdownlist
+        [(value)]="role"
+        [dataSource]="dataSource"
+        [placeholder]="'Choice a role' | translate"
+        [fields]="remoteFields"
+        [query]="query"
+        (change)="changeRole($event)"
+      ></ejs-dropdownlist>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <label class="mb-0">{{'Memo' | translate}}: </label>
+      </div>
+      <div class="col-sm-6 text-secondary">
+        <textarea rows="5" [placeholder]="'Enter memo'"  class="form-control"></textarea>
+      </div>
+    </div>
+
+
+    <div class="row mb-3">
+      <div class="col-sm-2">
+        <label class="mb-0">{{'Permission' | translate}}: </label>
+      </div>
+      <div class="col-sm-6 text-secondary">
+      <div class="row">
+        <div class="col-6">
+          <div class="form-check" *ngFor="let item of data">
+            <input type="checkbox" (change)="checkedPermission($event,item)" [id]="item.name" [checked]="item.checked" class="form-check-input" >
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-check" *ngFor="let item of data2">
+            <input type="checkbox" (change)="checkedPermission($event,item)" [id]="item.name" [checked]="item.checked" class="form-check-input" >
+            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+  </div>
+</div>

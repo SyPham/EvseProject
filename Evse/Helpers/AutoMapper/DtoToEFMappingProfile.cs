@@ -56,6 +56,10 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<DeviceErrorDto, DeviceError>();
             CreateMap<InvestorDto, Investor>();
             CreateMap<ElectricianDto, Electrician>();
+            CreateMap<RoleDto, Role>();
+            CreateMap<RoleDetailDto, RoleDetail>();
+            CreateMap<AccountDto, Account>();
+            CreateMap<Account2Dto, Account2>();
 
 
         }

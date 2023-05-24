@@ -25,6 +25,10 @@ namespace Evse.Data
         {
             _contextAccessor = contextAccessor;
         }
+        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<Account2> Account2s { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<RoleDetail> RoleDetails { get; set; }
         public virtual DbSet<DeviceError> DeviceErrors { get; set; }
         public virtual DbSet<County> Counties { get; set; }
         public virtual DbSet<Township> Townships { get; set; }
@@ -78,6 +82,312 @@ namespace Evse.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.ToTable("Account");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AccountAddress)
+                    .HasColumnName("Account_Address")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.AccountBirthday)
+                    .HasColumnName("Account_Birthday")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.AccountEmail)
+                    .HasColumnName("Account_Email")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.AccountGroup)
+                    .HasColumnName("Account_Group")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.AccountIdcard)
+                    .HasColumnName("Account_IDCARD")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.AccountLevel)
+                    .HasColumnName("Account_Level")
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+
+                entity.Property(e => e.AccountMobile)
+                    .HasColumnName("Account_Mobile")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.AccountName)
+                    .HasColumnName("Account_NAME")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.AccountNo)
+                    .HasColumnName("Account_NO")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.AccountSex)
+                    .HasColumnName("Account_SEX")
+                    .HasMaxLength(1);
+
+                entity.Property(e => e.Comment).HasColumnType("text");
+
+                entity.Property(e => e.ContactName)
+                    .HasColumnName("Contact_Name")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.ContactRel)
+                    .HasColumnName("Contact_Rel")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.ContactTel)
+                    .HasColumnName("Contact_Tel")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteBy)
+                    .HasColumnName("DELETE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.DeleteDate)
+                    .HasColumnName("DELETE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnName("End_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Lastlogin)
+                    .HasColumnName("lastlogin")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Lastuse)
+                    .HasColumnName("lastuse")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.LicensePath)
+                    .HasColumnName("License_Path")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("Start_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Status).HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Uid)
+                    .HasColumnName("UID")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Upwd)
+                    .IsRequired()
+                    .HasColumnName("UPWD")
+                    .HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<Account2>(entity =>
+            {
+                entity.ToTable("Account2");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AccountAddress)
+                    .HasColumnName("Account_Address")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.AccountBirthday)
+                    .HasColumnName("Account_Birthday")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.AccountEmail)
+                    .HasColumnName("Account_Email")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.AccountGroup)
+                    .HasColumnName("Account_Group")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.AccountIdcard)
+                    .HasColumnName("Account_IDCARD")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.AccountLevel)
+                    .HasColumnName("Account_Level")
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+
+                entity.Property(e => e.AccountMobile)
+                    .HasColumnName("Account_Mobile")
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.AccountName)
+                    .HasColumnName("Account_NAME")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.AccountNo)
+                    .HasColumnName("Account_NO")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.AccountSex)
+                    .HasColumnName("Account_SEX")
+                    .HasMaxLength(1);
+
+                entity.Property(e => e.Comment).HasColumnType("text");
+
+                entity.Property(e => e.ContactName)
+                    .HasColumnName("Contact_Name")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.ContactRel)
+                    .HasColumnName("Contact_Rel")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.ContactTel)
+                    .HasColumnName("Contact_Tel")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteBy)
+                    .HasColumnName("DELETE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.DeleteDate)
+                    .HasColumnName("DELETE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnName("End_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Lastlogin)
+                    .HasColumnName("lastlogin")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Lastuse)
+                    .HasColumnName("lastuse")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.LicensePath)
+                    .HasColumnName("License_Path")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnName("Start_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Status).HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.Uid)
+                    .HasColumnName("UID")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Upwd)
+                    .IsRequired()
+                    .HasColumnName("UPWD")
+                    .HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.ToTable("Role");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.RoleName)
+                    .HasColumnName("Role_Name")
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<RoleDetail>(entity =>
+            {
+                entity.ToTable("Role_Detail");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.MenuName)
+                    .HasColumnName("Menu_Name")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.PermissionName)
+                    .HasColumnName("Permission_Name")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpperGuid)
+                    .HasColumnName("Upper_GUID")
+                    .HasMaxLength(40);
+            });
+
             modelBuilder.Entity<Electrician>(entity =>
             {
                 entity.ToTable("Electrician");
@@ -2349,30 +2659,6 @@ namespace Evse.Data
                 entity.Property(e => e.EndDate)
                     .HasColumnName("END_DATE")
                     .HasColumnType("datetime");
-
-                entity.Property(e => e.FarmGgp)
-                    .HasColumnName("Farm_GGP")
-                    .HasColumnType("numeric(18, 0)");
-
-                entity.Property(e => e.FarmGp)
-                    .HasColumnName("Farm_GP")
-                    .HasColumnType("numeric(18, 0)");
-
-                entity.Property(e => e.FarmGrower)
-                    .HasColumnName("Farm_GROWER")
-                    .HasColumnType("numeric(18, 0)");
-
-                entity.Property(e => e.FarmNursery)
-                    .HasColumnName("Farm_NURSERY")
-                    .HasColumnType("numeric(18, 0)");
-
-                entity.Property(e => e.FarmPmpf)
-                    .HasColumnName("Farm_PMPF")
-                    .HasColumnType("numeric(18, 0)");
-
-                entity.Property(e => e.FarmSemen)
-                    .HasColumnName("Farm_SEMEN")
-                    .HasColumnType("numeric(18, 0)");
 
                 entity.Property(e => e.Guid)
                     .HasColumnName("GUID")

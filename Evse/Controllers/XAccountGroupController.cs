@@ -67,6 +67,12 @@ namespace Evse.Controllers
         {
             return Ok(await _service.StorePermission(model));
         }
+        [HttpPost]
+        public async Task<ActionResult> StorePermissionForCheckBox(StorePermissionForCheckBoxDto request)
+        {
+            return Ok(await _service.StorePermissionForCheckBox(request));
+        }
+        
         [HttpGet]
         public async Task<ActionResult> GetPermissionsDropdown(string lang, string accountGuid)
         {

@@ -15,11 +15,19 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Electrician]",
+         "Name": "[dbo].[Account]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Investor]",
+         "Name": "[dbo].[Account2]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Role]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Role_Detail]",
          "ObjectType": 0
       }
    ],

@@ -76,6 +76,13 @@ namespace Evse.DTO
         public List<string> Permissions { get; set; }
 
     }
+public partial class StorePermissionForCheckBoxDto
+    {
+        public string Guid { get; set; }
+       
+        public string Permission { get; set; }
+
+    }
 
     public partial class ForgotUsernameDto
     {

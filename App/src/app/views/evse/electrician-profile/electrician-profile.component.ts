@@ -1,3 +1,4 @@
+
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { Profile } from 'src/app/_core/_model/xaccount';
@@ -10,11 +11,11 @@ import { DataManager, Query, ODataV4Adaptor } from '@syncfusion/ej2-data';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  selector: 'app-electrician-profile',
+  templateUrl: './electrician-profile.component.html',
+  styleUrls: ['./electrician-profile.component.css']
 })
-export class ProfileComponent implements OnInit,AfterViewInit {
+export class ElectricianProfileComponent implements OnInit,AfterViewInit {
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   file: any;
@@ -53,8 +54,8 @@ export class ProfileComponent implements OnInit,AfterViewInit {
   pageSizeSetting: any;
   constructor(
     private utilityService: UtilitiesService,
-    private alertify: AlertifyService,
     private service: XAccountService,
+    private alertify: AlertifyService,
     private trans: TranslateService,
     ) { }
 

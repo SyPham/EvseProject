@@ -14,6 +14,8 @@ import { WebNewsComponent } from './web-news/web-news.component';
 import { ImageConfigComponent } from './image-config/image-config.component';
 import { CountyComponent } from './county/county.component';
 import { RoleComponent } from './role/role.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SettingRoleComponent } from './setting-role/setting-role.component';
 
 const routes: Routes = [
   {
@@ -135,6 +137,36 @@ const routes: Routes = [
       functionCode: 'Image Config'
     },
   canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/profile/account',
+    component: ProfileComponent,
+    data: {
+      title: 'Account Profile',
+      breadcrumb: 'Account Profile',
+      functionCode: 'Account Profile'
+    },
+  //canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/profile/electrician',
+    component: ProfileComponent,
+    data: {
+      title: 'Electrician Profile',
+      breadcrumb: 'Electrician Profile',
+      functionCode: 'Electrician Profile'
+    },
+  //canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/setting-role',
+    component: SettingRoleComponent,
+    data: {
+      title: 'Setting Role',
+      breadcrumb: 'Setting Role',
+      functionCode: 'Setting Role'
+    },
+  //canActivate: [AuthGuard]
   }
 ];
 @NgModule({

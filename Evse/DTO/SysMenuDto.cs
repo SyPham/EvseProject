@@ -53,12 +53,6 @@ namespace Evse.DTO
         public string ChartYAxisNameVn { get; set; }
         public string ChartYAxisNameCn { get; set; }
 
-        public decimal? FarmGgp { get; set; }
-        public decimal? FarmGp { get; set; }
-        public decimal? FarmPmpf { get; set; }
-        public decimal? FarmSemen { get; set; }
-        public decimal? FarmNursery { get; set; }
-        public decimal? FarmGrower { get; set; }
     }
     public partial class ChartSettingDto
     {

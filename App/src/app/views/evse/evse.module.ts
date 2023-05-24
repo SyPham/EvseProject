@@ -56,6 +56,9 @@ import { TownshipComponent } from './county/township/township.component';
 import { TownshipActionComponent } from './county/township/township-action/township-action.component';
 import { QRCodeGeneratorAllModule } from '@syncfusion/ej2-angular-barcode-generator';
 import { RoleComponent } from './role/role.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ElectricianProfileComponent } from './electrician-profile/electrician-profile.component';
+import { SettingRoleComponent } from './setting-role/setting-role.component';
 
 interface Environment {
   production: boolean;
@@ -125,7 +128,10 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     CountyComponent,
     CountyActionComponent,
     TownshipComponent,
-    TownshipActionComponent
+    TownshipActionComponent,
+    ProfileComponent,
+    ElectricianProfileComponent,
+    SettingRoleComponent
   ]
 })
 export class EvseModule {

@@ -23,6 +23,7 @@ namespace Evse.Services
         Task<object> GetPermissionsDropdown(string accountGuid, string lang);
         Task<object> GetPermissions(string accountGuid, string lang);
         Task<OperationResult> StorePermission(StorePermissionDto request);
+        Task<OperationResult> StorePermissionForCheckBox(StorePermissionForCheckBoxDto request);
     }
     public class XAccountGroupService : ServiceBase<XAccountGroup, XAccountGroupDto>, IXAccountGroupService
     {
@@ -271,7 +272,7 @@ _logger = logger;
         {
             var query = _repo.FindAll(x=> x.Status == 1).ProjectTo<XAccountGroupDto>(_configMapper);
 
-            var data = await query.OrderByDescending(x=>x.Id).ToListAsync();
+            var data = await query.OrderBy(x=>x.GroupName).ToListAsync();
             return data;
 
         }
@@ -348,6 +349,46 @@ _logger = logger;
                 updateBy,
                 updateDate
             };
+        }
+
+        public async Task<OperationResult> StorePermissionForCheckBox(StorePermissionForCheckBoxDto request)
+        {
+            try
+            {
+                var ap = await _repoXAccountGroupPermission.FindAll(x => x.UpperGuid == request.Guid && x.CodeNo == request.Permission).FirstOrDefaultAsync();
+
+                if (ap != null)
+                {
+                    _repoXAccountGroupPermission.Remove(ap);
+                }
+                else
+                {
+                 
+                    _repoXAccountGroupPermission.Add(new XAccountGroupPermission
+                        {
+                            CodeNo = request.Permission,
+                            UpperGuid = request.Guid
+                        });
+                }
+
+                await _unitOfWork.SaveChangeAsync();
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.AddSuccess,
+                    Success = true,
+                    Data = request.Permission
+                };
+            }
+            catch (Exception ex)
+            {
+                    await _logger.LogStoreProcedure(new LoggerParams {
+                    Type= EvseLogConst.Create,
+                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
         }
     }
 }

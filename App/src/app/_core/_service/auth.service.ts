@@ -53,9 +53,9 @@ export class AuthService implements OnDestroy {
     window.removeEventListener('storage', this.storageEventListener.bind(this));
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string, role: string) {
     return this.http
-      .post<OperationResult>(`${this.apiUrl}/login`, { username, password })
+      .post<OperationResult>(`${this.apiUrl}/login`, { username, password, role })
       .pipe(
         map(res => {
           const applicationUser = res.data as ApplicationUser;

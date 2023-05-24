@@ -29,6 +29,12 @@ namespace Evse.Services
         Task<object> DeleteUploadFile(decimal key);
         Task<OperationResult> AddFormAsync(ElectricianDto model);
         Task<OperationResult> UpdateFormAsync(ElectricianDto model);
+
+        Task<OperationResult> CheckPermission(string permissionName);
+        Task<object> GetPermissionsDropdown(string accountGuid, string lang);
+        Task<object> GetPermissions(string accountGuid, string lang);
+        Task<OperationResult> StorePermission(StorePermissionDto request);
+
     }
     public class ElectricianService : ServiceBase<Electrician, ElectricianDto>, IElectricianService, IScopeService
     {
@@ -399,6 +405,24 @@ IWebHostEnvironment currentEnvironment)
             }
         }
 
+        public Task<OperationResult> CheckPermission(string permissionName)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task<object> GetPermissionsDropdown(string accountGuid, string lang)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object> GetPermissions(string accountGuid, string lang)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult> StorePermission(StorePermissionDto request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

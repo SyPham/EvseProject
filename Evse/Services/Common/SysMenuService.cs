@@ -74,12 +74,6 @@ IEvseLoggerService logger
             {
                 var item = _mapper.Map<SysMenu>(model);
                 item.Status = 1;
-                item.FarmGgp = 1;
-                item.FarmGp = 1;
-                item.FarmPmpf = 1;
-                item.FarmGrower = 1;
-                item.FarmNursery = 1;
-                item.FarmSemen = 1;
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
 
@@ -125,14 +119,6 @@ IEvseLoggerService logger
                 item.ChartUnit = model.ChartUnit;
                 item.MenuType = model.MenuType;
 
-
-                item.FarmGgp = model.FarmGgp;
-                item.FarmGp = model.FarmGp;
-                item.FarmGrower = model.FarmGrower;
-                item.FarmNursery = model.FarmNursery;
-                item.FarmPmpf = model.FarmPmpf;
-                item.FarmSemen = model.FarmSemen;
-
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
 
@@ -172,12 +158,7 @@ IEvseLoggerService logger
                                    Url = x.MenuLink,
                                    SortId = x.SortId ?? 0,
                                    Icon = x.MenuIcon,
-                                   x.FarmGgp,
-                                   x.FarmGp,
-                                   x.FarmPmpf,
-                                   x.FarmGrower,
-                                   x.FarmNursery,
-                                   x.FarmSemen,
+                                  
                                    Name = lang == Languages.EN ? (x.MenuNameEn == "" || x.MenuNameEn == null ? x.MenuName : x.MenuNameEn) : lang == Languages.VI ? (x.MenuNameVn == "" || x.MenuNameVn == null ? x.MenuName : x.MenuNameVn) : lang == Languages.TW ? x.MenuName : lang == Languages.CN ? (x.MenuNameCn == "" || x.MenuNameCn == null ? x.MenuName : x.MenuNameCn) : x.MenuName
 
                                }).ToListAsync();
@@ -191,12 +172,6 @@ IEvseLoggerService logger
                 SortId = x.SortId,
                 Icon = x.Icon,
                 Name = x.Name,
-                Ggp = x.FarmGgp,
-                Gp = x.FarmGp,
-                Pmpf = x.FarmPmpf,
-                Semen = x.FarmSemen,
-                Nursery = x.FarmNursery,
-                Grower = x.FarmGrower,
             });
 
             return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
@@ -247,12 +222,6 @@ IEvseLoggerService logger
                                    Url = x.MenuLink,
                                    SortId = x.SortId ?? 0,
                                    Icon = x.MenuIcon,
-                                   x.FarmGgp,
-                                   x.FarmGp,
-                                   x.FarmPmpf,
-                                   x.FarmGrower,
-                                   x.FarmNursery,
-                                   x.FarmSemen,
                                    Name = lang == Languages.EN ? (x.MenuNameEn == "" || x.MenuNameEn == null ? x.MenuName : x.MenuNameEn) : lang == Languages.VI ? (x.MenuNameVn == "" || x.MenuNameVn == null ? x.MenuName : x.MenuNameVn) : lang == Languages.TW ? x.MenuName : lang == Languages.CN ? (x.MenuNameCn == "" || x.MenuNameCn == null ? x.MenuName : x.MenuNameCn) : x.MenuName
 
                                }).ToListAsync();
@@ -266,12 +235,7 @@ IEvseLoggerService logger
                 SortId = x.SortId,
                 Icon = x.Icon,
                 Name = x.Name,
-                Ggp = x.FarmGgp,
-                Gp = x.FarmGp,
-                Pmpf = x.FarmPmpf,
-                Semen = x.FarmSemen,
-                Nursery = x.FarmNursery,
-                Grower = x.FarmGrower,
+              
             });
 
             return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
@@ -326,12 +290,6 @@ IEvseLoggerService logger
                                    Url = x.MenuLink,
                                    SortId = x.SortId ?? 0,
                                    Icon = x.MenuIcon,
-                                   x.FarmGgp,
-                                   x.FarmGp,
-                                   x.FarmPmpf,
-                                   x.FarmGrower,
-                                   x.FarmNursery,
-                                   x.FarmSemen,
                                    Name = lang == Languages.EN ? (x.MenuNameEn == "" || x.MenuNameEn == null ? x.MenuName : x.MenuNameEn) : lang == Languages.VI ? (x.MenuNameVn == "" || x.MenuNameVn == null ? x.MenuName : x.MenuNameVn) : lang == Languages.TW ? x.MenuName : lang == Languages.CN ? (x.MenuNameCn == "" || x.MenuNameCn == null ? x.MenuName : x.MenuNameCn) : x.MenuName
 
                                }).ToListAsync();
@@ -345,12 +303,7 @@ IEvseLoggerService logger
                 SortId = x.SortId,
                 Icon = x.Icon,
                 Name = x.Name,
-                Ggp = x.FarmGgp,
-                Gp = x.FarmGp,
-                Pmpf = x.FarmPmpf,
-                Semen = x.FarmSemen,
-                Nursery = x.FarmNursery,
-                Grower = x.FarmGrower,
+        
             });
 
             return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
@@ -406,12 +359,6 @@ IEvseLoggerService logger
                     x.UpperId,
                     x.SortId,
                     x.Status,
-                    x.FarmGgp,
-                    x.FarmGp,
-                    x.FarmGrower,
-                    x.FarmNursery,
-                    x.FarmPmpf,
-                    x.FarmSemen,
                     x.StoredProceduresName,
                     x.ReportType,
                     x.MenuType
@@ -450,12 +397,6 @@ IEvseLoggerService logger
                     x.UpperId,
                     x.SortId,
                     x.Status,
-                    x.FarmGgp,
-                    x.FarmGp,
-                    x.FarmGrower,
-                    x.FarmNursery,
-                    x.FarmPmpf,
-                    x.FarmSemen,
                     x.ReportType,
                     x.StoredProceduresName,
                     x.MenuType
@@ -506,12 +447,7 @@ IEvseLoggerService logger
                 x.ReportType,
                 x.SortId,
                 x.Status,
-                x.FarmGgp,
-                x.FarmGp,
-                x.FarmGrower,
-                x.FarmNursery,
-                x.FarmPmpf,
-                x.FarmSemen
+          
 
             });
             var count = await datasource.CountAsync();
@@ -634,12 +570,7 @@ IEvseLoggerService logger
                 x.ReportType,
                 x.SortId,
                 x.Status,
-                x.FarmGgp,
-                x.FarmGp,
-                x.FarmGrower,
-                x.FarmNursery,
-                x.FarmPmpf,
-                x.FarmSemen
+               
             });
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering
@@ -685,12 +616,7 @@ IEvseLoggerService logger
                 x.ReportType,
                 x.SortId,
                 x.Status,
-                x.FarmGgp,
-                x.FarmGp,
-                x.FarmGrower,
-                x.FarmNursery,
-                x.FarmPmpf,
-                x.FarmSemen
+               
             });
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering

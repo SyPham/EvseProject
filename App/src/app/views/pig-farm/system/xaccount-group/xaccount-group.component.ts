@@ -25,6 +25,7 @@ export class XAccountGroupComponent extends BaseComponent implements OnInit {
   data: XAccountGroup[] = [];
   password = '';
   modalReference: NgbModalRef;
+  pageText = 'Total Records Count {{items}} items'
 
   @ViewChild('grid') public grid: GridComponent;
   model: XAccountGroup;

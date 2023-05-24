@@ -22,11 +22,14 @@ namespace Evse.Services
     {
         Task<object> LoadData(DataManager data);
         Task<object> GetAudit(object id);
+        Task<object> GetPermissionsByRoleId(string role, string lang);
     }
     public class CodePermissionService : ServiceBase<CodePermission, CodePermissionDto>, ICodePermissionService
     {
+        private readonly IRepositoryBase<XAccountGroup> _repoXAccountGroup;
         private readonly IRepositoryBase<CodePermission> _repo;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
+        private readonly IRepositoryBase<XAccountGroupPermission> _repoXAccountGroupPermission;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _configMapper;
@@ -38,15 +41,19 @@ private readonly IEvseLoggerService _logger;
             IMapper mapper,
             MapperConfiguration configMapper,
 IEvseLoggerService logger
-            )
+,
+IRepositoryBase<XAccountGroupPermission> repoXAccountGroupPermission,
+IRepositoryBase<XAccountGroup> repoXAccountGroup)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
-_logger = logger;
+            _logger = logger;
             _repoXAccount = repoXAccount;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _configMapper = configMapper;
+            _repoXAccountGroupPermission = repoXAccountGroupPermission;
+            _repoXAccountGroup = repoXAccountGroup;
         }
         public override async Task<OperationResult> AddAsync(CodePermissionDto model)
         {
@@ -174,5 +181,22 @@ _logger = logger;
             };
         }
 
+        public async Task<object> GetPermissionsByRoleId(string roleTemp, string lang)
+        {
+            var role = roleTemp.ToSafetyString();
+            var xaccountGroup = await _repoXAccountGroup.FindAll().Where(x=> EF.Functions.Collate(x.GroupNo, "SQL_Latin1_General_CP1_CS_AS") == role).FirstOrDefaultAsync();
+           var roleGuid = "";
+           if (xaccountGroup != null) {
+            roleGuid = xaccountGroup.Guid;
+           }
+            var query = from a in _repo.FindAll(x=> x.Status == "1")
+                  
+                    select new {
+                        Name = lang == Languages.EN ? (a.CodeNameEn == "" || a.CodeNameEn == null ? a.CodeName : a.CodeNameEn) : lang == Languages.VI ? (a.CodeNameVn == "" || a.CodeNameVn == null ? a.CodeName : a.CodeNameVn) : lang == Languages.TW ? a.CodeName : lang == Languages.CN ? (a.CodeNameCn == "" || a.CodeNameCn == null ? a.CodeName : a.CodeNameCn) : a.CodeName,
+                        Checked =(from r in _repoXAccountGroupPermission.FindAll()  where roleGuid == r.UpperGuid && r.CodeNo == a.CodeNo select r.Id).Any()
+
+                    };
+            return await query.ToListAsync();
+        }
     }
 }

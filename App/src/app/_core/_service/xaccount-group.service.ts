@@ -31,4 +31,11 @@ export class XAccountGroupService extends CURDService<XAccountGroup> {
       .post<OperationResult>(`${this.base}XAccountGroup/StorePermission`, model)
       .pipe(catchError(this.handleError));
   }
+
+  storePermissionForCheckBox(model): Observable<OperationResult> {
+    return this.http
+      .post<OperationResult>(`${this.base}XAccountGroup/StorePermissionForCheckBox`, model)
+      .pipe(catchError(this.handleError));
+  }
+  
 }

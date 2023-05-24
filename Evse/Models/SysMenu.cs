@@ -49,11 +49,6 @@ namespace Evse.Models
         public string ChartYaxisNameVn { get; set; }
         public string ChartYaxisNameCn { get; set; }
         public string ChartYaxisNameEn { get; set; }
-        public decimal? FarmGgp { get; set; }
-        public decimal? FarmGp { get; set; }
-        public decimal? FarmPmpf { get; set; }
-        public decimal? FarmSemen { get; set; }
-        public decimal? FarmNursery { get; set; }
-        public decimal? FarmGrower { get; set; }
+     
     }
 }

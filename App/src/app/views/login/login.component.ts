@@ -4,13 +4,24 @@ import { AlertifyService } from '../../_core/_service/alertify.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { UserForLogin } from 'src/app/_core/_model/user';
-import { Subscription } from 'rxjs';
+import { Subscription, from, of } from 'rxjs';
 import { AuthService } from 'src/app/_core/_service/auth.service';
 import { PermissionService } from 'src/app/_core/_service/permission.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SystemGroupNo } from 'src/app/_core/enum/SystemGroupNo';
 import { environment } from 'src/environments/environment';
 import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
+import { AuthElectricianService } from 'src/app/_core/_service/auth-electrician.service';
+import { XAccountGroupService } from 'src/app/_core/_service/xaccount-group.service';
+import { concatMap, filter, map, mergeMap, tap, toArray } from 'rxjs/operators';
+export class RoleConstants {
+  readonly Admin = 'admin';
+  readonly Admin2 = 'admin2';
+  readonly Electrician = 'Electrician';
+  readonly Engineer = 'Engineer';
+  readonly Investor = 'Investor';
+  readonly Landlord = 'Landlord';
+}
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -28,11 +39,15 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   remember = false;
   loading = 0;
   key: string;
-  roles: any;
+  roles: { guid: string; name: string; }[];
+  inputType = "password"
+  roles2: { guid: string; name: string; }[];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
+    private xaccountGroup: XAccountGroupService,
+    private authElectricianService: AuthElectricianService,
     private cookieService: CookieService,
     private alertifyService: AlertifyService,
     private trans: TranslateService
@@ -47,11 +62,20 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     let backUrl = '/evse/home';
     this.uri = this.route.snapshot.queryParams.uri || backUrl;
   }
-  role: number;
+  role: string = 'admin';
   ngAfterViewInit(): void {
 
   }
+  togglePassword() {
+    this.inputType = this.inputType === "password" ? "text": "password"
+  }
+  onChange(e) {
+    this.role = e.value;
+    localStorage.setItem('role', this.role);
+
+  }
   ngOnInit(): void {
+    localStorage.setItem('role', this.role);
     this.getRoles();
     const accessToken = localStorage.getItem('token');
     const refreshToken = localStorage.getItem('refresh_token');
@@ -71,27 +95,24 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   authentication() {
     return this.authService
-      .login(this.username, this.password).toPromise();
+      .login(this.username, this.password, this.role).toPromise();
   }
   getRoles() {
-    new DataManager({
-      url: `${
-        environment.apiUrl
-      }CodeType/GetDataDropdownlist?lang=${localStorage.getItem(
-        "lang"
-      )}&codeType=RoleList`,
-      adaptor: new UrlAdaptor(),
-      crossDomain: true,
-    })
-      .executeQuery(
-        new Query()
-          .skip(0)
-          .take(1000)
-          .addParams("lang", localStorage.getItem("lang"))
-      )
-      .then((data: any) => {
-        this.roles = data.result;
-      });
+  this.xaccountGroup.getAll().pipe(
+      concatMap(roles => from(roles)),
+      map(role=> (
+        {
+        guid: role.groupNo,
+        name: role.groupName
+       }
+      )),
+      toArray()
+   ).subscribe(roles=> {
+    let roleTemp = [...roles]
+    this.roles = roleTemp.splice(0,3)
+    roleTemp = [...roles]
+    this.roles2 = roleTemp.splice(3,3)
+   })
   }
   async login() {
     if (!this.username || !this.password) {
@@ -99,6 +120,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.loading = 1;
     try {
+      
       const data = await this.authentication();
       const currentLang = localStorage.getItem('lang');
       if (currentLang) {

@@ -195,7 +195,7 @@ export class AuthElectricianService implements OnDestroy {
     return this.http.get<any>(`${this.base}SysMenu/getMenus?lang=${lang}`, {});
   }
   getPermissions(accountGuid, lang) {
-    return this.http.get<any>(`${this.base}XAccount/getPermissions?accountGuid=${accountGuid}&lang=${lang}`, {});
+    return this.http.get<any>(`${this.base}Electrician/getPermissions?accountGuid=${accountGuid}&lang=${lang}`, {});
   }
   getLanguages(lang) {
     const isAdminLang = JSON.parse(localStorage.getItem('user'))?.groupCode === 'ADMIN_LANGUAGE';

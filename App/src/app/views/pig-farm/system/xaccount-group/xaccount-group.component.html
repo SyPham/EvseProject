@@ -39,6 +39,33 @@
             </span>
           </button>
         </ng-template>
+        <ng-template #pagerTemplate let-data>
+          <pre
+          class="page-text"
+          [translate]="pageText"
+          [translateParams]="{ items: grid.pageSettings.totalRecordsCount }"
+          > </pre>
+         <div class="d-flex justify-content-center">
+          <ngb-pagination
+          [collectionSize]="grid.pageSettings.totalRecordsCount"
+          [(page)]="grid.pageSettings.currentPage"
+          [pageSize]="grid.pageSettings.pageSize"
+          [maxSize]="5"
+          [rotate]="true"
+          [ellipses]="false"
+          [boundaryLinks]="true"
+        >
+        
+        <ng-template ngbPaginationFirst><i class="fa fa-step-backward"></i></ng-template>
+        <ng-template ngbPaginationLast><i class="fa fa-step-forward"></i></ng-template>
+        <ng-template ngbPaginationPrevious><i class="fa fa-caret-left"></i></ng-template>
+        <ng-template ngbPaginationNext><i class="fa fa-caret-right"></i></ng-template>
+        <ng-template ngbPaginationEllipsis>...</ng-template>
+        <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+        
+        </ngb-pagination>
+         </div>
+          </ng-template>
         <e-columns>
           <e-column
             field="#"
@@ -169,8 +196,9 @@
             [dataSource]="permissionData"
             placeholder="{{ 'CHOOSE PERMISSIONS' | translate }}"
             [fields]="fields"
+            [mode]="'CheckBox'"
+            [showSelectAll]="true"
             (filtering)="onFiltering($event)"
-            [mode]="'Box'"
           >
           </ejs-multiselect>
         </div>
