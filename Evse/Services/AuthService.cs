@@ -142,7 +142,13 @@ namespace Evse.Services
                 .FirstOrDefaultAsync();
                 var group = await _repoXAccountGroup.FindAll(x =>  EF.Functions.Collate(x.GroupNo, "SQL_Latin1_General_CP1_CS_AS") == loginDto.Role)
                 .FirstOrDefaultAsync();
-                  
+                   if (group == null)
+                return new OperationResult
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Message = "The role is not available!",
+                    Success = false
+                };
             if (account == null)
                 return new OperationResult
                 {

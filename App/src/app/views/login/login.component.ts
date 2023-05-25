@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     let backUrl = '/evse/home';
     this.uri = this.route.snapshot.queryParams.uri || backUrl;
   }
-  role: string = 'admin';
+  role: string = 'Admin';
   ngAfterViewInit(): void {
 
   }

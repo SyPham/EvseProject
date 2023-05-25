@@ -166,7 +166,7 @@ const routes: Routes = [
       breadcrumb: 'Setting Role',
       functionCode: 'Setting Role'
     },
-  //canActivate: [AuthGuard]
+  canActivate: [AuthGuard]
   }
 ];
 @NgModule({

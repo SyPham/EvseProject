@@ -40,6 +40,7 @@ namespace Evse.Services
         private readonly IRepositoryBase<SysMenu> _repo;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly IRepositoryBase<XAccountGroup> _repoXAccountGroup;
+        private readonly IRepositoryBase<XAccountGroupPermission> _repoXAccountGroupPermission;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _configMapper;
@@ -55,7 +56,8 @@ namespace Evse.Services
             IHttpContextAccessor httpContextAccessor,
             MapperConfiguration configMapper,
 IEvseLoggerService logger
-
+,
+IRepositoryBase<XAccountGroupPermission> repoXAccountGroupPermission
             )
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
@@ -67,6 +69,7 @@ IEvseLoggerService logger
             _mapper = mapper;
             _configMapper = configMapper;
             _httpContextAccessor = httpContextAccessor;
+            _repoXAccountGroupPermission = repoXAccountGroupPermission;
         }
         public override async Task<OperationResult> AddAsync(SysMenuDto model)
         {
@@ -142,12 +145,17 @@ IEvseLoggerService logger
         {
             string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+            var permissions = new List<string>();
             if (menuType == "BE") {
+                {
              var account = await _repoXAccount.FindAll(x => x.Status == "1" && x.AccountId == accountId).FirstOrDefaultAsync();
+             permissions =await _repoXAccountGroupPermission.FindAll(x=> x.UpperGuid == account.AccountGroup).Select(x=> x.CodeNo).ToListAsync();
+           
             if (account == null) return new List<dynamic> { };
             }
+                }
+           
           
-
             var query = await (from x in _repo.FindAll(x => x.Status == 1 && menuType == x.MenuType)
                                select new
                                {
@@ -162,6 +170,7 @@ IEvseLoggerService logger
                                    Name = lang == Languages.EN ? (x.MenuNameEn == "" || x.MenuNameEn == null ? x.MenuName : x.MenuNameEn) : lang == Languages.VI ? (x.MenuNameVn == "" || x.MenuNameVn == null ? x.MenuName : x.MenuNameVn) : lang == Languages.TW ? x.MenuName : lang == Languages.CN ? (x.MenuNameCn == "" || x.MenuNameCn == null ? x.MenuName : x.MenuNameCn) : x.MenuName
 
                                }).ToListAsync();
+                              
             var queryTemp = query.Select(x => new
             {
 
@@ -174,7 +183,7 @@ IEvseLoggerService logger
                 Name = x.Name,
             });
 
-            return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
+            var results = queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
             {
                 x.Entity.Url,
                 x.Entity.Icon,
@@ -183,7 +192,7 @@ IEvseLoggerService logger
                 x.Entity.SortId,
                 x.HasChildren,
                 Level = x.Depth,
-                Children = x.ChildNodes.Select(a => new
+                Children = x.ChildNodes.Where(x=> permissions.Contains(x.Entity.FunctionCode)).Select(a => new
                 {
                     a.Entity.Url,
                     a.Entity.Icon,
@@ -192,7 +201,7 @@ IEvseLoggerService logger
                     a.HasChildren,
                     a.Entity.SortId,
                     Level = a.Depth,
-                    Children = a.ChildNodes.Select(b => new
+                    Children = a.ChildNodes.Where(x=> permissions.Contains(x.Entity.FunctionCode)).Select(b => new
                     {
                         b.Entity.Url,
                         b.Entity.Icon,
@@ -205,6 +214,9 @@ IEvseLoggerService logger
                     }).OrderBy(b => b.SortId)
                 }).OrderBy(a => a.SortId)
             }).OrderBy(x => x.SortId);
+
+         
+            return results.Where(x=> x.Children.Any());
         }
         public async Task<object> GetMenus(string lang = "tw")
         {

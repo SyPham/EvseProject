@@ -192,6 +192,7 @@ IRepositoryBase<XAccountGroup> repoXAccountGroup)
             var query = from a in _repo.FindAll(x=> x.Status == "1")
                   
                     select new {
+                        Guid = a.CodeNo,
                         Name = lang == Languages.EN ? (a.CodeNameEn == "" || a.CodeNameEn == null ? a.CodeName : a.CodeNameEn) : lang == Languages.VI ? (a.CodeNameVn == "" || a.CodeNameVn == null ? a.CodeName : a.CodeNameVn) : lang == Languages.TW ? a.CodeName : lang == Languages.CN ? (a.CodeNameCn == "" || a.CodeNameCn == null ? a.CodeName : a.CodeNameCn) : a.CodeName,
                         Checked =(from r in _repoXAccountGroupPermission.FindAll()  where roleGuid == r.UpperGuid && r.CodeNo == a.CodeNo select r.Id).Any()
 

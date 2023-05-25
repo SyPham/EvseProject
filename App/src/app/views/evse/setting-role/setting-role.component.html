@@ -44,14 +44,25 @@
       <div class="row">
         <div class="col-6">
           <div class="form-check" *ngFor="let item of data">
-            <input type="checkbox" (change)="checkedPermission($event,item)" [id]="item.name" [checked]="item.checked" class="form-check-input" >
-            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+            <div class="pretty p-default p-fill">
+              <input type="checkbox" (change)="checkedPermission($event,item)" [id]="item.name" [checked]="item.checked"  />
+              <div class="state">
+                  <label [for]="item.name">{{item.name}}</label>
+              </div>
+          </div>
           </div>
         </div>
         <div class="col-6">
+
+
           <div class="form-check" *ngFor="let item of data2">
-            <input type="checkbox" (change)="checkedPermission($event,item)" [id]="item.name" [checked]="item.checked" class="form-check-input" >
-            <label class="form-check-label" [for]="item.name">{{item.name}}</label>
+            <div class="pretty p-default p-fill">
+              <input type="checkbox" (change)="checkedPermission($event,item)" [id]="item.name" [checked]="item.checked"  />
+              <div class="state">
+                  <label [for]="item.name">{{item.name}}</label>
+              </div>
+          </div>
+          
           </div>
         </div>
       </div>
