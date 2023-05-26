@@ -4,7 +4,7 @@ import { AlertifyService } from '../../_core/_service/alertify.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { UserForLogin } from 'src/app/_core/_model/user';
-import { Subscription, from, of } from 'rxjs';
+import { Subscription, forkJoin, from, of } from 'rxjs';
 import { AuthService } from 'src/app/_core/_service/auth.service';
 import { PermissionService } from 'src/app/_core/_service/permission.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 import { DataManager, UrlAdaptor, Query } from "@syncfusion/ej2-data";
 import { AuthElectricianService } from 'src/app/_core/_service/auth-electrician.service';
 import { XAccountGroupService } from 'src/app/_core/_service/xaccount-group.service';
-import { concatMap, filter, map, mergeMap, tap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, mergeMap, mergeMapTo, switchMap, tap, toArray } from 'rxjs/operators';
 export class RoleConstants {
   readonly Admin = 'admin';
   readonly Admin2 = 'admin2';
@@ -114,41 +114,37 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     this.roles2 = roleTemp.splice(3,3)
    })
   }
-  async login() {
-    if (!this.username || !this.password) {
-      return;
-    }
-    this.loading = 1;
-    try {
-      
-      const data = await this.authentication();
-      const currentLang = localStorage.getItem('lang');
-      if (currentLang) {
-        localStorage.setItem('lang', currentLang);
-      } else {
-        localStorage.setItem('lang', 'tw');
-      }
-
-      if (this.remember) {
-        this.cookieService.set('remember', 'Yes');
-        this.cookieService.set('key_temp', data.user.id);
-      } else {
-        this.cookieService.set('remember', 'No');
-        this.cookieService.set('key_temp', '');
-      }
-      const lang = localStorage.getItem('lang');
-
-      const functions = await this.authService.getPermissions(data.user.guid,lang ).toPromise();
-      localStorage.setItem("functions", JSON.stringify(functions));
-
-      const languages = await this.authService.getLanguages(lang).toPromise();
-      localStorage.setItem('languages', JSON.stringify(languages));
-      const uri = decodeURI(this.uri);
-      const check = this.checkLocalRole();
-      if(data.user.groupCode === SystemGroupNo.LandRoyal || data.user.groupCode === SystemGroupNo.Member || data.user.groupCode === SystemGroupNo.Engineer) {
-        let mobileUrl = '/mobile/home';
-          this.router.navigate([mobileUrl]);
-      }else {
+  lang = localStorage.getItem('lang');
+  loginWidthGetPermissionAndLanguage$ = () => {
+   return this.authService
+    .login(this.username, this.password, this.role).pipe(
+      tap( (data) => {
+        const currentLang = localStorage.getItem('lang');
+        if (currentLang) {
+          localStorage.setItem('lang', currentLang);
+        } else {
+          localStorage.setItem('lang', 'tw');
+        }
+  
+        if (this.remember) {
+          this.cookieService.set('remember', 'Yes');
+          this.cookieService.set('key_temp', data.user.id);
+        } else {
+          this.cookieService.set('remember', 'No');
+          this.cookieService.set('key_temp', '');
+        }
+       this.lang = localStorage.getItem('lang');
+      }),
+      switchMap(
+        (data) =>
+      forkJoin([
+        this.authService.getPermissions(data.user.guid, this.lang ),
+        this.authService.getLanguages(this.lang),
+      ])),
+      tap(([functions, languages]) => {
+        localStorage.setItem("functions", JSON.stringify(functions))
+        localStorage.setItem("languages", JSON.stringify(languages))
+        const check = this.checkLocalRole();
         if (check ) {
           const uri = decodeURI(this.uri);
           this.router.navigate([uri]);
@@ -156,21 +152,46 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           let backUrl = '/evse/home';
           this.router.navigate([backUrl]);
         }
-      }
-    
-      this.alertifyService.success(this.trans.instant('Login Success!'));
-      this.loading = 0;
+         
+        this.alertifyService.success(this.trans.instant('Login Success!'));
+        
+       }),
 
-
-    } catch (error) {
-     if (error.indexOf('error') == -1) {
-       this.alertifyService.warning(this.trans.instant(error), true);
-     } else {
-      this.alertifyService.warning(this.trans.instant('Server error!'), true);
-
-     }
-      this.loading = 0;
+    )
+  }
+  async login() {
+    if (!this.username || !this.password) {
+      return;
     }
+    this.loading = 1;
+     this.loginWidthGetPermissionAndLanguage$()
+     .pipe(
+      catchError((error) => {
+      if (error.indexOf('error') == -1) {
+        this.alertifyService.warning(this.trans.instant(error), true);
+      } else {
+       this.alertifyService.warning(this.trans.instant('Server error!'), true);
+ 
+      }
+       this.loading = 0;
+     return of(null)
+     }),
+     )
+     .subscribe(()=>this.loading = 0)
+    
+      // if(data.user.groupCode === SystemGroupNo.LandRoyal || data.user.groupCode === SystemGroupNo.Member || data.user.groupCode === SystemGroupNo.Engineer) {
+      //   let mobileUrl = '/mobile/home';
+      //     this.router.navigate([mobileUrl]);
+      // }else {
+      //   if (check ) {
+      //     const uri = decodeURI(this.uri);
+      //     this.router.navigate([uri]);
+      //   } else {
+      //     let backUrl = '/evse/home';
+      //     this.router.navigate([backUrl]);
+      //   }
+      // }
+
   }
 
   async loginRememberMe(key) {

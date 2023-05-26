@@ -28,11 +28,12 @@ export class AccountActionComponent implements OnInit {
   file: any;
   employeeFields: object = { text: 'nickName', value: 'guid' };
   farmFields: object = { text: 'farmName', value: 'guid' };
+  fields: object = { text: 'groupName', value: 'guid' };
   employeeData: any[];
   farmData: any;
   permissionData: [] = [];
   xaccountGroupFields: object = { text: 'groupName', value: 'guid' };
-  xaccountGroupData: XAccountGroup[];
+  xaccountGroupData;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   public onFiltering: any = (e: FilteringEventArgs) => {
@@ -84,12 +85,10 @@ id: any;
   this.id = +this.route.snapshot.params['id'];
   if ( this.id === 0) {
     this.reset()
-    this.imageConfig();
 
   } else {
   const model=  await this.loadDetail();
   this.model = model;
-  this.imageConfig();
     this.getAudit(this.id);
   }
     this.getEmployeesByXAccountID(0);
@@ -118,53 +117,53 @@ id: any;
       });
   }
   
-  imageConfig() {
-    const option = {
-      overwriteInitial: true,
-      maxFileSize: 1500,
-      showClose: false,
-      showCaption: false,
-      browseLabel: '',
-      removeLabel: '',
-      browseIcon: '<i class="bi-folder2-open"></i>',
-      removeIcon: '<i class="bi-x-lg"></i>',
-      removeTitle: 'Cancel or reset changes',
-      elErrorContainer: '#kv-avatar-errors-1',
-      msgErrorClass: 'alert alert-block alert-danger',
-      defaultPreviewContent: '<img src="../../../../../assets/images/no-img.jpg" alt="No Image">',
-      layoutTemplates: { main2: '{preview} ' + ' {browse}' },
-      allowedFileExtensions: ["jpg", "png", "gif"],
-      initialPreview: [],
-      initialPreviewConfig: [],
-      deleteUrl: `${environment.apiUrl}XAccount/DeleteUploadFile`
-    };
-    if (this.model.photoPath) {
-      this.model.photoPath = this.imagePath(this.model.photoPath);
-      const img = `<img src='${this.model.photoPath}' class='file-preview-image' alt='Desert' title='Desert'>`;
-      option.initialPreview = [img]
+  // imageConfig() {
+  //   const option = {
+  //     overwriteInitial: true,
+  //     maxFileSize: 1500,
+  //     showClose: false,
+  //     showCaption: false,
+  //     browseLabel: '',
+  //     removeLabel: '',
+  //     browseIcon: '<i class="bi-folder2-open"></i>',
+  //     removeIcon: '<i class="bi-x-lg"></i>',
+  //     removeTitle: 'Cancel or reset changes',
+  //     elErrorContainer: '#kv-avatar-errors-1',
+  //     msgErrorClass: 'alert alert-block alert-danger',
+  //     defaultPreviewContent: '<img src="../../../../../assets/images/no-img.jpg" alt="No Image">',
+  //     layoutTemplates: { main2: '{preview} ' + ' {browse}' },
+  //     allowedFileExtensions: ["jpg", "png", "gif"],
+  //     initialPreview: [],
+  //     initialPreviewConfig: [],
+  //     deleteUrl: `${environment.apiUrl}XAccount/DeleteUploadFile`
+  //   };
+  //   if (this.model.photoPath) {
+  //     this.model.photoPath = this.imagePath(this.model.photoPath);
+  //     const img = `<img src='${this.model.photoPath}' class='file-preview-image' alt='Desert' title='Desert'>`;
+  //     option.initialPreview = [img]
 
-      const a = {
-        caption: '',
-        width: '',
-        url: `${environment.apiUrl}XAccount/DeleteUploadFile`, // server delete action
-        key: this.model.accountId,
-        extra: { id: this.model.accountId }
-      }
-      option.initialPreviewConfig = [a];
-    }
-    $("#avatar-1").fileinput(option);;
-    let that = this;
-    $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
-      console.log('Key = ' + key);
-      that.file = null;
-      that.model.file = null;
-      that.model.photoPath = null;
-      option.initialPreview = [];
-      option.initialPreviewConfig = [];
-      $(this).fileinput(option);
+  //     const a = {
+  //       caption: '',
+  //       width: '',
+  //       url: `${environment.apiUrl}XAccount/DeleteUploadFile`, // server delete action
+  //       key: this.model.accountId,
+  //       extra: { id: this.model.accountId }
+  //     }
+  //     option.initialPreviewConfig = [a];
+  //   }
+  //   $("#avatar-1").fileinput(option);;
+  //   let that = this;
+  //   $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
+  //     console.log('Key = ' + key);
+  //     that.file = null;
+  //     that.model.file = null;
+  //     that.model.photoPath = null;
+  //     option.initialPreview = [];
+  //     option.initialPreviewConfig = [];
+  //     $(this).fileinput(option);
 
-    });
-  }
+  //   });
+  // }
   getAudit(id) {
     this.service.getAudit(id).subscribe(data => {
       this.audit = data;
@@ -206,18 +205,14 @@ id: any;
     });
   }
   loadXAccountGroupData() {
-    this.xaccountGroupService.getAccountGroup().subscribe((data: any) => {
-      this.xaccountGroupData = data;
-    });
+      this.xaccountGroupService.getAccountGroup().subscribe(data=> this.xaccountGroupData =data);
   }
   getFarms() {
     this.serviceFarm.getFarms().subscribe(data => {
       this.farmData = data;
     });
   }
-  xXAccountGroupName(id) {
-    return this.xaccountGroupData.filter(x => x.id == id)[0]?.groupName || "N/A";
-  }
+
   back() {
   this.router.navigateByUrl("/system/account")
 
