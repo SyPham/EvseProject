@@ -98,51 +98,12 @@
             </ng-template>
           </e-column>
 
-      
-
-          <!-- <e-column
-            field="farmName"
-            headerTextAlign="Center"
-            width="120px"
-            textAlign="Left"
-            headerText="{{ 'ACCOUNT_FARM' | translate }}"
-          >
-          </e-column> -->
-          <!-- <e-column
-            field="photoPath"
-            textAlign="Left"
-          headerTextAlign="Center"
-            [allowSorting]="false"
-            [allowFiltering]="false"
-            width="120px"
-
-            headerText="{{ 'Photo Path' | translate }}"
-          >
-            <ng-template #template let-data>
-              <img
-                style="cursor: pointer"
-                [src]="imagePath(data.photoPath) | image: 'url'"
-                class="avatar"
-                (click)="preview(previewModal, data)"
-                [alt]="data.nickName"
-              />
-            </ng-template>
-          </e-column> -->
-          <!-- <e-column
-          field="accountNo"
-          textAlign="Left"
-          headerTextAlign="Center"
-          width="80px"
-          headerText="{{ 'ACCOUNT_NO' | translate }}"
-        >
-        </e-column> -->
-
         <e-column
         field="uid"
         width="120px"
         textAlign="Left"
       headerTextAlign="Center"
-        headerText="{{ 'ACCOUNT_USERNAME' | translate }}"
+        headerText="{{ this.role + '_USERNAME' | translate }}"
       >
       </e-column>
 
@@ -151,7 +112,7 @@
             width="120px"
             textAlign="Left"
           headerTextAlign="Center"
-            headerText="{{ 'ACCOUNT_NAME' | translate }}"
+            headerText="{{ this.role + '_NAME' | translate }}"
           >
           </e-column>
       
@@ -179,7 +140,7 @@
           format="yyyy-MM-dd HH:mm:ss"
           textAlign="Left"
         headerTextAlign="Center"
-          headerText="{{ 'Create_Date' | translate }}"
+          headerText="{{ this.role + '_Create_Date' | translate }}"
         >
         </e-column>
 
@@ -187,7 +148,7 @@
           field="statusName"
           textAlign="Left"
         headerTextAlign="Center"
-          headerText="{{ 'Account_Status' | translate }}"
+          headerText="{{ this.role + '_Status' | translate }}"
         >
         </e-column>
 

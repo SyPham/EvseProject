@@ -130,10 +130,10 @@ namespace Evse.Controllers
             return Ok(await _service.StoreProfile(model));
         }
         [HttpPost]
-        public async Task<ActionResult> LoadData([FromBody] DataManager request, string farmGuid, string lang)
+        public async Task<ActionResult> LoadData([FromBody] DataManager request, string role, string lang)
         {
 
-            var data = await _service.LoadData(request, farmGuid, lang);
+            var data = await _service.LoadData(request, role, lang);
             return Ok(data);
         }
 

@@ -163,9 +163,10 @@ IEvseLoggerService logger,
             }).ToListAsync()).Union(itemNo).OrderBy(x => x.Guid);
         }
 
-        public async Task<object> LoadData(DataManager data, string farmGuid, string lang)
+        public async Task<object> LoadData(DataManager data, string role, string lang)
         {
-            var datasource = (from x in _repo.FindAll(x => x.Status == "1" || x.Status == "0")
+            var roleQuery = await _repoXAccountGroup.FindAll(x => x.GroupNo== role).FirstOrDefaultAsync();
+            var datasource = (from x in _repo.FindAll(x => (x.Status == "1" || x.Status == "0") && roleQuery!= null ? roleQuery.Guid == x.AccountGroup : true)
                               join b in _repoXAccountGroup.FindAll() on x.AccountGroup equals b.Guid into gj
                               from a in gj.DefaultIfEmpty()
                            
@@ -248,6 +249,7 @@ IEvseLoggerService logger,
                 Count = count
             };
         }
+        
         public override async Task<List<XAccountDto>> GetAllAsync()
         {
             var query = from x in _repo.FindAll(x => (x.Status == "1" || x.Status == "0"))

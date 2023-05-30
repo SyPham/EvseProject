@@ -119,6 +119,72 @@ const routes: Routes = [
       canActivate: [AuthGuard]
       },
       {
+        path: 'account/admin',
+        component: AccountComponent,
+        data: {
+          title: 'Admin',
+          module: 'system',
+          breadcrumb: 'Admin',
+          functionCode: 'Admin'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/admin2',
+        component: AccountComponent,
+        data: {
+          title: 'Admin2',
+          module: 'system',
+          breadcrumb: 'Admin2',
+          functionCode: 'Admin2'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/engineer',
+        component: AccountComponent,
+        data: {
+          title: 'Engineer',
+          module: 'system',
+          breadcrumb: 'Engineer',
+          functionCode: 'Engineer'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/landlord',
+        component: AccountComponent,
+        data: {
+          title: 'Landlord',
+          module: 'system',
+          breadcrumb: 'Landlord',
+          functionCode: 'Landlord'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/investor',
+        component: AccountComponent,
+        data: {
+          title: 'Investor',
+          module: 'system',
+          breadcrumb: 'Investor',
+          functionCode: 'Investor'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/electrician',
+        component: AccountComponent,
+        data: {
+          title: 'Electrician',
+          module: 'system',
+          breadcrumb: 'Electrician',
+          functionCode: 'Electrician'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
         path: 'account/action/:id',
         component: AccountActionComponent,
         data: {
@@ -126,6 +192,72 @@ const routes: Routes = [
           module: 'system',
           breadcrumb: 'Account',
           functionCode: 'Account'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/admin/action/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Admin Detail',
+          module: 'system',
+          breadcrumb: 'Admin Detail',
+          functionCode: 'Admin'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/admin2/action/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Admin2 Detail',
+          module: 'system',
+          breadcrumb: 'Admin2 Detail',
+          functionCode: 'Admin2'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/landlord/action/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Landlord Detail',
+          module: 'system',
+          breadcrumb: 'Landlord Detail',
+          functionCode: 'Landlord'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/electrician/action/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Electrician Detail',
+          module: 'system',
+          breadcrumb: 'Electrician Detail',
+          functionCode: 'Electrician'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/investor/action/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Investor Detail',
+          module: 'system',
+          breadcrumb: 'Investor Detail',
+          functionCode: 'Investor'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/engineer/action/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Engineer Detail',
+          module: 'system',
+          breadcrumb: 'Engineer Detail',
+          functionCode: 'Engineer'
         },
       canActivate: [AuthGuard]
       },

@@ -110,7 +110,12 @@ fnSearch() {
   this.grid.search(this.keyWord);
 
 }
+role = ''
   ngOnInit() {
+    this.route.data.subscribe(data=> {
+      this.role = data.functionCode
+      this.loadData();
+    })
     this.toolbarOptions = ['ExcelExport',{template: this.odsTemplate}, 'Add', 'Search'];
     let lang = localStorage.getItem('lang');
     let languages = JSON.parse(localStorage.getItem('languages'));
@@ -123,7 +128,6 @@ fnSearch() {
     };
     L10n.load(load);
     this.getFarms();
-    this.loadData();
     this.loadXAccountGroupData();
     this.loadLang();
   }
@@ -329,10 +333,9 @@ toolbarClick(args) {
 
   loadData() {
     const accessToken = localStorage.getItem('token');
-    const farmGuid = localStorage.getItem('farmGuid');
     const lang = localStorage.getItem('lang');
     this.data = new DataManager({
-      url: `${this.baseUrl}XAccount/LoadData?farmGuid=${farmGuid}&lang=${lang}`,
+      url: `${this.baseUrl}XAccount/LoadData?role=${this.role}&lang=${lang}`,
       adaptor: new UrlAdaptor,
       headers: [{ authorization: `Bearer ${accessToken}` }]
     });
@@ -505,7 +508,7 @@ toolbarClick(args) {
 
   }
   fnEdit(data) {
-    this.router.navigateByUrl(`/system/account/action/${data.accountId}`)
+    this.router.navigateByUrl(`/system/account/${this.role.toLocaleLowerCase()}/action/${data.accountId}`)
 
   }
   async openModal(template, data = {} as XAccount) {

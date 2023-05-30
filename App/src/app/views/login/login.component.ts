@@ -228,8 +228,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       const languages = await this.authService.getLanguages(lang).toPromise();
       localStorage.setItem('languages', JSON.stringify(languages));
 
-      const uri = decodeURI(this.uri);
-      // debugger
       const check = this.checkLocalRole();
       if (check ) {
         const uri = decodeURI(this.uri);

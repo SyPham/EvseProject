@@ -80,9 +80,10 @@ id: any;
     private router: Router,
     private route: ActivatedRoute,
   ) { }
-
+  role = '';
  async ngOnInit() {
   this.id = +this.route.snapshot.params['id'];
+  this.role = this.route.snapshot.data['functionCode'];
   if ( this.id === 0) {
     this.reset()
 
