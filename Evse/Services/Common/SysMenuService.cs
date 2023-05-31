@@ -216,7 +216,7 @@ IRepositoryBase<XAccountGroupPermission> repoXAccountGroupPermission
             }).OrderBy(x => x.SortId);
 
          
-            return results.Where(x=> x.Children.Any());
+            return results;
         }
         public async Task<object> GetMenus(string lang = "tw")
         {

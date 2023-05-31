@@ -79,9 +79,27 @@ namespace Evse.Data
         public virtual DbSet<Favorite> Favorites { get; set; }
         public virtual DbSet<Electrician> Electricians { get; set; }
         public virtual DbSet<Investor> Investors { get; set; }
+        public virtual DbSet<AuditLog> AuditLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AuditLog>(entity =>
+            {
+                entity.ToTable("AuditLog");
+
+                entity.Property(e => e.Id)
+                .HasColumnType("decimal(18, 0)")
+                .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AccountId).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.TableName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.ToTable("Account");
@@ -3168,6 +3186,19 @@ namespace Evse.Data
                     .IsRequired()
                     .HasColumnName("UPWD")
                     .HasMaxLength(200);
+
+
+                  entity.Property(e => e.ContactName)
+                    .HasColumnName("ContactName")
+                    .HasMaxLength(100);
+                  entity.Property(e => e.ContactTel)
+                    .HasColumnName("ContactTel")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.ContactRel)
+                    .HasColumnName("ContactRel")
+                    .HasMaxLength(20);
+
             });
 
             modelBuilder.Entity<XAccountGroup>(entity =>

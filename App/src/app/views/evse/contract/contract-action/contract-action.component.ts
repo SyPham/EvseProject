@@ -45,7 +45,6 @@ export class ContractActionComponent  extends BaseComponent implements OnInit {
   open() {
     if (this.guid) {
       this.service.getByGuid(this.guid).subscribe(data=> {
-        // debugger
         this.model = data;
         this.modalService.open(this.actionModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       })

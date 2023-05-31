@@ -3,6 +3,7 @@ export interface XAccount {
   clinicId: number | null;
   uid: string;
   upwd: string;
+  reupwd: string;
   accountNo: string;
   accountName: string;
   accountSex: string;
@@ -49,6 +50,9 @@ export interface XAccount {
   employeeGuid: string;
   accountDomicileAddress: string;
   file: any;
+  contactName: string;
+  contactTel: string;
+  contactRel: string;
 }
 export interface Profile {
   nickName: string;

@@ -92,8 +92,6 @@ export class SiteDropdownlistComponent implements OnInit, OnChanges {
       this.loadData();
     } 
     if (changes["enabledLoad"] && changes["enabledLoad"].currentValue == true && !changes["landlordGuid"]?.currentValue) {
-      debugger
-   
       this.loadData();
     }
   }

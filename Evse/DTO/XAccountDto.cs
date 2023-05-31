@@ -65,7 +65,9 @@ namespace Evse.DTO
         public string AccountDomicileAddress { get; set; }
         public string AccessTokenLineNotify { get; set; }
         public string StatusName { get; set; }
-
+        public string ContactRel { get; set; }
+        public string ContactTel { get; set; }
+        public string ContactName { get; set; }
         public List<IFormFile> File { get; set; }
 
     }
@@ -128,6 +130,8 @@ public partial class StorePermissionForCheckBoxDto
         public string PageSizeSettingValue { get; set; }
         public string StatusName { get; set; }
         public string Status { get; set; }
+        public string ContactRel { get; set; }
+        public string ContactRelName { get; set; }
 
     }
 }

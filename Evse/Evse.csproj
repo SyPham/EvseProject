@@ -43,6 +43,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="wwwroot\Aspose.Total.lic">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\excelTemplate\record2market.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

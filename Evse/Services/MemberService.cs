@@ -46,6 +46,8 @@ namespace Evse.Services
         private readonly MapperConfiguration _configMapper;
         private readonly IEvseLoggerService _logger;
         private readonly IWebHostEnvironment _currentEnvironment;
+        private readonly IAuditLogService _auditLogService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public MemberService(
             IRepositoryBase<Member> repo,
             IRepositoryBase<CodeType> repoCodeType,
@@ -55,7 +57,9 @@ namespace Evse.Services
             MapperConfiguration configMapper,
 IEvseLoggerService logger
 ,
-IWebHostEnvironment currentEnvironment)
+IWebHostEnvironment currentEnvironment,
+IAuditLogService auditLogService,
+IHttpContextAccessor httpContextAccessor)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
@@ -66,6 +70,8 @@ IWebHostEnvironment currentEnvironment)
             _mapper = mapper;
             _configMapper = configMapper;
             _currentEnvironment = currentEnvironment;
+            _auditLogService = auditLogService;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<object> GetByGuid(string guid)
         {
@@ -168,6 +174,16 @@ IWebHostEnvironment currentEnvironment)
             try
             {
                 await _unitOfWork.SaveChangeAsync();
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+                await _auditLogService.AddAsync(new AuditLogDto
+                {
+                    AccountId = accountId,
+                    RecordId = item.Id,
+                    ActionType = AuditLogConst.ActionType.Add,
+                    TableName = AuditLogConst.TableName.Member,
+                    CreateDate = DateTime.Now,
+                });
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,
@@ -191,6 +207,16 @@ IWebHostEnvironment currentEnvironment)
             try
             {
                 await _unitOfWork.SaveChangeAsync();
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+                await _auditLogService.AddAsync(new AuditLogDto
+                {
+                    AccountId = accountId,
+                    RecordId = item.Id,
+                    ActionType = AuditLogConst.ActionType.Delete,
+                    TableName = AuditLogConst.TableName.Member,
+                    CreateDate = DateTime.Now,
+                });
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,
@@ -267,7 +293,16 @@ IWebHostEnvironment currentEnvironment)
                 item.Status = StatusConstants.Default;
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
-
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+                await _auditLogService.AddAsync(new AuditLogDto
+                {
+                    AccountId = accountId,
+                    RecordId = item.Id,
+                    ActionType = AuditLogConst.ActionType.Add,
+                    TableName = AuditLogConst.TableName.Member,
+                    CreateDate = DateTime.Now,
+                });
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,
@@ -367,7 +402,16 @@ IWebHostEnvironment currentEnvironment)
 
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
-
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+                await _auditLogService.AddAsync(new AuditLogDto
+                {
+                    AccountId = accountId,
+                    RecordId = item.Id,
+                    ActionType = AuditLogConst.ActionType.Edit,
+                    TableName = AuditLogConst.TableName.Member,
+                    CreateDate = DateTime.Now,
+                });
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,
@@ -502,7 +546,16 @@ IWebHostEnvironment currentEnvironment)
                     item.CarGuid = model.CarGuid;
                     _repo.Update(item);
                     await _unitOfWork.SaveChangeAsync();
-                      
+                    string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                    var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+                    await _auditLogService.AddAsync(new AuditLogDto
+                    {
+                        AccountId = accountId,
+                        RecordId = item.Id,
+                        ActionType = AuditLogConst.ActionType.Edit,
+                        TableName = AuditLogConst.TableName.Member,
+                        CreateDate = DateTime.Now,
+                    });
                 }
                 operationResult = new OperationResult
                 {

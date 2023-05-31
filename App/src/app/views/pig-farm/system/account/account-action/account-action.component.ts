@@ -90,14 +90,23 @@ id: any;
   } else {
   const model=  await this.loadDetail();
   this.model = model;
+
     this.getAudit(this.id);
   }
     this.getEmployeesByXAccountID(0);
     this.getFarms();
     this.loadXAccountGroupData();
     this.loadSexConfig();
-   
+   this.codeType();
 
+  }
+  inputType = 'password'
+  inputTypeRePw = 'password'
+  togglePassword() {
+    this.inputType = this.inputType === "password" ? "text": "password"
+  }
+  toggleRePassword() {
+    this.inputTypeRePw = this.inputTypeRePw === "password" ? "text": "password"
   }
   loadDetail() {
    return this.service.getById(this.id).toPromise()
@@ -117,54 +126,7 @@ id: any;
         this.sexData = x.result;
       });
   }
-  
-  // imageConfig() {
-  //   const option = {
-  //     overwriteInitial: true,
-  //     maxFileSize: 1500,
-  //     showClose: false,
-  //     showCaption: false,
-  //     browseLabel: '',
-  //     removeLabel: '',
-  //     browseIcon: '<i class="bi-folder2-open"></i>',
-  //     removeIcon: '<i class="bi-x-lg"></i>',
-  //     removeTitle: 'Cancel or reset changes',
-  //     elErrorContainer: '#kv-avatar-errors-1',
-  //     msgErrorClass: 'alert alert-block alert-danger',
-  //     defaultPreviewContent: '<img src="../../../../../assets/images/no-img.jpg" alt="No Image">',
-  //     layoutTemplates: { main2: '{preview} ' + ' {browse}' },
-  //     allowedFileExtensions: ["jpg", "png", "gif"],
-  //     initialPreview: [],
-  //     initialPreviewConfig: [],
-  //     deleteUrl: `${environment.apiUrl}XAccount/DeleteUploadFile`
-  //   };
-  //   if (this.model.photoPath) {
-  //     this.model.photoPath = this.imagePath(this.model.photoPath);
-  //     const img = `<img src='${this.model.photoPath}' class='file-preview-image' alt='Desert' title='Desert'>`;
-  //     option.initialPreview = [img]
 
-  //     const a = {
-  //       caption: '',
-  //       width: '',
-  //       url: `${environment.apiUrl}XAccount/DeleteUploadFile`, // server delete action
-  //       key: this.model.accountId,
-  //       extra: { id: this.model.accountId }
-  //     }
-  //     option.initialPreviewConfig = [a];
-  //   }
-  //   $("#avatar-1").fileinput(option);;
-  //   let that = this;
-  //   $('#avatar-1').on('filedeleted', function (event, key, jqXHR, data) {
-  //     console.log('Key = ' + key);
-  //     that.file = null;
-  //     that.model.file = null;
-  //     that.model.photoPath = null;
-  //     option.initialPreview = [];
-  //     option.initialPreviewConfig = [];
-  //     $(this).fileinput(option);
-
-  //   });
-  // }
   getAudit(id) {
     this.service.getAudit(id).subscribe(data => {
       this.audit = data;
@@ -185,8 +147,11 @@ id: any;
     this.model = <XAccount>{};
     this.model.status = '1';
     this.model.accountId = 0;
+    this.model.contactRel = '';
+    this.contactRel = '';
   
   }
+  contactRel = ''
   valueChange(value) {
     this.model.accountGroup = value || "";
   }
@@ -205,15 +170,33 @@ id: any;
       this.employeeData = data;
     });
   }
+  roles
+  roles2
   loadXAccountGroupData() {
-      this.xaccountGroupService.getAccountGroup().subscribe(data=> this.xaccountGroupData =data);
+      this.xaccountGroupService.getAccountGroup().subscribe((roles: any[])=> {
+        if (roles.length > 0 && this.model.accountId === 0)   {
+          this.model.accountGroup = roles[0].guid
+  
+        }
+        let roleTemp = [...roles]
+        this.roles = roleTemp.splice(0,3)
+        roleTemp = [...roles]
+        this.roles2 = roleTemp.splice(3,3)
+      });
   }
   getFarms() {
     this.serviceFarm.getFarms().subscribe(data => {
       this.farmData = data;
     });
   }
+  changeStatus(e) {
+    if (e.checked) {
+      this.model.status = "1"
+    } else {
+      this.model.status = "0"
+    }
 
+  }
   back() {
   this.router.navigateByUrl("/system/account")
 
@@ -225,6 +208,7 @@ id: any;
        this.alert.createTitle,
        this.alert.createMessage,
        () => {
+        this.model.contactRel = this.contactRel;
          this.model.file = this.file || [];
          delete this.model['column'];
          delete this.model['index'];
@@ -259,7 +243,8 @@ id: any;
        this.alert.updateTitle,
        this.alert.updateMessage,
        () => {
-         this.model.file = this.file || [];
+        this.model.contactRel = this.contactRel;
+        this.model.file = this.file || [];
          delete this.model['column'];
          delete this.model['index'];
          this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
@@ -306,5 +291,37 @@ id: any;
       }
     }
     return model;
+  }
+
+  changeRepassword(e) {
+  }
+  query;
+  contactRelData
+  codeType() {
+    this.query = new Query()
+    .addParams("lang", localStorage.getItem('lang'));
+    let data = new DataManager({
+      url: `${environment.apiUrl}CodeType/GetDataDropdownlist?lang=${localStorage.getItem('lang')}&codeType=ContactRel`,
+      adaptor: new UrlAdaptor,
+      crossDomain: true,
+    });
+    data.executeQuery(this.query.sortBy('guid')).then((x: any)=> {
+      this.contactRelData = x.result;
+      if (this.model.accountId > 0 && this.contactRelData.length > 0) {
+        setTimeout (() => {
+          this.contactRel = this.model.contactRel;
+      
+        }, 0)
+      }
+    })
+  }
+  checked(item, i) {
+  let checked =  this.role === 'Account' && this.model.accountId ==0 ? i==0:  item.guid === this.model.accountGroup 
+  return checked;
+  }
+  checkedRole(e) {
+    if (e.target.checked) {
+      this.model.accountGroup = e.target.defaultValue
+    }
   }
 }

@@ -87,6 +87,7 @@ namespace Evse.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebHostEnvironment _currentEnvironment;
         private readonly IConfiguration _configuration;
+        private readonly IAuditLogService _auditLogService;
 
         public XAccountService(
             IRepositoryBase<XAccount> repo,
@@ -103,9 +104,9 @@ namespace Evse.Services
 IEvseLoggerService logger,
             IHttpContextAccessor httpContextAccessor,
             IWebHostEnvironment currentEnvironment,
-        IConfiguration configuration
-,
-        ISPService repoSp
+        IConfiguration configuration,
+        ISPService repoSp,
+IAuditLogService auditLogService
             )
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
@@ -125,6 +126,7 @@ IEvseLoggerService logger,
             _currentEnvironment = currentEnvironment;
             _configuration = configuration;
             _repoSp = repoSp;
+            _auditLogService = auditLogService;
         }
 
         public override async Task<object> GetDataDropdownlist(DataManager data)
@@ -166,7 +168,7 @@ IEvseLoggerService logger,
         public async Task<object> LoadData(DataManager data, string role, string lang)
         {
             var roleQuery = await _repoXAccountGroup.FindAll(x => x.GroupNo== role).FirstOrDefaultAsync();
-            var datasource = (from x in _repo.FindAll(x => (x.Status == "1" || x.Status == "0") && roleQuery!= null ? roleQuery.Guid == x.AccountGroup : true)
+            var datasource = (from x in _repo.FindAll(x => roleQuery!= null ? roleQuery.Guid == x.AccountGroup : true)
                               join b in _repoXAccountGroup.FindAll() on x.AccountGroup equals b.Guid into gj
                               from a in gj.DefaultIfEmpty()
                            
@@ -226,6 +228,9 @@ IEvseLoggerService logger,
                                   AccountSite = x.AccountSite,
                                   ErrorLogin = x.ErrorLogin,
                                   PhotoPath = x.PhotoPath,
+                                  ContactName = x.ContactName,
+                                  ContactRel = x.ContactRel,
+                                  ContactTel = x.ContactTel,
                                   AccountDomicileAddress = x.AccountDomicileAddress,
                                   AccessTokenLineNotify = x.AccessTokenLineNotify,
                                   StatusName = status == null ? "" : lang == Languages.EN ? status.CodeNameEn ?? status.CodeName : lang == Languages.VI ? status.CodeNameVn ?? status.CodeName : lang == Languages.CN ? status.CodeNameCn ?? status.CodeName : status.CodeName,
@@ -245,7 +250,7 @@ IEvseLoggerService logger,
                 datasource = QueryableDataOperations.PerformTake(datasource, data.Take);
             return new
             {
-                Result = await datasource.ToListAsync(),
+                Result = await datasource.Where(x=>x.Status == "1" || x.Status == "0" ).ToListAsync(),
                 Count = count
             };
         }
@@ -311,6 +316,9 @@ IEvseLoggerService logger,
                             AccountSite = x.AccountSite,
                             ErrorLogin = x.ErrorLogin,
                             PhotoPath = x.PhotoPath,
+                             ContactName = x.ContactName,
+                                  ContactRel = x.ContactRel,
+                                  ContactTel = x.ContactTel,
                             AccountDomicileAddress = x.AccountDomicileAddress,
                             AccessTokenLineNotify = x.AccessTokenLineNotify,
                             
@@ -332,6 +340,14 @@ IEvseLoggerService logger,
 
             item.Status = "9";
             _repo.Update(item);
+            await _auditLogService.AddAsync(new AuditLogDto
+            {
+                AccountId = accountId,
+                RecordId = item.AccountId,
+                ActionType = AuditLogConst.ActionType.Delete,
+                TableName = AuditLogConst.TableName.XAccount,
+                CreateDate = DateTime.Now,
+            });
             try
             {
                 await _unitOfWork.SaveChangeAsync();
@@ -595,6 +611,16 @@ IEvseLoggerService logger,
                 //item.Status = "1";
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+                await _auditLogService.AddAsync(new AuditLogDto
+                {
+                    AccountId = accountId,
+                   RecordId = item.AccountId,
+                   ActionType = AuditLogConst.ActionType.Add,
+                   TableName = AuditLogConst.TableName.XAccount,
+                   CreateDate = DateTime.Now,
+                });
 
                 operationResult = new OperationResult
                 {
@@ -674,7 +700,16 @@ IEvseLoggerService logger,
                 //item.Comment = model.Comment;
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
-
+                string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
+                await _auditLogService.AddAsync(new AuditLogDto
+                {
+                    AccountId = accountId,
+                    RecordId = item.AccountId,
+                    ActionType = AuditLogConst.ActionType.Edit,
+                    TableName = AuditLogConst.TableName.XAccount,
+                    CreateDate = DateTime.Now,
+                });
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,

@@ -383,6 +383,8 @@ toolbarClick(args) {
     }
 
   }
+
+  fnEdit(e) {}
 }
 
 

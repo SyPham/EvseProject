@@ -113,7 +113,6 @@ export class HomeNavbarComponent  implements OnInit, AfterViewInit {
   }
   navigate(data) {
     return  this.router.navigate([data.url])
-    // debugger
     // const functionCode = data.functionCode;
     // if (functionCode === "ParkingLot") {
     //   return  this.router.navigate([data.url])

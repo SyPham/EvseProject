@@ -9,8 +9,7 @@
           !model.accountNo ||
           !model.uid ||
           !model.upwd ||
-          !model.accountGroup ||
-          !model.employeeGuid
+          !model.accountGroup 
         "
         (click)="save()"
         class="btn btn-success"
@@ -25,18 +24,60 @@
             </div>
            </div>
 
-      
-         <!-- <div class="form-group row">
-          <label for="accountGroup" class="col-sm-2 col-form-label">{{ 'Account_Role' | translate }}</label>
-          <div class="col-sm-10">
-            <ejs-dropdownlist
-            id="accountGroup"
-            [(ngModel)]="model.accountGroup"
-            [fields]="fields"
-            [dataSource]="xaccountGroupData"
-          ></ejs-dropdownlist>
+           <div class="form-group row">
+            <label for="ID" class="col-sm-2 col-form-label">{{ 'ID' | translate }}</label>
+            <div class="col-sm-10">
+              <span *ngIf="model?.accountId > 0">{{model.accountId}}</span>
+            </div>
           </div>
-        </div> -->
+
+           <div class="form-group row">
+            <label for="accountNO" class="col-sm-2 col-form-label">{{ this.role + '_Status' | translate }}</label>
+            <div class="col-sm-10 d-flex align-items-center">
+              <ejs-switch  [onLabel]="'Active' | translate " [offLabel]="'Inactive' | translate " (change)="changeStatus($event)" [checked]="true"></ejs-switch>
+
+            </div>
+          </div>
+
+           <fieldset class="form-group">
+            <div class="row">
+              <label for="accountGroup" class="col-sm-2 col-form-label">{{ 'Role_Type' | translate }}</label>
+              <div class="col-sm-10 d-flex align-items-center">
+                <div class="d-flex align-items-start flex-column">
+                  <div class="mb-2">
+                    <ng-container
+                 *ngFor="let item of roles; let i =index">
+                  <div class="pretty p-default p-round p-thick" style="width: 105px;">
+                    <input type="radio" name="xaccountGroup" [value]="item.guid" (change)="checkedRole($event)" [checked]="checked(item,i)">
+                    <div class="state">
+                        <label>{{item.groupName}}</label>
+                    </div>
+                </div>
+                  
+              </ng-container>
+                  </div>
+
+
+                  <div>
+                    <ng-container
+                    *ngFor="let item of roles2; let i =index">
+                     <div class="pretty p-default p-round p-thick" style="width: 105px;">
+                       <input type="radio" name="xaccountGroup"  [value]="item.guid">
+                       <div class="state">
+                           <label>{{item.groupName}}</label>
+                       </div>
+                   </div>
+                     
+                 </ng-container>
+                  </div>
+                </div>
+              
+          
+              </div>
+            </div>
+          </fieldset>
+
+
            <div class="form-group row">
             <label for="accountNO" class="col-sm-2 col-form-label">{{ this.role + '_NO' | translate }}</label>
             <div class="col-sm-10">
@@ -93,10 +134,60 @@
 
           <div class="form-group row">
             <label for="accountPassword" class="col-sm-2 col-form-label">{{ this.role + '_PWD' | translate }}</label>
-            <div class="col-sm-10">
-              <input type="password" class="form-control" id="accountPassword" [(ngModel)]="model.upwd" [placeholder]="'Enter a pwd' | translate">
+            <div class="col-sm-10 ">
+             <div class="password">
+              <input [type]="inputType" class="form-control" id="accountPassword" [(ngModel)]="model.upwd" [placeholder]="'Enter a pwd' | translate">
+              <span class="eye" (click)="togglePassword()">
+                <i class="fa fa-eye" *ngIf="inputType==='password'" ></i>
+                <i class="fa fa-eye-slash" *ngIf="inputType==='text'" ></i>
+               </span>
+             </div>
             </div>
           </div>
+
+          <div class="form-group row" *ngIf="model?.accountId == 0">
+            <label for="accountRePassword" class="col-sm-2 col-form-label">{{ this.role + '_Re_PWD' | translate }}</label>
+            <div class="col-sm-10 ">
+             <div class="password">
+              <input [type]="inputTypeRePw" (change)="changeRepassword($event)" class="form-control" id="accountRePassword" [(ngModel)]="model.reupwd" [placeholder]="'Enter a re pwd' | translate">
+              <span class="eye" (click)="toggleRePassword()">
+                <i class="fa fa-eye" *ngIf="inputTypeRePw==='password'" ></i>
+                <i class="fa fa-eye-slash" *ngIf="inputTypeRePw==='text'" ></i>
+               </span>
+             </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="contactName" class="col-sm-2 col-form-label">{{ 'ContactName' | translate }}</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="contactName" [(ngModel)]="model.contactName" [placeholder]="'Enter a contact name' | translate">
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label for="ContactRel" class="col-sm-2 col-form-label">{{ 'ContactRel' | translate }}</label>
+            <div class="col-sm-10 text-secondary">
+              <ejs-dropdownlist
+              id="contactRel"
+              [(value)]="contactRel"
+              [dataSource]="contactRelData"
+              [allowFiltering]="true"
+              [showClearButton]="true"
+              [placeholder]="'Choice a contact rel' | translate"
+              [fields]="{text: 'name', value: 'guid'}"
+            ></ejs-dropdownlist>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="contactTel" class="col-sm-2 col-form-label">{{ 'ContactTel' | translate }}</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="contactTel" [(ngModel)]="model.contactTel" [placeholder]="'Enter a contact tel' | translate">
+            </div>
+          </div>
+
 
           <div class="form-group row">
             <label for="accountComment" class="col-sm-2 col-form-label">{{ this.role + '_Comment' | translate }}</label>

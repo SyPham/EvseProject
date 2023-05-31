@@ -83,29 +83,6 @@
           </e-column>
 
           <e-column
-            field="option"
-            textAlign="Left"
-            headerTextAlign="Center"
-            width="10%"
-            headerTextAlign="Center"
-            [allowSorting]="false"
-            [allowSearching]="false"
-            [allowGrouping]="false"
-            [allowFiltering]="false"
-            [allowEditing]="false"
-            headerText="{{ 'OPTION' | translate }}"
-          >
-            <ng-template #template let-data>
-              <span (click)="delete(data.id)" class="delete-grid">
-                <i class="fa fa-trash"></i>
-              </span>
-              <span (click)="openModal(optionModal, data)" class="edit-grid">
-                <i class="fa fa-edit"></i>
-              </span>
-            </ng-template>
-          </e-column>
-
-          <e-column
             field="groupNo"
             textAlign="Left"
             headerTextAlign="Center"
@@ -119,6 +96,26 @@
             headerText="{{ 'ACCOUNT_GROUP_NAME' | translate }}"
           >
           </e-column>
+          
+          <e-column
+            field="option"
+            textAlign="Left"
+            headerTextAlign="Center"
+            headerTextAlign="Center"
+            [allowSorting]="false"
+            [allowSearching]="false"
+            [allowGrouping]="false"
+            [allowFiltering]="false"
+            [allowEditing]="false"
+            headerText="{{ 'OPTION' | translate }}"
+          >
+            <ng-template #template let-data>
+
+              <button type="button" (click)="openModal(optionModal, data)"  class="btn btn-sm btn-success mr-2">{{ 'Edit' | translate }}</button>
+              <button type="button" (click)="delete(data.accountId)" class="btn btn-sm btn-danger">{{ 'Delete' | translate }}</button>
+            </ng-template>
+          </e-column>
+
         </e-columns>
       </ejs-grid>
     </div>

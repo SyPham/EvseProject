@@ -508,7 +508,12 @@ toolbarClick(args) {
 
   }
   fnEdit(data) {
-    this.router.navigateByUrl(`/system/account/${this.role.toLocaleLowerCase()}/action/${data.accountId}`)
+    let link = `/system/account/action/${data.accountId}`;
+
+    if (this.role !== 'Account' ) {
+      link = `/system/account/${this.role.toLocaleLowerCase()}/action/${data.accountId}`;
+    }
+    this.router.navigateByUrl(link)
 
   }
   async openModal(template, data = {} as XAccount) {

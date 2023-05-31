@@ -281,7 +281,6 @@ export class MemberComponent extends BaseComponent implements OnInit {
     }
     this.modalReference = this.modalService.open(template, {size: 'xl',backdrop: 'static'});
     this.modalReference.result.then(x=> {
-      debugger
       this.configImage();
 
     })

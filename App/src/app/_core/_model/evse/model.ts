@@ -424,3 +424,13 @@ export interface Investor {
     investorSexName: string;
     file: any;
 }
+
+export interface AuditLog {
+    id: number;
+    actionType?: number;
+    tableName: string;
+    accountId: string;
+    recordId: number;
+    createDate: string | null;
+
+}
