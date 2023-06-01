@@ -30,6 +30,7 @@ namespace Evse.Services
     public class AuditLogService : ServiceBase<AuditLog, AuditLogDto>, IAuditLogService, IScopeService
     {
         private readonly IRepositoryBase<AuditLog> _repo;
+        private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _configMapper;
@@ -47,6 +48,7 @@ IEvseLoggerService logger
 IWebHostEnvironment currentEnvironment)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
+            _repoXAccount = repoXAccount;
             _repo = repo;
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -56,7 +58,10 @@ IWebHostEnvironment currentEnvironment)
         }
          public override async Task<object> GetDataDropdownlist(DataManager data)
         {
-            var datasource = (from a in _repo.FindAll()
+            var datasource = (
+                from a in _repo.FindAll()
+                join ac in _repoXAccount.FindAll() on a.AccountId equals ac.AccountId into account
+                from x in  account.DefaultIfEmpty()
                               select new AuditLogDto
                               {
 
@@ -66,6 +71,8 @@ IWebHostEnvironment currentEnvironment)
                                   ActionType = a.ActionType,
                                   TableName = a.TableName,
                                   CreateDate = a.CreateDate,
+                                  ActionTypeName = AuditLogConst.ActionType.Add == a.ActionType ? "Add" :  AuditLogConst.ActionType.Edit == a.ActionType ? "Edit" : AuditLogConst.ActionType.Delete == a.ActionType ? "Delete" : "" ,
+                                  AccountName = x != null ? x.Uid : "",
                               }).OrderByDescending(x => x.Id).AsQueryable();
 
 
@@ -88,6 +95,8 @@ IWebHostEnvironment currentEnvironment)
         public async Task<object> LoadData(DataManager data, string lang)
         {
             var datasource = (from a in _repo.FindAll()
+               join ac in _repoXAccount.FindAll() on a.AccountId equals ac.AccountId into account
+                from x in  account.DefaultIfEmpty()
                               select new AuditLogDto
                               {
                                   Id = a.Id,
@@ -96,6 +105,8 @@ IWebHostEnvironment currentEnvironment)
                                   TableName = a.TableName,
                                   CreateDate = a.CreateDate,
                                   RecordId = a.RecordId,
+                                  ActionTypeName = AuditLogConst.ActionType.Add == a.ActionType ? "Add" :  AuditLogConst.ActionType.Edit == a.ActionType ? "Edit" : AuditLogConst.ActionType.Delete == a.ActionType ? "Delete" : "" ,
+                                  AccountName = x != null ? x.Uid : "",
 
                               }).OrderByDescending(x => x.Id).AsQueryable();
 

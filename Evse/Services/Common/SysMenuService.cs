@@ -192,7 +192,7 @@ IRepositoryBase<XAccountGroupPermission> repoXAccountGroupPermission
                 x.Entity.SortId,
                 x.HasChildren,
                 Level = x.Depth,
-                Children = x.ChildNodes.Where(x=> permissions.Contains(x.Entity.FunctionCode)).Select(a => new
+                Children = x.ChildNodes.Select(a => new
                 {
                     a.Entity.Url,
                     a.Entity.Icon,
@@ -201,7 +201,7 @@ IRepositoryBase<XAccountGroupPermission> repoXAccountGroupPermission
                     a.HasChildren,
                     a.Entity.SortId,
                     Level = a.Depth,
-                    Children = a.ChildNodes.Where(x=> permissions.Contains(x.Entity.FunctionCode)).Select(b => new
+                    Children = a.ChildNodes.Select(b => new
                     {
                         b.Entity.Url,
                         b.Entity.Icon,

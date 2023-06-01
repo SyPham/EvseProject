@@ -226,7 +226,7 @@ const routes: Routes = [
           breadcrumb: 'Landlord Detail',
           functionCode: 'Landlord'
         },
-      canActivate: [AuthGuard]
+      //canActivate: [AuthGuard]
       },
       {
         path: 'account/electrician/action/:id',

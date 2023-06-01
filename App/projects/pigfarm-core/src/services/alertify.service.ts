@@ -64,6 +64,19 @@ export class AlertifyService {
       }
     });
   }
+  errorConfirm(title: string, message: string, okCallback: () => void) {
+    Swal.fire({
+      title,
+      text: message,
+      icon: 'warning',
+      showCancelButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      confirmButtonText: this.trans.instant('Yes'),
+    }).then((result) => {
+        okCallback();
+    });
+  }
   confirm2(title: string, message: string, okCallback: () => void, cancelCallback: () => void) {
     Swal.fire({
       title,

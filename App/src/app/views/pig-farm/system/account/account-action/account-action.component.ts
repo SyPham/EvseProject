@@ -79,6 +79,7 @@ id: any;
     public translate: TranslateService,
     private router: Router,
     private route: ActivatedRoute,
+
   ) { }
   role = '';
  async ngOnInit() {
@@ -89,15 +90,22 @@ id: any;
 
   } else {
   const model=  await this.loadDetail();
+  if (model == null) {
+    this.alertify.errorConfirm("", this.translate.instant("Not found record"), () => {
+      this.router.navigateByUrl("/")
+      return;
+    })
+   
+  }
   this.model = model;
 
     this.getAudit(this.id);
   }
     this.getEmployeesByXAccountID(0);
-    this.getFarms();
     this.loadXAccountGroupData();
     this.loadSexConfig();
    this.codeType();
+   this.auditLogs();
 
   }
   inputType = 'password'
@@ -173,15 +181,14 @@ id: any;
   roles
   roles2
   loadXAccountGroupData() {
-      this.xaccountGroupService.getAccountGroup().subscribe((roles: any[])=> {
-        if (roles.length > 0 && this.model.accountId === 0)   {
+      this.xaccountGroupService.getAccountGroup().subscribe((roles: XAccountGroup[])=> {
+        this.roles = roles
+        let roleTemp = this.roles.filter(x=> x.groupNo == this.role)
+        if (roles.length > 0 && this.model.accountId === 0 && this.role === 'Account')   {
           this.model.accountGroup = roles[0].guid
-  
+        } else if (roleTemp.length > 0 ) {
+          this.model.accountGroup = roleTemp[0].guid
         }
-        let roleTemp = [...roles]
-        this.roles = roleTemp.splice(0,3)
-        roleTemp = [...roles]
-        this.roles2 = roleTemp.splice(3,3)
       });
   }
   getFarms() {
@@ -198,10 +205,27 @@ id: any;
 
   }
   back() {
-  this.router.navigateByUrl("/system/account")
-
+    if (this.role === 'Account') {
+      this.router.navigateByUrl("/system/account")
+    }  else if (this.role === 'Engineer') {
+      this.router.navigateByUrl("/system/account/engineer")
+    }  else if (this.role === 'Investor') {
+      this.router.navigateByUrl("/system/account/investor")
+    }  else if (this.role === 'Electrician') {
+      this.router.navigateByUrl("/system/account/electrician")
+    }  else if (this.role === 'Admin2') {
+      this.router.navigateByUrl("/system/account/admin2")
+    }  else if (this.role === 'Admin') {
+      this.router.navigateByUrl("/system/account/admin")
+    }  else if (this.role === 'Landlord') {
+      this.router.navigateByUrl("/system/account/landlord")
+    }
   }
   create() {
+    if (this.model.uid != this.model.reupwd) {
+      this.alertify.warning(this.translate.instant('The uid and re uid are not match'));
+      return;
+    }
     this.alertify.confirm4(
        this.alert.yes_message,
        this.alert.no_message,
@@ -315,9 +339,34 @@ id: any;
       }
     })
   }
+  auditLogsQuery: Query; 
+  auditLogsData$: any; 
+  locale = localStorage.getItem('lang');
+  pageText = 'Total Records Count {{items}} items'
+
+  auditLogs() {
+    this.auditLogsQuery = new Query();
+    this.auditLogsData$ = new DataManager({
+      url: `${environment.apiUrl}AuditLog/LoadData?lang=${localStorage.getItem('lang')}`,
+      adaptor: new UrlAdaptor,
+      crossDomain: true,
+    });
+  }
   checked(item, i) {
-  let checked =  this.role === 'Account' && this.model.accountId ==0 ? i==0:  item.guid === this.model.accountGroup 
-  return checked;
+    if (this.role === 'Account' && this.model.accountId === 0) {
+      return i == 0;
+    } 
+    else if (this.model.accountId > 0) {
+      return item.guid === this.model.accountGroup
+    } 
+    else if (this.model.accountId === 0) {
+      return item.groupNo === this.role
+    } 
+    else {
+
+      return false;
+
+    }
   }
   checkedRole(e) {
     if (e.target.checked) {

@@ -399,7 +399,14 @@ IAuditLogService auditLogService
             }
             return operationResult;
         }
-
+     public override async Task<XAccountDto> GetByIDAsync(object id)
+        {
+            var item = await _repo.FindByIDAsync(id);
+            if (item.Status == "9") {
+                return null;
+            }
+            return  _mapper.Map<XAccount, XAccountDto>(item );
+        }
         public async Task<XAccountDto> GetByUsername(string username)
         {
             var result = await _repo.FindAll(x => x.Uid.ToLower() == username.ToLower()).ProjectTo<XAccountDto>(_configMapper).FirstOrDefaultAsync();

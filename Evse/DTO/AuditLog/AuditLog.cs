@@ -9,9 +9,12 @@ namespace Evse.DTO
     {
         public decimal Id { get; set; }
         public decimal? AccountId { get; set; }
+        public string AccountName { get; set; }
         public int? ActionType { get; set; }
         public DateTime? CreateDate { get; set; }
         public string TableName { get; set; }
         public decimal? RecordId { get; set; }
+        public string ActionTypeName { get; set; }
+
     }
 }

@@ -34,7 +34,7 @@
            <div class="form-group row">
             <label for="accountNO" class="col-sm-2 col-form-label">{{ this.role + '_Status' | translate }}</label>
             <div class="col-sm-10 d-flex align-items-center">
-              <ejs-switch  [onLabel]="'Active' | translate " [offLabel]="'Inactive' | translate " (change)="changeStatus($event)" [checked]="true"></ejs-switch>
+              <ejs-switch  [onLabel]="'Active' | translate " [offLabel]="'Inactive' | translate " (change)="changeStatus($event)" [checked]="model.status == '1'"></ejs-switch>
 
             </div>
           </div>
@@ -46,33 +46,17 @@
                 <div class="d-flex align-items-start flex-column">
                   <div class="mb-2">
                     <ng-container
-                 *ngFor="let item of roles; let i =index">
-                  <div class="pretty p-default p-round p-thick" style="width: 105px;">
-                    <input type="radio" name="xaccountGroup" [value]="item.guid" (change)="checkedRole($event)" [checked]="checked(item,i)">
-                    <div class="state">
-                        <label>{{item.groupName}}</label>
-                    </div>
-                </div>
-                  
-              </ng-container>
-                  </div>
-
-
-                  <div>
-                    <ng-container
-                    *ngFor="let item of roles2; let i =index">
-                     <div class="pretty p-default p-round p-thick" style="width: 105px;">
-                       <input type="radio" name="xaccountGroup"  [value]="item.guid">
-                       <div class="state">
-                           <label>{{item.groupName}}</label>
-                       </div>
-                   </div>
-                     
-                 </ng-container>
+                      *ngFor="let item of roles; let i =index">
+                        <div class="pretty p-default p-round p-thick" style="width: 105px;">
+                          <input type="radio" name="xaccountGroup" [value]="item.guid" (change)="checkedRole($event)" [checked]="checked(item,i)">
+                          <div class="state">
+                              <label>{{item.groupName}}</label>
+                          </div>
+                      </div>
+                        
+                    </ng-container>
                   </div>
                 </div>
-              
-          
               </div>
             </div>
           </fieldset>
@@ -210,8 +194,100 @@
             </div>
           </div>
           
+          
+          <div class="form-group row" *ngIf="model.accountId > 0">
+            <label for="contactTel" class="col-sm-2 col-form-label">{{ '' | translate }}</label>
+            <div class="col-sm-3">
+            <label class="">{{ 'Audit_Logs' | translate }}</label>
+              
+<ejs-grid
+#grid
+id="grid"
+[dataSource]="auditLogsData$"
+[allowPaging]="true"
+[allowResizing]="true"
+[allowSorting]="true"
+gridLines="Both"
+[locale]="locale"
+[query]="auditLogsQuery"
+[allowExcelExport]="true"
+>
+
+<ng-template #pagerTemplate let-data>
+  <pre
+  class="page-text"
+  [translate]="pageText"
+  [translateParams]="{ items: grid.pageSettings.totalRecordsCount }"
+  > </pre>
+ <div class="d-flex justify-content-center">
+  <ngb-pagination
+  [collectionSize]="grid.pageSettings.totalRecordsCount"
+  [(page)]="grid.pageSettings.currentPage"
+  [pageSize]="grid.pageSettings.pageSize"
+  [maxSize]="5"
+  [rotate]="true"
+  [ellipses]="false"
+  [boundaryLinks]="true"
+>
+
+<ng-template ngbPaginationFirst><i class="fa fa-step-backward"></i></ng-template>
+<ng-template ngbPaginationLast><i class="fa fa-step-forward"></i></ng-template>
+<ng-template ngbPaginationPrevious><i class="fa fa-caret-left"></i></ng-template>
+<ng-template ngbPaginationNext><i class="fa fa-caret-right"></i></ng-template>
+<ng-template ngbPaginationEllipsis>...</ng-template>
+<ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+
+</ngb-pagination>
+ </div>
+  </ng-template>
+
+<e-columns>
+  
+
+<e-column
+field="actionTypeName"
+width="120px"
+textAlign="Left"
+headerTextAlign="Center"
+headerText="{{ 'ActionType' | translate }}"
+>
+
+<ng-template #template let-data>
+  {{ data.actionTypeName | translate }}
+</ng-template>
+
+</e-column>
+
+  <e-column
+    field="accountName"
+    width="120px"
+    textAlign="Left"
+  headerTextAlign="Center"
+    headerText="{{ 'UID' | translate }}"
+  >
+  </e-column>
+
+
+  <e-column
+  field="createDate"
+  editType="datetime"
+  format="yyyy-MM-dd HH:mm:ss"
+  textAlign="Left"
+headerTextAlign="Center"
+  headerText="{{ 'Create_Date' | translate }}"
+>
+</e-column>
+
+
+</e-columns>
+</ejs-grid>
+            </div>
+          </div>
+
+          
       </div>
     
     </div>
   </div>
 </div>
+

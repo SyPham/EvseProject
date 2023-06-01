@@ -127,7 +127,7 @@ role = ''
       }
     };
     L10n.load(load);
-    this.getFarms();
+    //this.getFarms();
     this.loadXAccountGroupData();
     this.loadLang();
   }
@@ -307,10 +307,16 @@ toolbarClick(args) {
       }
   }
   fnAdd(args: any) {
+    debugger
     if (args) {
       args.cancel = true;
     }
-    this.router.navigateByUrl('/system/account/action/0')
+    let link = `/system/account/action/${0}`;
+
+    if (this.role !== 'Account' ) {
+      link = `/system/account/${this.role.toLocaleLowerCase()}/action/${0}`;
+    }
+    this.router.navigateByUrl(link)
    // this.model = {} as any;
    // this.openModal(this.templateRef);
   }
