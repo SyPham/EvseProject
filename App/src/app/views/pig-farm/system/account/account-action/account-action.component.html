@@ -9,7 +9,8 @@
           !model.accountNo ||
           !model.uid ||
           !model.upwd ||
-          !model.accountGroup 
+          !model.accountGroup ||
+          model.upwd != model.reupwd
         "
         (click)="save()"
         class="btn btn-success"
@@ -63,14 +64,14 @@
 
 
            <div class="form-group row">
-            <label for="accountNO" class="col-sm-2 col-form-label">{{ this.role + '_NO' | translate }}</label>
+            <label for="accountNO" class="col-sm-2 col-form-label">{{ this.role + '_NO' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10">
               <input type="text" class="form-control" [(ngModel)]="model.accountNo" id="accountNO" [placeholder]="'Enter a ' + this.role + ' NO' | translate">
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="accountName" class="col-sm-2 col-form-label">{{ this.role + '_Name' | translate }}</label>
+            <label for="accountName" class="col-sm-2 col-form-label">{{ this.role + '_Name' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10">
               <input type="text" class="form-control" [(ngModel)]="model.accountName" id="accountName" [placeholder]="'Enter a ' + this.role + ' name' | translate">
             </div>
@@ -97,7 +98,7 @@
           <div class="form-group row">
             <label for="accountIdCard" class="col-sm-2 col-form-label">{{ this.role + '_IDCARD' | translate }}</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" [(ngModel)]="model.accountIdcard" id="accountIdCard" [placeholder]="'Enter a ' + this.role + ' IDCARD' | translate">
+              <input type="text" class="form-control" [readOnly]="model.accountIdcard" [(ngModel)]="model.accountIdcard" id="accountIdCard" [placeholder]="'Enter a ' + this.role + ' IDCARD' | translate">
             </div>
           </div>
 
@@ -109,7 +110,7 @@
           </div>
 
           <div class="form-group row">
-            <label for="accountUid" class="col-sm-2 col-form-label">{{ this.role + '_UID' | translate }}</label>
+            <label for="accountUid" class="col-sm-2 col-form-label">{{ this.role + '_UID' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="accountUid" [(ngModel)]="model.uid" [placeholder]="'Enter a ' + this.role + ' uid' | translate">
             </div>
@@ -117,7 +118,7 @@
 
 
           <div class="form-group row">
-            <label for="accountPassword" class="col-sm-2 col-form-label">{{ this.role + '_PWD' | translate }}</label>
+            <label for="accountPassword" class="col-sm-2 col-form-label">{{ this.role + '_PWD' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10 ">
              <div class="password">
               <input [type]="inputType" class="form-control" id="accountPassword" [(ngModel)]="model.upwd" [placeholder]="'Enter a pwd' | translate">
@@ -130,7 +131,7 @@
           </div>
 
           <div class="form-group row" *ngIf="model?.accountId == 0">
-            <label for="accountRePassword" class="col-sm-2 col-form-label">{{ this.role + '_Re_PWD' | translate }}</label>
+            <label for="accountRePassword" class="col-sm-2 col-form-label">{{ this.role + '_Re_PWD' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10 ">
              <div class="password">
               <input [type]="inputTypeRePw" (change)="changeRepassword($event)" class="form-control" id="accountRePassword" [(ngModel)]="model.reupwd" [placeholder]="'Enter a re pwd' | translate">
@@ -138,6 +139,7 @@
                 <i class="fa fa-eye" *ngIf="inputTypeRePw==='password'" ></i>
                 <i class="fa fa-eye-slash" *ngIf="inputTypeRePw==='text'" ></i>
                </span>
+               <small *ngIf="model.upwd != model.reupwd && model.accountId === 0" class="form-text text-danger">{{'The uid and re uid are not match' | translate}}</small>
              </div>
             </div>
           </div>

@@ -244,5 +244,11 @@ namespace Evse.Controllers
             return Ok(await _service.SP_Record_AccountCheck_NeedCheck(accountGuid));
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetIdCard(string type, string accountGroupGuid)
+        {
+            return Ok(await _service.GetIdCard(type, accountGroupGuid));
+        }
     }
 }

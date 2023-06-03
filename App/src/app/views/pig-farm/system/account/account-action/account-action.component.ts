@@ -85,6 +85,7 @@ id: any;
  async ngOnInit() {
   this.id = +this.route.snapshot.params['id'];
   this.role = this.route.snapshot.data['functionCode'];
+
   if ( this.id === 0) {
     this.reset()
 
@@ -98,7 +99,6 @@ id: any;
    
   }
   this.model = model;
-
     this.getAudit(this.id);
   }
     this.getEmployeesByXAccountID(0);
@@ -107,6 +107,14 @@ id: any;
    this.codeType();
    this.auditLogs();
 
+  }
+  getIdCard() {
+    if (this.model?.accountGroup && this.role) {
+      this.service.getIdCard(this.role, this.model.accountGroup).subscribe(res=> {
+  this.model.accountIdcard =  res['idCard'];
+      })
+    }
+   
   }
   inputType = 'password'
   inputTypeRePw = 'password'
@@ -157,7 +165,7 @@ id: any;
     this.model.accountId = 0;
     this.model.contactRel = '';
     this.contactRel = '';
-  
+   
   }
   contactRel = ''
   valueChange(value) {
@@ -188,6 +196,9 @@ id: any;
           this.model.accountGroup = roles[0].guid
         } else if (roleTemp.length > 0 ) {
           this.model.accountGroup = roleTemp[0].guid
+        }
+        if (this.model.accountId === 0) {
+          this.getIdCard();
         }
       });
   }
@@ -222,10 +233,7 @@ id: any;
     }
   }
   create() {
-    if (this.model.uid != this.model.reupwd) {
-      this.alertify.warning(this.translate.instant('The uid and re uid are not match'));
-      return;
-    }
+  
     this.alertify.confirm4(
        this.alert.yes_message,
        this.alert.no_message,
@@ -233,9 +241,6 @@ id: any;
        this.alert.createMessage,
        () => {
         this.model.contactRel = this.contactRel;
-         this.model.file = this.file || [];
-         delete this.model['column'];
-         delete this.model['index'];
          this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {
@@ -268,9 +273,6 @@ id: any;
        this.alert.updateMessage,
        () => {
         this.model.contactRel = this.contactRel;
-        this.model.file = this.file || [];
-         delete this.model['column'];
-         delete this.model['index'];
          this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {
@@ -371,6 +373,7 @@ id: any;
   checkedRole(e) {
     if (e.target.checked) {
       this.model.accountGroup = e.target.defaultValue
+     
     }
   }
 }

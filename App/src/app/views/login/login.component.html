@@ -10,12 +10,12 @@
           <div class="d-flex justify-content-around">
             <div>
               <ul *ngFor="let item of roles" class="row" >
-                <li class="col-4"><ejs-radiobutton routerLink="/login" [(value)]="item.guid" (change)="onChange($event)" [label]="item.name" name="web" [checked]="item.guid === 'Admin'"></ejs-radiobutton></li>
+                <li class="col-4"><ejs-radiobutton [(value)]="item.guid" (change)="onChange($event)" [label]="item.name" name="web" [checked]="item.guid === 'Admin'"></ejs-radiobutton></li>
                 </ul>
             </div>
             <div>
               <ul *ngFor="let item of roles2" class="row" >
-                <li class="col-4"><ejs-radiobutton routerLink="/login" [(value)]="item.guid" (change)="onChange($event)" [label]="item.name" name="web" [checked]="item.guid === 'Admin'"></ejs-radiobutton></li>
+                <li class="col-4"><ejs-radiobutton [(value)]="item.guid" (change)="onChange($event)" [label]="item.name" name="web" [checked]="item.guid === 'Admin'"></ejs-radiobutton></li>
                 </ul>
             </div>
           </div>

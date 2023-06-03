@@ -61,18 +61,20 @@ namespace Evse.Services
         Task<bool> UpdateTokenLine(string token, object id);
         Task<bool> RemoveTokenLine(object id);
 
-         Task<object> UploadAvatarForMobile(IFormFile file, decimal key);
+        Task<object> UploadAvatarForMobile(IFormFile file, decimal key);
 
-          Task<object> SP_Record_AccountCheck_Born(string recordGuid);
+        Task<object> SP_Record_AccountCheck_Born(string recordGuid);
         Task<object> SP_Record_AccountCheck_Remove(string accountGuid);
         Task<object> SP_Record_AccountCheck_Confirm(string accountGuid);
         Task<object> SP_Record_AccountCheck_NeedCheck(string accountGuid);
+        Task<object> GetIdCard(string type, string accountGroupGuid);
 
     }
     public class XAccountService : ServiceBase<XAccount, XAccountDto>, IXAccountService
     {
         private readonly ISPService _repoSp;
         private readonly IRepositoryBase<XAccount> _repo;
+        private readonly IRepositoryBase<SystemConfig> _repoSystemConfig;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccountPermission> _repoXAccountPermission;
         private readonly IRepositoryBase<XAccountGroupPermission> _repoXAccountGroupPermission;
@@ -107,7 +109,8 @@ IEvseLoggerService logger,
         IConfiguration configuration,
         ISPService repoSp,
 IAuditLogService auditLogService
-            )
+,
+IRepositoryBase<SystemConfig> repoSystemConfig)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
@@ -127,6 +130,7 @@ IAuditLogService auditLogService
             _configuration = configuration;
             _repoSp = repoSp;
             _auditLogService = auditLogService;
+            _repoSystemConfig = repoSystemConfig;
         }
 
         public override async Task<object> GetDataDropdownlist(DataManager data)
@@ -167,11 +171,11 @@ IAuditLogService auditLogService
 
         public async Task<object> LoadData(DataManager data, string role, string lang)
         {
-            var roleQuery = await _repoXAccountGroup.FindAll(x => x.GroupNo== role).FirstOrDefaultAsync();
-            var datasource = (from x in _repo.FindAll(x => roleQuery!= null ? roleQuery.Guid == x.AccountGroup : true)
+            var roleQuery = await _repoXAccountGroup.FindAll(x => x.GroupNo == role).FirstOrDefaultAsync();
+            var datasource = (from x in _repo.FindAll(x => roleQuery != null ? roleQuery.Guid == x.AccountGroup : true)
                               join b in _repoXAccountGroup.FindAll() on x.AccountGroup equals b.Guid into gj
                               from a in gj.DefaultIfEmpty()
-                           
+
                               join e in _repoEmployee.FindAll() on x.EmployeeGuid equals e.Guid into ef
                               from d in ef.DefaultIfEmpty()
                               join st in _repoCodeType.FindAll(x => x.Status == "Y" && x.CodeType1 == CodeTypeConst.Account_Status) on x.Status equals st.CodeNo into ass
@@ -250,17 +254,17 @@ IAuditLogService auditLogService
                 datasource = QueryableDataOperations.PerformTake(datasource, data.Take);
             return new
             {
-                Result = await datasource.Where(x=>x.Status == "1" || x.Status == "0" ).ToListAsync(),
+                Result = await datasource.Where(x => x.Status == "1" || x.Status == "0").ToListAsync(),
                 Count = count
             };
         }
-        
+
         public override async Task<List<XAccountDto>> GetAllAsync()
         {
             var query = from x in _repo.FindAll(x => (x.Status == "1" || x.Status == "0"))
                         join b in _repoXAccountGroup.FindAll() on x.AccountGroup equals b.Guid into gj
                         from a in gj.DefaultIfEmpty()
-                      
+
                         join e in _repoEmployee.FindAll() on x.EmployeeGuid equals e.Guid into ef
                         from d in ef.DefaultIfEmpty()
 
@@ -316,12 +320,12 @@ IAuditLogService auditLogService
                             AccountSite = x.AccountSite,
                             ErrorLogin = x.ErrorLogin,
                             PhotoPath = x.PhotoPath,
-                             ContactName = x.ContactName,
-                                  ContactRel = x.ContactRel,
-                                  ContactTel = x.ContactTel,
+                            ContactName = x.ContactName,
+                            ContactRel = x.ContactRel,
+                            ContactTel = x.ContactTel,
                             AccountDomicileAddress = x.AccountDomicileAddress,
                             AccessTokenLineNotify = x.AccessTokenLineNotify,
-                            
+
                         };
 
             var data = await query.OrderByDescending(x => x.AccountId).ToListAsync();
@@ -399,13 +403,14 @@ IAuditLogService auditLogService
             }
             return operationResult;
         }
-     public override async Task<XAccountDto> GetByIDAsync(object id)
+        public override async Task<XAccountDto> GetByIDAsync(object id)
         {
             var item = await _repo.FindByIDAsync(id);
-            if (item.Status == "9") {
+            if (item.Status == "9")
+            {
                 return null;
             }
-            return  _mapper.Map<XAccount, XAccountDto>(item );
+            return _mapper.Map<XAccount, XAccountDto>(item);
         }
         public async Task<XAccountDto> GetByUsername(string username)
         {
@@ -623,10 +628,10 @@ IAuditLogService auditLogService
                 await _auditLogService.AddAsync(new AuditLogDto
                 {
                     AccountId = accountId,
-                   RecordId = item.AccountId,
-                   ActionType = AuditLogConst.ActionType.Add,
-                   TableName = AuditLogConst.TableName.XAccount,
-                   CreateDate = DateTime.Now,
+                    RecordId = item.AccountId,
+                    ActionType = AuditLogConst.ActionType.Add,
+                    TableName = AuditLogConst.TableName.XAccount,
+                    CreateDate = DateTime.Now,
                 });
 
                 operationResult = new OperationResult
@@ -1218,5 +1223,32 @@ IAuditLogService auditLogService
         public async Task<object> SP_Record_AccountCheck_Confirm(string accountGuid) => await _repoSp.SP_Record_AccountCheck_Confirm(accountGuid);
         public async Task<object> SP_Record_AccountCheck_NeedCheck(string accountGuid) => await _repoSp.SP_Record_AccountCheck_NeedCheck(accountGuid);
 
+        public async Task<object> GetIdCard(string type, string accountGroupGuid)
+        {
+            var accountTotal = await _repo.FindAll(x => x.Guid == accountGroupGuid).CountAsync();
+            string result = accountTotal.ToString("D5");
+            switch (type)
+            {
+                case "Landlord":
+                    string suffixElectrician = "O";
+                    var configValueElectrician = await _repoSystemConfig.FindAll(x => x.Type == "Electrician.IDCARD").FirstOrDefaultAsync();
+                    suffixElectrician = configValueElectrician != null && !configValueElectrician.Value.IsNullOrEmpty() ? configValueElectrician.Value : suffixElectrician;
+                   suffixElectrician =  suffixElectrician + accountTotal.ToString("D9");
+                break;
+                case "Investor":
+                    string suffixInvestor = "L";
+                    var configValueInvestor = await _repoSystemConfig.FindAll(x => x.Type == "Investor.IDCARD").FirstOrDefaultAsync();
+                    suffixInvestor = configValueInvestor != null && !configValueInvestor.Value.IsNullOrEmpty() ? configValueInvestor.Value : suffixInvestor;
+                   suffixInvestor=  suffixInvestor + accountTotal.ToString("D9");
+               break;
+                default:
+                    return new {
+                        idCard = result
+                    };
+            }
+            return new {
+                        idCard = result
+                    };
+        }
     }
 }
