@@ -67,7 +67,7 @@ namespace Evse.Services
         Task<object> SP_Record_AccountCheck_Remove(string accountGuid);
         Task<object> SP_Record_AccountCheck_Confirm(string accountGuid);
         Task<object> SP_Record_AccountCheck_NeedCheck(string accountGuid);
-        Task<object> GetIdCard(string type, string accountGroupGuid);
+        Task<object> GetAccountNo(string type, string accountGroupGuid);
 
     }
     public class XAccountService : ServiceBase<XAccount, XAccountDto>, IXAccountService
@@ -1223,31 +1223,35 @@ IRepositoryBase<SystemConfig> repoSystemConfig)
         public async Task<object> SP_Record_AccountCheck_Confirm(string accountGuid) => await _repoSp.SP_Record_AccountCheck_Confirm(accountGuid);
         public async Task<object> SP_Record_AccountCheck_NeedCheck(string accountGuid) => await _repoSp.SP_Record_AccountCheck_NeedCheck(accountGuid);
 
-        public async Task<object> GetIdCard(string type, string accountGroupGuid)
+        public async Task<object> GetAccountNo(string type, string accountGroupGuid)
         {
             var accountTotal = await _repo.FindAll(x => x.Guid == accountGroupGuid).CountAsync();
             string result = accountTotal.ToString("D5");
             switch (type)
             {
+                 case "Electrician":
+                 return new {
+                        value = ""
+                    };
                 case "Landlord":
                     string suffixElectrician = "O";
-                    var configValueElectrician = await _repoSystemConfig.FindAll(x => x.Type == "Electrician.IDCARD").FirstOrDefaultAsync();
+                    var configValueElectrician = await _repoSystemConfig.FindAll(x => x.Type == "Electrician.NO").FirstOrDefaultAsync();
                     suffixElectrician = configValueElectrician != null && !configValueElectrician.Value.IsNullOrEmpty() ? configValueElectrician.Value : suffixElectrician;
                    suffixElectrician =  suffixElectrician + accountTotal.ToString("D9");
                 break;
                 case "Investor":
                     string suffixInvestor = "L";
-                    var configValueInvestor = await _repoSystemConfig.FindAll(x => x.Type == "Investor.IDCARD").FirstOrDefaultAsync();
+                    var configValueInvestor = await _repoSystemConfig.FindAll(x => x.Type == "Investor.NO").FirstOrDefaultAsync();
                     suffixInvestor = configValueInvestor != null && !configValueInvestor.Value.IsNullOrEmpty() ? configValueInvestor.Value : suffixInvestor;
                    suffixInvestor=  suffixInvestor + accountTotal.ToString("D9");
                break;
                 default:
                     return new {
-                        idCard = result
+                        value = result
                     };
             }
             return new {
-                        idCard = result
+                        value = result
                     };
         }
     }

@@ -5,12 +5,11 @@
         <button
         type="submit"
         [disabled]="
-          !model.accountName ||
-          !model.accountNo ||
+          !model.memberName ||
+          !model.memberNo ||
           !model.uid ||
           !model.upwd ||
-          !model.accountGroup ||
-          (model.upwd != model.reupwd && model.accountId === 0)
+          (model.upwd != model.reupwd && model.id === 0)
         "
         (click)="save()"
         class="btn btn-success"
@@ -28,58 +27,35 @@
            <div class="form-group row">
             <label for="ID" class="col-sm-2 col-form-label">{{ 'ID' | translate }}</label>
             <div class="col-sm-10">
-              <span *ngIf="model?.accountId > 0">{{model.accountId}}</span>
+              <span *ngIf="model.id > 0">{{model.id}}</span>
             </div>
           </div>
 
            <div class="form-group row">
-            <label for="accountNO" class="col-sm-2 col-form-label">{{ this.role + '_Status' | translate }}</label>
+            <label for="memberNO" class="col-sm-2 col-form-label">{{ this.role + '_Status' | translate }}</label>
             <div class="col-sm-10 d-flex align-items-center">
-              <ejs-switch  [onLabel]="'Active' | translate " [offLabel]="'Inactive' | translate " (change)="changeStatus($event)" [checked]="model.status == '1'"></ejs-switch>
+              <ejs-switch  [onLabel]="'Active' | translate " [offLabel]="'Inactive' | translate " (change)="changeStatus($event)" [checked]="model.status == 1"></ejs-switch>
 
             </div>
           </div>
 
-           <fieldset class="form-group">
-            <div class="row">
-              <label for="accountGroup" class="col-sm-2 col-form-label">{{ 'Role_Type' | translate }}</label>
-              <div class="col-sm-10 d-flex align-items-center">
-                <div class="d-flex align-items-start flex-column">
-                  <div class="mb-2">
-                    <ng-container
-                      *ngFor="let item of roles; let i =index">
-                        <div class="pretty p-default p-round p-thick" style="width: 105px;">
-                          <input type="radio" name="xaccountGroup" [value]="item.guid" (change)="checkedRole($event)" [checked]="checked(item,i)">
-                          <div class="state">
-                              <label>{{item.groupNo  | translate}}</label>
-                          </div>
-                      </div>
-                        
-                    </ng-container>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-
-
            <div class="form-group row">
-            <label for="accountNO" class="col-sm-2 col-form-label">{{ this.role + '_NO' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
+            <label for="memberNO" class="col-sm-2 col-form-label">{{ this.role + '_NO' | translate }} <span *ngIf="model.id ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10">
-              <input type="text"  class="form-control" [(ngModel)]="model.accountNo" id="accountNO" [placeholder]="'Enter a ' + this.role + ' NO' | translate">
+              <input type="text"  class="form-control" [(ngModel)]="model.memberNo" id="memberNO" [placeholder]="'Enter a ' + this.role + ' NO' | translate">
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="accountName" class="col-sm-2 col-form-label">{{ this.role + '_Name' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
+            <label for="memberName" class="col-sm-2 col-form-label">{{ this.role + '_Name' | translate }} <span *ngIf="model.id ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" [(ngModel)]="model.accountName" id="accountName" [placeholder]="'Enter a ' + this.role + ' name' | translate">
+              <input type="text" class="form-control" [(ngModel)]="model.memberName" id="memberName" [placeholder]="'Enter a ' + this.role + ' name' | translate">
             </div>
           </div>
 
           <fieldset class="form-group">
             <div class="row">
-              <label for="accountSex" class="col-sm-2 col-form-label">{{ this.role + '_Sex' | translate }}</label>
+              <label for="memberSex" class="col-sm-2 col-form-label">{{ this.role + '_Sex' | translate }}</label>
               <div class="col-sm-10 d-flex align-items-center">
                 <ng-container
                  *ngFor="let item of sexData; let i =index">
@@ -95,33 +71,28 @@
             </div>
           </fieldset>
 
+        
+
           <div class="form-group row">
-            <label for="accountIdCard" class="col-sm-2 col-form-label">{{ this.role + '_IDCARD' | translate }}</label>
+            <label for="memberMobile" class="col-sm-2 col-form-label">{{ this.role + '_MOBILE' | translate }}</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control"[(ngModel)]="model.accountIdcard" id="accountIdCard" [placeholder]="'Enter a ' + this.role + ' IDCARD' | translate">
+              <input type="text" class="form-control" id="memberMobile" [(ngModel)]="model.memberMobile" [placeholder]="'Enter a ' + this.role + ' mobile' | translate">
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="accountMobile" class="col-sm-2 col-form-label">{{ this.role + '_MOBILE' | translate }}</label>
+            <label for="memberUid" class="col-sm-2 col-form-label">{{ this.role + '_UID' | translate }} <span *ngIf="model.id ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="accountMobile" [(ngModel)]="model.accountMobile" [placeholder]="'Enter a ' + this.role + ' mobile' | translate">
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="accountUid" class="col-sm-2 col-form-label">{{ this.role + '_UID' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="accountUid" [(ngModel)]="model.uid" [placeholder]="'Enter a ' + this.role + ' uid' | translate">
+              <input type="text" class="form-control" id="memberUid" [(ngModel)]="model.uid" [placeholder]="'Enter a ' + this.role + ' uid' | translate">
             </div>
           </div>
 
 
           <div class="form-group row">
-            <label for="accountPassword" class="col-sm-2 col-form-label">{{ this.role + '_PWD' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
+            <label for="memberPassword" class="col-sm-2 col-form-label">{{ this.role + '_PWD' | translate }} <span *ngIf="model.id ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10 ">
              <div class="password">
-              <input [type]="inputType" class="form-control" id="accountPassword" [(ngModel)]="model.upwd" [placeholder]="'Enter a pwd' | translate">
+              <input [type]="inputType" class="form-control" id="memberPassword" [(ngModel)]="model.upwd" [placeholder]="'Enter a pwd' | translate">
               <span class="eye" (click)="togglePassword()">
                 <i class="fa fa-eye" *ngIf="inputType==='password'" ></i>
                 <i class="fa fa-eye-slash" *ngIf="inputType==='text'" ></i>
@@ -130,22 +101,22 @@
             </div>
           </div>
 
-          <div class="form-group row" *ngIf="model?.accountId == 0">
-            <label for="accountRePassword" class="col-sm-2 col-form-label">{{ this.role + '_Re_PWD' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
+          <div class="form-group row" *ngIf="model.id == 0">
+            <label for="memberRePassword" class="col-sm-2 col-form-label">{{ this.role + '_Re_PWD' | translate }} <span *ngIf="model.id ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10 ">
              <div class="password">
-              <input [type]="inputTypeRePw" (change)="changeRepassword($event)" class="form-control" id="accountRePassword" [(ngModel)]="model.reupwd" [placeholder]="'Enter a re pwd' | translate">
+              <input [type]="inputTypeRePw" (change)="changeRepassword($event)" class="form-control" id="memberRePassword" [(ngModel)]="model.reupwd" [placeholder]="'Enter a re pwd' | translate">
               <span class="eye" (click)="toggleRePassword()">
                 <i class="fa fa-eye" *ngIf="inputTypeRePw==='password'" ></i>
                 <i class="fa fa-eye-slash" *ngIf="inputTypeRePw==='text'" ></i>
                </span>
              </div>
-             <small *ngIf="model.upwd != model.reupwd && model.accountId === 0" class="form-text text-danger">{{'The uid and re uid are not match' | translate}}</small>
+             <small *ngIf="model.upwd != model.reupwd && model.id === 0" class="form-text text-danger">{{'The uid and re uid are not match' | translate}}</small>
 
             </div>
           </div>
 
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label for="contactName" class="col-sm-2 col-form-label">{{ 'ContactName' | translate }}</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="contactName" [(ngModel)]="model.contactName" [placeholder]="'Enter a contact name' | translate">
@@ -166,18 +137,18 @@
               [fields]="{text: 'name', value: 'guid'}"
             ></ejs-dropdownlist>
             </div>
-          </div>
-
+          </div> -->
+<!-- 
           <div class="form-group row">
             <label for="contactTel" class="col-sm-2 col-form-label">{{ 'ContactTel' | translate }}</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="contactTel" [(ngModel)]="model.contactTel" [placeholder]="'Enter a contact tel' | translate">
             </div>
-          </div>
+          </div> -->
 
 
           <div class="form-group row">
-            <label for="accountComment" class="col-sm-2 col-form-label">{{ this.role + '_Comment' | translate }}</label>
+            <label for="memberComment" class="col-sm-2 col-form-label">{{ this.role + '_Comment' | translate }}</label>
             <div class="col-sm-10">
               <textarea
               class="form-control"
@@ -186,7 +157,7 @@
               rows="4"
             ></textarea>
 
-            <div class="mr-auto" *ngIf="model?.accountId > 0">
+            <div class="mr-auto" *ngIf="model.id > 0">
               <p>
                 <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
                 <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
@@ -198,7 +169,7 @@
           </div>
           
           
-          <div class="form-group row" *ngIf="model.accountId > 0">
+          <div class="form-group row" *ngIf="model.id > 0">
             <label for="contactTel" class="col-sm-2 col-form-label">{{ '' | translate }}</label>
             <div class="col-sm-10">
             <label class="">{{ 'Audit_Logs' | translate }}</label>
@@ -275,7 +246,7 @@ headerTextAlign="Center"
 </e-column>
 
 <e-column
-field="accountName"
+field="memberName"
 width="120"
 textAlign="Left"
 headerTextAlign="Center"

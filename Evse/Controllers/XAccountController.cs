@@ -246,9 +246,9 @@ namespace Evse.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetIdCard(string type, string accountGroupGuid)
+        public async Task<IActionResult> GetAccountNo(string type, string accountGroupGuid)
         {
-            return Ok(await _service.GetIdCard(type, accountGroupGuid));
+            return Ok(await _service.GetAccountNo(type, accountGroupGuid));
         }
     }
 }

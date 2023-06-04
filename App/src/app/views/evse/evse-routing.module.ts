@@ -16,6 +16,15 @@ import { CountyComponent } from './county/county.component';
 import { RoleComponent } from './role/role.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingRoleComponent } from './setting-role/setting-role.component';
+import { StationStatusComponent } from './station-status/station-status.component';
+import { ElectricianStatusComponent } from './electrician-status/electrician-status.component';
+import { InvestorAreaComponent } from './investor-area/investor-area.component';
+import { SiteComponent } from './site/site.component';
+import { AppUpdateComponent } from './app-update/app-update.component';
+import { MemberListComponent } from './member-list/member-list.component';
+import { DeviceUserComponent } from './device-user/device-user.component';
+import { Memberv2Component } from './memberv2/memberv2.component';
+import { MemberActionComponent } from './memberv2/member-action/member-action.component';
 
 const routes: Routes = [
   {
@@ -49,12 +58,12 @@ const routes: Routes = [
   //  canActivate: [AuthGuard]
   },
   {
-    path: 'evse/site',
+    path: 'evse/site2',
     component: StationComponent,
     data: {
-      title: 'Site',
-      breadcrumb: 'Site',
-      functionCode: 'Site'
+      title: 'Site2',
+      breadcrumb: 'Site2',
+      functionCode: 'Site2'
     },
    canActivate: [AuthGuard]
   },
@@ -165,6 +174,96 @@ const routes: Routes = [
       title: 'Setting Role',
       breadcrumb: 'Setting Role',
       functionCode: 'Setting Role'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/station-status',
+    component: StationStatusComponent,
+    data: {
+      title: 'Station Status',
+      breadcrumb: 'Station Status',
+      functionCode: 'Station Status'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/electrician-status',
+    component: ElectricianStatusComponent,
+    data: {
+      title: 'Electrician Status',
+      breadcrumb: 'Electrician Status',
+      functionCode: 'Electrician Status'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/investor-area',
+    component: InvestorAreaComponent,
+    data: {
+      title: 'Investor Area',
+      breadcrumb: 'Investor Area',
+      functionCode: 'Investor Area'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/site',
+    component: SiteComponent,
+    data: {
+      title: 'Site',
+      breadcrumb: 'Site',
+      functionCode: 'Site'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/app-update',
+    component: AppUpdateComponent,
+    data: {
+      title: 'App Update',
+      breadcrumb: 'App Update',
+      functionCode: 'App Update'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/member-list',
+    component: MemberListComponent,
+    data: {
+      title: 'Member List',
+      breadcrumb: 'Member List',
+      functionCode: 'Member List'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/device-user',
+    component: DeviceUserComponent,
+    data: {
+      title: 'Device User',
+      breadcrumb: 'Device User',
+      functionCode: 'Device User'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/member-v2',
+    component: Memberv2Component,
+    data: {
+      title: 'Member',
+      breadcrumb: ' Member',
+      functionCode: 'Member'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/member/action/:id',
+    component: MemberActionComponent,
+    data: {
+      title: 'Member Action',
+      breadcrumb: ' Member Action',
+      functionCode: 'Member'
     },
   canActivate: [AuthGuard]
   }

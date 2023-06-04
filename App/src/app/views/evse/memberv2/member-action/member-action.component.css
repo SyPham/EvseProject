@@ -1,0 +1,72 @@
+input[type=text], input[type=number], input[type=email], input[type=password], textarea {
+    box-shadow:0;
+  }
+  label {
+    font-weight: 700;
+  }
+  .kv-avatar .krajee-default.file-preview-frame,
+  .kv-avatar .krajee-default.file-preview-frame:hover {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+  }
+  .kv-avatar {
+    display: inline-block;
+  }
+  .kv-avatar .file-input {
+    display: table-cell;
+    width: 213px;
+  }
+  .kv-reqd {
+    color: red;
+    font-family: monospace;
+    font-weight: normal;
+  }
+  .avatar {
+    vertical-align: middle;
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    background-repeat: initial;
+  }
+  .page-text {
+    color:red;
+  }
+  .e-switch-wrapper {
+    width: 60px;
+  }
+
+  .e-switch-wrapper .e-switch-inner.e-switch-active, .e-css.e-switch-wrapper .e-switch-inner.e-switch-active {
+    background-color: #fff !important;
+    border-color: #c5cace !important;
+}
+.e-switch-wrapper .e-switch-on, .e-css.e-switch-wrapper .e-switch-on {
+  background-color: #fff;
+  color: #000;
+}
+.e-switch-wrapper .e-switch-handle.e-switch-active, .e-css.e-switch-wrapper .e-switch-handle.e-switch-active {
+  background-color: #5ae76d;
+}
+
+.password {
+  position: relative;
+}
+
+.password .eye {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  right: 0;
+  font-size: 20px;
+  cursor: pointer;
+}
+#accountPassword, #accountRePassword{
+  padding-right: 40px;
+}
+
+.e-input-group {
+  box-shadow: 0 !important;
+  padding:3px !important;
+}

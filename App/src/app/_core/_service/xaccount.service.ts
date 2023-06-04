@@ -120,7 +120,7 @@ export class XAccountService extends CURDService<XAccount> {
   SP_Record_AccountCheck_Remove(recordGuid) {
     return this.http.get<any>(`${this.base}XAccount/SP_Record_AccountCheck_Remove?recordGuid=${recordGuid}`, {});
   }
-  getIdCard(type, accountGuid) {
-    return this.http.get<any>(`${this.base}XAccount/getIdCard?type=${type}&accountGuid=${accountGuid}`, {});
+  getAccountNo(type, accountGuid) {
+    return this.http.get<any>(`${this.base}XAccount/GetAccountNo?type=${type}&accountGuid=${accountGuid}`, {});
   }
 }

@@ -1,30 +1,30 @@
+
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { FilteringEventArgs } from '@syncfusion/ej2-angular-dropdowns';
-import { XAccount } from 'src/app/_core/_model/xaccount';
 import { AccountTypeService } from 'src/app/_core/_service/account-type.service';
 import { EmployeeService } from 'src/app/_core/_service/employee.service';
 import { FarmService } from 'src/app/_core/_service/farms';
-import { XAccountGroupService } from 'src/app/_core/_service/xaccount-group.service';
-import { XAccountService } from 'src/app/_core/_service/xaccount.service';
 import { DataManager, Query, UrlAdaptor, Predicate } from '@syncfusion/ej2-data';
-import { XAccountGroup } from 'src/app/_core/_model/xaccount-group';
 import { environment } from 'src/environments/environment';
 import { ImagePathConstants, MessageConstants } from 'src/app/_core/_constants';
 import { AlertifyService, UtilitiesService } from '@pigfarm-core';
+import { Member } from 'src/app/_core/_model/evse/model';
+import { MemberService } from 'src/app/_core/_service/evse/member.service';
+import { XAccountService } from 'src/app/_core/_service/xaccount.service';
 declare let $: any;
 
 @Component({
-  selector: 'app-account-action',
-  templateUrl: './account-action.component.html',
-  styleUrls: ['./account-action.component.scss']
+  selector: 'app-member-action',
+  templateUrl: './member-action.component.html',
+  styleUrls: ['./member-action.component.css']
 })
-export class AccountActionComponent implements OnInit {
+export class MemberActionComponent implements OnInit {
   loading
-  model: XAccount = <XAccount>{};
+  model: Member = <Member>{};
   file: any;
   employeeFields: object = { text: 'nickName', value: 'guid' };
   farmFields: object = { text: 'farmName', value: 'guid' };
@@ -32,8 +32,8 @@ export class AccountActionComponent implements OnInit {
   employeeData: any[];
   farmData: any;
   permissionData: [] = [];
-  xaccountGroupFields: object = { text: 'groupName', value: 'guid' };
-  xaccountGroupData;
+  memberGroupFields: object = { text: 'groupName', value: 'guid' };
+  memberGroupData;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
   public onFiltering: any = (e: FilteringEventArgs) => {
@@ -44,7 +44,7 @@ export class AccountActionComponent implements OnInit {
     e.updateData(this.permissionData, query);
   };
 id: any;
-  audit: XAccount;
+  audit: Member;
   alert = {
     updateMessage: this.translate.instant(MessageConstants.UPDATE_MESSAGE),
     updateTitle: this.translate.instant(MessageConstants.UPDATE_TITLE),
@@ -66,10 +66,9 @@ id: any;
   };
   sexData: any;
   constructor(
-    private service: XAccountService,
-    private serviceAccountType: AccountTypeService,
+    private service: MemberService,
+    private serviceXAccount: XAccountService,
     private serviceEmployee: EmployeeService,
-    private xaccountGroupService: XAccountGroupService,
     public modalService: NgbModal,
     private serviceFarm: FarmService,
     private alertify: AlertifyService,
@@ -81,7 +80,7 @@ id: any;
     private route: ActivatedRoute,
 
   ) { }
-  role = '';
+  role = 'Member';
  async ngOnInit() {
   this.id = +this.route.snapshot.params['id'];
   this.role = this.route.snapshot.data['functionCode'];
@@ -101,17 +100,16 @@ id: any;
   this.model = model;
     this.getAudit(this.id);
   }
-    this.getEmployeesByXAccountID(0);
-    this.loadXAccountGroupData();
+    this.getEmployeesByMemberID(0);
     this.loadSexConfig();
    this.codeType();
    this.auditLogs();
 
   }
   getAccountNo() {
-    if (this.model?.accountGroup && this.role) {
-      this.service.getAccountNo(this.role, this.model.accountGroup).subscribe(res=> {
-  this.model.accountNo =  res['value'];
+    if (this.model?.memberNo && this.role) {
+      this.serviceXAccount.getAccountNo(this.role, this.model.memberNo).subscribe(res=> {
+      this.model.memberNo =  res['value'];
       })
     }
    
@@ -160,48 +158,27 @@ id: any;
   }
   reset() {
     this.id = null;
-    this.model = <XAccount>{};
-    this.model.status = '1';
-    this.model.accountId = 0;
-    this.model.contactRel = '';
+    this.model = <Member>{};
+    this.model.memberStatus = 1;
+    this.model.status= 1;
+    this.model.id = 0;
     this.contactRel = '';
    
   }
   contactRel = ''
-  valueChange(value) {
-    this.model.accountGroup = value || "";
-  }
-  farmValueChange(value) {
-    this.model.farmGuid = value || [];
-  }
+ 
+
 
   onFileChangeLogo(args) {
     this.file = args.target.files[0];
   }
-  ngModelChange(value) {
-    this.model.employeeGuid = value || "";
-  }
-  getEmployeesByXAccountID(xAccountID) {
-    this.serviceEmployee.getEmployeesByAccountID(xAccountID || 0).subscribe(data => {
+
+  getEmployeesByMemberID(memberID) {
+    this.serviceEmployee.getEmployeesByAccountID(memberID || 0).subscribe(data => {
       this.employeeData = data;
     });
   }
   roles
-  roles2
-  loadXAccountGroupData() {
-      this.xaccountGroupService.getAccountGroup().subscribe((roles: XAccountGroup[])=> {
-        this.roles = roles
-        let roleTemp = this.roles.filter(x=> x.groupNo == this.role)
-        if (roles.length > 0 && this.model.accountId === 0 && this.role === 'Account')   {
-          this.model.accountGroup = roles[0].guid
-        } else if (roleTemp.length > 0 ) {
-          this.model.accountGroup = roleTemp[0].guid
-        }
-        if (this.model.accountId === 0) {
-          this.getAccountNo();
-        }
-      });
-  }
   getFarms() {
     this.serviceFarm.getFarms().subscribe(data => {
       this.farmData = data;
@@ -209,28 +186,14 @@ id: any;
   }
   changeStatus(e) {
     if (e.checked) {
-      this.model.status = "1"
+      this.model.status = 1
     } else {
-      this.model.status = "0"
+      this.model.status = 0
     }
 
   }
   back() {
-    if (this.role === 'Account') {
-      this.router.navigateByUrl("/system/account")
-    }  else if (this.role === 'Engineer') {
-      this.router.navigateByUrl("/system/account/engineer")
-    }  else if (this.role === 'Investor') {
-      this.router.navigateByUrl("/system/account/investor")
-    }  else if (this.role === 'Electrician') {
-      this.router.navigateByUrl("/system/account/electrician")
-    }  else if (this.role === 'Admin2') {
-      this.router.navigateByUrl("/system/account/admin2")
-    }  else if (this.role === 'Admin') {
-      this.router.navigateByUrl("/system/account/admin")
-    }  else if (this.role === 'Landlord') {
-      this.router.navigateByUrl("/system/account/landlord")
-    }
+      this.router.navigateByUrl("/evse/member-v2")
   }
   create() {
   
@@ -240,7 +203,7 @@ id: any;
        this.alert.createTitle,
        this.alert.createMessage,
        () => {
-        this.model.contactRel = this.contactRel;
+        this.model.memberStatus = this.model.status + ''
          this.service.insertForm(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {
@@ -272,7 +235,7 @@ id: any;
        this.alert.updateTitle,
        this.alert.updateMessage,
        () => {
-        this.model.contactRel = this.contactRel;
+        this.model.memberStatus = this.model.status + ''
          this.service.updateForm(this.ToFormatModel(this.model)).subscribe(
            (res) => {
              if (res.success === true) {
@@ -297,7 +260,7 @@ id: any;
    }
    save() {
 
-    if (this.model.accountId > 0) {
+    if (this.model.id > 0) {
       this.update();
     } else {
       this.create();
@@ -333,11 +296,8 @@ id: any;
     });
     data.executeQuery(this.query.sortBy('guid')).then((x: any)=> {
       this.contactRelData = x.result;
-      if (this.model.accountId > 0 && this.contactRelData.length > 0) {
-        setTimeout (() => {
-          this.contactRel = this.model.contactRel;
-      
-        }, 0)
+      if (this.model.id > 0 && this.contactRelData.length > 0) {
+       
       }
     })
   }
@@ -354,26 +314,5 @@ id: any;
       crossDomain: true,
     });
   }
-  checked(item, i) {
-    if (this.role === 'Account' && this.model.accountId === 0) {
-      return i == 0;
-    } 
-    else if (this.model.accountId > 0) {
-      return item.guid === this.model.accountGroup
-    } 
-    else if (this.model.accountId === 0) {
-      return item.groupNo === this.role
-    } 
-    else {
-
-      return false;
-
-    }
-  }
-  checkedRole(e) {
-    if (e.target.checked) {
-      this.model.accountGroup = e.target.defaultValue
-     
-    }
-  }
+  
 }

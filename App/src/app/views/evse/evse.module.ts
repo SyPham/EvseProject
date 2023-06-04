@@ -59,6 +59,14 @@ import { RoleComponent } from './role/role.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ElectricianProfileComponent } from './electrician-profile/electrician-profile.component';
 import { SettingRoleComponent } from './setting-role/setting-role.component';
+import { Memberv2Component } from './memberv2/memberv2.component';
+import { StationStatusComponent } from './station-status/station-status.component';
+import { MemberListComponent } from './member-list/member-list.component';
+import { InvestorAreaComponent } from './investor-area/investor-area.component';
+import { ElectricianStatusComponent } from './electrician-status/electrician-status.component';
+import { DeviceUserComponent } from './device-user/device-user.component';
+import { AppUpdateComponent } from './app-update/app-update.component';
+import { MemberActionComponent } from './memberv2/member-action/member-action.component';
 
 interface Environment {
   production: boolean;
@@ -131,7 +139,16 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     TownshipActionComponent,
     ProfileComponent,
     ElectricianProfileComponent,
-    SettingRoleComponent
+    SettingRoleComponent,
+    Memberv2Component,
+    StationStatusComponent,
+    MemberListComponent,
+    InvestorAreaComponent,
+    ElectricianStatusComponent,
+    DeviceUserComponent,
+    AppUpdateComponent,
+    MemberActionComponent
+
   ]
 })
 export class EvseModule {

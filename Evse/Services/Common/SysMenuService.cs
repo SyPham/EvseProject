@@ -38,6 +38,7 @@ namespace Evse.Services
     public class SysMenuService : ServiceBase<SysMenu, SysMenuDto>, ISysMenuService
     {
         private readonly IRepositoryBase<SysMenu> _repo;
+        private readonly IRepositoryBase<CodePermission> _repoCodePermission;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly IRepositoryBase<XAccountGroup> _repoXAccountGroup;
         private readonly IRepositoryBase<XAccountGroupPermission> _repoXAccountGroupPermission;
@@ -58,7 +59,8 @@ namespace Evse.Services
 IEvseLoggerService logger
 ,
 IRepositoryBase<XAccountGroupPermission> repoXAccountGroupPermission
-            )
+,
+IRepositoryBase<CodePermission> repoCodePermission)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
@@ -70,6 +72,7 @@ IRepositoryBase<XAccountGroupPermission> repoXAccountGroupPermission
             _configMapper = configMapper;
             _httpContextAccessor = httpContextAccessor;
             _repoXAccountGroupPermission = repoXAccountGroupPermission;
+            _repoCodePermission = repoCodePermission;
         }
         public override async Task<OperationResult> AddAsync(SysMenuDto model)
         {
@@ -79,7 +82,19 @@ IRepositoryBase<XAccountGroupPermission> repoXAccountGroupPermission
                 item.Status = 1;
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
-
+                var permission =await _repoCodePermission.FindAll(x=> x.Status == "1").FirstOrDefaultAsync(x=> x.CodeNo == item.Type);
+                if (permission == null) {
+                    _repoCodePermission.Add(new CodePermission {
+                        CodeType = "Permission",
+                        CodeNo = item.Type,
+                        CodeName = item.MenuName,
+                        CodeNameVn = item.MenuNameVn,
+                        CodeNameCn = item.MenuNameCn,
+                        CodeNameEn = item.MenuNameEn,
+                        Status = "1"
+                    });
+                    await _unitOfWork.SaveChangeAsync();
+                }
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,
@@ -124,7 +139,19 @@ IRepositoryBase<XAccountGroupPermission> repoXAccountGroupPermission
 
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
-
+                var permission =await _repoCodePermission.FindAll(x=> x.Status == "1").FirstOrDefaultAsync(x=> x.CodeNo == item.Type);
+                if (permission == null) {
+                    _repoCodePermission.Add(new CodePermission {
+                        CodeType = "Permission",
+                        CodeNo = item.Type,
+                        CodeName = item.MenuName,
+                        CodeNameVn = item.MenuNameVn,
+                        CodeNameCn = item.MenuNameCn,
+                        CodeNameEn = item.MenuNameEn,
+                        Status = "1"
+                    });
+                    await _unitOfWork.SaveChangeAsync();
+                }
                 operationResult = new OperationResult
                 {
                     StatusCode = HttpStatusCode.OK,

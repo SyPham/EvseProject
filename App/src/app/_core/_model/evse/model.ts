@@ -117,6 +117,7 @@ export interface Member {
     siteGuid: string;
     uid: string;
     upwd: string;
+    reupwd: string;
     memberNo: string;
     memberName: string;
     startDate: string | null;
