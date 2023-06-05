@@ -196,11 +196,35 @@ const routes: Routes = [
       canActivate: [AuthGuard]
       },
       {
+        path: 'account/view/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Account',
+          module: 'system',
+          type: "view",
+          breadcrumb: 'Account',
+          functionCode: 'Account'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
         path: 'account/admin/action/:id',
         component: AccountActionComponent,
         data: {
           title: 'Admin Detail',
           module: 'system',
+          breadcrumb: 'Admin Detail',
+          functionCode: 'Admin'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/admin/view/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Admin Detail',
+          module: 'system',
+          type: "view",
           breadcrumb: 'Admin Detail',
           functionCode: 'Admin'
         },
@@ -218,6 +242,18 @@ const routes: Routes = [
       canActivate: [AuthGuard]
       },
       {
+        path: 'account/admin2/view/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Admin2 Detail',
+          module: 'system',
+          type: "view",
+          breadcrumb: 'Admin2 Detail',
+          functionCode: 'Admin2'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
         path: 'account/landlord/action/:id',
         component: AccountActionComponent,
         data: {
@@ -226,7 +262,19 @@ const routes: Routes = [
           breadcrumb: 'Landlord Detail',
           functionCode: 'Landlord'
         },
-      //canActivate: [AuthGuard]
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/landlord/view/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Landlord Detail',
+          module: 'system',
+          type: "view",
+          breadcrumb: 'Landlord Detail',
+          functionCode: 'Landlord'
+        },
+      canActivate: [AuthGuard]
       },
       {
         path: 'account/electrician/action/:id',
@@ -234,6 +282,18 @@ const routes: Routes = [
         data: {
           title: 'Electrician Detail',
           module: 'system',
+          breadcrumb: 'Electrician Detail',
+          functionCode: 'Electrician'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/electrician/view/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Electrician Detail',
+          module: 'system',
+          type: "view",
           breadcrumb: 'Electrician Detail',
           functionCode: 'Electrician'
         },
@@ -256,6 +316,18 @@ const routes: Routes = [
         data: {
           title: 'Engineer Detail',
           module: 'system',
+          breadcrumb: 'Engineer Detail',
+          functionCode: 'Engineer'
+        },
+      canActivate: [AuthGuard]
+      },
+      {
+        path: 'account/engineer/view/:id',
+        component: AccountActionComponent,
+        data: {
+          title: 'Engineer Detail',
+          module: 'system',
+          type: "view",
           breadcrumb: 'Engineer Detail',
           functionCode: 'Engineer'
         },

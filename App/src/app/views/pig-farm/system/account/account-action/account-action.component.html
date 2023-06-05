@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-12">
     <div class="card">
-      <div class="card-header">
+      <div class="card-header" *ngIf="isDisabledAll == false">
         <button
         type="submit"
         [disabled]="
@@ -35,7 +35,7 @@
            <div class="form-group row">
             <label for="accountNO" class="col-sm-2 col-form-label">{{ this.role + '_Status' | translate }}</label>
             <div class="col-sm-10 d-flex align-items-center">
-              <ejs-switch  [onLabel]="'Active' | translate " [offLabel]="'Inactive' | translate " (change)="changeStatus($event)" [checked]="model.status == '1'"></ejs-switch>
+              <ejs-switch [disabled]="isDisabledAll"  [onLabel]="'Active' | translate " [offLabel]="'Inactive' | translate " (change)="changeStatus($event)" [checked]="model.status == '1'"></ejs-switch>
 
             </div>
           </div>
@@ -49,7 +49,7 @@
                     <ng-container
                       *ngFor="let item of roles; let i =index">
                         <div class="pretty p-default p-round p-thick" style="width: 105px;">
-                          <input type="radio" name="xaccountGroup" [value]="item.guid" (change)="checkedRole($event)" [checked]="checked(item,i)">
+                          <input [disabled]="isDisabledAll" type="radio" name="xaccountGroup" [value]="item.guid" (change)="checkedRole($event)" [checked]="checked(item,i)">
                           <div class="state">
                               <label>{{item.groupNo  | translate}}</label>
                           </div>
@@ -66,14 +66,14 @@
            <div class="form-group row">
             <label for="accountNO" class="col-sm-2 col-form-label">{{ this.role + '_NO' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10">
-              <input type="text"  class="form-control" [(ngModel)]="model.accountNo" id="accountNO" [placeholder]="'Enter a ' + this.role + ' NO' | translate">
+              <input [disabled]="isDisabledAll" type="text"  class="form-control" [(ngModel)]="model.accountNo" id="accountNO" [placeholder]="'Enter a ' + this.role + ' NO' | translate">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="accountName" class="col-sm-2 col-form-label">{{ this.role + '_Name' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" [(ngModel)]="model.accountName" id="accountName" [placeholder]="'Enter a ' + this.role + ' name' | translate">
+              <input [disabled]="isDisabledAll" type="text" class="form-control" [(ngModel)]="model.accountName" id="accountName" [placeholder]="'Enter a ' + this.role + ' name' | translate">
             </div>
           </div>
 
@@ -84,7 +84,7 @@
                 <ng-container
                  *ngFor="let item of sexData; let i =index">
                   <div class="pretty p-default p-round p-thick">
-                    <input type="radio" name="radio1"  [value]="item.value" [checked]="i==0">
+                    <input [disabled]="isDisabledAll" type="radio" name="radio1"  [value]="item.value" [checked]="i==0">
                     <div class="state">
                         <label>{{item.name}}</label>
                     </div>
@@ -98,21 +98,21 @@
           <div class="form-group row">
             <label for="accountIdCard" class="col-sm-2 col-form-label">{{ this.role + '_IDCARD' | translate }}</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control"[(ngModel)]="model.accountIdcard" id="accountIdCard" [placeholder]="'Enter a ' + this.role + ' IDCARD' | translate">
+              <input [disabled]="isDisabledAll" type="text" class="form-control"[(ngModel)]="model.accountIdcard" id="accountIdCard" [placeholder]="'Enter a ' + this.role + ' IDCARD' | translate">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="accountMobile" class="col-sm-2 col-form-label">{{ this.role + '_MOBILE' | translate }}</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="accountMobile" [(ngModel)]="model.accountMobile" [placeholder]="'Enter a ' + this.role + ' mobile' | translate">
+              <input [disabled]="isDisabledAll" type="text" class="form-control" id="accountMobile" [(ngModel)]="model.accountMobile" [placeholder]="'Enter a ' + this.role + ' mobile' | translate">
             </div>
           </div>
 
           <div class="form-group row">
             <label for="accountUid" class="col-sm-2 col-form-label">{{ this.role + '_UID' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="accountUid" [(ngModel)]="model.uid" [placeholder]="'Enter a ' + this.role + ' uid' | translate">
+              <input [disabled]="isDisabledAll" type="text" class="form-control" id="accountUid" [(ngModel)]="model.uid" [placeholder]="'Enter a ' + this.role + ' uid' | translate">
             </div>
           </div>
 
@@ -121,8 +121,8 @@
             <label for="accountPassword" class="col-sm-2 col-form-label">{{ this.role + '_PWD' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10 ">
              <div class="password">
-              <input [type]="inputType" class="form-control" id="accountPassword" [(ngModel)]="model.upwd" [placeholder]="'Enter a pwd' | translate">
-              <span class="eye" (click)="togglePassword()">
+              <input [disabled]="isDisabledAll" [type]="inputType" class="form-control" id="accountPassword" [(ngModel)]="model.upwd" [placeholder]="'Enter a pwd' | translate">
+              <span class="eye" (click)="togglePassword()" *ngIf="model.accountId === 0">
                 <i class="fa fa-eye" *ngIf="inputType==='password'" ></i>
                 <i class="fa fa-eye-slash" *ngIf="inputType==='text'" ></i>
                </span>
@@ -134,7 +134,7 @@
             <label for="accountRePassword" class="col-sm-2 col-form-label">{{ this.role + '_Re_PWD' | translate }} <span *ngIf="model.accountId ===0" style="color:red">(*)</span></label>
             <div class="col-sm-10 ">
              <div class="password">
-              <input [type]="inputTypeRePw" (change)="changeRepassword($event)" class="form-control" id="accountRePassword" [(ngModel)]="model.reupwd" [placeholder]="'Enter a re pwd' | translate">
+              <input [disabled]="isDisabledAll" [type]="inputTypeRePw" (change)="changeRepassword($event)" class="form-control" id="accountRePassword" [(ngModel)]="model.reupwd" [placeholder]="'Enter a re pwd' | translate">
               <span class="eye" (click)="toggleRePassword()">
                 <i class="fa fa-eye" *ngIf="inputTypeRePw==='password'" ></i>
                 <i class="fa fa-eye-slash" *ngIf="inputTypeRePw==='text'" ></i>
@@ -148,7 +148,7 @@
           <div class="form-group row">
             <label for="contactName" class="col-sm-2 col-form-label">{{ 'ContactName' | translate }}</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="contactName" [(ngModel)]="model.contactName" [placeholder]="'Enter a contact name' | translate">
+              <input [disabled]="isDisabledAll" type="text" class="form-control" id="contactName" [(ngModel)]="model.contactName" [placeholder]="'Enter a contact name' | translate">
             </div>
           </div>
 
@@ -159,6 +159,7 @@
               <ejs-dropdownlist
               id="contactRel"
               [(value)]="contactRel"
+              [enabled]="!isDisabledAll"
               [dataSource]="contactRelData"
               [allowFiltering]="true"
               [showClearButton]="true"
@@ -171,7 +172,7 @@
           <div class="form-group row">
             <label for="contactTel" class="col-sm-2 col-form-label">{{ 'ContactTel' | translate }}</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="contactTel" [(ngModel)]="model.contactTel" [placeholder]="'Enter a contact tel' | translate">
+              <input [disabled]="isDisabledAll" type="text" class="form-control" id="contactTel" [(ngModel)]="model.contactTel" [placeholder]="'Enter a contact tel' | translate">
             </div>
           </div>
 
@@ -181,6 +182,7 @@
             <div class="col-sm-10">
               <textarea
               class="form-control"
+              [disabled]="isDisabledAll"
               [(ngModel)]="model.comment"
               cols="4"
               rows="4"

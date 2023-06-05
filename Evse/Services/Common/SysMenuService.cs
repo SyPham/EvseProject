@@ -82,9 +82,11 @@ IRepositoryBase<CodePermission> repoCodePermission)
                 item.Status = 1;
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
-                var permission =await _repoCodePermission.FindAll(x=> x.Status == "1").FirstOrDefaultAsync(x=> x.CodeNo == item.Type);
-                if (permission == null) {
-                    _repoCodePermission.Add(new CodePermission {
+                var permission = await _repoCodePermission.FindAll(x => x.Status == "1").FirstOrDefaultAsync(x => x.CodeNo == item.Type);
+                if (permission == null)
+                {
+                    _repoCodePermission.Add(new CodePermission
+                    {
                         CodeType = "Permission",
                         CodeNo = item.Type,
                         CodeName = item.MenuName,
@@ -139,9 +141,11 @@ IRepositoryBase<CodePermission> repoCodePermission)
 
                 _repo.Update(item);
                 await _unitOfWork.SaveChangeAsync();
-                var permission =await _repoCodePermission.FindAll(x=> x.Status == "1").FirstOrDefaultAsync(x=> x.CodeNo == item.Type);
-                if (permission == null) {
-                    _repoCodePermission.Add(new CodePermission {
+                var permission = await _repoCodePermission.FindAll(x => x.Status == "1").FirstOrDefaultAsync(x => x.CodeNo == item.Type);
+                if (permission == null)
+                {
+                    _repoCodePermission.Add(new CodePermission
+                    {
                         CodeType = "Permission",
                         CodeNo = item.Type,
                         CodeName = item.MenuName,
@@ -173,16 +177,20 @@ IRepositoryBase<CodePermission> repoCodePermission)
             string token = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             var accountId = JWTExtensions.GetDecodeTokenByID(token).ToDecimal();
             var permissions = new List<string>();
-            if (menuType == "BE") {
+            var account = await _repoXAccount.FindAll(x => x.Status == "1" && x.AccountId == accountId).FirstOrDefaultAsync();
+            var role = await _repoXAccountGroup.FindAll(x => x.Guid == account.AccountGroup).FirstOrDefaultAsync();
+            var IS_ADMIN = role != null ? "Admin" == role.GroupNo : false;
+            if (menuType == "BE")
+            {
                 {
-             var account = await _repoXAccount.FindAll(x => x.Status == "1" && x.AccountId == accountId).FirstOrDefaultAsync();
-             permissions =await _repoXAccountGroupPermission.FindAll(x=> x.UpperGuid == account.AccountGroup).Select(x=> x.CodeNo).ToListAsync();
-           
-            if (account == null) return new List<dynamic> { };
-            }
+                    permissions = await _repoXAccountGroupPermission.FindAll(x => x.UpperGuid == account.AccountGroup).Select(x => x.CodeNo).ToListAsync();
+
+
+                    if (account == null) return new List<dynamic> { };
                 }
-           
-          
+            }
+
+
             var query = await (from x in _repo.FindAll(x => x.Status == 1 && menuType == x.MenuType)
                                select new
                                {
@@ -193,11 +201,11 @@ IRepositoryBase<CodePermission> repoCodePermission)
                                    Url = x.MenuLink,
                                    SortId = x.SortId ?? 0,
                                    Icon = x.MenuIcon,
-                                  
+
                                    Name = lang == Languages.EN ? (x.MenuNameEn == "" || x.MenuNameEn == null ? x.MenuName : x.MenuNameEn) : lang == Languages.VI ? (x.MenuNameVn == "" || x.MenuNameVn == null ? x.MenuName : x.MenuNameVn) : lang == Languages.TW ? x.MenuName : lang == Languages.CN ? (x.MenuNameCn == "" || x.MenuNameCn == null ? x.MenuName : x.MenuNameCn) : x.MenuName
 
                                }).ToListAsync();
-                              
+
             var queryTemp = query.Select(x => new
             {
 
@@ -209,41 +217,81 @@ IRepositoryBase<CodePermission> repoCodePermission)
                 Icon = x.Icon,
                 Name = x.Name,
             });
-
-            var results = queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
+            if (IS_ADMIN)
             {
-                x.Entity.Url,
-                x.Entity.Icon,
-                x.Entity.Name,
-                x.Entity.FunctionCode,
-                x.Entity.SortId,
-                x.HasChildren,
-                Level = x.Depth,
-                Children = x.ChildNodes.Select(a => new
+                var results = queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
                 {
-                    a.Entity.Url,
-                    a.Entity.Icon,
-                    a.Entity.Name,
-                    a.Entity.FunctionCode,
-                    a.HasChildren,
-                    a.Entity.SortId,
-                    Level = a.Depth,
-                    Children = a.ChildNodes.Select(b => new
+                    x.Entity.Url,
+                    x.Entity.Icon,
+                    x.Entity.Name,
+                    x.Entity.FunctionCode,
+                    x.Entity.SortId,
+                    x.HasChildren,
+                    Level = x.Depth,
+                    Children = x.ChildNodes.Select(a => new
                     {
-                        b.Entity.Url,
-                        b.Entity.Icon,
-                        b.Entity.Name,
-                        b.Entity.FunctionCode,
-                        HasChildren = false,
-                        b.Entity.SortId,
-                        Level = b.Depth,
-                        Children = new List<dynamic>()
-                    }).OrderBy(b => b.SortId)
-                }).OrderBy(a => a.SortId)
-            }).OrderBy(x => x.SortId);
+                        a.Entity.Url,
+                        a.Entity.Icon,
+                        a.Entity.Name,
+                        a.Entity.FunctionCode,
+                        a.HasChildren,
+                        a.Entity.SortId,
+                        Level = a.Depth,
+                        Children = a.ChildNodes.Select(b => new
+                        {
+                            b.Entity.Url,
+                            b.Entity.Icon,
+                            b.Entity.Name,
+                            b.Entity.FunctionCode,
+                            HasChildren = false,
+                            b.Entity.SortId,
+                            Level = b.Depth,
+                            Children = new List<dynamic>()
+                        }).OrderBy(b => b.SortId)
+                    }).OrderBy(a => a.SortId)
+                }).OrderBy(x => x.SortId);
 
-         
-            return results;
+                return results;
+            }
+            else
+            {
+                var results = queryTemp
+                .AsHierarchy(x => x.Id, y => y.UpperId, null, 3)
+                .Select(x => new
+                {
+                    x.Entity.Url,
+                    x.Entity.Icon,
+                    x.Entity.Name,
+                    x.Entity.FunctionCode,
+                    x.Entity.SortId,
+                    x.HasChildren,
+                    Level = x.Depth,
+                    Children = x.ChildNodes.Where(x => permissions.Contains(x.Entity.FunctionCode)).Select(a => new
+                    {
+                        a.Entity.Url,
+                        a.Entity.Icon,
+                        a.Entity.Name,
+                        a.Entity.FunctionCode,
+                        a.HasChildren,
+                        a.Entity.SortId,
+                        Level = a.Depth,
+                        Children = a.ChildNodes.Where(x => permissions.Contains(x.Entity.FunctionCode)).Select(b => new
+                        {
+                            b.Entity.Url,
+                            b.Entity.Icon,
+                            b.Entity.Name,
+                            b.Entity.FunctionCode,
+                            HasChildren = false,
+                            b.Entity.SortId,
+                            Level = b.Depth,
+                            Children = new List<dynamic>()
+                        }).OrderBy(b => b.SortId)
+                    }).OrderBy(a => a.SortId)
+                }).OrderBy(x => x.SortId);
+
+                return results.Where(x=> x.Children.Any() || permissions.Contains(x.FunctionCode) );;
+            }
+
         }
         public async Task<object> GetMenus(string lang = "tw")
         {
@@ -274,7 +322,7 @@ IRepositoryBase<CodePermission> repoCodePermission)
                 SortId = x.SortId,
                 Icon = x.Icon,
                 Name = x.Name,
-              
+
             });
 
             return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
@@ -342,7 +390,7 @@ IRepositoryBase<CodePermission> repoCodePermission)
                 SortId = x.SortId,
                 Icon = x.Icon,
                 Name = x.Name,
-        
+
             });
 
             return queryTemp.AsHierarchy(x => x.Id, y => y.UpperId, null, 3).Select(x => new
@@ -486,7 +534,7 @@ IRepositoryBase<CodePermission> repoCodePermission)
                 x.ReportType,
                 x.SortId,
                 x.Status,
-          
+
 
             });
             var count = await datasource.CountAsync();
@@ -609,7 +657,7 @@ IRepositoryBase<CodePermission> repoCodePermission)
                 x.ReportType,
                 x.SortId,
                 x.Status,
-               
+
             });
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering
@@ -655,7 +703,7 @@ IRepositoryBase<CodePermission> repoCodePermission)
                 x.ReportType,
                 x.SortId,
                 x.Status,
-               
+
             });
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering

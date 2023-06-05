@@ -522,6 +522,14 @@ toolbarClick(args) {
     this.router.navigateByUrl(link)
 
   }
+  fnWiew(data) {
+    let link = `/system/account/view/${data.accountId}`;
+
+    if (this.role !== 'Account' ) {
+      link = `/system/account/${this.role.toLocaleLowerCase()}/view/${data.accountId}`;
+    }
+    this.router.navigateByUrl(link)
+  }
   async openModal(template, data = {} as XAccount) {
     this.loading = 1;
 

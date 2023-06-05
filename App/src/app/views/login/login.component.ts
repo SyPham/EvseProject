@@ -71,6 +71,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   onChange(e) {
     this.role = e.value;
+    if (this.role) {
+      this.uri = '/evse/home';
+    }
     localStorage.setItem('role', this.role);
 
   }

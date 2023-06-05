@@ -159,7 +159,7 @@
 
           <button type="button" (click)="fnEdit(data)" class="btn btn-sm btn-success">{{ 'Edit' | translate }}</button>
           <!-- <button type="button" (click)="openPermissionModal(permissionModal, data)" class="btn btn-sm btn-primary mx-2">{{ 'Permission' | translate }}</button> -->
-          <button type="button"class="btn btn-sm btn-primary mx-2"  disabled>{{ 'View' | translate }}</button>
+          <button type="button"class="btn btn-sm btn-primary mx-2"  (click)="fnWiew(data)">{{ 'View' | translate }}</button>
           <button type="button" (click)="delete(data.accountId)" class="btn btn-sm btn-danger">{{ 'Delete' | translate }}</button>
          
       

@@ -82,9 +82,11 @@ id: any;
 
   ) { }
   role = '';
+  isDisabledAll = true;
  async ngOnInit() {
   this.id = +this.route.snapshot.params['id'];
   this.role = this.route.snapshot.data['functionCode'];
+  this.isDisabledAll = this.route.snapshot.data['type'] === 'view';
 
   if ( this.id === 0) {
     this.reset()
