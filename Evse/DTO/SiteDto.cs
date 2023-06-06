@@ -32,6 +32,8 @@ namespace Evse.DTO
         public string Longitude { get; set; }
         public string Latitude { get; set; }
         public string LandlordGuid { get; set; }
+        public string CountyGuid { get; set; }
+        
         public List<IFormFile> File { get; set; }
     }
     public partial class SiteForMobileDto
@@ -60,5 +62,6 @@ namespace Evse.DTO
         public string Longitude { get; set; }
         public string Latitude { get; set; }
         public string LandlordGuid { get; set; }
+        
     }
 }

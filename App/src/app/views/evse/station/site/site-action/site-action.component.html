@@ -91,13 +91,9 @@
 
           <div class="col-6">
             <div class="form-group">
-              <label for="Site_Location">{{ "Site_Location" | translate }}</label>
-              <app-code-type-dropdownlist
-                id="Site_Location"
-                [codeType]="'Site_Location'"
-                [(selectedValue)]="model.siteLocation"
-              >
-              </app-code-type-dropdownlist>
+              <label for="county">{{ "County" | translate }}</label>
+              <ejs-dropdownlist id="county" [(ngModel)]="model.countyGuid" [dataSource]="countyDataSource" [allowFiltering]="true" [showClearButton]="true"
+              [placeholder]="'Choice a county' | translate" [fields]="{text: 'countyName', value: 'countyId'}"></ejs-dropdownlist>
             </div>
           </div>
           <div class="col-12">

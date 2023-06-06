@@ -71,6 +71,7 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<Account, AccountDto>();
             CreateMap<Account2, Account2Dto>();
             CreateMap<AuditLog, AuditLogDto>();
+            CreateMap<AccountContract, AccountContractDto>();
         }
 
     }

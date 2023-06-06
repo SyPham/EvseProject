@@ -73,6 +73,7 @@ IRepositoryBase<Site> repoSite)
                                   Id = a.Id,
                                   Guid = a.Guid,
                                   DeviceNo= a.DeviceNo,
+                                  SiteGuid = a.SiteGuid,
                                   DeviceName = a.DeviceName,
                                   Name = $"{a.DeviceNo} - {a.DeviceName}",
                                   Status = a.Status,

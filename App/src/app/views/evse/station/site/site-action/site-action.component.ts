@@ -8,6 +8,7 @@ import { Site } from 'src/app/_core/_model/evse/model';
 import { SiteService } from 'src/app/_core/_service/evse/site.service';
 import { environment } from 'src/environments/environment';
 declare let $: any;
+import { DataManager, Query, UrlAdaptor, Predicate } from '@syncfusion/ej2-data';
 
 @Component({
   selector: 'app-site-action',
@@ -22,6 +23,8 @@ export class SiteActionComponent extends BaseComponent implements OnInit {
   file: any;
   apiHost = environment.apiUrl.replace('/api/', '');
   noImage = ImagePathConstants.NO_IMAGE;
+  countyDataSource: any;
+
   constructor(
     private modalService: NgbModal,
     private service: SiteService,
@@ -38,6 +41,12 @@ export class SiteActionComponent extends BaseComponent implements OnInit {
   @ViewChild('actionModal') actionModal: TemplateRef<any>;
 
   ngOnInit() {
+    const accessToken = localStorage.getItem("token");
+    this.countyDataSource =  new DataManager({
+      url: `${environment.apiUrl}County/GetDataDropdownlist`,
+      adaptor: new UrlAdaptor(),
+      headers: [{ authorization: `Bearer ${accessToken}` }],
+    });
   }
   initModel() {
     this.model = {} as Site;

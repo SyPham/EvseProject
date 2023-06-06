@@ -65,6 +65,7 @@ import { environment } from 'src/environments/environment';
 declare var require: any;
 import { L10n, loadCldr, setCulture } from '@syncfusion/ej2-base';
 import { AccountActionComponent } from './account/account-action/account-action.component';
+import { AccountContractComponent } from './account/account-contract/account-contract.component';
 loadCldr(
   require('cldr-data/supplemental/numberingSystems.json'),
   require('cldr-data/main/en/ca-gregorian.json'),
@@ -141,6 +142,7 @@ const IMG_PIPE = [
     SettingDashboardNormalComponent,
     CreateDashboardComponent,
     CreateAreaComponent,
+    AccountContractComponent
   ]
 })
 export class SystemModule {

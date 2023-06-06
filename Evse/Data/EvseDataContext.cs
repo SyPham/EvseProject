@@ -25,6 +25,7 @@ namespace Evse.Data
         {
             _contextAccessor = contextAccessor;
         }
+        public virtual DbSet<AccountContract> AccountContracts { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Account2> Account2s { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -83,6 +84,61 @@ namespace Evse.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AccountContract>(entity =>
+            {
+                entity.ToTable("Account_Contract");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AccountGuid)
+                    .HasColumnName("Account_Guid")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.Comment).HasColumnType("text");
+
+                entity.Property(e => e.ContractPath)
+                    .HasColumnName("Contract_Path")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.CountyGuid)
+                    .HasColumnName("County_Guid")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeviceGuid)
+                    .HasColumnName("Device_Guid")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.SiteGuid)
+                    .HasColumnName("Site_Guid")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.Status).HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<AuditLog>(entity =>
             {
                 entity.ToTable("AuditLog");
@@ -2432,7 +2488,9 @@ namespace Evse.Data
                     .HasColumnName("ID")
                     .HasColumnType("numeric(18, 0)")
                     .ValueGeneratedOnAdd();
-
+                entity.Property(e => e.CountyGuid)
+                  .HasColumnName("CountyGuid")
+                  .HasMaxLength(40);
                 entity.Property(e => e.Comment)
                     .HasColumnName("COMMENT")
                     .HasColumnType("ntext");

@@ -21,19 +21,22 @@ using System.IO;
 
 namespace Evse.Services
 {
-    public interface ISiteService : IServiceBase<Site, SiteDto>
+    public interface IAccountContractService : IServiceBase<AccountContract, AccountContractDto>
     {
         Task<object> LoadData(DataManager data, string lang);
         Task<object> GetByGuid(string guid);
         Task<object> GetAudit(object id);
         Task<object> DeleteUploadFile(decimal key);
-        Task<OperationResult> AddFormAsync(SiteDto model);
-        Task<OperationResult> UpdateFormAsync(SiteDto model);
-        Task<object> LoadDataForMobile(DataManager data, string lang);
+        Task<OperationResult> AddFormAsync(AccountContractDto model);
+        Task<OperationResult> UpdateFormAsync(AccountContractDto model);
+      
     }
-    public class SiteService : ServiceBase<Site, SiteDto>, ISiteService, IScopeService
+    public class AccountContractService : ServiceBase<AccountContract, AccountContractDto>, IAccountContractService, IScopeService
     {
-        private readonly IRepositoryBase<Site> _repo;
+        private readonly IRepositoryBase<AccountContract> _repo;
+        private readonly IRepositoryBase<Device> _repoDevice;
+        private readonly IRepositoryBase<County> _repoCounty;
+        private readonly IRepositoryBase<Site> _repoSite;
         private readonly IRepositoryBase<CodeType> _repoCodeType;
         private readonly IRepositoryBase<XAccount> _repoXAccount;
         private readonly IUnitOfWork _unitOfWork;
@@ -41,8 +44,8 @@ namespace Evse.Services
         private readonly MapperConfiguration _configMapper;
         private readonly IEvseLoggerService _logger;
         private readonly IWebHostEnvironment _currentEnvironment;
-        public SiteService(
-            IRepositoryBase<Site> repo,
+        public AccountContractService(
+            IRepositoryBase<AccountContract> repo,
             IRepositoryBase<CodeType> repoCodeType,
             IRepositoryBase<XAccount> repoXAccount,
             IUnitOfWork unitOfWork,
@@ -50,7 +53,10 @@ namespace Evse.Services
             MapperConfiguration configMapper,
 IEvseLoggerService logger
 ,
-IWebHostEnvironment currentEnvironment)
+IWebHostEnvironment currentEnvironment,
+IRepositoryBase<Site> repoSite,
+IRepositoryBase<County> repoCounty,
+IRepositoryBase<Device> repoDevice)
             : base(repo, logger, unitOfWork, mapper, configMapper)
         {
             _repo = repo;
@@ -61,42 +67,46 @@ IWebHostEnvironment currentEnvironment)
             _mapper = mapper;
             _configMapper = configMapper;
             _currentEnvironment = currentEnvironment;
+            _repoSite = repoSite;
+            _repoCounty = repoCounty;
+            _repoDevice = repoDevice;
         }
-         public override async Task<object> GetDataDropdownlist(DataManager data)
-        {
-            var datasource = (from a in _repo.FindAll(x => x.Status == 1)
-                              select new
-                              {
 
+        public override async  Task<object> GetDataDropdownlist(DataManager data)
+        {
+             var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
+                              join b in _repoSite.FindAll() on a.SiteGuid equals b.Guid into ab
+                              from t in ab.DefaultIfEmpty()
+
+                              join c in _repoDevice.FindAll() on a.DeviceGuid equals c.Guid into ac
+                              from f in ac.DefaultIfEmpty()
+
+                                join d in _repoCounty.FindAll() on a.CountyGuid equals d.CountyId into ad
+                              from g in ad.DefaultIfEmpty()
+
+                              select new AccountContractDto
+                              {
                                   Id = a.Id,
-                                  Guid = a.Guid,
-                                  SiteNo= a.SiteNo,
-                                  SiteName = a.SiteName,
-                                  Name = $"{a.SiteNo} - {a.SiteName}",
-                                  Status = a.Status,
-                                  Type = a.Type,
-                                  SitePrincipal = a.SitePrincipal,
-                                  SiteTel = a.SiteTel,
-                                  SiteAddress = a.SiteAddress,
-                                  SiteLocation = a.SiteLocation,
-                                  SitePhoto = a.SitePhoto,
+                                  SiteGuid = a.SiteGuid,
+                                 
+                                  ContractPath = a.ContractPath,
+                                  DeviceGuid = a.DeviceGuid,
+                                  CountyGuid = a.CountyGuid,
+                                  AccountGuid = a.AccountGuid,
 
                                   Comment = a.Comment,
                                   CreateDate = a.CreateDate,
                                   CreateBy = a.CreateBy,
                                   UpdateDate = a.UpdateDate,
                                   UpdateBy = a.UpdateBy,
-                                  DeleteDate = a.DeleteDate,
-                                  DeleteBy = a.DeleteBy,
-                                  Longitude = a.Longitude,
-                                  Latitude = a.Latitude,
-                                  LandlordGuid = a.LandlordGuid,
-                                  CountyGuid = a.CountyGuid,
+                                  Status = a.Status,
+                                  Guid = a.Guid,
+                                  SiteGuidName = t != null ? t.SiteName : "",
+                                  CountyGuidName = g != null ? g.CountyName : "",
+                                  DeviceGuidName = f != null ? f.DeviceName : "",
+                              }).OrderBy(x => x.Id).AsQueryable();
 
-                              }).OrderByDescending(x => x.Id).AsQueryable();
-
-
-
+           
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering
                 datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
@@ -109,7 +119,8 @@ IWebHostEnvironment currentEnvironment)
                 datasource = QueryableDataOperations.PerformSkip(datasource, data.Skip);
             if (data.Take > 0)//for paging
                 datasource = QueryableDataOperations.PerformTake(datasource, data.Take);
-            return await datasource.ToListAsync();
+             
+                return datasource;
         }
 
         public async Task<object> GetByGuid(string guid)
@@ -120,91 +131,34 @@ IWebHostEnvironment currentEnvironment)
         public async Task<object> LoadData(DataManager data, string lang)
         {
             var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
-                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Site_Type && x.Status == "Y") on a.Type equals b.CodeNo into ab
+                              join b in _repoSite.FindAll() on a.SiteGuid equals b.Guid into ab
                               from t in ab.DefaultIfEmpty()
-                              join c in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Site_Location && x.Status == "Y") on a.SiteLocation equals c.CodeNo into ac
-                              from l in ac.DefaultIfEmpty()
-                              select new SiteDto
+
+                              join c in _repoDevice.FindAll() on a.DeviceGuid equals c.Guid into ac
+                              from f in ac.DefaultIfEmpty()
+
+                                join d in _repoCounty.FindAll() on a.CountyGuid equals d.CountyId into ad
+                              from g in ad.DefaultIfEmpty()
+
+                              select new AccountContractDto
                               {
                                   Id = a.Id,
-                                  Type = a.Type,
-                                  SiteNo = a.SiteNo,
-                                  SiteName = a.SiteName,
-                                  SitePrincipal = a.SitePrincipal,
-                                  SiteTel = a.SiteTel,
-                                  SiteAddress = a.SiteAddress,
-                                  SiteLocation = a.SiteLocation,
-                                  SitePhoto = a.SitePhoto,
-
-                                  Comment = a.Comment,
-                                  CreateDate = a.CreateDate,
-                                  CreateBy = a.CreateBy,
-                                  UpdateDate = a.UpdateDate,
-                                  UpdateBy = a.UpdateBy,
-                                  DeleteDate = a.DeleteDate,
-                                  DeleteBy = a.DeleteBy,
-                                  Status = a.Status,
-                                  Guid = a.Guid,
-                                  Longitude = a.Longitude,
-                                  Latitude = a.Latitude,
-                                  LandlordGuid = a.LandlordGuid,
-                                  CountyGuid = a.CountyGuid,
-                                  TypeName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
-                                  SiteLocationName = l == null ? "" : lang == Languages.EN ? l.CodeNameEn ?? l.CodeName : lang == Languages.VI ? l.CodeNameVn ?? l.CodeName : lang == Languages.CN ? l.CodeNameCn ?? l.CodeName : l.CodeName,
-                              }).OrderByDescending(x => x.Id).AsQueryable();
-
-            var count = await datasource.CountAsync();
-            if (data.Where != null) // for filtering
-                datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
-            if (data.Sorted != null)//for sorting
-                datasource = QueryableDataOperations.PerformSorting(datasource, data.Sorted);
-            if (data.Search != null)
-                datasource = QueryableDataOperations.PerformSearching(datasource, data.Search);
-            count = await datasource.CountAsync();
-            if (data.Skip >= 0)//for paging
-                datasource = QueryableDataOperations.PerformSkip(datasource, data.Skip);
-            if (data.Take > 0)//for paging
-                datasource = QueryableDataOperations.PerformTake(datasource, data.Take);
-            return new
-            {
-                Result = await datasource.ToListAsync(),
-                Count = count
-            };
-        }
-        public async Task<object> LoadDataForMobile(DataManager data, string lang)
-        {
-            var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
-                              join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Site_Type && x.Status == "Y") on a.Type equals b.CodeNo into ab
-                              from t in ab.DefaultIfEmpty()
-                              join c in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Site_Location && x.Status == "Y") on a.SiteLocation equals c.CodeNo into ac
-                              from l in ac.DefaultIfEmpty()
-                              select new SiteForMobileDto
-                              {
-                                  Id = a.Id,
-                                  Type = a.Type,
-                                  SiteNo = a.SiteNo,
-                                  SiteName = a.SiteName,
-                                  SitePrincipal = a.SitePrincipal,
-                                  SiteTel = a.SiteTel,
-                                  SiteAddress = a.SiteAddress,
-                                  SiteLocation = a.SiteLocation,
-                                  SitePhoto = a.SitePhoto,
-
-                                  Comment = a.Comment,
-                                  CreateDate = a.CreateDate,
-                                  CreateBy = a.CreateBy,
-                                  UpdateDate = a.UpdateDate,
-                                  UpdateBy = a.UpdateBy,
-                                  DeleteDate = a.DeleteDate,
-                                  DeleteBy = a.DeleteBy,
-                                  Status = a.Status,
-                                  Guid = a.Guid,
-                                  Longitude = a.Longitude,
-                                  Latitude = a.Latitude,
-                                  LandlordGuid = a.LandlordGuid,
+                                  SiteGuid = a.SiteGuid,
                                  
-                                  TypeName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
-                                  SiteLocationName = l == null ? "" : lang == Languages.EN ? l.CodeNameEn ?? l.CodeName : lang == Languages.VI ? l.CodeNameVn ?? l.CodeName : lang == Languages.CN ? l.CodeNameCn ?? l.CodeName : l.CodeName,
+                                  ContractPath = a.ContractPath,
+                                  DeviceGuid = a.DeviceGuid,
+                                  CountyGuid = a.CountyGuid,
+
+                                  Comment = a.Comment,
+                                  CreateDate = a.CreateDate,
+                                  CreateBy = a.CreateBy,
+                                  UpdateDate = a.UpdateDate,
+                                  UpdateBy = a.UpdateBy,
+                                  Status = a.Status,
+                                  Guid = a.Guid,
+                                  SiteGuidName = t != null ? t.SiteName : "",
+                                  CountyGuidName = g != null ? g.CountyName : "",
+                                  DeviceGuidName = f != null ? f.DeviceName : "",
                               }).OrderByDescending(x => x.Id).AsQueryable();
 
             var count = await datasource.CountAsync();
@@ -225,17 +179,18 @@ IWebHostEnvironment currentEnvironment)
                 Count = count
             };
         }
-        public override async Task<List<SiteDto>> GetAllAsync()
+
+        public override async Task<List<AccountContractDto>> GetAllAsync()
         {
-            var query = _repo.FindAll(x => x.Status == 1).ProjectTo<SiteDto>(_configMapper);
+            var query = _repo.FindAll(x => x.Status == 1).ProjectTo<AccountContractDto>(_configMapper);
 
             var data = await query.ToListAsync();
             return data;
 
         }
-        public override async Task<OperationResult> AddAsync(SiteDto model)
+        public override async Task<OperationResult> AddAsync(AccountContractDto model)
         {
-            var item = _mapper.Map<Site>(model);
+            var item = _mapper.Map<AccountContract>(model);
             item.Status = StatusConstants.Default;
             _repo.Add(item);
             try
@@ -314,28 +269,25 @@ IWebHostEnvironment currentEnvironment)
             };
         }
 
-        public async Task<OperationResult> AddFormAsync(SiteDto model)
+        public async Task<OperationResult> AddFormAsync(AccountContractDto model)
         {
-            var check = await CheckExistName(model.SiteName);
-            if (!check.Success) return check;
-            var checkSiteNo = await CheckExistNo(model.SiteNo);
-            if (!checkSiteNo.Success) return checkSiteNo;
+         
             FileExtension fileExtension = new FileExtension();
             var avatarUniqueFileName = string.Empty;
-            var avatarFolderPath = "FileUploads\\images\\site\\avatar";
+            var avatarFolderPath = "FileUploads\\images\\AccountContract\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
             if (model.File != null)
             {
-                IFormFile files = model.File.FirstOrDefault();
+                IFormFile files = model.File;
                 if (!files.IsNullOrEmpty())
                 {
                     avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
-                    model.SitePhoto = $"/FileUploads/images/site/avatar/{avatarUniqueFileName}";
+                    model.ContractPath = $"/FileUploads/images/AccountContract/avatar/{avatarUniqueFileName}";
                 }
             }
             try
             {
-                var item = _mapper.Map<Site>(model);
+                var item = _mapper.Map<AccountContract>(model);
                 item.Status = StatusConstants.Default;
                 _repo.Add(item);
                 await _unitOfWork.SaveChangeAsync();
@@ -363,70 +315,30 @@ IWebHostEnvironment currentEnvironment)
             return operationResult;
         }
 
-        public async Task<OperationResult> CheckExistName(string siteName)
-        {
-            var item = await _repo.FindAll(x => x.SiteName == siteName).AnyAsync();
-            if (item)
-            {
-                return new OperationResult { StatusCode = HttpStatusCode.OK, Message = "The site name already existed!", Success = false };
-            }
-            operationResult = new OperationResult
-            {
-                StatusCode = HttpStatusCode.OK,
-                Success = true,
-                Data = item
-            };
-            return operationResult;
-        }
-
-        public async Task<OperationResult> CheckExistNo(string siteNo)
-        {
-            var item = await _repo.FindAll(x => x.SiteNo == siteNo).AnyAsync();
-            if (item)
-            {
-                return new OperationResult { StatusCode = HttpStatusCode.OK, Message = "The site NO already existed!", Success = false };
-            }
-            operationResult = new OperationResult
-            {
-                StatusCode = HttpStatusCode.OK,
-                Success = true,
-                Data = item
-            };
-            return operationResult;
-        }
-        public async Task<OperationResult> UpdateFormAsync(SiteDto model)
+        
+        public async Task<OperationResult> UpdateFormAsync(AccountContractDto model)
         {
 
             FileExtension fileExtension = new FileExtension();
             var itemModel = await _repo.FindAll(x => x.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
-            if (itemModel.SiteName != model.SiteName)
-            {
-                var check = await CheckExistName(model.SiteName);
-                if (!check.Success) return check;
-            }
-
-            if (itemModel.SiteNo != model.SiteNo)
-            {
-                var checkSiteNo = await CheckExistNo(model.SiteNo);
-                if (!checkSiteNo.Success) return checkSiteNo;
-            }
-            var item = _mapper.Map<Site>(model);
+        
+            var item = _mapper.Map<AccountContract>(model);
 
 
             // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
             var avatarUniqueFileName = string.Empty;
-            var avatarFolderPath = "FileUploads\\images\\site\\avatar";
+            var avatarFolderPath = "FileUploads\\images\\AccountContract\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
 
             if (model.File != null)
             {
-                IFormFile filesAvatar = model.File.FirstOrDefault();
+                IFormFile filesAvatar = model.File;
                 if (!filesAvatar.IsNullOrEmpty())
                 {
-                    if (!item.SitePhoto.IsNullOrEmpty())
-                        fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.SitePhoto.Replace("/", "\\").Replace("/", "\\")}");
+                    if (!item.ContractPath.IsNullOrEmpty())
+                        fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.ContractPath.Replace("/", "\\").Replace("/", "\\")}");
                     avatarUniqueFileName = await fileExtension.WriteAsync(filesAvatar, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
-                    item.SitePhoto = $"/FileUploads/images/site/avatar/{avatarUniqueFileName}";
+                    item.ContractPath = $"/FileUploads/images/AccountContract/avatar/{avatarUniqueFileName}";
                 }
             }
 
@@ -467,15 +379,15 @@ IWebHostEnvironment currentEnvironment)
                 var item = await _repo.FindByIDAsync(key);
                 if (item != null)
                 {
-                    string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, item.SitePhoto);
+                    string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, item.ContractPath);
                     FileExtension fileExtension = new FileExtension();
-                    var avatarUniqueFileName = item.SitePhoto;
+                    var avatarUniqueFileName = item.ContractPath;
                     if (!avatarUniqueFileName.IsNullOrEmpty())
                     {
-                        var result = fileExtension.Remove($"{_currentEnvironment.WebRootPath}\\{item.SitePhoto}");
+                        var result = fileExtension.Remove($"{_currentEnvironment.WebRootPath}\\{item.ContractPath}");
                         if (result)
                         {
-                            item.SitePhoto = string.Empty;
+                            item.ContractPath = string.Empty;
                             _repo.Update(item);
                             await _unitOfWork.SaveChangeAsync();
                         }
@@ -495,6 +407,6 @@ IWebHostEnvironment currentEnvironment)
             }
         }
 
-
+     
     }
 }

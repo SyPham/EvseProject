@@ -1,0 +1,53 @@
+<table class="table">
+  <tbody>
+
+    <tr *ngFor="let item of accountContacts; let i=index">
+      <td>
+        <button (click)="deleteRow(i, item)" class="btn btn-sm btn-secondary mr-2">{{ "Delete" | translate}}</button>
+      </td>
+      <td>
+        {{item.countyGuidName}} 
+      </td>
+      <td>
+        {{item.siteGuidName}} 
+
+      </td>
+      <td>
+        {{item.deviceGuidName}}
+
+      </td>
+      <td style="min-width: 200px;">
+        <input type="file" [(ngModel)]="item.file" (change)="changeFile($event, item)" [id]="'selectedFile_'+ i" style="display: none;" />
+        <button type="button"  (click)="onClick(i)" > {{ "Choose file" | translate}}</button>
+        <span>
+          {{
+            item.id > 0 ?  item.contractPath : item.file 
+          }}
+        </span>
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+
+<div class="d-flex justify-content-start">
+  <div class=" ">
+    <button [disabled]="!siteGuid || !countyGuid" (click)="addRow()" class="btn btn-sm btn-secondary mr-2">{{ "Add new attachment" | translate}}</button>
+  </div>
+
+  <div class="mr-2">
+    <ejs-dropdownlist id="county" [(ngModel)]="countyGuid" [dataSource]="countyDataSource" [allowFiltering]="true" [showClearButton]="true"
+     (change)="onChange('County',$event)" [placeholder]="'Choice a county' | translate" [fields]="{text: 'countyName', value: 'countyId'}"></ejs-dropdownlist>
+  </div>
+  <div class="mr-2">
+
+    <ejs-dropdownlist id="site" [(ngModel)]="siteGuid" [dataSource]="siteDataSource" [query]="siteQuery" [allowFiltering]="true" [showClearButton]="true"
+    (change)="onChange('Site', $event)"  [placeholder]="'Choice a site' | translate" [fields]="{text: 'siteName', value: 'guid'}"></ejs-dropdownlist>
+
+  </div>
+  <div class="mr-2" *ngIf="visibleDevices">
+    <ejs-dropdownlist id="device" [(ngModel)]="deviceGuid" [query]="deviceQuery" [dataSource]="deviceDataSource" [allowFiltering]="true" [showClearButton]="true"
+    (change)="onChange('Device', $event)" [placeholder]="'Choice a device' | translate" [fields]="{text: 'deviceName', value: 'guid'}"></ejs-dropdownlist>
+  </div>
+
+</div>

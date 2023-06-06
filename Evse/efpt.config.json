@@ -15,7 +15,7 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[AuditLog]",
+         "Name": "[dbo].[Account_Contract]",
          "ObjectType": 0
       }
    ],

@@ -1,3 +1,19 @@
+export interface AccountContract {
+    id: number;
+    accountGuid: string;
+    countyGuid: string;
+    siteGuid: string;
+    deviceGuid: string;
+    contractPath: string;
+    comment: string;
+    status: number | null;
+    createBy: number | null;
+    createDate: string | null;
+    updateBy: number | null;
+    updateDate: string | null;
+    guid: string;
+    file: any;
+}
 export interface ImageConfig {
     id: number;
     type: string;
@@ -38,6 +54,7 @@ export interface Site {
     longitude: any;
     latitude: any;
     landlordGuid: any;
+    countyGuid: any;
 }
 export interface ParkingLot {
     id: number;
