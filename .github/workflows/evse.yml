@@ -1,0 +1,148 @@
+name: Continuous integration and continuous deployment
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build-dotnet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup dotnet sdk
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Caching nuget packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
+
+      - name: Build
+        run: ./build/dorm_management_build_dotnet.sh
+
+      - name: Upload dotnet publish results
+        uses: actions/upload-artifact@v3
+        with:
+          name: dotnet-publish
+          path: ./publish/dorm_management_api
+
+  build-image-dotnet:
+    runs-on: ubuntu-latest
+    needs: build-dotnet
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download dotnet publish artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dotnet-publish
+          path: ./publish/evse
+
+      - name: Prepare docker context
+        run: mkdir -p ./Evse/bin/Release/net5.0/publish
+
+      - name: Login to the container registry
+        uses: docker/login-action@v2.2.0
+        with:
+          registry: ${{ vars.CONTAINER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v4.5.0
+        with:
+          images: ${{ vars.CONTAINER_REGISTRY }}/${{ github.repository_owner }}/${{ vars.API_IMAGE_NAME }}
+
+      - name: Build and push docker image
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: ./Evse
+          file: ./Evse/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  build-angular:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Caching node_modules
+        uses: actions/cache@v3
+        with:
+          path: ./App/node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/packages.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules
+
+      - name: Build
+        run: ./build/evse_build_angular.sh
+
+      - name: Upload angular dist
+        uses: actions/upload-artifact@v3
+        with:
+          name: angular-dist
+          path: ./publish/evse_ui
+
+  build-image-angular:
+    runs-on: ubuntu-latest
+    needs: build-angular
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download angular dist artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: angular-dist
+          path: ./publish/dorm_management_ui
+
+      - name: Prepare docker context
+        run: mkdir -p ./App/dist && cp -aT ./publish/dorm_management_ui ./App/dist/evse
+
+      - name: Login to the container registry
+        uses: docker/login-action@v2.2.0
+        with:
+          registry: ${{ vars.CONTAINER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v4.5.0
+        with:
+          images: ${{ vars.CONTAINER_REGISTRY }}/${{ github.repository_owner }}/${{ vars.APP_IMAGE_NAME }}
+
+      - name: Build and push docker image
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: ./App
+          file: ./App/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  # deploy:
+  #   runs-on: self-hosted

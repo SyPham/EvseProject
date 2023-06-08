@@ -8,9 +8,9 @@ COPY package.json ./
 COPY yarn.lock ./
 
 ## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN yarn cache clean && yarn install --network-timeout 1000000 && mkdir /ng-app && cp -R ./node_modules ./ng-app
+RUN yarn cache clean && yarn install --network-timeout 1000000 && mkdir /evse && cp -R ./node_modules ./evse
 
-WORKDIR /ng-app
+WORKDIR /evse
 
 COPY . .
 
@@ -29,6 +29,6 @@ COPY default.conf /etc/nginx/conf.d/
 RUN rm -rf /usr/share/nginx/html/*
 
 ## From 'builder' stage copy over the artifacts in dist folder to default nginx public folder
-COPY --from=builder /ng-app/dist /usr/share/nginx/html
+COPY --from=builder /evse/dist /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
