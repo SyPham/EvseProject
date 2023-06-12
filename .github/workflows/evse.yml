@@ -30,7 +30,7 @@ jobs:
         run: |
           cd /home/runner/work/EvseProject/EvseProject/App
           yarn install
-          yarn build --prod
+          yarn prod
 
   build-dotnet:
     runs-on: self-hosted
