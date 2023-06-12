@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-node_modules
 
       - name: Build Angular
-        run: npm install && npm run build -- --prod
+        run: yarn install && yarn build --prod
 
   build-dotnet:
     runs-on: self-hosted
