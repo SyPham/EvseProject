@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          path: ./App
 
       - name: Setup node
         uses: actions/setup-node@v3
@@ -24,12 +22,15 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./App/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('*/yarn.lock') }}
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node_modules
 
       - name: Build Angular
-        run: yarn install && yarn build --prod
+        run: |
+          cd EvseProject/App
+          yarn install
+          yarn build --prod
 
   build-dotnet:
     runs-on: self-hosted
