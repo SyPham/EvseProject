@@ -2,8 +2,9 @@ name: Continuous integration and continuous deployment
 
 on:
   push:
-    tags:
-      - '*'
+    branches: [ main ]
+    # tags:
+    #   - '*'
 
 jobs:
   build-angular:
