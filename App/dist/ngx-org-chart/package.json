@@ -1,0 +1,37 @@
+{
+  "name": "ngx-org-chart",
+  "version": "1.1.0",
+  "description": "Hierarchical Organization Chart",
+  "keywords": [
+    "org-chart",
+    "organization",
+    "hierarchical",
+    "organization chart",
+    "hierarchical chart",
+    "angular",
+    "ng",
+    "angular 11"
+  ],
+  "author": "Henry",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@angular/common": "^11.2.5",
+    "@angular/core": "^11.2.5"
+  },
+  "main": "bundles/ngx-org-chart.umd.js",
+  "module": "fesm2015/ngx-org-chart.js",
+  "es2015": "fesm2015/ngx-org-chart.js",
+  "esm2015": "esm2015/ngx-org-chart.js",
+  "fesm2015": "fesm2015/ngx-org-chart.js",
+  "typings": "ngx-org-chart.d.ts",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "scripts": {
+    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\nPlease delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n')\" && exit 1"
+  }
+}

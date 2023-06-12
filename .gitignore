@@ -161,7 +161,7 @@ AutoTest.Net/
 # Web workbench (sass)
 .sass-cache/
 .vscode
-**/dist/
+# **/dist/
 **/wwwroot/ClientApp
 **/bin/Debug/
 **/bin/Release/

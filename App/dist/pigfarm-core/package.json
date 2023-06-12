@@ -1,0 +1,19 @@
+{
+  "name": "@pigfarm-core",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^11.2.14",
+    "@angular/core": "^11.2.14"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "main": "bundles/pigfarm-core.umd.js",
+  "module": "fesm2015/pigfarm-core.js",
+  "es2015": "fesm2015/pigfarm-core.js",
+  "esm2015": "esm2015/pigfarm-core.js",
+  "fesm2015": "fesm2015/pigfarm-core.js",
+  "typings": "pigfarm-core.d.ts",
+  "metadata": "pigfarm-core.metadata.json",
+  "sideEffects": false
+}
