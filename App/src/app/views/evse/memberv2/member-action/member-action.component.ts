@@ -1,6 +1,6 @@
 
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +15,9 @@ import { AlertifyService, UtilitiesService } from '@pigfarm-core';
 import { Member } from 'src/app/_core/_model/evse/model';
 import { MemberService } from 'src/app/_core/_service/evse/member.service';
 import { XAccountService } from 'src/app/_core/_service/xaccount.service';
+import { EmitType, detach, Browser, createElement, isNullOrUndefined, EventHandler } from '@syncfusion/ej2-base';
+import { FileInfo, RemovingEventArgs, SelectedEventArgs, UploaderComponent } from '@syncfusion/ej2-angular-inputs';
+import { createSpinner, showSpinner, hideSpinner } from '@syncfusion/ej2-popups';
 declare let $: any;
 
 @Component({
@@ -23,6 +26,22 @@ declare let $: any;
   styleUrls: ['./member-action.component.css']
 })
 export class MemberActionComponent implements OnInit {
+  @ViewChild('previewupload')
+  public uploadObj: UploaderComponent;
+  @ViewChild('previewupload2')
+  public uploadObj2: UploaderComponent;
+  public parentElement: HTMLElement;
+  public dropElement2: HTMLElement;
+  public dropElement: HTMLElement;
+  public allowExtensions: string = '.png, .jpg, .jpeg';
+  public filesName: string[] = [];
+  public filesDetails : FileInfo[] = [];
+  public filesList: HTMLElement[] = [];
+
+  public filesName2: string[] = [];
+  public filesDetails2 : FileInfo[] = [];
+  public filesList2: HTMLElement[] = [];
+
   loading
   model: Member = <Member>{};
   file: any;
@@ -65,6 +84,7 @@ id: any;
     no_message: this.translate.instant(MessageConstants.NO_MSG),
   };
   sexData: any;
+
   constructor(
     private service: MemberService,
     private serviceXAccount: XAccountService,
@@ -79,7 +99,9 @@ id: any;
     private router: Router,
     private route: ActivatedRoute,
 
-  ) { }
+  ) { 
+
+  }
   role = 'Member';
  async ngOnInit() {
   this.id = +this.route.snapshot.params['id'];
@@ -98,14 +120,26 @@ id: any;
    
   }
   this.model = model;
+  this.path = {
+    saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=1` ,
+    removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=1`
+};
+this.path2 = {
+  saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=2` ,
+  removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=2`
+};
     this.getAudit(this.id);
   }
     this.getEmployeesByMemberID(0);
     this.loadSexConfig();
    this.codeType();
    this.auditLogs();
+   this.loadRoleType();
+   this.uploadConfig();
+   this.uploadConfig2();
 
   }
+ 
   getAccountNo() {
     if (this.model?.memberNo && this.role) {
       this.serviceXAccount.getAccountNo(this.role, this.model.memberNo).subscribe(res=> {
@@ -179,6 +213,33 @@ id: any;
     });
   }
   roles
+  checkedLicense(e) {
+    this.model.carLicenseCheck = e.target.checked;
+  }
+  checked(item, i) {
+    return item.guid === this.model.roleType
+  }
+  checkedRole(e) {
+    if (e.target.checked) {
+      this.model.roleType = e.target.defaultValue
+     
+    }
+  }
+  loadRoleType() {
+    let query = new Query();
+    const accessToken = localStorage.getItem("token");
+    const lang = localStorage.getItem("lang");
+    new DataManager({
+      url: `${environment.apiUrl}CodeType/GetDataDropdownlist?lang=${lang}&codeType=Role_Type`,
+      adaptor: new UrlAdaptor(),
+      headers: [{ authorization: `Bearer ${accessToken}` }],
+    })
+      .executeQuery(query)
+      .then((x: any) => {
+        console.log(x);
+        this.roles = x.result;
+      });
+  }
   getFarms() {
     this.serviceFarm.getFarms().subscribe(data => {
       this.farmData = data;
@@ -305,7 +366,14 @@ id: any;
   auditLogsData$: any; 
   locale = localStorage.getItem('lang');
   pageText = 'Total Records Count {{items}} items'
-
+  public path: Object = {
+    saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=1` ,
+    removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=1`
+};
+public path2: Object = {
+  saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=2` ,
+  removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=2`
+};
   auditLogs() {
     this.auditLogsQuery = new Query();
     this.auditLogsData$ = new DataManager({
@@ -315,4 +383,53 @@ id: any;
     });
   }
   
+
+uploadConfig() {
+  this.dropElement = document.getElementsByClassName('control-section')[0] as HTMLElement;
+  if (Browser.isDevice) { document.getElementById('dropimage').style.padding = '0px 10%'; }
+  document.getElementById('browse').onclick = () => {
+      document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button').click();
+      return false;
+  };
+ 
+}
+uploadConfig2() {
+  this.dropElement2 = document.getElementsByClassName('control-section')[1] as HTMLElement;
+if (Browser.isDevice) { document.getElementById('dropimage2').style.padding = '0px 10%'; }
+document.getElementById('browse2').onclick = () => {
+    document.getElementsByClassName('e-file-select-wrap')[1].querySelector('button').click();
+    return false;
+};
+
+}
+removeIdCard1Path() {
+  this.service.removeFile(this.model.id, "1").subscribe(x=> {
+    if (x.success) {
+      this.model.idCard1Path = x.data.idCard1Path;
+    this.uploadObj.remove();
+    this.uploadObj.refresh();
+
+    }
+  })
+}
+removeIdCard2Path() {
+  this.service.removeFile(this.model.id, "2").subscribe(x=> {
+    if (x.success) {
+      this.model.idCard2Path = x.data.idCard2Path;
+      this.uploadObj2.remove();
+      this.uploadObj2.refresh();
+    }
+  })
+}
+actionCompleteIdCard1(e) {
+  this.service.getById(this.id).subscribe(x=> {
+    this.model.idCard1Path = x.idCard1Path;
+
+  })
+}
+actionCompleteIdCard2(e) {
+  this.service.getById(this.id).subscribe(x=> {
+    this.model.idCard2Path = x.idCard2Path;
+  })
+}
 }

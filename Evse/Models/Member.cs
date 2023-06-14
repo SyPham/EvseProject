@@ -41,6 +41,11 @@ namespace Evse.Models
         public string PhotoPath { get; set; }
         public string MemberStatus { get; set; }
         public string LastLocation { get; set; }
+        public string RoleType { get; set; }
+        public bool? CarLicenseCheck { get; set; }
+        public string IdCard1Path { get; set; }
+        public string IdCard2Path { get; set; }
+        
 
     }
 }

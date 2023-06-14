@@ -115,37 +115,131 @@
 
             </div>
           </div>
-
-          <!-- <div class="form-group row">
-            <label for="contactName" class="col-sm-2 col-form-label">{{ 'ContactName' | translate }}</label>
+        
+          <div class="form-group row">
+            <label for="memberBirthday" class="col-sm-2 col-form-label">{{ 'Member_Birthday' | translate }}</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="contactName" [(ngModel)]="model.contactName" [placeholder]="'Enter a contact name' | translate">
+              <ejs-datepicker
+              locale="en-US"
+              format="yyyy/MM/dd"
+              id="memberBirthday"
+              [(ngModel)]="model.memberBirthday"
+            ></ejs-datepicker>
             </div>
           </div>
 
-
           <div class="form-group row">
-            <label for="ContactRel" class="col-sm-2 col-form-label">{{ 'ContactRel' | translate }}</label>
-            <div class="col-sm-10 text-secondary">
-              <ejs-dropdownlist
-              id="contactRel"
-              [(value)]="contactRel"
-              [dataSource]="contactRelData"
-              [allowFiltering]="true"
-              [showClearButton]="true"
-              [placeholder]="'Choice a contact rel' | translate"
-              [fields]="{text: 'name', value: 'guid'}"
-            ></ejs-dropdownlist>
-            </div>
-          </div> -->
-<!-- 
-          <div class="form-group row">
-            <label for="contactTel" class="col-sm-2 col-form-label">{{ 'ContactTel' | translate }}</label>
+            <label for="email" class="col-sm-2 col-form-label">{{ 'Member_Email' | translate }}</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="contactTel" [(ngModel)]="model.contactTel" [placeholder]="'Enter a contact tel' | translate">
+              <input type="email" class="form-control" id="email" [(ngModel)]="model.memberEmail" [placeholder]="'Enter a email' | translate">
             </div>
-          </div> -->
+          </div>
 
+          <div class="form-group row">
+            <label for="carName" class="col-sm-2 col-form-label">{{ 'Member_CarName' | translate }}</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="carName" [(ngModel)]="model.carName" [placeholder]="'Enter a car name' | translate">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="carNumber" class="col-sm-2 col-form-label">{{ 'CarNumber' | translate }}</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="carNumber" [(ngModel)]="model.carNumber" [placeholder]="'Enter a car name' | translate">
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label for="carVIN" class="col-sm-2 col-form-label">{{ 'carVIN' | translate }}</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="carVIN" [(ngModel)]="model.carVIN" [placeholder]="'Enter a car VIN' | translate">
+            </div>
+          </div>
+                    
+          <div class="form-group row">
+            <label for="carLicenseCheck" class="col-sm-2 col-form-label">{{ 'Car license check' | translate }}</label>
+            <div class="col-sm-10">
+              <div class="pretty p-default p-fill">
+                <input type="checkbox" name="roleType" [value]="model.carLicenseCheck" (change)="checkedLicense($event)" [checked]="model.carLicenseCheck">
+                <div class="state">
+                    <label></label>
+                </div>
+            </div>
+            </div>
+          </div>
+
+          <fieldset class="form-group">
+            <div class="row">
+              <label for="roleType" class="col-sm-2 col-form-label">{{ 'Role_Type' | translate }}</label>
+              <div class="col-sm-10 d-flex align-items-center">
+                <div class="d-flex align-items-start flex-column">
+                  <div class="mb-2">
+                    <ng-container
+                      *ngFor="let item of roles; let i =index">
+                        <div class="pretty p-default p-round p-thick" style="width: 105px;">
+                          <input type="radio" name="roleType" [value]="item.guid" (change)="checkedRole($event)" [checked]="checked(item,i)">
+                          <div class="state">
+                              <label>{{item.name  | translate}}</label>
+                          </div>
+                      </div>
+                        
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+         
+
+        <div class="form-group row">
+          <label for="" class="col-sm-2 col-form-label"></label>
+         
+          <div class="col-sm-10">
+            <div class="row">
+              <div class="col-6">
+                <div class="control-section control_wrapper">
+                  <div class='imagepreview'>
+                      <div id='dropArea' style='height: auto'>
+                          <span id='dropimage'> {{ 'Drop image (JPG, PNG) files here or' | translate}} <a href="" id='browse'><u>{{ 'Browse' | translate}}</u></a> </span>
+                          <ejs-uploader #previewupload id='previewfileupload' 
+                          (success)="actionCompleteIdCard1($event)"
+                          [asyncSettings]='path' [multiple]="false" [showFileList]="false"
+                              [dropArea]='dropElement' [allowedExtensions]='allowExtensions'
+                              >
+                          </ejs-uploader>
+                            <div class="yes" *ngIf="model.idCard1Path">
+                              <img  [src]="apiHost + model.idCard1Path" class="preview1 it" />
+                              <input type="button" value="x" class="btn-rmv1 rmv"  (click)="removeIdCard1Path()"  />
+                            </div>
+                      </div>
+                  </div>
+                  
+              </div>
+              </div>
+              <div class="col-6">
+                <div class="control-section control_wrapper">
+                  <div class='imagepreview'>
+                      <div id='dropArea2' style='height: auto'>
+                          <span id='dropimage2'> {{ 'Drop image (JPG, PNG) files here or' | translate}} <a href="" id='browse2'><u>{{ 'Browse' | translate}}</u></a> </span>
+                          <ejs-uploader #previewupload2 id='previewfileupload2' 
+                          [asyncSettings]='path2' [multiple]="false"
+                          (success)="actionCompleteIdCard2($event)"
+                           [showFileList]="false"
+                              [dropArea]='dropElement2' [allowedExtensions]='allowExtensions'
+                              >
+                          </ejs-uploader>
+                          <div class="yes" *ngIf="model.idCard2Path">
+                            <img  [src]="apiHost + model.idCard2Path" class="preview1 it" />
+                            <input type="button" value="x" class="btn-rmv1 rmv"  (click)="removeIdCard2Path()"  />
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
           <div class="form-group row">
             <label for="memberComment" class="col-sm-2 col-form-label">{{ this.role + '_Comment' | translate }}</label>

@@ -2171,10 +2171,17 @@ namespace Evse.Data
                     .HasColumnName("ID")
                     .HasColumnType("numeric(18, 0)")
                     .ValueGeneratedOnAdd();
+
+                     entity.Property(e => e.CarLicenseCheck)
+                    .HasColumnName("CarLicenseCheck")
+                    .HasColumnType("bit");
+
          entity.Property(e => e.LastLocation)
                     .HasColumnName("LastLocation")
                     .HasMaxLength(200);
-
+         entity.Property(e => e.RoleType)
+                    .HasColumnName("RoleType")
+                    .HasMaxLength(50);
                 entity.Property(e => e.Comment)
                     .HasColumnName("COMMENT")
                     .HasColumnType("ntext");
@@ -2294,6 +2301,14 @@ namespace Evse.Data
                        entity.Property(e => e.MemberStatus)
                     .HasColumnName("Member_Status")
                     .HasMaxLength(40);
+
+
+                       entity.Property(e => e.IdCard1Path)
+                    .HasColumnName("IDCARD1_Path")
+                    .HasMaxLength(100); 
+                         entity.Property(e => e.IdCard2Path)
+                    .HasColumnName("IDCARD2_Path")
+                    .HasMaxLength(100); 
             });
 
             modelBuilder.Entity<ParkingLot>(entity =>

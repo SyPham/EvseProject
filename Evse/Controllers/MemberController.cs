@@ -5,6 +5,10 @@ using Evse.Services;
 using Syncfusion.JavaScript;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using System;
+using NetUtility;
+using System.Linq;
 
 namespace Evse.Controllers
 {
@@ -108,5 +112,20 @@ namespace Evse.Controllers
         {
             return StatusCodeResult(await _service.StoreLastLocation(model));
         }
+        [HttpPost]
+                public async Task<ActionResult> Remove([FromForm] string cancelUploading, [FromForm] string uploadFiles, decimal id, string type)
+                {
+                  return StatusCodeResult(await _service.RemoveFile(id, type));
+                }
+         [HttpPost]
+        public async Task<ActionResult> Save(IFormFile uploadFile, decimal id, string type)
+        {
+           
+                 if(uploadFile ==null)
+                uploadFile = Request.Form.Files["UploadFiles"];
+                return StatusCodeResult(await _service.SaveFile(uploadFile,id, type));
+
+        }
+    
     }
 }

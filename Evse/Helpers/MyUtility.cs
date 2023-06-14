@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NetUtility;
 using Newtonsoft.Json;
@@ -12,6 +13,54 @@ namespace Evse.Helpers
 {
     public static class MyUtility
     {
+        
+        /// <summary>
+        /// Chuyển đổi giá trị value thành dạng _file 
+        /// trả về giá trị dạng _file
+        /// </summary>
+        /// <param name="value">Giá trị cần chuyển đổi</param>
+        /// <param name="isTrim">Có tự động cắt khoảng trắng 2 đầu không? True: có; false: không
+        /// </param><returns>Giá trị cần chuyển đổi</returns>
+        public static string ToFileFormat(this object value, bool isTrim = false)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            string result = value.ToString().ToLower().ToNoSignFormat();
+
+            result = ToNoSignFormat(result, isTrim);
+            result = result.Replace(" ", "_");
+            return result;
+        }
+        /// <summary>
+        /// Chuyển đổi value thành không dấu
+        /// trả về giá trị value không dấu
+        /// </summary>
+        /// <param name="value">Giá trị cần chuyển đổi</param>
+        /// <param name="isTrim">Có tự động cắt khoảng trắng 2 đầu không? True: có; false: không
+        /// </param>
+        /// <returns>trả về giá trị value không dấu</returns>
+        public static string ToNoSignFormat(this object value, bool isTrim = false)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+            string result = value.ToString();
+            if (isTrim)
+                result = result.Trim();
+            //result = Regex.Replace(result, "[óòỏõọôốồổỗộơớờởỡợ]", "o");
+            //result = Regex.Replace(result, "[óòỏõọôốồổỗộơớờởỡợ]".ToUpper(), "O");
+
+            //Giúp bỏ dấu tiếng việt
+            result = result.Normalize(NormalizationForm.FormD);
+            result = Regex.Replace(result, "\\p{IsCombiningDiacriticalMarks}+", String.Empty);
+            result = result.Replace('\u0111', 'd').Replace('\u0110', 'D');
+
+            return result;
+        }
                 public static List<string> GetRolesValue(this ClaimsPrincipal user)
         {
            return user.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x=>x.Value).ToList();

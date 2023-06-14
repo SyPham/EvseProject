@@ -32,9 +32,12 @@ namespace Evse.Services
         Task<OperationResult> UpdateFormAsync(MemberDto model);
         Task<OperationResult> UpdatePofileAsync(MemberProfileDto model);
         Task<OperationResult> UpdateFileAsync(MemberUploadFileDto model);
-        Task<MemberDto> GetByIdAndLangAsync(decimal id,string lang);
+        Task<MemberDto> GetByIdAndLangAsync(decimal id, string lang);
         Task<LastLocationDto> GetLastLocation(string guid);
         Task<OperationResult> StoreLastLocation(LastLocationDto model);
+        Task<OperationResult> SaveFile(IFormFile file, decimal id, string type);
+        Task<OperationResult> RemoveFile(decimal id, string type);
+
     }
     public class MemberService : ServiceBase<Member, MemberDto>, IMemberService, IScopeService
     {
@@ -78,15 +81,17 @@ IHttpContextAccessor httpContextAccessor)
             return await _repo.FindAll(x => x.Guid == guid)
               .FirstOrDefaultAsync();
         }
-        public  async Task<MemberDto> GetByIdAndLangAsync(decimal id,string lang) {
+        public async Task<MemberDto> GetByIdAndLangAsync(decimal id, string lang)
+        {
             return await Datasource(lang).Where(x => x.Id == id)
               .FirstOrDefaultAsync();
         }
-        private IQueryable<MemberDto> Datasource(string lang) {
- var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
+        private IQueryable<MemberDto> Datasource(string lang)
+        {
+            var datasource = (from a in _repo.FindAll(x => x.Status == StatusConstants.Default)
                               join b in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Member_SEX && x.Status == "Y") on a.MemberSex equals b.CodeNo into ab
                               from t in ab.DefaultIfEmpty()
-                            join c in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Member_Status && x.Status == "Y") on a.MemberStatus equals c.CodeNo into ac
+                              join c in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.Member_Status && x.Status == "Y") on a.MemberStatus equals c.CodeNo into ac
                               from status in ac.DefaultIfEmpty()
                               select new MemberDto
                               {
@@ -101,7 +106,7 @@ IHttpContextAccessor httpContextAccessor)
                                   MemberIdcard = a.MemberIdcard,
                                   MemberEmail = a.MemberEmail,
                                   MemberMobile = a.MemberMobile,
-                                
+
                                   MemberAddress = a.MemberAddress,
 
                                   MemberLine = a.MemberLine,
@@ -116,7 +121,7 @@ IHttpContextAccessor httpContextAccessor)
                                   StartDate = a.StartDate,
                                   EndDate = a.EndDate,
                                   Lastlogin = a.Lastlogin,
-                             LastLocation = a.LastLocation,
+                                  LastLocation = a.LastLocation,
                                   Lastuse = a.Lastuse,
 
 
@@ -130,15 +135,19 @@ IHttpContextAccessor httpContextAccessor)
                                   Status = a.Status,
                                   Guid = a.Guid,
                                   MemberStatus = a.MemberStatus,
+                                  RoleType = a.RoleType,
+                                  CarLicenseCheck = a.CarLicenseCheck,
+                                  IdCard1Path = a.IdCard1Path,
+                                  IdCard2Path = a.IdCard2Path,
                                   MemberSexName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
                                   StatusName = status == null ? "" : lang == Languages.EN ? status.CodeNameEn ?? status.CodeName : lang == Languages.VI ? status.CodeNameVn ?? status.CodeName : lang == Languages.CN ? status.CodeNameCn ?? status.CodeName : status.CodeName,
                               }).OrderByDescending(x => x.Id).AsQueryable();
-                              return datasource;
+            return datasource;
         }
         public async Task<object> LoadData(DataManager data, string lang)
         {
-           
-            var datasource =Datasource(lang);
+
+            var datasource = Datasource(lang);
             var count = await datasource.CountAsync();
             if (data.Where != null) // for filtering
                 datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
@@ -373,7 +382,7 @@ IHttpContextAccessor httpContextAccessor)
                 var checkMemberNo = await CheckExistNo(model.MemberNo);
                 if (!checkMemberNo.Success) return checkMemberNo;
             }
-              if (itemModel.Upwd != model.Upwd)
+            if (itemModel.Upwd != model.Upwd)
             {
                 itemModel.Upwd = model.Upwd.ToSha512();
             }
@@ -518,9 +527,10 @@ IHttpContextAccessor httpContextAccessor)
             }
             catch (Exception ex)
             {
-    await _logger.LogStoreProcedure(new LoggerParams {
-                    Type= EvseLogConst.Delete,
-                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Delete,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
                 return new { status = true };
             }
@@ -572,7 +582,7 @@ IHttpContextAccessor httpContextAccessor)
                     Type = EvseLogConst.Update,
                     LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
-               
+
                 operationResult = ex.GetMessageError();
             }
             return operationResult;
@@ -581,29 +591,31 @@ IHttpContextAccessor httpContextAccessor)
 
         public async Task<LastLocationDto> GetLastLocation(string guid)
         {
-             var item = await _repo.FindAll().FirstOrDefaultAsync(x=> x.Guid == guid);
-            if (item != null) 
-            return new LastLocationDto {
-                Guid = guid,
-                LastLocation = item.LastLocation
-            };
-            else {
+            var item = await _repo.FindAll().FirstOrDefaultAsync(x => x.Guid == guid);
+            if (item != null)
+                return new LastLocationDto
+                {
+                    Guid = guid,
+                    LastLocation = item.LastLocation
+                };
+            else
+            {
                 return null;
             }
         }
 
         public async Task<OperationResult> StoreLastLocation(LastLocationDto model)
         {
-             try
+            try
             {
-                var item = await _repo.FindAll().FirstOrDefaultAsync(x=> x.Guid == model.Guid);
+                var item = await _repo.FindAll().FirstOrDefaultAsync(x => x.Guid == model.Guid);
                 if (item != null)
                 {
-                 
+
                     item.LastLocation = model.LastLocation;
                     _repo.Update(item);
                     await _unitOfWork.SaveChangeAsync();
-                      
+
                 }
                 operationResult = new OperationResult
                 {
@@ -620,10 +632,120 @@ IHttpContextAccessor httpContextAccessor)
                     Type = EvseLogConst.Update,
                     LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
-               
+
                 operationResult = ex.GetMessageError();
             }
             return operationResult;
+        }
+
+        public async Task<OperationResult> SaveFile(IFormFile file, decimal id, string type)
+        {
+
+
+
+            try
+            {
+                var item = await _repo.FindAll().FirstOrDefaultAsync(x => x.Id == id);
+                if (item != null)
+                {
+
+                    FileExtension fileExtension = new FileExtension();
+                    var avatarUniqueFileName = string.Empty;
+                    var avatarFolderPath = "FileUploads\\images\\member\\idcard";
+                    string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
+                    if (file != null)
+                    {
+                        IFormFile files = file;
+                        if (!files.IsNullOrEmpty())
+                        {
+                            avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+                            if (type == "1")
+                            {
+                                item.IdCard1Path = $"/FileUploads/images/member/idcard/{avatarUniqueFileName}";
+                            }
+                            else
+                            {
+                                item.IdCard2Path = $"/FileUploads/images/member/idcard/{avatarUniqueFileName}";
+
+                            }
+                        }
+                    }
+                    _repo.Update(item);
+                    await _unitOfWork.SaveChangeAsync();
+
+                }
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = item
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+
+        }
+
+        public async Task<OperationResult> RemoveFile(decimal id, string type)
+        {
+            try
+            {
+                var item = await _repo.FindByIDAsync(id);
+                if (item != null)
+                {
+                    string path = type == "1" ? item.IdCard1Path : item.IdCard2Path;
+                    string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, path);
+                    FileExtension fileExtension = new FileExtension();
+                    if (!path.IsNullOrEmpty())
+                    {
+                        var result = fileExtension.Remove($"{_currentEnvironment.WebRootPath}\\{path}");
+                        if (result)
+                        {
+                             if (type == "1")
+                            {
+                                item.IdCard1Path = string.Empty;
+                            }
+                            else
+                            {
+                                item.IdCard2Path = string.Empty;
+
+                            }
+                            _repo.Update(item);
+                            await _unitOfWork.SaveChangeAsync();
+                        }
+                    }
+                }
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = item
+                };
+
+                return operationResult;
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Delete,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+                return operationResult;
+
+            }
         }
     }
 }

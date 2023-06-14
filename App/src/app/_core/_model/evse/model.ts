@@ -165,6 +165,11 @@ export interface Member {
     carVIN: any;
     memberStatus
     file: any;
+    roleType: any;
+    birthday: any;
+    carLicenseCheck: any;
+    idCard1Path: any;
+    idCard2Path: any;
 }
 export interface Engineer {
     id: number;

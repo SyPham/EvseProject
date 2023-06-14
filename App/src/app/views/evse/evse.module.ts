@@ -49,7 +49,7 @@ import { FavoriteComponent } from './member/favorite/favorite.component';
 import { FavoriteActionComponent } from './member/favorite/favorite-action/favorite-action.component';
 import { DiscountComponent } from './member/discount/discount.component';
 import { DiscountActionComponent } from './member/discount/discount-action/discount-action.component';
-import { MaskedTextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { MaskedTextBoxModule, UploaderModule } from '@syncfusion/ej2-angular-inputs';
 import { CountyComponent } from './county/county.component';
 import { CountyActionComponent } from './county/county-action/county-action.component';
 import { TownshipComponent } from './county/township/township.component';
@@ -96,6 +96,7 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     SharedModule.forRoot(),
     MaskedTextBoxModule ,
     QRCodeGeneratorAllModule ,
+    UploaderModule,
     PigfarmCoreModule.forRoot(environment.apiUrl)
   ],
   exports: [
