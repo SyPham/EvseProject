@@ -52,12 +52,8 @@ jobs:
       #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
       #     restore-keys: |
       #       ${{ runner.os }}-nuget
-      - name: Restore NuGet Packages Build .NET Core Publish .NET Core
-        run: |
-          cd /home/runner/work/EvseProject/EvseProject/Evse
-          dotnet restore
-          dotnet build --configuration Release
-          dotnet publish --configuration Release --output ./publish
+      - name: Build
+        run: ./build/evse_dotnet.sh
 
       - name: Upload dotnet publish results
         uses: actions/upload-artifact@v3
