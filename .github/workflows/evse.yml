@@ -53,7 +53,7 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-nuget
       - name: Build
-        run: ./build/evse_dotnet.sh
+        run: ./build/evse_build_dotnet.sh
 
       - name: Upload dotnet publish results
         uses: actions/upload-artifact@v3
