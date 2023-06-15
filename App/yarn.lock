@@ -1331,15 +1331,6 @@
   resolved "https://registry.yarnpkg.com/@lgaitan/pace-progress/-/pace-progress-1.0.7.tgz#c96fbbd9fd4cf528feed34ea0c8f9d8b3e98f0dd"
   integrity sha512-GMoTcF6WBpno7a7Iyx7M79os26d5bCDbh7YTZmXZM8YuLR3DDtwo0/CBYddStGD6QIBTieFDz4IAQiO0dAdRGw==
 
-"@microsoft/signalr@^3.1.5":
-  version "3.1.31"
-  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-3.1.31.tgz#b4a4ae692b94036a82065f86db77a7ed83f4e4c9"
-  integrity sha512-tYtnoHpou9b3VaAN6w0upjJiHTFs3wt2kuAO7JaBwJdoP/OuyAJQ73WEZ58H7c2p4zRjqmF3cbTmk1bp6sRgRA==
-  dependencies:
-    eventsource "^1.0.7"
-    request "^2.88.0"
-    ws "^6.0.0"
-
 "@ng-bootstrap/ng-bootstrap@^8.0.0":
   version "8.0.4"
   resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-8.0.4.tgz#bb88a466b2f84ff929fbb6d727b0f9a4d8f33704"

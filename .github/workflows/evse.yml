@@ -29,8 +29,8 @@ jobs:
       - name: Build Angular
         run: |
           cd /home/runner/work/EvseProject/EvseProject/App
-          npm install
-          npm run prod
+          yarn install
+          yarn prod
 
   build-dotnet:
     runs-on: self-hosted
