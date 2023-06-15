@@ -109,4 +109,4 @@ jobs:
                           Start-WebAppPool -Name $iisSiteName; `
                           Start-WebSite -Name $iisSiteName"
 
-          runas /user:Administrator "powershell.exe -Command $pwshCommand"
+                          start powershell.exe -Command $pwshCommand -Credential (New-Object System.Management.Automation.PSCredential('Administrator', (ConvertTo-SecureString ${{ secrets.ADMIN_PASSWORD }} -AsPlainText -Force)))
