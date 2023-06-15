@@ -109,4 +109,6 @@ jobs:
                           Start-WebAppPool -Name $iisSiteName; `
                           Start-WebSite -Name $iisSiteName"
 
-                          start powershell.exe -Command $pwshCommand -Credential (New-Object System.Management.Automation.PSCredential('Administrator', (ConvertTo-SecureString ${{ secrets.ADMIN_PASSWORD }} -AsPlainText -Force)))
+                          $securePassword = ConvertTo-SecureString "${{ secrets.ADMIN_PASSWORD }}" -AsPlainText -Force
+                          $credential = New-Object System.Management.Automation.PSCredential('Administrator', $securePassword)
+                          Start-Process -FilePath powershell.exe -ArgumentList "-Command", "$pwshCommand" -Credential $credential
