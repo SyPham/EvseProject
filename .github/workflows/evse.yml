@@ -45,13 +45,13 @@ jobs:
         with:
           dotnet-version: '5.0.x'
 
-      - name: Caching nuget packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget
+      # - name: Caching nuget packages
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.nuget/packages
+      #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-nuget
       - name: Restore NuGet Packages Build .NET Core Publish .NET Core
         run: |
           cd /home/runner/work/EvseProject/EvseProject/Evse
