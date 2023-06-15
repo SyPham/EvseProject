@@ -34,6 +34,7 @@ jobs:
           yarn prod
 
   build-dotnet:
+    needs: [build-angular]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
