@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dotnet-publish
-          path: ./publish/evse
+          path: ./publish/evse_api
           retention-days: 1
 
   deploy-to-iis:
