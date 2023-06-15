@@ -83,6 +83,9 @@ jobs:
       - name: Deploy to IIS
         run: |
           # Use PowerShell to deploy to IIS
+          Get-ExecutionPolicy
+          Set-ExecutionPolicy RemoteSigned
+          
           $iisSiteName = "Evse"
           $physicalPath = "C:\path\to\publish\evse_api"
 
