@@ -29,6 +29,7 @@ jobs:
       - name: Build Angular
         run: |
           cd /home/runner/work/EvseProject/EvseProject/App
+          yarn cache clean
           yarn install
           yarn prod
 
