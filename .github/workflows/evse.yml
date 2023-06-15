@@ -34,24 +34,36 @@ jobs:
           yarn prod
 
   build-dotnet:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup .NET SDK
+      - name: Setup dotnet sdk
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '5.0.x'
 
-      - name: Restore NuGet Packages
-        run: dotnet restore
+      - name: Caching nuget packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
+      - name: Restore NuGet Packages Build .NET Core Publish .NET Core
+        run: |
+          cd /home/runner/work/EvseProject/EvseProject/Evse
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet publish --configuration Release --output ./publish
 
-      - name: Build .NET Core
-        run: dotnet build --configuration Release
-
-      - name: Publish .NET Core
-        run: dotnet publish --configuration Release --output ./publish
+      - name: Upload dotnet publish results
+        uses: actions/upload-artifact@v3
+        with:
+          name: dotnet-publish
+          path: ./publish/evse
+          retention-days: 1
 
   deploy-to-iis:
     needs: [build-angular, build-dotnet]
