@@ -89,10 +89,10 @@ jobs:
                           $appPoolExists = Test-Path 'IIS:\AppPools\$iisSiteName'; 
                           if (-not $appPoolExists) { 
                             New-WebAppPool -Name $iisSiteName; 
-                            # Write-Host "App Pool creted '$iisSiteName'."
+                            # Write-Host "appPool creted '$iisSiteName'."
                            
                           } else {
-                            # Write-Host "App Pool '$iisSiteName' already exist."
+                            # Write-Host "appPool '$iisSiteName' already exist."
                             Stop-WebAppPool -Name $iisSiteName
                             # Write-Host "Stop App Pool '$iisSiteName'."
                           }
