@@ -103,9 +103,8 @@ jobs:
                             IPAddress = '192.168.64.1'; 
                             HostHeader = 'evse.acv-vision.com' 
                           }; 
-                          $bindingInformation = "192.168.64.1:80"
                           
-                          Set-WebBinding -Name $iisSiteName -BindingInformation $bindingInformation -PropertyName "HostHeader" -Value $binding.HostHeader
+                          Set-WebBinding -Name $iisSiteName -IPAddress "192.168.64.1" -Port 80 -PropertyName "HostHeader" -Value $binding.HostHeader
                           Start-WebAppPool -Name $iisSiteName
                           Start-WebSite -Name $iisSiteName"
 
