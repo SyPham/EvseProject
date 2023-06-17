@@ -89,23 +89,13 @@ jobs:
                           $appPoolExists = Test-Path 'IIS:\AppPools\$iisSiteName'; 
                           if (-not $appPoolExists) { 
                             New-WebAppPool -Name $iisSiteName; 
-                            # Write-Host "appPool creted '$iisSiteName'."
                            
-                          } else {
-                            # Write-Host "appPool '$iisSiteName' already exist."
-                            Stop-WebAppPool -Name $iisSiteName
-                            # Write-Host "Stop App Pool '$iisSiteName'."
-                          }
+                          } 
                         
                           $iisSiteExists = Test-Path 'IIS:\Sites\$iisSiteName'; 
                           if (-not $iisSiteExists) { 
                             New-Website -Name $iisSiteName -PhysicalPath $physicalPath -Port 80 
-                            # Write-Host "New website created '$iisSiteName'."
-                          }  else {
-                            # Write-Host "The '$iisSiteName' already exist."
-                            Stop-Website -Name $iisSiteName
-                            # Write-Host "Stop '$iisSiteName'."
-                          }                        
+                          }                    
 
                           $binding = @{ 
                             Protocol = 'http'; 
@@ -114,9 +104,6 @@ jobs:
                             HostHeader = 'evse.acv-vision.com' 
                           }; 
                           
-                          if (-not (Test-Path "IIS:\Sites\$iisSiteName")) {
-                              # Write-Host "Trang web '$iisSiteName' does not exist."
-                          }
                           $bindingInformation = "$($binding.IPAddress):$($binding.Port):"
                           $sitePath = "IIS:\Sites\$iisSiteName"
                           Set-WebBinding -Name $iisSiteName -BindingInformation $bindingInformation -PropertyName "IPAddress"
