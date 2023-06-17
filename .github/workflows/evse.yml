@@ -104,10 +104,9 @@ jobs:
                             HostHeader = 'evse.acv-vision.com' 
                           }; 
                           
-                          $bindingInformation = "$($binding.IPAddress):$($binding.Port):"
                           $sitePath = "IIS:\Sites\$iisSiteName"
-                          Set-WebBinding -Name $iisSiteName -BindingInformation $bindingInformation -PropertyName "IPAddress"
-                          Add-WebBinding -Name $iisSiteName -BindingInformation $bindingInformation -PropertyName "HostHeader" -Value $binding.HostHeader
+                          Set-WebBinding -Name $iisSiteName -BindingInformation 192.168.64.1:80 -PropertyName "IPAddress"
+                          Add-WebBinding -Name $iisSiteName -BindingInformation 192.168.64.1:80 -PropertyName "HostHeader" -Value $binding.HostHeader
                           Start-WebAppPool -Name $iisSiteName
                           Start-WebSite -Name $iisSiteName"
 
