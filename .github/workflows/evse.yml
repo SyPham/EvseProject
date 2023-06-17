@@ -83,32 +83,47 @@ jobs:
       - name: Deploy to IIS
         run: |
           # Use PowerShell to deploy to IIS
-         
           $iisSiteName = "Evse"
-          $physicalPath = "C:\path\to\publish\evse_api"
+          $physicalPath = "D:\projects\deploy\evse_api"
+          $pwshCommand = "Import-Module WebAdministration; 
+                          $appPoolExists = Test-Path 'IIS:\AppPools\$iisSiteName'; 
+                          if (-not $appPoolExists) { 
+                            New-WebAppPool -Name $iisSiteName; 
+                            Write-Host "App Pool creted '$iisSiteName'."
+                           
+                          } else {
+                            Write-Host "App Pool '$iisSiteName' already exist."
+                            Stop-WebAppPool -Name $iisSiteName
+                            Write-Host "Stop App Pool '$iisSiteName'."
+                          }
+                        
+                          $iisSiteExists = Test-Path 'IIS:\Sites\$iisSiteName'; 
+                          if (-not $iisSiteExists) { 
+                            New-Website -Name $iisSiteName -PhysicalPath $physicalPath -Port 80 
+                            Write-Host "New website created '$iisSiteName'."
+                          }  else {
+                            Write-Host "The '$iisSiteName' already exist."
+                            Stop-Website -Name $iisSiteName
+                            Write-Host "Stop '$iisSiteName'."
+                          }                        
 
-          $pwshCommand = "Import-Module WebAdministration; `
-                          $appPoolExists = Test-Path 'IIS:\AppPools\$iisSiteName'; `
-                          if (-not $appPoolExists) { `
-                            New-Item 'IIS:\AppPools\$iisSiteName' -ErrorAction Stop; `
-                          } `
-                          Set-ItemProperty 'IIS:\AppPools\$iisSiteName' -Name 'managedRuntimeVersion' -Value ''; `
-                          Set-ItemProperty 'IIS:\AppPools\$iisSiteName' -Name 'managedPipelineMode' -Value 0; `
-                          $iisSiteExists = Test-Path 'IIS:\Sites\$iisSiteName'; `
-                          if (-not $iisSiteExists) { `
-                            New-Item 'IIS:\Sites\$iisSiteName' -ErrorAction Stop; `
-                          } `
-                          Set-ItemProperty 'IIS:\Sites\$iisSiteName' -Name 'physicalPath' -Value '$physicalPath'; `
-                          $binding = @{ `
-                            Protocol = 'http'; `
-                            Port = 80; `
-                            IPAddress = '192.168.64.1'; `
-                            HostHeader = 'evse.acv-vision.com' `
-                          }; `
-                          New-WebBinding -Name $iisSiteName -BindingInformation '$($binding.IPAddress):$($binding.Port):' -HostHeader $binding.HostHeader -Protocol $binding.Protocol; `
-                          Start-WebAppPool -Name $iisSiteName; `
+                          $binding = @{ 
+                            Protocol = 'http'; 
+                            Port = 80; 
+                            IPAddress = '192.168.64.1'; 
+                            HostHeader = 'evse.acv-vision.com' 
+                          }; 
+                          
+                          if (-not (Test-Path "IIS:\Sites\$iisSiteName")) {
+                              Write-Host "Trang web '$iisSiteName' does not exist."
+                          }
+                          $bindingInformation = "$($binding.IPAddress):$($binding.Port):"
+                          $sitePath = "IIS:\Sites\$iisSiteName"
+                          Set-WebBinding -Name $iisSiteName -BindingInformation $bindingInformation -PropertyName "IPAddress"
+                          Add-WebBinding -Name $iisSiteName -BindingInformation $bindingInformation -PropertyName "HostHeader" -Value $binding.HostHeader
+                          Start-WebAppPool -Name $iisSiteName
                           Start-WebSite -Name $iisSiteName"
 
-          $securePassword = ConvertTo-SecureString "${{ secrets.ADMIN_PASSWORD }}" -AsPlainText -Force
-          $credential = New-Object System.Management.Automation.PSCredential('Administrator', $securePassword)
-          Start-Process -FilePath powershell.exe -ArgumentList "-Command", "$pwshCommand" -Credential $credential -Verb RunAs
+                          $securePassword = ConvertTo-SecureString "${{ secrets.ADMIN_PASSWORD }}" -AsPlainText -Force
+                          $credential = New-Object System.Management.Automation.PSCredential('Administrator', $securePassword)
+                          Start-Process -FilePath powershell.exe -ArgumentList "-Command", "$pwshCommand" -Credential $credential -Verb RunAs
