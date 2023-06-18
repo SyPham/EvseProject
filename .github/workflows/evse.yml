@@ -80,21 +80,4 @@ jobs:
 
       - name: Deploy to IIS
         run: |
-          # $script = @"
-          # Use PowerShell to deploy to IIS
-          Import-Module WebAdministration
-
-          if (-not (Test-Path "IIS:\AppPools\Evse")) {
-            New-WebAppPool -Name 'Evse'
-          }
-                      
-          if (-not (Test-Path "IIS:\Sites\Evse")) {
-            New-Website -Name 'Evse' -PhysicalPath 'D:\projects\deploy\evse_api' -Port 80 -HostHeader 'evse.acv-vision.com' -IPAddress '192.168.64.1'
-          }
-
-          Start-WebSite -Name 'Evse'
-          # "@
-
-          # $securePassword = ConvertTo-SecureString "${{ secrets.ADMIN_PASSWORD }}" -AsPlainText -Force
-          # $credential = New-Object System.Management.Automation.PSCredential('Administrator', $securePassword)
-          # Start-Process -FilePath powershell.exe -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "$script" -Credential $credential -Verb RunAs -Wait
+          iisreset /start
