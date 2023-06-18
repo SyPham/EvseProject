@@ -89,12 +89,12 @@ jobs:
           $pwshCommand = @"
           Import-Module WebAdministration; 
           $appPoolExists = Test-Path 'IIS:\AppPools\$iisSiteName'; 
-          if ($appPoolExists -eq 'False') { 
+          if (-not $appPoolExists) {
             New-WebAppPool -Name $iisSiteName; 
           }
           
           $iisSiteExists = Test-Path 'IIS:\Sites\$iisSiteName'; 
-          if ($iisSiteExists -eq 'False') {
+          if (-not $iisSiteExists) {
             New-Website -Name $iisSiteName -PhysicalPath $physicalPath -Port 80 -HostHeader 'evse.acv-vision.com' -IPAddress "192.168.64.1" 
           }                    
 
