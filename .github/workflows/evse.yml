@@ -101,4 +101,4 @@ jobs:
 
           $securePassword = ConvertTo-SecureString "${{ secrets.ADMIN_PASSWORD }}" -AsPlainText -Force
           $credential = New-Object System.Management.Automation.PSCredential('Administrator', $securePassword)
-          Start-Process powershell.exe -ArgumentList "-Command $pwshCommand" -Credential $credential -Verb RunAs
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$pwshCommand" | Start-Process -Verb RunAs -Wait
