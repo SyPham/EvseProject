@@ -102,4 +102,4 @@ jobs:
           $securePassword = ConvertTo-SecureString "${{ secrets.ADMIN_PASSWORD }}" -AsPlainText -Force
           $credential = New-Object System.Management.Automation.PSCredential('Administrator', $securePassword)
           $pwshCommand = "Start-Process powershell.exe -ArgumentList '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', '$script' -Verb RunAs"
-          Start-Process -FilePath powershell.exe -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "$script" -Wait
+          Start-Process -FilePath powershell.exe -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "$pwshCommand" -Wait
