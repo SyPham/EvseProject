@@ -87,10 +87,9 @@ jobs:
           $iisSiteName = "Evse"
           $physicalPath = "D:\projects\deploy\evse_api"
           $pwshCommand = @"
-          Import-Module WebAdministration; 
+          Import-Module WebAdministration
           if (-not (Test-Path "IIS:\AppPools\$iisSiteName")) {
-            Write-Host "The app pool '$appPoolName' exists."
-            New-WebAppPool -Name $iisSiteName; 
+            New-WebAppPool -Name $iisSiteName
           }
           
           if (-not (Test-Path "IIS:\Sites\$iisSiteName") ) {
