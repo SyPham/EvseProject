@@ -2,73 +2,57 @@ name: Continuous integration and continuous deployment
 
 on:
   push:
-    branches: [ main ]
-    # tags:
-    #   - '*'
+    # branches: [ main ]
+    tags:
+      - '*'
 
 jobs:
-  # build-angular:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-
-  #     - name: Setup node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '14.x'
-
-  #     - name: Caching node_modules
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: ./App/node_modules
-  #         key: ${{ runner.os }}-node_modules-${{ hashFiles('**/packages.json') }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-node_modules
-
-  #     - name: Build Angular
-  #       run: |
-  #         cd /home/runner/work/EvseProject/EvseProject/App
-  #         yarn cache clean
-  #         yarn install
-  #         yarn prod
-
-  build-dotnet:
-    # needs: [build-angular]
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14.x'
+
+      - name: Caching node_modules
+        uses: actions/cache@v3
+        with:
+          path: ./App/node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/packages.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules
+
+      - name: Build Angular
+        run: |
+          cd /home/runner/work/EvseProject/EvseProject/App
+          yarn cache clean
+          yarn install
+          yarn prod
+
       - name: Setup dotnet sdk
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '5.0.x'
-
-      # - name: Caching nuget packages
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ~/.nuget/packages
-      #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-nuget
       - name: Restore NuGet Packages Build .NET Core Publish .NET Core
         run: |
-          cd /home/runner/work/EvseProject/EvseProject/Evse
-          dotnet restore
-          dotnet build --configuration Release
-          dotnet publish -c Release -o ./publish/evse_api
-
+            cd /home/runner/work/EvseProject/EvseProject/Evse
+            dotnet restore
+            dotnet build --configuration Release
+            dotnet publish -c Release -o ./publish/evse_api
+  
       - name: Upload dotnet publish results
         uses: actions/upload-artifact@v3
         with:
-          name: dotnet-publish
-          path: /home/runner/work/EvseProject/EvseProject/Evse/publish/evse_api
-          retention-days: 1
+            name: dotnet-publish
+            path: /home/runner/work/EvseProject/EvseProject/Evse/publish/evse_api
+            retention-days: 1
 
   deploy-to-iis:
-    # needs: [build-angular, build-dotnet]
-    needs: [build-dotnet]
+    needs: [build]
     runs-on: self-hosted
     steps:
 
