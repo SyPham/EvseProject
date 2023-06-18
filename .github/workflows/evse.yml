@@ -89,15 +89,17 @@ jobs:
           \$physicalPath = "D:\projects\deploy\evse_api"
           Import-Module WebAdministration
 
-          \$appPoolExists = Test-Path "IIS:\AppPools\\$iisSiteName"
-          if (-not \$appPoolExists) {
-            New-WebAppPool -Name \$iisSiteName
-          }
+          # \$appPoolExists = Test-Path "IIS:\AppPools\\$iisSiteName"
+          # if (-not \$appPoolExists) {
+          # }
+          New-WebAppPool -Name \$iisSiteName
                       
-          \$iisSiteExists = Test-Path "IIS:\Sites\\$iisSiteName"
-          if (-not \$iisSiteExists) {
-            New-Website -Name \$iisSiteName -PhysicalPath \$physicalPath -Port 80 -HostHeader 'evse.acv-vision.com' -IPAddress '192.168.64.1'
-          }
+          # \$iisSiteExists = Test-Path "IIS:\Sites\\$iisSiteName"
+          # if (-not \$iisSiteExists) {
+          # }
+
+          New-Website -Name \$iisSiteName -PhysicalPath \$physicalPath -Port 80 -HostHeader 'evse.acv-vision.com' -IPAddress '192.168.64.1'
+
 
           Start-WebSite -Name \$iisSiteName
           "@
