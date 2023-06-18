@@ -7,34 +7,34 @@ on:
     #   - '*'
 
 jobs:
-  build-angular:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  # build-angular:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14.x'
+  #     - name: Setup node
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '14.x'
 
-      - name: Caching node_modules
-        uses: actions/cache@v3
-        with:
-          path: ./App/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/packages.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules
+  #     - name: Caching node_modules
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: ./App/node_modules
+  #         key: ${{ runner.os }}-node_modules-${{ hashFiles('**/packages.json') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-node_modules
 
-      - name: Build Angular
-        run: |
-          cd /home/runner/work/EvseProject/EvseProject/App
-          yarn cache clean
-          yarn install
-          yarn prod
+  #     - name: Build Angular
+  #       run: |
+  #         cd /home/runner/work/EvseProject/EvseProject/App
+  #         yarn cache clean
+  #         yarn install
+  #         yarn prod
 
   build-dotnet:
-    needs: [build-angular]
+    # needs: [build-angular]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -67,7 +67,8 @@ jobs:
           retention-days: 1
 
   deploy-to-iis:
-    needs: [build-angular, build-dotnet]
+    # needs: [build-angular, build-dotnet]
+    needs: [build-dotnet]
     runs-on: self-hosted
     steps:
 
@@ -87,25 +88,15 @@ jobs:
           $physicalPath = "D:\projects\deploy\evse_api"
           $pwshCommand = "Import-Module WebAdministration; 
                           $appPoolExists = Test-Path 'IIS:\AppPools\$iisSiteName'; 
-                          if (-not $appPoolExists) { 
+                          if ($appPoolExists -eq 'False') { 
                             New-WebAppPool -Name $iisSiteName; 
-                           
-                          } 
+                          }
                         
                           $iisSiteExists = Test-Path 'IIS:\Sites\$iisSiteName'; 
-                          if (-not $iisSiteExists) { 
-                            New-Website -Name $iisSiteName -PhysicalPath $physicalPath -Port 80 
+                          if ($iisSiteExists -eq 'False') {
+                            New-Website -Name $iisSiteName -PhysicalPath $physicalPath -Port 80 -HostHeader 'evse.acv-vision.com' -IPAddress "192.168.64.1" 
                           }                    
 
-                          $binding = @{ 
-                            Protocol = 'http'; 
-                            Port = 80; 
-                            IPAddress = '192.168.64.1'; 
-                            HostHeader = 'evse.acv-vision.com' 
-                          }; 
-                          
-                          Set-WebBinding -Name $iisSiteName -IPAddress "192.168.64.1" -Port 80 -PropertyName "HostHeader" -Value $binding.HostHeader
-                          Start-WebAppPool -Name $iisSiteName
                           Start-WebSite -Name $iisSiteName"
 
                           $securePassword = ConvertTo-SecureString "${{ secrets.ADMIN_PASSWORD }}" -AsPlainText -Force
