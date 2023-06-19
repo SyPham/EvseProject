@@ -139,6 +139,8 @@ IHttpContextAccessor httpContextAccessor)
                                   CarLicenseCheck = a.CarLicenseCheck,
                                   IdCard1Path = a.IdCard1Path,
                                   IdCard2Path = a.IdCard2Path,
+                                  CarLicensePath = a.CarLicensePath,
+                                  CarLicense2Path = a.CarLicense2Path,
                                   MemberSexName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
                                   StatusName = status == null ? "" : lang == Languages.EN ? status.CodeNameEn ?? status.CodeName : lang == Languages.VI ? status.CodeNameVn ?? status.CodeName : lang == Languages.CN ? status.CodeNameCn ?? status.CodeName : status.CodeName,
                               }).OrderByDescending(x => x.Id).AsQueryable();
@@ -651,21 +653,39 @@ IHttpContextAccessor httpContextAccessor)
 
                     FileExtension fileExtension = new FileExtension();
                     var avatarUniqueFileName = string.Empty;
+                    var carLicenseFileName = string.Empty;
                     var avatarFolderPath = "FileUploads\\images\\member\\idcard";
+                    var carLicenseFolderPath = "FileUploads\\images\\member\\carLicense";
                     string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
+                    string carLicenseFolder = Path.Combine(_currentEnvironment.WebRootPath, carLicenseFolderPath);
                     if (file != null)
                     {
                         IFormFile files = file;
                         if (!files.IsNullOrEmpty())
                         {
-                            avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
                             if (type == "1")
                             {
+                                 avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
                                 item.IdCard1Path = $"/FileUploads/images/member/idcard/{avatarUniqueFileName}";
                             }
-                            else
+                            else  if (type == "2")
                             {
+                                 avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
                                 item.IdCard2Path = $"/FileUploads/images/member/idcard/{avatarUniqueFileName}";
+
+                            }
+                             else  if (type == "3")
+                            {
+                            carLicenseFileName = await fileExtension.WriteAsync(files, $"{carLicenseFolder}\\{carLicenseFileName}");
+                                
+                                item.CarLicensePath = $"/FileUploads/images/member/carLicense/{carLicenseFileName}";
+
+                            }
+                              else  if (type == "4")
+                            {
+                            carLicenseFileName = await fileExtension.WriteAsync(files, $"{carLicenseFolder}\\{carLicenseFileName}");
+
+                                item.CarLicense2Path = $"/FileUploads/images/member/carLicense/{carLicenseFileName}";
 
                             }
                         }
@@ -715,9 +735,19 @@ IHttpContextAccessor httpContextAccessor)
                             {
                                 item.IdCard1Path = string.Empty;
                             }
-                            else
+                            else if (type == "2")
                             {
                                 item.IdCard2Path = string.Empty;
+
+                            }
+                              else if (type == "3")
+                            {
+                                item.CarLicensePath = string.Empty;
+
+                            }
+                               else if (type == "4")
+                            {
+                                item.CarLicense2Path = string.Empty;
 
                             }
                             _repo.Update(item);

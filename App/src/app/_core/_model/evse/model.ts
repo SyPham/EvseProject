@@ -170,6 +170,8 @@ export interface Member {
     carLicenseCheck: any;
     idCard1Path: any;
     idCard2Path: any;
+    carLicensePath: any;
+    carLicense2Path: any;
 }
 export interface Engineer {
     id: number;

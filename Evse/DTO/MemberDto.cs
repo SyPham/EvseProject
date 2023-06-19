@@ -51,7 +51,8 @@ namespace Evse.DTO
         public bool? CarLicenseCheck { get; set; }
         public string IdCard1Path { get; set; }
         public string IdCard2Path { get; set; }
-
+        public string CarLicensePath { get; set; }
+        public string CarLicense2Path { get; set; }
     }
     public partial class MemberProfileDto
     {

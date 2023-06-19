@@ -30,9 +30,19 @@ export class MemberActionComponent implements OnInit {
   public uploadObj: UploaderComponent;
   @ViewChild('previewupload2')
   public uploadObj2: UploaderComponent;
+
+  @ViewChild('previewupload4')
+  public uploadObj4: UploaderComponent;
+
+  @ViewChild('previewupload3')
+  public uploadObj3: UploaderComponent;
+
   public parentElement: HTMLElement;
   public dropElement2: HTMLElement;
   public dropElement: HTMLElement;
+  public dropElement3: HTMLElement;
+  public dropElement4: HTMLElement;
+
   public allowExtensions: string = '.png, .jpg, .jpeg';
   public filesName: string[] = [];
   public filesDetails : FileInfo[] = [];
@@ -128,6 +138,15 @@ this.path2 = {
   saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=2` ,
   removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=2`
 };
+this.path3 = {
+  saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=3` ,
+  removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=3`
+};
+this.path4 = {
+  saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=4` ,
+  removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=4`
+};
+
     this.getAudit(this.id);
   }
     this.getEmployeesByMemberID(0);
@@ -137,6 +156,8 @@ this.path2 = {
    this.loadRoleType();
    this.uploadConfig();
    this.uploadConfig2();
+   this.uploadConfig3();
+   this.uploadConfig4();
 
   }
  
@@ -374,6 +395,14 @@ public path2: Object = {
   saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=2` ,
   removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=2`
 };
+public path3: Object = {
+  saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=3` ,
+  removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=3`
+};
+public path4: Object = {
+  saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=4` ,
+  removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=4`
+};
   auditLogs() {
     this.auditLogsQuery = new Query();
     this.auditLogsData$ = new DataManager({
@@ -402,6 +431,24 @@ document.getElementById('browse2').onclick = () => {
 };
 
 }
+uploadConfig3() {
+  this.dropElement3 = document.getElementsByClassName('control-section')[2] as HTMLElement;
+if (Browser.isDevice) { document.getElementById('dropimage3').style.padding = '0px 10%'; }
+document.getElementById('browse3').onclick = () => {
+    document.getElementsByClassName('e-file-select-wrap')[2].querySelector('button').click();
+    return false;
+};
+
+}
+uploadConfig4() {
+  this.dropElement4 = document.getElementsByClassName('control-section')[3] as HTMLElement;
+if (Browser.isDevice) { document.getElementById('dropimage4').style.padding = '0px 10%'; }
+document.getElementById('browse4').onclick = () => {
+    document.getElementsByClassName('e-file-select-wrap')[3].querySelector('button').click();
+    return false;
+};
+
+}
 removeIdCard1Path() {
   this.service.removeFile(this.model.id, "1").subscribe(x=> {
     if (x.success) {
@@ -421,6 +468,25 @@ removeIdCard2Path() {
     }
   })
 }
+
+removeCarLicensePath() {
+  this.service.removeFile(this.model.id, "3").subscribe(x=> {
+    if (x.success) {
+      this.model.carLicensePath = x.data.carLicensePath;
+      this.uploadObj3.remove();
+      this.uploadObj3.refresh();
+    }
+  })
+}
+removeCarLicense2Path() {
+  this.service.removeFile(this.model.id, "4").subscribe(x=> {
+    if (x.success) {
+      this.model.carLicense2Path = x.data.carLicense2Path;
+      this.uploadObj4.remove();
+      this.uploadObj4.refresh();
+    }
+  })
+}
 actionCompleteIdCard1(e) {
   this.service.getById(this.id).subscribe(x=> {
     this.model.idCard1Path = x.idCard1Path;
@@ -432,4 +498,17 @@ actionCompleteIdCard2(e) {
     this.model.idCard2Path = x.idCard2Path;
   })
 }
+
+actionCompleteCarLicense1(e) {
+  this.service.getById(this.id).subscribe(x=> {
+    this.model.carLicensePath = x.carLicensePath;
+
+  })
+}
+actionCompleteCarLicense2(e) {
+  this.service.getById(this.id).subscribe(x=> {
+    this.model.carLicense2Path = x.carLicense2Path;
+  })
+}
+
 }

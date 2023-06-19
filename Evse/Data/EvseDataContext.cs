@@ -2309,6 +2309,12 @@ namespace Evse.Data
                          entity.Property(e => e.IdCard2Path)
                     .HasColumnName("IDCARD2_Path")
                     .HasMaxLength(100); 
+                          entity.Property(e => e.CarLicensePath)
+                    .HasColumnName("CarLicense_Path")
+                    .HasMaxLength(100); 
+                         entity.Property(e => e.CarLicense2Path)
+                    .HasColumnName("CarLicense2_Path")
+                    .HasMaxLength(100); 
             });
 
             modelBuilder.Entity<ParkingLot>(entity =>
