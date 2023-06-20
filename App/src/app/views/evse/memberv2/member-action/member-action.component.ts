@@ -237,6 +237,9 @@ this.path4 = {
   checkedLicense(e) {
     this.model.carLicenseCheck = e.target.checked;
   }
+  checkedIdCardCheck(e) {
+    this.model.idCardCheck = e.target.checked;
+  }
   checked(item, i) {
     return item.guid === this.model.roleType
   }

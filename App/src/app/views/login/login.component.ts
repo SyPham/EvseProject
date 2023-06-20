@@ -106,7 +106,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       map(role=> (
         {
         guid: role.groupNo,
-        name: role.groupName
+        name: this.trans.instant(role.groupName) 
        }
       )),
       toArray()

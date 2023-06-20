@@ -25,6 +25,7 @@ import { MemberListComponent } from './member-list/member-list.component';
 import { DeviceUserComponent } from './device-user/device-user.component';
 import { Memberv2Component } from './memberv2/memberv2.component';
 import { MemberActionComponent } from './memberv2/member-action/member-action.component';
+import { OrderHistoryComponent } from './order-history/order-history.component';
 
 const routes: Routes = [
   {
@@ -243,7 +244,7 @@ const routes: Routes = [
     data: {
       title: 'Device User',
       breadcrumb: 'Device User',
-      functionCode: 'Device User'
+      functionCode: 'Member'
     },
   canActivate: [AuthGuard]
   },
@@ -266,7 +267,18 @@ const routes: Routes = [
       functionCode: 'Member'
     },
   canActivate: [AuthGuard]
-  }
+  },
+  {
+    path: 'evse/order-history',
+    component: OrderHistoryComponent,
+    data: {
+      title: 'Order History',
+      breadcrumb: ' Order History',
+      functionCode: 'Member'
+    },
+  canActivate: [AuthGuard]
+  },
+
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

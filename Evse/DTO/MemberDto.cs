@@ -49,6 +49,7 @@ namespace Evse.DTO
         public string LastLocation { get; set; }
         public string RoleType { get; set; }
         public bool? CarLicenseCheck { get; set; }
+        public bool? IdCardCheck { get; set; }
         public string IdCard1Path { get; set; }
         public string IdCard2Path { get; set; }
         public string CarLicensePath { get; set; }

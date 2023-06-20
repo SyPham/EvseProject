@@ -131,6 +131,15 @@
         </e-column>
 
         <e-column
+        field="memberIdcard"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerTextAlign="Center"
+        headerText="{{ 'Member_IDCARD' | translate }}"
+      >
+      </e-column>
+
+        <e-column
         field="createDate"
         editType="datetime"
         format="yyyy-MM-dd HH:mm:ss"
@@ -164,7 +173,7 @@
             
             
           <button type="button" (click)="fnEdit(data)" class="btn btn-sm btn-success mr-2">{{ 'Edit' | translate }}</button>
-          <button type="button" disabled class="btn btn-sm btn-primary">{{ 'Order' | translate }}</button>
+          <button type="button" [routerLink]="'/evse/order-history'" class="btn btn-sm btn-primary">{{ 'Order' | translate }}</button>
          
       
             </ng-template>

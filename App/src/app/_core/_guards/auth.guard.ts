@@ -33,20 +33,23 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.authService.loggedIn()) {
       if (this.checkRole(route) === false) {
-        this.authService.logOut().subscribe(x => {
-          localStorage.removeItem('user');
-          localStorage.removeItem('token');
-          localStorage.removeItem('refresh-token');
-          localStorage.removeItem('login-event');
-          localStorage.removeItem('functions');
-          localStorage.removeItem('menuItem');
-          localStorage.removeItem('farmGuid');
-          localStorage.removeItem('menus');
-          this.cookieService.deleteAll('/');
-          this.alertify.errorBackToLogin(this.title, this.btnText, () => {
+        this.alertify.errorBackToLogin(this.title, this.btnText,  () => {
+          this.authService.logOut().subscribe(x => {
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            localStorage.removeItem('refresh-token');
+            localStorage.removeItem('login-event');
+            localStorage.removeItem('functions');
+            localStorage.removeItem('menuItem');
+            localStorage.removeItem('farmGuid');
+            localStorage.removeItem('menus');
+            this.cookieService.deleteAll('/');
             this.router.navigate(['/login']);
-          }, true);
-        },);
+          
+          },);
+
+        }, true);
+      
 
         return false;
       }

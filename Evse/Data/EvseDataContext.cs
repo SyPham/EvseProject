@@ -2175,7 +2175,9 @@ namespace Evse.Data
                      entity.Property(e => e.CarLicenseCheck)
                     .HasColumnName("CarLicenseCheck")
                     .HasColumnType("bit");
-
+                     entity.Property(e => e.IdCardCheck)
+                    .HasColumnName("IDCARD_Check")
+                    .HasColumnType("bit");
          entity.Property(e => e.LastLocation)
                     .HasColumnName("LastLocation")
                     .HasMaxLength(200);

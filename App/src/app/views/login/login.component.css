@@ -27,3 +27,6 @@ ul li {
   font-size: 20px;
   cursor: pointer;
 }
+.e-radio + label .e-label {
+  white-space: nowrap !important;
+}

@@ -137,6 +137,7 @@ IHttpContextAccessor httpContextAccessor)
                                   MemberStatus = a.MemberStatus,
                                   RoleType = a.RoleType,
                                   CarLicenseCheck = a.CarLicenseCheck,
+                                  IdCardCheck = a.IdCardCheck,
                                   IdCard1Path = a.IdCard1Path,
                                   IdCard2Path = a.IdCard2Path,
                                   CarLicensePath = a.CarLicensePath,

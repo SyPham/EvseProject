@@ -172,6 +172,7 @@ export interface Member {
     idCard2Path: any;
     carLicensePath: any;
     carLicense2Path: any;
+    idCardCheck: any;
 }
 export interface Engineer {
     id: number;

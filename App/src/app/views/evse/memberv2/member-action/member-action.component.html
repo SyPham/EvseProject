@@ -178,26 +178,26 @@
               <input type="text" class="form-control" id="carVIN" [(ngModel)]="model.carVIN" [placeholder]="'Enter a car VIN' | translate">
             </div>
           </div>
-                    
+
           <div class="form-group row">
-            <label for="carLicenseCheck" class="col-sm-2 col-form-label">{{ 'Car license check' | translate }}</label>
+            <label for="idCardCheck" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-10">
               <div class="pretty p-default p-fill">
-                <input type="checkbox" name="roleType" [value]="model.carLicenseCheck" (change)="checkedLicense($event)" [checked]="model.carLicenseCheck">
+                <input id="idCardCheck" type="checkbox" name="roleType" [value]="model.idCardCheck" (change)="checkedIdCardCheck($event)" [checked]="model.idCardCheck">
                 <div class="state">
-                    <label></label>
+                    <label>{{ 'IdCardCheck' | translate }}</label>
                 </div>
             </div>
             </div>
           </div>
 
-
+          
         <div class="form-group row">
           <label for="" class="col-sm-2 col-form-label"></label>
          
           <div class="col-sm-10">
             <div class="row">
-              <div class="col-6">
+              <div class="col-lg-6 col-12">
                 <div class="control-section control_wrapper">
                   <div class='imagepreview'>
                       <div id='dropArea' style='height: auto'>
@@ -217,7 +217,7 @@
                   
               </div>
               </div>
-              <div class="col-6">
+              <div class="col-lg-6 col-12">
                 <div class="control-section control_wrapper">
                   <div class='imagepreview'>
                       <div id='dropArea2' style='height: auto'>
@@ -241,6 +241,19 @@
           </div>
         </div>
 
+                    
+        <div class="form-group row">
+          <label for="carLicenseCheck" class="col-sm-2 col-form-label"></label>
+          <div class="col-sm-10">
+            <div class="pretty p-default p-fill">
+              <input type="checkbox" name="roleType" [value]="model.carLicenseCheck" (change)="checkedLicense($event)" [checked]="model.carLicenseCheck">
+              <div class="state">
+                  <label>{{ 'Car license check' | translate }}</label>
+              </div>
+          </div>
+          </div>
+        </div>
+
 
         <!-- Car lisence -->
 
@@ -249,7 +262,7 @@
          
           <div class="col-sm-10">
             <div class="row">
-              <div class="col-6">
+              <div class="col-12 col-sm-12 col-lg-6">
                 <div class="control-section control_wrapper">
                   <div class='imagepreview'>
                       <div id='dropArea3' style='height: auto'>
@@ -269,7 +282,12 @@
                   
               </div>
               </div>
-              <div class="col-6">
+              <div class="col-12 col-sm-12 col-lg-6"></div>
+            </div>
+
+            <div class="row mt-2">
+
+              <div class="col-lg-6 col-sm-12 col-12">
                 <div class="control-section control_wrapper">
                   <div class='imagepreview'>
                       <div id='dropArea4' style='height: auto'>
@@ -288,6 +306,8 @@
                       </div>
                   </div>
               </div>
+              <div class="col-12 col-sm-12 col-lg-6"></div>
+
               </div>
             </div>
           </div>
@@ -392,7 +412,7 @@ headerTextAlign="Center"
 </e-column>
 
 <e-column
-field="memberName"
+field="accountName"
 width="120"
 textAlign="Left"
 headerTextAlign="Center"

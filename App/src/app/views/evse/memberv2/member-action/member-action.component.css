@@ -74,7 +74,6 @@ input[type=text], input[type=number], input[type=email], input[type=password], t
 
 .control_wrapper .imagepreview{
   max-width: 505px;
-  margin: auto;
 }
 .e-upload {
   float: none;
