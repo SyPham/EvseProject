@@ -460,3 +460,47 @@ export interface AuditLog {
     createDate: string | null;
 
 }
+
+export interface ElectricianErrorReport {
+    id: number;
+    errorSite: string;
+    deviceGuid: string;
+    viewError: string;
+    photoPath: string;
+    comment: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    deleteDate: string | null;
+    deleteBy: number | null;
+    status: string;
+    guid: string;
+    statusName: string;
+    errorSiteName: string;
+    deviceGuidName: string;
+    viewErrorName: string;
+    file: any;
+}
+
+export interface EngineerErrorReport {
+    id: number;
+    errorSite: string;
+    deviceGuid: string;
+    viewError: string;
+    photoPath: string;
+    comment: string;
+    createDate: string | null;
+    createBy: number | null;
+    updateDate: string | null;
+    updateBy: number | null;
+    deleteDate: string | null;
+    deleteBy: number | null;
+    status: string;
+    guid: string;
+    statusName: string;
+    errorSiteName: string;
+    deviceGuidName: string;
+    viewErrorName: string;
+    file: any;
+}

@@ -1,0 +1,152 @@
+<div class="row">
+
+  <div class="col-12">
+    <div class="card">
+
+      <div class="card-body">
+        <div class="col-12 my-2 d-flex align-items-center justify-content-between">
+          <div class=" d-flex justify-content-start align-items-center">
+          <img src="../../../../assets/img/avatar5.png" width="100" height="100" class="rounded-circle" alt="Cinque Terre">
+          <div class=" d-flex justify-content-center  flex-column align-items-center mx-2">
+          <h2>{{'Hello' | translate}}, {{currentUser.accountName || currentUser.nickName }}</h2>
+          <div>{{ 'Login time' | translate }}: {{ lastLoginDate | date: "yyyy-MM-dd HH:mm"}}</div>
+         </div>
+        </div>
+         <button
+              type="submit"
+              [disabled]="
+                
+              "
+              (click)="save()"
+              class="btn btn-success"
+            >
+              {{ "SAVE" | translate }}
+            </button>
+        </div>
+        
+          <div class="d-flex justify-content-center" *ngIf="loading == 1">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+           </div>
+
+           <div class="form-group row">
+            <label for="errorSite" class="col-sm-2 col-form-label">{{ 'EngineerErrorReport_ErrorSite' | translate }} <span *ngIf="model.id ===0" style="color:red">(*)</span></label>
+            <div class="col-sm-10">
+              <input type="text"  class="form-control" [(ngModel)]="model.errorSite" id="errorSite" >
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="deviceGuid" class="col-sm-2 col-form-label">{{ 'EngineerErrorReport_DeviceNumber' | translate }} <span *ngIf="model.id ===0" style="color:red">(*)</span></label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" [(ngModel)]="model.deviceGuid" id="deviceGuid" >
+            </div>
+          </div>
+
+          
+          <div class="form-group row">
+            <label for="deviceLR" class="col-sm-2 col-form-label">{{ 'EngineerErrorReport_DeviceLR' | translate }} <span *ngIf="model.id ===0" style="color:red">(*)</span></label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" [(ngModel)]="model.deviceGuid" id="deviceLR" >
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="viewError" class="col-sm-2 col-form-label">{{ 'EngineerErrorReport_ViewError' | translate }} <span *ngIf="model.id ===0" style="color:red">(*)</span></label>
+            <div class="col-sm-10">
+              <app-code-type-dropdownlist
+              id="viewError"
+              [codeType]="'EngineerErrorReport_ViewError'"
+              [(selectedValue)]="model.status"
+            >
+            </app-code-type-dropdownlist>
+            </div>
+          </div>
+
+                    
+          <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label">{{ 'EngineerErrorReport_Status' | translate }} <span *ngIf="model.id ===0" style="color:red">(*)</span></label>
+            <div class="col-sm-10">
+              <app-code-type-dropdownlist
+              id="status"
+              [codeType]="'EngineerErrorReport_Status'"
+              [(selectedValue)]="model.status"
+            >
+            </app-code-type-dropdownlist>
+            </div>
+          </div>
+        
+
+        
+          <div class="form-group row" *ngIf="model.id > 0">
+            <label for="createDate" class="col-sm-2 col-form-label">{{ 'EngineerErrorReport_CreateDate' | translate }}</label>
+            <div class="col-sm-10">
+              <ejs-datepicker
+              locale="en-US"
+              format="yyyy/MM/dd"
+              id="createDate"
+              [(ngModel)]="model.createDate"
+            ></ejs-datepicker>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="memberComment" class="col-sm-2 col-form-label">{{ 'EngineerErrorReport_Comment' | translate }}</label>
+            <div class="col-sm-10">
+              <textarea
+              class="form-control"
+              [(ngModel)]="model.comment"
+              cols="4"
+              rows="4"
+            ></textarea>
+
+            <div class="mr-auto" *ngIf="model.id > 0">
+              <p>
+                <span class='mr-2'> <span class='my-font-weight-bold'>{{ 'Create by' | translate}}</span> : {{audit?.createBy}}</span>
+                <span><span class='my-font-weight-bold'>{{ 'Create date time' | translate}}</span> : {{audit?.createDate}}</span>
+              </p>
+             
+            </div>
+
+            </div>
+          </div>
+              
+        <div class="form-group row" *ngIf="model.id > 0">
+          <label for="" class="col-sm-2 col-form-label"></label>
+         
+          <div class="col-sm-10">
+            <div class="row">
+              <div class="col-lg-6 col-12">
+                <div class="control-section control_wrapper">
+                  <div class='imagepreview'>
+                      <div id='dropArea' style='height: auto'>
+                          <span id='dropimage'> {{ 'Drop image (JPG, PNG) files here or' | translate}} <a href="" id='browse'><u>{{ 'Browse' | translate}}</u></a> </span>
+                          <ejs-uploader #previewupload id='previewfileupload' 
+                          (success)="actionCompleteIdCard1($event)"
+                          [asyncSettings]='path' [multiple]="false" [showFileList]="false"
+                              [dropArea]='dropElement' [allowedExtensions]='allowExtensions'
+                              >
+                          </ejs-uploader>
+                            <div class="yes" *ngIf="model.photoPath">
+                              <img  [src]="apiHost + model.photoPath" class="preview1 it" />
+                              <input type="button" value="x" class="btn-rmv1 rmv"  (click)="removeIdCard1Path()"  />
+                            </div>
+                      </div>
+                  </div>
+                  
+              </div>
+              </div>
+              <div class="col-lg-6 col-12">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    
+    </div>
+  </div>
+</div>
+

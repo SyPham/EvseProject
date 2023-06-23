@@ -15,7 +15,11 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Account_Contract]",
+         "Name": "[dbo].[ElectricianErrorReport]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EngineerErrorReport]",
          "ObjectType": 0
       }
    ],

@@ -26,6 +26,9 @@ import { DeviceUserComponent } from './device-user/device-user.component';
 import { Memberv2Component } from './memberv2/memberv2.component';
 import { MemberActionComponent } from './memberv2/member-action/member-action.component';
 import { OrderHistoryComponent } from './order-history/order-history.component';
+import { EngineerErrorReportComponent } from './engineer-error-report/engineer-error-report.component';
+import { ElectricianErrorReportComponent } from './electrician-error-report/electrician-error-report.component';
+import { EngineerErrorReportActionComponent } from './engineer-error-report/engineer-error-report-action/engineer-error-report-action.component';
 
 const routes: Routes = [
   {
@@ -275,6 +278,36 @@ const routes: Routes = [
       title: 'Order History',
       breadcrumb: ' Order History',
       functionCode: 'Member'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/engineer-error-report',
+    component: EngineerErrorReportComponent,
+    data: {
+      title: 'Engineer Error Report',
+      breadcrumb: 'Engineer Error Report',
+      functionCode: 'Engineer Error'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/engineer-error-report/action/:id',
+    component: EngineerErrorReportActionComponent,
+    data: {
+      title: 'Engineer Error Report Action',
+      breadcrumb: 'Engineer Error Report Action',
+      functionCode: 'Engineer Error'
+    },
+  canActivate: [AuthGuard]
+  },
+  {
+    path: 'evse/electrician-error-report',
+    component: ElectricianErrorReportComponent,
+    data: {
+      title: 'Electrician Error Report',
+      breadcrumb: 'Electrician Error Report',
+      functionCode: 'Electrician Error'
     },
   canActivate: [AuthGuard]
   },

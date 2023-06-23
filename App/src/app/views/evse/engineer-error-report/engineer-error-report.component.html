@@ -1,0 +1,177 @@
+<ngx-spinner [fullScreen]="false" type="square-jelly-box" size="medium">
+  <p class="loading">Loading data...</p>
+</ngx-spinner>
+<div class="row" style="box-shadow: 1px 1px 20px; padding: 0">
+
+  <div class="col-12 my-2 d-flex align-items-center justify-content-between">
+    <div class=" d-flex justify-content-start align-items-center">
+    <img src="../../../../assets/img/avatar5.png" width="100" height="100" class="rounded-circle" alt="Cinque Terre">
+    <h2 class="mx-2">{{'Hello' | translate}}, {{currentUser.accountName || currentUser.nickName }}</h2>
+    <div>{{ 'Login time' | translate }}: {{ lastLoginDate | date: "yyyy-MM-dd HH:mm"}}</div>
+   </div>
+    <button type="button" (click)="fnAdd()" class="btn btn-sm btn-success">{{ 'Add' | translate }}</button>
+  </div>
+  <!-- <div class="col-12 mb-2">
+    <div class="input-group mb-2" style="width: 300px;">
+      <input type="text" class="form-control" (keyup.enter)="fnSearch()"  [(ngModel)]="keyWord"  placeholder="{{ 'Type to search' | translate }}" >
+      <div class="input-group-append ml-2">
+        <button class="btn btn-outline-secondary" (click)="fnSearch()" type="button">{{ 'Search' | translate }}</button>
+      </div>
+    </div>
+  </div> -->
+  <ng-template #odsTemplate let-data>
+    <button
+      class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib"
+      type="button"
+      id="grid_odsexport"
+      tabindex="-1"
+      (click)="odsExport()"
+      style="width: auto"
+    >
+      <span class="e-btn-icon e-pdfexport e-icons e-icon-left"></span
+      ><span class="e-tbar-btn-text"
+        >{{ "Ods Export" | translate }}
+      </span>
+    </button>
+  </ng-template>
+<div class="col-12">
+  <div class="card main-card">
+    <div class="card-body table-responsive p-0">
+      <ejs-grid
+        #grid
+        id="grid"
+        [dataSource]="data"
+        [allowPaging]="true"
+        [allowResizing]="true"
+        [showColumnMenu]="false"
+        [allowSorting]="true"
+        [allowExcelExport]="true"
+        [pageSettings]="pageSettings"
+        [enableInfiniteScrolling]="true"
+        height="70vh"
+        gridLines="Both"
+        [editSettings]="editSettings"
+        (toolbarClick)="toolbarClick($event)"
+(rowSelected)="rowSelected($event)"
+(excelExportComplete)="excelExpComplete($event)"
+      >
+        <e-columns>
+          <ng-template #pagerTemplate let-data>
+            <pre
+            class="page-text"
+            [translate]="pageText"
+            [translateParams]="{ items: grid.pageSettings.totalRecordsCount }"
+            > </pre>
+           <div class="d-flex justify-content-center">
+            <ngb-pagination
+            [collectionSize]="grid.pageSettings.totalRecordsCount"
+            [(page)]="grid.pageSettings.currentPage"
+            [pageSize]="grid.pageSettings.pageSize"
+            [maxSize]="5"
+            [rotate]="true"
+            [ellipses]="false"
+            [boundaryLinks]="true"
+          >
+  
+          <ng-template ngbPaginationFirst><i class="fa fa-step-backward"></i></ng-template>
+          <ng-template ngbPaginationLast><i class="fa fa-step-forward"></i></ng-template>
+          <ng-template ngbPaginationPrevious><i class="fa fa-caret-left"></i></ng-template>
+          <ng-template ngbPaginationNext><i class="fa fa-caret-right"></i></ng-template>
+          <ng-template ngbPaginationEllipsis>...</ng-template>
+          <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+  
+        </ngb-pagination>
+           </div>
+            </ng-template>
+          <e-column
+          field="id"
+[allowSearching]="false"
+          textAlign="Left"
+        headerTextAlign="Center"
+          [width]="80"
+          [allowSorting]="false"
+          [allowSearching]="false"
+          [allowGrouping]="false"
+          [allowFiltering]="false"
+          [allowEditing]="false"
+          isPrimaryKey="true"
+          [headerText]="'NO.' | translate"
+        >
+          <ng-template #template let-data>
+            {{ NO(data.index) }}
+          </ng-template>
+        </e-column>
+
+      <e-column
+      field="errorSite"
+      width="120px"
+      textAlign="Left"
+    headerTextAlign="Center"
+      headerText="{{ 'EngineerErrorReport_ErrorSite' | translate }}"
+    >
+    </e-column>
+
+        <e-column
+          field="deviceGuidName"
+          width="120px"
+          textAlign="Left"
+        headerTextAlign="Center"
+          headerText="{{ 'EngineerErrorReport_DeviceNumber' | translate }}"
+        >
+        </e-column>
+
+
+        <e-column
+        field="viewErrorName"
+        textAlign="Left"
+        headerTextAlign="Center"
+        headerTextAlign="Center"
+        headerText="{{ 'EngineerErrorReport_ViewError' | translate }}"
+      >
+      </e-column>
+
+        <e-column
+        field="createDate"
+        editType="datetime"
+        format="yyyy-MM-dd HH:mm:ss"
+        textAlign="Left"
+      headerTextAlign="Center"
+        headerText="{{ 'EngineerErrorReport_Create_Date' | translate }}"
+      >
+      </e-column>
+
+        <e-column
+        field="statusName"
+        textAlign="Left"
+      headerTextAlign="Center"
+        headerText="{{ 'EngineerErrorReport_Status' | translate }}"
+      >
+      </e-column>
+          <e-column
+          field="option"
+          textAlign="Left"
+        headerTextAlign="Center"
+          headerTextAlign="Center"
+          [allowSorting]="false"
+          [allowSearching]="false"
+          [allowGrouping]="false"
+          [allowFiltering]="false"
+          [allowEditing]="false"
+          headerText="{{ 'OPTION' | translate }}"
+        >
+          
+            <ng-template #template let-data>
+            
+            
+          <button type="button" (click)="fnEdit(data)" class="btn btn-sm btn-success mr-2">{{ 'Edit' | translate }}</button>
+      
+            </ng-template>
+          </e-column>
+
+        </e-columns>
+      </ejs-grid>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+</div>

@@ -67,6 +67,9 @@ import { ElectricianStatusComponent } from './electrician-status/electrician-sta
 import { DeviceUserComponent } from './device-user/device-user.component';
 import { AppUpdateComponent } from './app-update/app-update.component';
 import { MemberActionComponent } from './memberv2/member-action/member-action.component';
+import { ElectricianErrorReportComponent } from './electrician-error-report/electrician-error-report.component';
+import { EngineerErrorReportComponent } from './engineer-error-report/engineer-error-report.component';
+import { EngineerErrorReportActionComponent } from './engineer-error-report/engineer-error-report-action/engineer-error-report-action.component';
 
 interface Environment {
   production: boolean;
@@ -148,7 +151,10 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     ElectricianStatusComponent,
     DeviceUserComponent,
     AppUpdateComponent,
-    MemberActionComponent
+    MemberActionComponent,
+    ElectricianErrorReportComponent,
+    EngineerErrorReportComponent,
+    EngineerErrorReportActionComponent,
 
   ]
 })

@@ -82,8 +82,141 @@ namespace Evse.Data
         public virtual DbSet<Investor> Investors { get; set; }
         public virtual DbSet<AuditLog> AuditLogs { get; set; }
 
+        public virtual DbSet<ElectricianErrorReport> ElectricianErrorReports { get; set; }
+        public virtual DbSet<EngineerErrorReport> EngineerErrorReports { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ElectricianErrorReport>(entity =>
+            {
+                entity.ToTable("ElectricianErrorReport");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteBy)
+                    .HasColumnName("DELETE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.DeleteDate)
+                    .HasColumnName("DELETE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeviceGuid)
+                    .HasColumnName("Device_GUID")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.ErrorSite)
+                    .HasColumnName("Error_Site")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.PhotoPath)
+                    .HasColumnName("Photo_Path")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.ViewError)
+                    .HasColumnName("View_Error")
+                    .HasMaxLength(40);
+            });
+
+            modelBuilder.Entity<EngineerErrorReport>(entity =>
+            {
+                entity.ToTable("EngineerErrorReport");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Comment)
+                    .HasColumnName("COMMENT")
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnName("CREATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeleteBy)
+                    .HasColumnName("DELETE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.DeleteDate)
+                    .HasColumnName("DELETE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.DeviceGuid)
+                    .HasColumnName("Device_GUID")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.ErrorSite)
+                    .HasColumnName("Error_Site")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.Guid)
+                    .HasColumnName("GUID")
+                    .HasMaxLength(40)
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.PhotoPath)
+                    .HasColumnName("Photo_Path")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Status)
+                    .HasColumnName("STATUS")
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnName("UPDATE_BY")
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnName("UPDATE_DATE")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.ViewError)
+                    .HasColumnName("View_Error")
+                    .HasMaxLength(40);
+            });
+
             modelBuilder.Entity<AccountContract>(entity =>
             {
                 entity.ToTable("Account_Contract");

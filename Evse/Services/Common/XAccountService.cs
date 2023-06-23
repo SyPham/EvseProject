@@ -240,14 +240,14 @@ IRepositoryBase<SystemConfig> repoSystemConfig)
                                   StatusName = status == null ? "" : lang == Languages.EN ? status.CodeNameEn ?? status.CodeName : lang == Languages.VI ? status.CodeNameVn ?? status.CodeName : lang == Languages.CN ? status.CodeNameCn ?? status.CodeName : status.CodeName,
                               }).OrderByDescending(x => x.AccountId).AsNoTracking()
                 .AsQueryable();
-            var count = await datasource.CountAsync();
+            var count = await datasource.Where(x => x.Status == "1" || x.Status == "0").CountAsync();
             if (data.Where != null) // for filtering
                 datasource = QueryableDataOperations.PerformWhereFilter(datasource, data.Where, data.Where[0].Condition);
             if (data.Sorted != null)//for sorting
                 datasource = QueryableDataOperations.PerformSorting(datasource, data.Sorted);
             if (data.Search != null)
                 datasource = QueryableDataOperations.PerformSearching(datasource, data.Search);
-            count = await datasource.CountAsync();
+            count = await datasource.Where(x => x.Status == "1" || x.Status == "0").CountAsync();
             if (data.Skip >= 0)//for paging
                 datasource = QueryableDataOperations.PerformSkip(datasource, data.Skip);
             if (data.Take > 0)//for paging
@@ -419,7 +419,7 @@ IRepositoryBase<SystemConfig> repoSystemConfig)
         }
         public async Task<OperationResult> CheckExistUsername(string userName)
         {
-            var item = await _repo.FindAll(x => x.Uid == userName).AnyAsync();
+            var item = await _repo.FindAll(x => x.Uid == userName && x.Status == "1").AnyAsync();
             if (item)
             {
                 return new OperationResult { StatusCode = HttpStatusCode.OK, Message = "The username already existed!", Success = false };
@@ -435,7 +435,7 @@ IRepositoryBase<SystemConfig> repoSystemConfig)
 
         public async Task<OperationResult> CheckExistNo(string accountNo)
         {
-            var item = await _repo.FindAll(x => x.AccountNo == accountNo).AnyAsync();
+            var item = await _repo.FindAll(x => x.AccountNo == accountNo && x.Status == "1").AnyAsync();
             if (item)
             {
                 return new OperationResult { StatusCode = HttpStatusCode.OK, Message = "The account NO already existed!", Success = false };
