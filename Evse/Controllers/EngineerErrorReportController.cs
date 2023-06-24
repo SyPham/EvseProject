@@ -41,11 +41,9 @@ namespace Evse.Controllers
         }
 
     [HttpPost]
-        public async Task<ActionResult> AddFormAsync([FromForm] IFormFile file, [FromForm] string request)
+        public async Task<ActionResult> AddFormAsync([FromForm] EngineerErrorReportDto model)
 
         {
-            var model = JsonConvert.DeserializeObject<EngineerErrorReportDto>(request);
-            model.File = file;
             return Ok(await _service.AddFormAsync(model));
         }
 

@@ -35,7 +35,9 @@ export class EngineerErrorReportService extends CURDService<EngineerErrorReport>
     const file = model.file;
     delete model.file;
     const params = this.utilitiesService.ToFormData(model);
-    params.append("file", file);
+    if (file) {
+      params.append("file", file);
+    }
     return this.http.post<OperationResult>(`${this.base}EngineerErrorReport/AddForm`, params).pipe(catchError(this.handleError));
   }
   updateForm(model: EngineerErrorReport): Observable<OperationResult> {
@@ -51,7 +53,9 @@ export class EngineerErrorReportService extends CURDService<EngineerErrorReport>
     const file = model.file;
     delete model.file;
     const params = this.utilitiesService.ToFormData(model);
-    params.append("file", file);
+    if (file) {
+      params.append("file", file);
+    }
 
     return this.http.put<OperationResult>(`${this.base}EngineerErrorReport/updateForm`, params).pipe(catchError(this.handleError));
   }

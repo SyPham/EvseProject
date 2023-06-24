@@ -126,7 +126,7 @@ IRepositoryBase<Site> repoSite)
                               join si in _repoSite.FindAll() on a.ErrorSite equals si.Guid into asi
                               from sit in asi.DefaultIfEmpty()
 
-                              join v in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.EngineerErrorReport_Status && x.Status == "Y") on a.Status equals v.CodeNo into av
+                              join v in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.EngineerErrorReport_ViewError && x.Status == "Y") on a.ViewError equals v.CodeNo into av
                               from vi in av.DefaultIfEmpty()
 
                               select new EngineerErrorReportDto
@@ -147,8 +147,9 @@ IRepositoryBase<Site> repoSite)
                                   Status = a.Status,
                                   Guid = a.Guid,
                                   StatusName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
-                                  ViewErrorName = t == null ? "" : lang == Languages.EN ? vi.CodeNameEn ?? vi.CodeName : lang == Languages.VI ? vi.CodeNameVn ?? vi.CodeName : lang == Languages.CN ? vi.CodeNameCn ?? vi.CodeName : vi.CodeName,
+                                  ViewErrorName = vi == null ? "" : lang == Languages.EN ? vi.CodeNameEn ?? vi.CodeName : lang == Languages.VI ? vi.CodeNameVn ?? vi.CodeName : lang == Languages.CN ? vi.CodeNameCn ?? vi.CodeName : vi.CodeName,
                                   DeviceGuidName = dev == null ? "" : dev.DeviceName,
+                                   DeviceLR = dev == null ? "" : dev.DeviceLeftNo + " / " + dev.DeviceRightNo,
                                   ErrorSiteName = sit == null ? "" : sit.SiteName,
                               }).OrderByDescending(x => x.Id).AsQueryable();
 
@@ -180,7 +181,7 @@ IRepositoryBase<Site> repoSite)
                               join si in _repoSite.FindAll() on a.ErrorSite equals si.Guid into asi
                               from sit in asi.DefaultIfEmpty()
 
-                              join v in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.EngineerErrorReport_Status && x.Status == "Y") on a.Status equals v.CodeNo into av
+                              join v in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.EngineerErrorReport_ViewError && x.Status == "Y") on a.ViewError equals v.CodeNo into av
                               from vi in av.DefaultIfEmpty()
 
                               select new EngineerErrorReportDto
@@ -201,8 +202,9 @@ IRepositoryBase<Site> repoSite)
                                   Status = a.Status,
                                   Guid = a.Guid,
                                   StatusName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
-                                  ViewErrorName = t == null ? "" : lang == Languages.EN ? vi.CodeNameEn ?? vi.CodeName : lang == Languages.VI ? vi.CodeNameVn ?? vi.CodeName : lang == Languages.CN ? vi.CodeNameCn ?? vi.CodeName : vi.CodeName,
+                                  ViewErrorName = vi == null ? "" : lang == Languages.EN ? vi.CodeNameEn ?? vi.CodeName : lang == Languages.VI ? vi.CodeNameVn ?? vi.CodeName : lang == Languages.CN ? vi.CodeNameCn ?? vi.CodeName : vi.CodeName,
                                   DeviceGuidName = dev == null ? "" : dev.DeviceName,
+                                  DeviceLR = dev == null ? "" : dev.DeviceLeftNo + " / " + dev.DeviceRightNo,
                                   ErrorSiteName = sit == null ? "" : sit.SiteName,
                               }).OrderByDescending(x => x.Id).AsQueryable();
 
@@ -543,7 +545,41 @@ public async Task<OperationResult> SaveFile(IFormFile file, decimal id, string t
 
             }
         }
+           public override async Task<EngineerErrorReportDto> GetByIDAsync(object id)
+        {
+               var datasource = (from a in _repo.FindAll()
+                              join de in _repoDevice.FindAll() on a.DeviceGuid equals de.Guid into ade
+                              from dev in ade.DefaultIfEmpty()
+                              join si in _repoSite.FindAll() on a.ErrorSite equals si.Guid into asi
+                              from sit in asi.DefaultIfEmpty()
+
+                              select new EngineerErrorReportDto
+                              {
+                                  Id = a.Id,
+                                  DeviceGuid = a.DeviceGuid,
+                                  ErrorSite = a.ErrorSite,
+                                  ViewError = a.ViewError,
+                                  PhotoPath = a.PhotoPath,
+
+                                  Comment = a.Comment,
+                                  CreateDate = a.CreateDate,
+                                  CreateBy = a.CreateBy,
+                                  UpdateDate = a.UpdateDate,
+                                  UpdateBy = a.UpdateBy,
+                                  DeleteDate = a.DeleteDate,
+                                  DeleteBy = a.DeleteBy,
+                                  Status = a.Status,
+                                  Guid = a.Guid,
+                                  DeviceGuidName = dev == null ? "" : dev.DeviceName,
+                                  DeviceLR = dev == null ? "" : dev.DeviceLeftNo + " / " + dev.DeviceRightNo,
+                                  ErrorSiteName = sit == null ? "" : sit.SiteName,
+                              }).OrderByDescending(x => x.Id).AsQueryable();
+
+            return await  datasource.FirstOrDefaultAsync(x=> x.Id.Equals(id));
+        }
+    
 
     }
-    
+
+         
 }

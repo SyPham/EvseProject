@@ -543,7 +543,11 @@ color: white;
   background-color: #344e40 !important;
 }
 
+.e-input-group {
+  box-shadow:0 !important;
+  padding:3px !important;
 
+}
 
 #menu-type2 > .e-input-group {
   box-shadow: unset !important;

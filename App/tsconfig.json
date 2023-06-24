@@ -3,8 +3,7 @@
   "compilerOptions": {
     "paths": {
       "@pigfarm-core": [
-        "projects/pigfarm-core/src/public-api.ts",
-        "dist/pigfarm-core",
+        "projects/pigfarm-core/src/public-api.ts"
       ],
       "ngx-org-chart": [
         "projects/ngx-org-chart/*",

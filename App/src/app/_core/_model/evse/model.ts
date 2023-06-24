@@ -503,4 +503,5 @@ export interface EngineerErrorReport {
     deviceGuidName: string;
     viewErrorName: string;
     file: any;
+    deviceLR: any;
 }

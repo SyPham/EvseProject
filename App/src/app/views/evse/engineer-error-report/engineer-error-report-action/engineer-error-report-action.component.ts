@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-import { FilteringEventArgs } from '@syncfusion/ej2-angular-dropdowns';
+import { DropDownListComponent, FilteringEventArgs } from '@syncfusion/ej2-angular-dropdowns';
 import { AccountTypeService } from 'src/app/_core/_service/account-type.service';
 import { EmployeeService } from 'src/app/_core/_service/employee.service';
 import { FarmService } from 'src/app/_core/_service/farms';
@@ -105,25 +105,34 @@ id: any;
   lastLoginDate
   currentUser = JSON.parse(localStorage.getItem('user'))
 
- async ngOnInit() {
+  ngOnInit() {
   this.xAccountService.getById(this.currentUser.id).subscribe(x=> {
     this.lastLoginDate = x.lastLoginDate;
   })
+  this.codeType();
+  this.auditLogs();
+  this.uploadConfig();
+  this.loadCodeTypeViewError();
+  this.loadCodeTypeStatus();
+  
   this.id = +this.route.snapshot.params['id'];
 
   if ( this.id === 0) {
     this.reset()
 
   } else {
-  const model=  await this.loadDetail();
-  if (model == null) {
-    this.alertify.errorConfirm("", this.translate.instant("Not found record"), () => {
-      this.router.navigateByUrl("/")
-      return;
-    })
-   
-  }
-  this.model = model;
+   this.loadDetail().subscribe(model => {
+    if (model == null) {
+      this.alertify.errorConfirm("", this.translate.instant("Not found record"), () => {
+        this.router.navigateByUrl("/")
+        return;
+      })
+     
+    } else {
+      this.model = model;
+    }
+  });
+ 
   this.path = {
     saveUrl: environment.apiUrl+ `EngineerErrorReport/Save?id=${this.model.id}&type=1` ,
     removeUrl: environment.apiUrl+ `EngineerErrorReport/Remove?id=${this.model.id}&type=1`
@@ -132,9 +141,6 @@ id: any;
 
     this.getAudit(this.id);
   }
-   this.codeType();
-   this.auditLogs();
-   this.uploadConfig();
 
 
   }
@@ -149,7 +155,7 @@ id: any;
     this.inputTypeRePw = this.inputTypeRePw === "password" ? "text": "password"
   }
   loadDetail() {
-   return this.service.getById(this.id).toPromise()
+   return this.service.getById(this.id)
   }
 
   getAudit(id) {
@@ -189,7 +195,48 @@ id: any;
   }
 
   back() {
-      this.router.navigateByUrl("/evse/engineerErrorReport-v2")
+      this.router.navigateByUrl("/evse/engineer-error-report")
+  }
+  dataSourceCodeTypeViewError
+  dataSourceCodeTypeStatus
+  queryViewError
+  queryStatus
+  public onFilteringViewError: any = (e: FilteringEventArgs) => {
+    let query = new Query();
+    //frame the query based on search string with filter type.
+    query = (e.text != "") ? query.where("name", "contains ", e.text, true) : query;
+    //pass the filter data source, filter query to updateData method.
+    e.updateData(this.permissionData, query);
+  };
+  public onFilteringStatus: any = (e: FilteringEventArgs) => {
+    let query = new Query();
+    //frame the query based on search string with filter type.
+    query = (e.text != "") ? query.where("name", "contains ", e.text, true) : query;
+    //pass the filter data source, filter query to updateData method.
+    e.updateData(this.permissionData, query);
+  };
+  @ViewChild('codeTypeViewError')
+  public dropDownListViewError: DropDownListComponent;
+  @ViewChild('codeTypeStatus')
+  public dropDownListStatus: DropDownListComponent;
+  loadCodeTypeViewError() {
+    this.queryViewError = new Query()
+    .addParams("lang", localStorage.getItem('lang'));
+    this.dataSourceCodeTypeViewError = new DataManager({
+      url: `${environment.apiUrl}CodeType/GetDataDropdownlist?lang=${localStorage.getItem('lang')}&codeType=EngineerError_ViewError`,
+      adaptor: new UrlAdaptor,
+      crossDomain: true,
+    });
+
+  }
+  loadCodeTypeStatus() {
+    this.queryStatus = new Query()
+    .addParams("lang", localStorage.getItem('lang'));
+    this.dataSourceCodeTypeStatus = new DataManager({
+      url: `${environment.apiUrl}CodeType/GetDataDropdownlist?lang=${localStorage.getItem('lang')}&codeType=EngineerError_Status`,
+      adaptor: new UrlAdaptor,
+      crossDomain: true,
+    });
   }
   create() {
   
@@ -317,10 +364,13 @@ id: any;
 uploadConfig() {
   this.dropElement = document.getElementsByClassName('control-section')[0] as HTMLElement;
   if (Browser.isDevice) { document.getElementById('dropimage').style.padding = '0px 10%'; }
-  document.getElementById('browse').onclick = () => {
+  if (document.getElementById('browse')) {
+    document.getElementById('browse').onclick = () => {
       document.getElementsByClassName('e-file-select-wrap')[0].querySelector('button').click();
       return false;
   };
+  }
+
  
 }
 actionCompleteIdCard1(e) {

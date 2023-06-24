@@ -24,8 +24,9 @@
         public const string WebNews_Type = "WebNews_Type";
         public const string User2Bank = "User2Bank";
         public const string DeviceError_Type = "Error_Type";
-        public const string EngineerErrorReport_Status = "EngineerErrorReport_Status";
-        public const string ElectricianErrorReport_Status = "ElectricianErrorReport_Status";
+        public const string EngineerErrorReport_Status = "EngineerError_Status";
+        public const string EngineerErrorReport_ViewError = "EngineerError_ViewError";
+        public const string ElectricianErrorReport_Status = "ElectricianError_Status";
 
         
     }

@@ -25,6 +25,7 @@ namespace Evse.DTO
         public string StatusName { get; set; }
         public string ErrorSiteName { get; set; }
         public string DeviceGuidName { get; set; }
+        public string DeviceLR { get; set; }
         public string ViewErrorName { get; set; }
         public IFormFile File { get; set; }
     }
