@@ -30,6 +30,8 @@ namespace Evse.Services
         Task<OperationResult> AddFormAsync(ElectricianErrorReportDto model);
         Task<OperationResult> UpdateFormAsync(ElectricianErrorReportDto model);
         Task<object> LoadDataForMobile(DataManager data, string lang);
+           Task<OperationResult> SaveFile(IFormFile file, decimal id, string type);
+        Task<OperationResult> RemoveFile(decimal id, string type);
     }
     public class ElectricianErrorReportService : ServiceBase<ElectricianErrorReport, ElectricianErrorReportDto>, IElectricianErrorReportService, IScopeService
     {
@@ -124,7 +126,7 @@ IRepositoryBase<Site> repoSite)
                               join si in _repoSite.FindAll() on a.ErrorSite equals si.Guid into asi
                               from sit in asi.DefaultIfEmpty()
 
-                              join v in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.ElectricianErrorReport_Status && x.Status == "Y") on a.Status equals v.CodeNo into av
+                              join v in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.ElectricianErrorReport_ViewError && x.Status == "Y") on a.ViewError equals v.CodeNo into av
                               from vi in av.DefaultIfEmpty()
 
                               select new ElectricianErrorReportDto
@@ -145,8 +147,9 @@ IRepositoryBase<Site> repoSite)
                                   Status = a.Status,
                                   Guid = a.Guid,
                                   StatusName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
-                                  ViewErrorName = t == null ? "" : lang == Languages.EN ? vi.CodeNameEn ?? vi.CodeName : lang == Languages.VI ? vi.CodeNameVn ?? vi.CodeName : lang == Languages.CN ? vi.CodeNameCn ?? vi.CodeName : vi.CodeName,
+                                  ViewErrorName = vi == null ? "" : lang == Languages.EN ? vi.CodeNameEn ?? vi.CodeName : lang == Languages.VI ? vi.CodeNameVn ?? vi.CodeName : lang == Languages.CN ? vi.CodeNameCn ?? vi.CodeName : vi.CodeName,
                                   DeviceGuidName = dev == null ? "" : dev.DeviceName,
+                                   DeviceLR = dev == null ? "" : dev.DeviceLeftNo + " / " + dev.DeviceRightNo,
                                   ErrorSiteName = sit == null ? "" : sit.SiteName,
                               }).OrderByDescending(x => x.Id).AsQueryable();
 
@@ -178,7 +181,7 @@ IRepositoryBase<Site> repoSite)
                               join si in _repoSite.FindAll() on a.ErrorSite equals si.Guid into asi
                               from sit in asi.DefaultIfEmpty()
 
-                              join v in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.ElectricianErrorReport_Status && x.Status == "Y") on a.Status equals v.CodeNo into av
+                              join v in _repoCodeType.FindAll(x => x.CodeType1 == CodeTypeConst.ElectricianErrorReport_ViewError && x.Status == "Y") on a.ViewError equals v.CodeNo into av
                               from vi in av.DefaultIfEmpty()
 
                               select new ElectricianErrorReportDto
@@ -199,8 +202,9 @@ IRepositoryBase<Site> repoSite)
                                   Status = a.Status,
                                   Guid = a.Guid,
                                   StatusName = t == null ? "" : lang == Languages.EN ? t.CodeNameEn ?? t.CodeName : lang == Languages.VI ? t.CodeNameVn ?? t.CodeName : lang == Languages.CN ? t.CodeNameCn ?? t.CodeName : t.CodeName,
-                                  ViewErrorName = t == null ? "" : lang == Languages.EN ? vi.CodeNameEn ?? vi.CodeName : lang == Languages.VI ? vi.CodeNameVn ?? vi.CodeName : lang == Languages.CN ? vi.CodeNameCn ?? vi.CodeName : vi.CodeName,
+                                  ViewErrorName = vi == null ? "" : lang == Languages.EN ? vi.CodeNameEn ?? vi.CodeName : lang == Languages.VI ? vi.CodeNameVn ?? vi.CodeName : lang == Languages.CN ? vi.CodeNameCn ?? vi.CodeName : vi.CodeName,
                                   DeviceGuidName = dev == null ? "" : dev.DeviceName,
+                                  DeviceLR = dev == null ? "" : dev.DeviceLeftNo + " / " + dev.DeviceRightNo,
                                   ErrorSiteName = sit == null ? "" : sit.SiteName,
                               }).OrderByDescending(x => x.Id).AsQueryable();
 
@@ -311,10 +315,10 @@ IRepositoryBase<Site> repoSite)
 
         public async Task<OperationResult> AddFormAsync(ElectricianErrorReportDto model)
         {
-
+       
             FileExtension fileExtension = new FileExtension();
             var avatarUniqueFileName = string.Empty;
-            var avatarFolderPath = "FileUploads\\images\\engineerErrorReport\\avatar";
+            var avatarFolderPath = "FileUploads\\images\\electricianErrorReport\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
             if (model.File != null)
             {
@@ -322,7 +326,7 @@ IRepositoryBase<Site> repoSite)
                 if (!files.IsNullOrEmpty())
                 {
                     avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
-                    model.PhotoPath = $"/FileUploads/images/engineerErrorReport/avatar/{avatarUniqueFileName}";
+                    model.PhotoPath = $"/FileUploads/images/electricianErrorReport/avatar/{avatarUniqueFileName}";
                 }
             }
             try
@@ -354,7 +358,7 @@ IRepositoryBase<Site> repoSite)
             return operationResult;
         }
 
-
+      
         public async Task<OperationResult> UpdateFormAsync(ElectricianErrorReportDto model)
         {
 
@@ -365,7 +369,7 @@ IRepositoryBase<Site> repoSite)
 
             // Nếu có đổi ảnh thì xóa ảnh cũ và thêm ảnh mới
             var avatarUniqueFileName = string.Empty;
-            var avatarFolderPath = "FileUploads\\images\\engineerErrorReport\\avatar";
+            var avatarFolderPath = "FileUploads\\images\\electricianErrorReport\\avatar";
             string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
 
             if (model.File != null)
@@ -376,7 +380,7 @@ IRepositoryBase<Site> repoSite)
                     if (!item.PhotoPath.IsNullOrEmpty())
                         fileExtension.Remove($"{_currentEnvironment.WebRootPath}{item.PhotoPath.Replace("/", "\\").Replace("/", "\\")}");
                     avatarUniqueFileName = await fileExtension.WriteAsync(filesAvatar, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
-                    item.PhotoPath = $"/FileUploads/images/engineerErrorReport/avatar/{avatarUniqueFileName}";
+                    item.PhotoPath = $"/FileUploads/images/electricianErrorReport/avatar/{avatarUniqueFileName}";
                 }
             }
 
@@ -437,15 +441,145 @@ IRepositoryBase<Site> repoSite)
             }
             catch (Exception ex)
             {
-                await _logger.LogStoreProcedure(new LoggerParams
-                {
-                    Type = EvseLogConst.Delete,
-                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+    await _logger.LogStoreProcedure(new LoggerParams {
+                    Type= EvseLogConst.Delete,
+                    LogText = $"Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
                 }).ConfigureAwait(false);
                 return new { status = true };
             }
         }
 
 
+public async Task<OperationResult> SaveFile(IFormFile file, decimal id, string type)
+        {
+
+
+
+            try
+            {
+                var item = await _repo.FindAll().FirstOrDefaultAsync(x => x.Id == id);
+                if (item != null)
+                {
+
+                    FileExtension fileExtension = new FileExtension();
+                    var avatarUniqueFileName = string.Empty;
+                    var avatarFolderPath = "FileUploads\\images\\electricianErrorReport\\idcard";
+                    string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, avatarFolderPath);
+                    if (file != null)
+                    {
+                        IFormFile files = file;
+                        if (!files.IsNullOrEmpty())
+                        {
+                            
+                                 avatarUniqueFileName = await fileExtension.WriteAsync(files, $"{uploadAvatarFolder}\\{avatarUniqueFileName}");
+                                item.PhotoPath = $"/FileUploads/images/electricianErrorReport/idcard/{avatarUniqueFileName}";
+                           
+                        }
+                    }
+                    _repo.Update(item);
+                    await _unitOfWork.SaveChangeAsync();
+
+                }
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = item
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Update,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+
+                operationResult = ex.GetMessageError();
+            }
+            return operationResult;
+
+        }
+
+        public async Task<OperationResult> RemoveFile(decimal id, string type)
+        {
+            try
+            {
+                var item = await _repo.FindByIDAsync(id);
+                if (item != null)
+                {
+                    string path = item.PhotoPath;
+                    string uploadAvatarFolder = Path.Combine(_currentEnvironment.WebRootPath, path);
+                    FileExtension fileExtension = new FileExtension();
+                    if (!path.IsNullOrEmpty())
+                    {
+                        var result = fileExtension.Remove($"{_currentEnvironment.WebRootPath}\\{path}");
+                        if (result)
+                        {
+                            item.PhotoPath = string.Empty;
+                            _repo.Update(item);
+                            await _unitOfWork.SaveChangeAsync();
+                        }
+                    }
+                }
+                operationResult = new OperationResult
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = MessageReponse.UpdateSuccess,
+                    Success = true,
+                    Data = item
+                };
+
+                return operationResult;
+            }
+            catch (Exception ex)
+            {
+                await _logger.LogStoreProcedure(new LoggerParams
+                {
+                    Type = EvseLogConst.Delete,
+                    LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                operationResult = ex.GetMessageError();
+                return operationResult;
+
+            }
+        }
+           public override async Task<ElectricianErrorReportDto> GetByIDAsync(object id)
+        {
+               var datasource = (from a in _repo.FindAll()
+                              join de in _repoDevice.FindAll() on a.DeviceGuid equals de.Guid into ade
+                              from dev in ade.DefaultIfEmpty()
+                              join si in _repoSite.FindAll() on a.ErrorSite equals si.Guid into asi
+                              from sit in asi.DefaultIfEmpty()
+
+                              select new ElectricianErrorReportDto
+                              {
+                                  Id = a.Id,
+                                  DeviceGuid = a.DeviceGuid,
+                                  ErrorSite = a.ErrorSite,
+                                  ViewError = a.ViewError,
+                                  PhotoPath = a.PhotoPath,
+
+                                  Comment = a.Comment,
+                                  CreateDate = a.CreateDate,
+                                  CreateBy = a.CreateBy,
+                                  UpdateDate = a.UpdateDate,
+                                  UpdateBy = a.UpdateBy,
+                                  DeleteDate = a.DeleteDate,
+                                  DeleteBy = a.DeleteBy,
+                                  Status = a.Status,
+                                  Guid = a.Guid,
+                                  DeviceGuidName = dev == null ? "" : dev.DeviceName,
+                                  DeviceLR = dev == null ? "" : dev.DeviceLeftNo + " / " + dev.DeviceRightNo,
+                                  ErrorSiteName = sit == null ? "" : sit.SiteName,
+                              }).OrderByDescending(x => x.Id).AsQueryable();
+
+            return await  datasource.FirstOrDefaultAsync(x=> x.Id.Equals(id));
+        }
+    
+
     }
+
+         
 }

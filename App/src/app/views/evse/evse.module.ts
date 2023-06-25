@@ -70,6 +70,7 @@ import { MemberActionComponent } from './memberv2/member-action/member-action.co
 import { ElectricianErrorReportComponent } from './electrician-error-report/electrician-error-report.component';
 import { EngineerErrorReportComponent } from './engineer-error-report/engineer-error-report.component';
 import { EngineerErrorReportActionComponent } from './engineer-error-report/engineer-error-report-action/engineer-error-report-action.component';
+import { ElectricianErrorReportActionComponent } from './electrician-error-report/electrician-error-report-action/electrician-error-report-action.component';
 
 interface Environment {
   production: boolean;
@@ -155,6 +156,7 @@ const mapOptions:  LazyMapsAPILoaderConfigLiteral = {
     ElectricianErrorReportComponent,
     EngineerErrorReportComponent,
     EngineerErrorReportActionComponent,
+    ElectricianErrorReportActionComponent,
 
   ]
 })

@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
+import { CURDService, OperationResult, UtilitiesService } from '@pigfarm-core';
 
 import { environment } from 'src/environments/environment';
 import { ElectricianErrorReport } from '../../_model/evse/model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { CURDService, OperationResult, UtilitiesService } from '@pigfarm-core';
 import { catchError } from 'rxjs/operators';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -36,7 +35,9 @@ export class ElectricianErrorReportService extends CURDService<ElectricianErrorR
     const file = model.file;
     delete model.file;
     const params = this.utilitiesService.ToFormData(model);
-    params.append("file", file);
+    if (file) {
+      params.append("file", file);
+    }
     return this.http.post<OperationResult>(`${this.base}ElectricianErrorReport/AddForm`, params).pipe(catchError(this.handleError));
   }
   updateForm(model: ElectricianErrorReport): Observable<OperationResult> {
@@ -52,8 +53,13 @@ export class ElectricianErrorReportService extends CURDService<ElectricianErrorR
     const file = model.file;
     delete model.file;
     const params = this.utilitiesService.ToFormData(model);
-    params.append("file", file);
+    if (file) {
+      params.append("file", file);
+    }
 
     return this.http.put<OperationResult>(`${this.base}ElectricianErrorReport/updateForm`, params).pipe(catchError(this.handleError));
+  }
+  removeFile(id, type): Observable<OperationResult> {
+    return this.http.post<OperationResult>(`${this.base}ElectricianErrorReport/Remove?id=${id}&type=${type}`, {}).pipe(catchError(this.handleError));
   }
 }

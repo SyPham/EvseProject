@@ -481,6 +481,7 @@ export interface ElectricianErrorReport {
     deviceGuidName: string;
     viewErrorName: string;
     file: any;
+    deviceLR: string;
 }
 
 export interface EngineerErrorReport {

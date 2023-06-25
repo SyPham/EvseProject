@@ -27,6 +27,7 @@
         public const string EngineerErrorReport_Status = "EngineerError_Status";
         public const string EngineerErrorReport_ViewError = "EngineerError_ViewError";
         public const string ElectricianErrorReport_Status = "ElectricianError_Status";
+        public const string ElectricianErrorReport_ViewError = "Electrician_ViewError";
 
         
     }

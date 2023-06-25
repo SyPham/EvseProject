@@ -29,6 +29,7 @@ import { OrderHistoryComponent } from './order-history/order-history.component';
 import { EngineerErrorReportComponent } from './engineer-error-report/engineer-error-report.component';
 import { ElectricianErrorReportComponent } from './electrician-error-report/electrician-error-report.component';
 import { EngineerErrorReportActionComponent } from './engineer-error-report/engineer-error-report-action/engineer-error-report-action.component';
+import { ElectricianErrorReportActionComponent } from './electrician-error-report/electrician-error-report-action/electrician-error-report-action.component';
 
 const routes: Routes = [
   {
@@ -311,7 +312,16 @@ const routes: Routes = [
     },
   canActivate: [AuthGuard]
   },
-
+  {
+    path: 'evse/electrician-error-report/action/:id',
+    component: ElectricianErrorReportActionComponent,
+    data: {
+      title: 'Electrician Error Report Action',
+      breadcrumb: 'Electrician Error Report Action',
+      functionCode: 'Electrician Error'
+    },
+  canActivate: [AuthGuard]
+  },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

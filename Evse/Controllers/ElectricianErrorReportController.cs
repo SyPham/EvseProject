@@ -41,11 +41,9 @@ namespace Evse.Controllers
         }
 
     [HttpPost]
-        public async Task<ActionResult> AddFormAsync([FromForm] IFormFile file, [FromForm] string request)
+        public async Task<ActionResult> AddFormAsync([FromForm] ElectricianErrorReportDto model)
 
         {
-            var model = JsonConvert.DeserializeObject<ElectricianErrorReportDto>(request);
-            model.File = file;
             return Ok(await _service.AddFormAsync(model));
         }
 
@@ -103,6 +101,20 @@ namespace Evse.Controllers
         public async Task<ActionResult> GetAudit(decimal id)
         {
             return Ok(await _service.GetAudit(id));
+        }
+        [HttpPost]
+                public async Task<ActionResult> Remove([FromForm] string cancelUploading, [FromForm] string uploadFiles, decimal id, string type)
+                {
+                  return StatusCodeResult(await _service.RemoveFile(id, type));
+                }
+         [HttpPost]
+        public async Task<ActionResult> Save(IFormFile uploadFile, decimal id, string type)
+        {
+           
+                 if(uploadFile ==null)
+                uploadFile = Request.Form.Files["UploadFiles"];
+                return StatusCodeResult(await _service.SaveFile(uploadFile,id, type));
+
         }
     }
 }
