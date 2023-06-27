@@ -64,6 +64,9 @@ namespace Evse.Helpers.AutoMapper
             CreateMap<AccountContractDto, AccountContract>();
             CreateMap<EngineerErrorReportDto, EngineerErrorReport>();
             CreateMap<ElectricianErrorReportDto, ElectricianErrorReport>();
+            CreateMap<ReportConfigDto, ReportConfig>();
+            CreateMap<ReportExportParams, ReportParams>();
+            CreateMap<ReportConfigDto, ReportConfig>();
 
 
         }

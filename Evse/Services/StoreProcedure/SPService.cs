@@ -39,6 +39,8 @@ namespace Evse.Services
         Task<object> SP_Record_AccountCheck_Remove(string recordGuid);
         Task<object> SP_Record_AccountCheck_Confirm(string accountGuid);
         Task<object> SP_Record_AccountCheck_NeedCheck(string accountGuid);
+        Task<object> RPT_Show_Header(string farmGuid, string makerOrderGuid, string reportName, string roomGuid1, string roomGuid2, string makeOrderGuid1, string makeOrderGuid2, string d1, string d2, string keyWord, string sort, string sort2, string printBy);
+   
     }
 
     public class SPService : ISPService, IScopeService
@@ -588,6 +590,58 @@ namespace Evse.Services
             }
         }
 
+ public async Task<object> RPT_Show_Header(string farmGuid, string makerOrderGuid, string reportName, string roomGuid1, string roomGuid2, string makeOrderGuid1, string makeOrderGuid2, string d1, string d2, string keyWord, string sort, string sort2, string printBy)
+        {
+            using (SqlConnection conn = new SqlConnection(_defaultConnection))
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    await conn.OpenAsync();
+                }
+                string sql = "RPT_Show_Header";
+
+
+                   var parameters = new DynamicParameters();
+                 parameters.Add("@Farm_GUID", farmGuid);
+                 parameters.Add("@MakeOrder_GUID", makerOrderGuid);
+                 parameters.Add("@Report_Name", reportName);
+                 parameters.Add("@Room_GUID1", roomGuid1);
+                 parameters.Add("@Room_GUID2", roomGuid2);
+                 parameters.Add("@MakeOrder_GUID1", makeOrderGuid1);
+                 parameters.Add("@MakeOrder_GUID2", makeOrderGuid2);
+                 parameters.Add("@D1", d1);
+                 parameters.Add("@D2", d2);
+                 parameters.Add("@Keyword", keyWord);
+                 parameters.Add("@Sort1", sort);
+                 parameters.Add("@Sort2", sort2);
+                 parameters.Add("@PrintBy", printBy);
+
+
+                // parameters.Add("@result", dbType: DbType.String, direction: ParameterDirection.ReturnValue);
+
+                try
+                {
+                var data= await conn.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                  await _logger.LogStoreProcedure(new LoggerParams
+                    {
+                        Type = EvseLogConst.StoredProcedure,
+                        LogText = $"The RPT_Show_Header executed successfully"
+                    }).ConfigureAwait(false);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                      await _logger.LogStoreProcedure(new LoggerParams
+                    {
+                        Type = EvseLogConst.StoredProcedure,
+                        LogText = $"Type: {ex.GetType().Name}, Message: {ex.Message}, StackTrace: {ex.ToString()}"
+                    }).ConfigureAwait(false);
+                    return null;
+                }
+
+            }
+        }
+
 
 
  public async Task<object> SP_Record_AccountCheck_NeedCheck(string accountGuid)
@@ -629,4 +683,6 @@ namespace Evse.Services
         }
 
     }
+
+
 }

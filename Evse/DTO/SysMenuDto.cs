@@ -99,6 +99,23 @@ namespace Evse.DTO
         public string MakeOrderGuid2 { get; set; }
 
     }
+     public partial class ReportExportParams
+    {
+        public DateTime D1 { get; set; }
+        public DateTime D2 { get; set; }
+        public string Keyword { get; set; }
+        public string Sort { get; set; }
+        public string Sort2 { get; set; }
+        public string MenuLink { get; set; }
+        public string FarmGuid { get; set; }
+        public string RoomGuid1 { get; set; }
+        public string RoomGuid2 { get; set; }
+        public string MakeOrderGuid1 { get; set; }
+        public string MakeOrderGuid2 { get; set; }
+        public string AreaGuid { get; set; }
+        public string BarnGuid { get; set; }
+        public string FunctionName { get; set; }
+    }
     public partial class ChartDataDto
     {
         public string type { get; set; }

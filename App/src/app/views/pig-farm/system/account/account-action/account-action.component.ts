@@ -102,12 +102,13 @@ id: any;
   }
   this.model = model;
     this.getAudit(this.id);
+   this.auditLogs();
+
   }
     this.getEmployeesByXAccountID(0);
     this.loadXAccountGroupData();
     this.loadSexConfig();
    this.codeType();
-   this.auditLogs();
 
   }
   getAccountNo() {
@@ -349,12 +350,12 @@ id: any;
   pageText = 'Total Records Count {{items}} items'
 
   auditLogs() {
-    this.auditLogsQuery = new Query();
+    this.auditLogsQuery = new Query().where("recordId", 'equal', this.id);
     this.auditLogsData$ = new DataManager({
       url: `${environment.apiUrl}AuditLog/LoadData?lang=${localStorage.getItem('lang')}`,
       adaptor: new UrlAdaptor,
       crossDomain: true,
-    });
+    },this.auditLogsQuery);
   }
   checked(item, i) {
     if (this.role === 'Account' && this.model.accountId === 0) {

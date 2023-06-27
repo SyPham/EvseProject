@@ -29,34 +29,46 @@ namespace Evse.Services
         Task<object> GetReportType(string menuLink);
         Task<object> GetReportChartSetting(string menuLink, string lang);
         Task<object> GetReport(ReportParams reportParams);
+        Task<object> getReportsHtml(ReportParams reportParams);
+        
         Task<object> GetReportChart(DateTime d1, DateTime d2, string menuLink, string lang);
+        Task<object> RPT_Show_Header(string farmGuid, string makerOrderGuid, string reportName, string roomGuid1, string roomGuid2, string makeOrderGuid1, string makeOrderGuid2, string d1, string d2, string keyWord, string sort, string sort2, string printBy);
     }
     public class ReportService : IReportService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepositoryBase<SysMenu> _repo;
+        private readonly IRepositoryBase<StoredProcedure> _repoStoredProcedure;
         private readonly IMapper _mapper;
         private readonly MapperConfiguration _configMapper;
         private readonly IConfiguration _configuration;
  private readonly IEvseLoggerService _logger;
+ private readonly ISPService _spService;
 
         public ReportService(
             IUnitOfWork unitOfWork,
             IRepositoryBase<SysMenu> repo,
+            IRepositoryBase<StoredProcedure> repoStoredProcedure,
             IMapper mapper,
             MapperConfiguration configMapper,
             IConfiguration configuration,
-            IEvseLoggerService logger 
-            )
+            IEvseLoggerService logger
+,
+            ISPService spService)
         {
             _unitOfWork = unitOfWork;
             _repo = repo;
             _logger = logger;
+            _repoStoredProcedure = repoStoredProcedure;
             _mapper = mapper;
             _configMapper = configMapper;
             _configuration = configuration;
+            _spService = spService;
         }
-
+public async Task<object> RPT_Show_Header(string farmGuid, string makerOrderGuid, string reportName, string roomGuid1, string roomGuid2, string makeOrderGuid1, string makeOrderGuid2, string d1, string d2, string keyWord, string sort, string sort2, string printBy) {
+    var r = await _spService.RPT_Show_Header(farmGuid,makerOrderGuid,reportName,  roomGuid1,  roomGuid2,  makeOrderGuid1,  makeOrderGuid2,  d1,  d2,  keyWord,  sort,  sort2,  printBy);
+    return r;
+}
         public async Task<object> GetReportChartSetting(string menuLink, string lang)
         {
             var info = await _repo.FindAll(x => x.Status == 1 && x.MenuLink == menuLink)
@@ -110,7 +122,10 @@ namespace Evse.Services
 
         public async Task<List<StoredProcedureDto>> GetStoredProcedures(string systemMenuGuid)
         {
-            return null;
+            var item = await _repoStoredProcedure.FindAll(x => x.Status == 1 && x.SystemMenuGuid == systemMenuGuid)
+                .ProjectTo<StoredProcedureDto>(_configMapper)
+                .ToListAsync();
+            return item;
         }
         private async Task<object> GetDataDropdownlist(DataManager data )
         {
@@ -133,6 +148,11 @@ namespace Evse.Services
         {
             var storeProcedureName = await GetStoredProceduresName(reportParams.MenuLink);
             return await StoreProcedureBase(reportParams, storeProcedureName);
+        }
+          public async Task<object> getReportsHtml(ReportParams reportParams)
+        {
+            var storeProcedureName = await GetStoredProceduresName(reportParams.MenuLink);
+            return await StoreProcedureBaseForReportHtml(reportParams, storeProcedureName);
         }
         public async Task<object> GetReportChart(DateTime d1, DateTime d2, string menuLink, string lang)
         {
@@ -167,6 +187,109 @@ namespace Evse.Services
                 chartData
             };
         }
+         private async Task<object> StoreProcedureBaseForReportHtml(ReportParams reportParams, string storeProcedureName)
+        {
+            using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    await conn.OpenAsync();
+                }
+                string sql = storeProcedureName;
+                reportParams.Keyword = reportParams.Keyword == null ? "" : reportParams.Keyword;
+                reportParams.Sort = reportParams.Sort == null ? "" : reportParams.Sort;
+                reportParams.Sort2 = reportParams.Sort2 == null ? "" : reportParams.Sort2;
+                reportParams.RoomGuid1 = reportParams.RoomGuid1 == null ? "" : reportParams.RoomGuid1;
+                reportParams.RoomGuid2 = reportParams.RoomGuid2 == null ? "" : reportParams.RoomGuid2;
+                reportParams.MakeOrderGuid1 = reportParams.MakeOrderGuid1 == null ? "" : reportParams.MakeOrderGuid1;
+                reportParams.MakeOrderGuid2 = reportParams.MakeOrderGuid2 == null ? "" : reportParams.MakeOrderGuid2;
+                // reportParams.AreaGuid = reportParams.AreaGuid == null ? "" : reportParams.AreaGuid;
+                // reportParams.BarnGuid = reportParams.BarnGuid == null ? "" : reportParams.BarnGuid;
+                object parameters = new 
+                {
+                    Room_GUID1 = reportParams.RoomGuid1,
+                    Room_GUID2 = reportParams.RoomGuid2,
+                    MakeOrder_GUID1 = reportParams.MakeOrderGuid1,
+                    MakeOrder_GUID2 = reportParams.MakeOrderGuid2,
+                    Farm_GUID = reportParams.FarmGuid,
+                    D1 = reportParams.D1,
+                    D2 = reportParams.D2,
+                    KeyWord = reportParams.Keyword,
+                    Sort1 = reportParams.Sort,
+                    Sort2 = reportParams.Sort2,
+                    // Area_GUID = reportParams.AreaGuid,
+                    // Barn_GUID = reportParams.BarnGuid,
+                };
+                if (reportParams.D1.Year == 1970)
+                {
+                    parameters = new 
+                    {
+                        Room_GUID1 = reportParams.RoomGuid1,
+                        Room_GUID2 = reportParams.RoomGuid2,
+                        MakeOrder_GUID1 = reportParams.MakeOrderGuid1,
+                        MakeOrder_GUID2 = reportParams.MakeOrderGuid2,
+                        Farm_GUID = reportParams.FarmGuid,
+                        D1 = "",
+                        D2 = reportParams.D2,
+                        KeyWord = reportParams.Keyword,
+                        Sort1 = reportParams.Sort,
+                        Sort2 = reportParams.Sort2,
+                        // Area_GUID = reportParams.AreaGuid,
+                        // Barn_GUID = reportParams.BarnGuid,
+                    };
+                }
+                if (reportParams.D2.Year == 1970)
+                {
+                    parameters = new 
+                    {
+                        Room_GUID1 = reportParams.RoomGuid1,
+                        Room_GUID2 = reportParams.RoomGuid2,
+                        MakeOrder_GUID1 = reportParams.MakeOrderGuid1,
+                        MakeOrder_GUID2 = reportParams.MakeOrderGuid2,
+                        Farm_GUID = reportParams.FarmGuid,
+                        D1 = reportParams.D1,
+                        D2 = "",
+                        KeyWord = reportParams.Keyword,
+                        Sort1 = reportParams.Sort,
+                        Sort2 = reportParams.Sort2,
+                        // Area_GUID = reportParams.AreaGuid,
+                        // Barn_GUID = reportParams.BarnGuid,
+                    };
+                }
+                if (reportParams.D1.Year == 1970 && reportParams.D2.Year == 1970)
+                {
+                    parameters = new 
+                    {
+                        Room_GUID1 = reportParams.RoomGuid1,
+                        Room_GUID2 = reportParams.RoomGuid2,
+                        MakeOrder_GUID1 = reportParams.MakeOrderGuid1,
+                        MakeOrder_GUID2 = reportParams.MakeOrderGuid2,
+                        Farm_GUID = reportParams.FarmGuid,
+                        D1 = reportParams.D1,
+                        D2 = reportParams.D2,
+                        KeyWord = reportParams.Keyword,
+                        Sort1 = reportParams.Sort,
+                        Sort2 = reportParams.Sort2,
+                        // Area_GUID = reportParams.AreaGuid,
+                        // Barn_GUID = reportParams.BarnGuid,
+                    };
+                }
+                try
+                {
+                    var data = await conn.QueryFirstOrDefaultAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                    return data ;
+                }
+                catch (Exception ex)
+                {
+                      await _logger.LogStoreProcedure(new LoggerParams {
+                    Type= EvseLogConst.StoredProcedure,
+                    LogText = $"SP_Name: {storeProcedureName}, Type: { ex.GetType().Name}, Message: { ex.Message}, StackTrace: {ex.ToString()}"
+                }).ConfigureAwait(false);
+                    return new object[] { };
+                }
+
+            }
+        }
         private async Task<object> StoreProcedureBase(ReportParams reportParams, string storeProcedureName)
         {
             using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
@@ -183,6 +306,8 @@ namespace Evse.Services
                 reportParams.RoomGuid2 = reportParams.RoomGuid2 == null ? "" : reportParams.RoomGuid2;
                 reportParams.MakeOrderGuid1 = reportParams.MakeOrderGuid1 == null ? "" : reportParams.MakeOrderGuid1;
                 reportParams.MakeOrderGuid2 = reportParams.MakeOrderGuid2 == null ? "" : reportParams.MakeOrderGuid2;
+                // reportParams.AreaGuid = reportParams.AreaGuid == null ? "" : reportParams.AreaGuid;
+                // reportParams.BarnGuid = reportParams.BarnGuid == null ? "" : reportParams.BarnGuid;
                 object parameters = new 
                 {
                     Room_GUID1 = reportParams.RoomGuid1,
@@ -194,7 +319,9 @@ namespace Evse.Services
                     D2 = reportParams.D2,
                     KeyWord = reportParams.Keyword,
                     Sort1 = reportParams.Sort,
-                    Sort2 = reportParams.Sort2
+                    Sort2 = reportParams.Sort2,
+                    // Area_GUID = reportParams.AreaGuid,
+                    // Barn_GUID = reportParams.BarnGuid,
                 };
                 if (reportParams.D1.Year == 1970)
                 {
@@ -209,7 +336,9 @@ namespace Evse.Services
                         D2 = reportParams.D2,
                         KeyWord = reportParams.Keyword,
                         Sort1 = reportParams.Sort,
-                        Sort2 = reportParams.Sort2
+                        Sort2 = reportParams.Sort2,
+                        // Area_GUID = reportParams.AreaGuid,
+                        // Barn_GUID = reportParams.BarnGuid,
                     };
                 }
                 if (reportParams.D2.Year == 1970)
@@ -225,7 +354,9 @@ namespace Evse.Services
                         D2 = "",
                         KeyWord = reportParams.Keyword,
                         Sort1 = reportParams.Sort,
-                        Sort2 = reportParams.Sort2
+                        Sort2 = reportParams.Sort2,
+                        // Area_GUID = reportParams.AreaGuid,
+                        // Barn_GUID = reportParams.BarnGuid,
                     };
                 }
                 if (reportParams.D1.Year == 1970 && reportParams.D2.Year == 1970)
@@ -241,13 +372,15 @@ namespace Evse.Services
                         D2 = reportParams.D2,
                         KeyWord = reportParams.Keyword,
                         Sort1 = reportParams.Sort,
-                        Sort2 = reportParams.Sort2
+                        Sort2 = reportParams.Sort2,
+                        // Area_GUID = reportParams.AreaGuid,
+                        // Barn_GUID = reportParams.BarnGuid,
                     };
                 }
                 try
                 {
                     var data = await conn.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
-                    return data;
+                    return data ;
                 }
                 catch (Exception ex)
                 {

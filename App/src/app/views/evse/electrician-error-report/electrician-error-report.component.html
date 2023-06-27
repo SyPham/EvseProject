@@ -125,9 +125,11 @@
         field="viewErrorName"
         textAlign="Left"
         headerTextAlign="Center"
-        headerTextAlign="Center"
         headerText="{{ 'ElectricianErrorReport_ViewError' | translate }}"
       >
+      <ng-template #template let-data>
+        <span class="badge badge-warning view-error">{{data.viewErrorName}}</span>
+        </ng-template>
       </e-column>
 
         <e-column

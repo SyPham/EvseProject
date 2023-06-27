@@ -433,6 +433,37 @@ IRepositoryBase<SystemConfig> repoSystemConfig)
             return operationResult;
         }
 
+                public async Task<OperationResult> CheckExistUsernameByAccountGroup(string userName, string accountGroup)
+        {
+            var item = await _repo.FindAll(x => x.Uid == userName && x.Status == "1" && x.AccountGroup == accountGroup).AnyAsync();
+            if (item)
+            {
+                return new OperationResult { StatusCode = HttpStatusCode.OK, Message = "The username already existed!", Success = false };
+            }
+            operationResult = new OperationResult
+            {
+                StatusCode = HttpStatusCode.OK,
+                Success = true,
+                Data = item
+            };
+            return operationResult;
+        }
+        public async Task<OperationResult> CheckExistNoByAccountGroup(string accountNo, string accountGroup)
+        {
+            var item = await _repo.FindAll(x => x.AccountNo == accountNo && x.Status == "1" && x.AccountGroup == accountGroup).AnyAsync();
+            if (item)
+            {
+                return new OperationResult { StatusCode = HttpStatusCode.OK, Message = "The account NO already existed!", Success = false };
+            }
+            operationResult = new OperationResult
+            {
+                StatusCode = HttpStatusCode.OK,
+                Success = true,
+                Data = item
+            };
+            return operationResult;
+        }
+
         public async Task<OperationResult> CheckExistNo(string accountNo)
         {
             var item = await _repo.FindAll(x => x.AccountNo == accountNo && x.Status == "1").AnyAsync();
@@ -597,9 +628,9 @@ IRepositoryBase<SystemConfig> repoSystemConfig)
         }
         public async Task<OperationResult> AddFormAsync(XAccountDto model)
         {
-            var check = await CheckExistUsername(model.Uid);
+            var check = await CheckExistUsernameByAccountGroup(model.Uid, model.AccountGroup);
             if (!check.Success) return check;
-            var checkAccountNo = await CheckExistNo(model.AccountNo);
+            var checkAccountNo = await CheckExistNoByAccountGroup(model.AccountNo, model.AccountGroup);
             if (!checkAccountNo.Success) return checkAccountNo;
             FileExtension fileExtension = new FileExtension();
             var avatarUniqueFileName = string.Empty;
@@ -664,13 +695,13 @@ IRepositoryBase<SystemConfig> repoSystemConfig)
             var itemModel = await _repo.FindAll(x => x.AccountId == model.AccountId).AsNoTracking().FirstOrDefaultAsync();
             if (itemModel.Uid != model.Uid)
             {
-                var check = await CheckExistUsername(model.Uid);
+                var check = await CheckExistUsernameByAccountGroup(model.Uid, model.AccountGroup);
                 if (!check.Success) return check;
             }
 
             if (itemModel.AccountNo != model.AccountNo)
             {
-                var checkAccountNo = await CheckExistNo(model.AccountNo);
+                var checkAccountNo = await CheckExistNoByAccountGroup(model.AccountNo, model.AccountGroup);
                 if (!checkAccountNo.Success) return checkAccountNo;
             }
             var item = _mapper.Map<XAccount>(model);

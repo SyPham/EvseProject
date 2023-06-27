@@ -84,9 +84,64 @@ namespace Evse.Data
 
         public virtual DbSet<ElectricianErrorReport> ElectricianErrorReports { get; set; }
         public virtual DbSet<EngineerErrorReport> EngineerErrorReports { get; set; }
+        public virtual DbSet<StoredProcedure> StoredProcedures { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+             modelBuilder.Entity<StoredProcedure>(entity =>
+            {
+                entity.ToTable("StoredProcedures");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("numeric(18, 0)")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("ID");
+                entity.Property(e => e.StoredName)
+                    .HasMaxLength(100)
+                    .HasColumnName("Stored_Name");
+                entity.Property(e => e.Legend)
+                 .HasMaxLength(200);
+
+                entity.Property(e => e.StoredType)
+                   .HasMaxLength(20)
+                   .HasColumnName("Stored_Type");
+                entity.Property(e => e.Color)
+                 .HasMaxLength(20)
+                 .HasColumnName("Color");
+
+                entity.Property(e => e.Comment)
+                    .HasColumnType("ntext")
+                    .HasColumnName("COMMENT");
+
+                entity.Property(e => e.CreateBy)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("CREATE_BY");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("CREATE_DATE");
+
+                entity.Property(e => e.Guid)
+                    .HasMaxLength(40)
+                    .HasColumnName("GUID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Status)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("STATUS");
+
+                entity.Property(e => e.UpdateBy)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("UPDATE_BY");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("UPDATE_DATE");
+
+                entity.Property(e => e.SystemMenuGuid)
+                    .HasMaxLength(40)
+                    .HasColumnName("SystemMenuGuid");
+            });
             modelBuilder.Entity<ElectricianErrorReport>(entity =>
             {
                 entity.ToTable("ElectricianErrorReport");
