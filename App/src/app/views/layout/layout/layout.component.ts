@@ -91,6 +91,10 @@ export class LayoutComponent implements OnInit,AfterViewInit, OnDestroy {
     return permissions;
   }
   route(data) {
+    if (data.url === '/') {
+      this.router.navigate([data.url])
+      return;
+   }
     const functionCode = data.functionCode;
     if (functionCode === 'Report' && data.level === 2) {
       return;
@@ -124,6 +128,10 @@ export class LayoutComponent implements OnInit,AfterViewInit, OnDestroy {
     //return this.router.url === data.url;
   }
   navigate(data) {
+    if (data.url === '/') {
+       this.router.navigate([data.url])
+       return;
+    }
     const functionCode = data.functionCode;
     if (functionCode === 'Report'&& data.level === 2) {
       return;

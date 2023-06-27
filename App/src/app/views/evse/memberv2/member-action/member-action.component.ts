@@ -148,11 +148,12 @@ this.path4 = {
 };
 
     this.getAudit(this.id);
+   this.auditLogs();
+
   }
     this.getEmployeesByMemberID(0);
     this.loadSexConfig();
    this.codeType();
-   this.auditLogs();
    this.loadRoleType();
    this.uploadConfig();
    this.uploadConfig2();
@@ -406,14 +407,14 @@ public path4: Object = {
   saveUrl: environment.apiUrl+ `Member/Save?id=${this.model.id}&type=4` ,
   removeUrl: environment.apiUrl+ `Member/Remove?id=${this.model.id}&type=4`
 };
-  auditLogs() {
-    this.auditLogsQuery = new Query();
-    this.auditLogsData$ = new DataManager({
-      url: `${environment.apiUrl}AuditLog/LoadData?lang=${localStorage.getItem('lang')}`,
-      adaptor: new UrlAdaptor,
-      crossDomain: true,
-    });
-  }
+auditLogs() {
+  this.auditLogsQuery = new Query().where("recordId", 'equal', this.id);
+  this.auditLogsData$ = new DataManager({
+    url: `${environment.apiUrl}AuditLog/LoadData?lang=${localStorage.getItem('lang')}`,
+    adaptor: new UrlAdaptor,
+    crossDomain: true,
+  },this.auditLogsQuery);
+}
   
 
 uploadConfig() {
